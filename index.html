@@ -290,14 +290,19 @@
   .how-num{font-size:12.5px; font-weight:800; color:var(--amber-d); letter-spacing:.6px}
   .how-card h3{margin:0; font-size:19px; color:var(--ink); letter-spacing:-.2px}
   .how-card p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.55}
-  .how-visual{margin-top:auto; display:flex; justify-content:center; align-items:flex-end; padding-top:14px; min-height:130px; position:relative}
+  .how-visual{display:flex; justify-content:center; align-items:flex-start; position:relative}
   @media (max-width:900px){ .how-grid{grid-template-columns:1fr} }
 
   /* ---------- DEVICE FRAME (product showcase) ---------- */
   .device-frame{background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:0 40px 100px rgba(30,27,70,.16); overflow:hidden; max-width:980px; margin:0 auto}
-  .device-bar{background:#F1F0F8; padding:12px 16px; display:flex; gap:6px; align-items:center; border-bottom:1px solid var(--line)}
+  .device-bar{background:#F1F0F8; padding:10px 14px; display:flex; gap:6px; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line)}
+  .device-dots{display:flex; gap:6px}
   .device-dot{width:9px; height:9px; border-radius:50%; background:#DAD9EE}
+  .device-tabs{display:flex; gap:4px}
+  .device-tab{border:0; background:transparent; color:var(--muted); font-size:11.5px; font-weight:700; padding:6px 13px; border-radius:999px; cursor:pointer; font-family:inherit}
+  .device-tab.active{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(30,27,70,.14)}
   .device-body{display:grid; grid-template-columns:.85fr 1.3fr; min-height:380px}
+  .device-dash{padding:24px 26px; min-height:380px}
   .device-list{border-right:1px solid var(--line); padding:14px}
   .device-row{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; transition:background .3s ease}
   .device-row.active{background:var(--lav)}
@@ -313,8 +318,7 @@
   .mini-chip-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; max-width:900px; margin:28px auto 0}
   .mini-chip{background:var(--lav); border-radius:999px; padding:9px 16px; font-size:12.5px; font-weight:600; color:var(--ink)}
 
-  /* ---------- PILOTAGE / chart ---------- */
-  .dash-mock{max-width:1080px; margin:0 auto}
+  /* ---------- chart (device dashboard tab) ---------- */
   .kpi .val{font-size:32px}
   .chart-wrap{margin-top:6px}
   .chart-labels{display:flex; justify-content:space-between; padding:6px 20px 0; margin-top:2px}
@@ -508,14 +512,14 @@
     <div class="hero-blob b1"></div>
     <div class="hero-blob b2"></div>
     <div class="hero-txt">
-      <span class="badge-pill hero-in" style="animation-delay:.05s"><span class="dot"></span>CRM nouvelle génération pour la vente indirecte</span>
+      <span class="badge-pill hero-in" style="animation-delay:.05s">CRM nouvelle génération pour la vente indirecte</span>
       <h1 class="hero-in" style="animation-delay:.15s">Vous vendez vos produits <span class="hl">partout</span>.<br>Enfin, sachez qui les <span class="hl">achète</span>.</h1>
       <p class="hero-in" style="animation-delay:.28s">Même lorsque vos produits sont vendus en magasin, chez un revendeur spécialisé ou lors d'un événement, SmartQonsumer centralise vos ventes, votre CRM, votre fidélité et vos campagnes pour recréer un lien direct avec vos consommateurs.</p>
       <div class="hero-cta hero-in" style="animation-delay:.4s">
         <button class="btn cta big" onclick="enterApp()">Explorer la démo</button>
         <button class="btn outline big" onclick="scrollTo2('how')">Voir comment ça marche</button>
       </div>
-      <div class="hero-note hero-in" style="animation-delay:.5s">Collecte de données · Engagement client · Fidélisation</div>
+      <div class="hero-note hero-in" style="animation-delay:.5s">Connaissance client · Engagement client · Fidélisation</div>
     </div>
 
     <div class="hero-mosaic-wrap hero-in" style="animation-delay:.55s">
@@ -539,7 +543,7 @@
         </div>
         <div class="hm-tile">
           <div class="hm-label">Scans</div>
-          <div class="hm-big" data-count="3906">0</div>
+          <div class="hm-big">3 906</div>
           <div class="hm-delta">+312 cette semaine</div>
         </div>
       </div>
@@ -548,7 +552,50 @@
     </div>
   </section>
 
-  <!-- ============ FEATURE STORYTELLING (sous le hero) ============ -->
+  <!-- ============ HOW (3 steps) ============ -->
+  <section class="feat spad" id="how">
+    <div class="sec-title" data-reveal><div class="eyebrow">Le mécanisme</div><h2>Chaque scan devient une opportunité.</h2></div>
+    <div class="how-grid">
+      <div class="how-card" data-reveal>
+        <div class="how-num">01</div>
+        <h3>Le consommateur scanne</h3>
+        <p>Sur un produit, son emballage ou une affiche — où qu'il se trouve dans le circuit de vente.</p>
+        <div class="how-visual">
+          <div class="scan-visual">
+            <div class="qr-glyph">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
+              <div class="scan-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><div class="scan-line"></div></div>
+            </div>
+            <div class="sector-row">
+              <span class="sector-ico" title="Boissons artisanales"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2h6v3l2 3v12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V8l2-3V2z"/></svg></span>
+              <span class="sector-ico" title="Petfood premium"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8c0-3 2-5 5-5s5 2 5 5v9a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3V8z"/><path d="M9.5 8h5"/></svg></span>
+              <span class="sector-ico" title="Chocolaterie & confiserie"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="8" width="16" height="9" rx="1.5"/><path d="M8 8v9M12 8v9M16 8v9M4 12.5h16"/></svg></span>
+              <span class="sector-ico" title="Épicerie fine"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6v3H9z"/><path d="M8 6h8l1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L8 6z"/></svg></span>
+              <span class="sector-ico" title="Cosmétique naturelle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="9" width="8" height="12" rx="2"/><path d="M11 9V6.5a1 1 0 0 1 1-1v0a1 1 0 0 1 1 1V9"/><path d="M9.5 4h5"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="how-card" data-reveal>
+        <div class="how-num">02</div>
+        <h3>Il rejoint votre univers</h3>
+        <p>Landing personnalisée, récompense, contenu ou programme de fidélité — à votre image.</p>
+        <div class="how-visual"><div class="hf-phone" style="width:104px;height:200px"><div class="scr"><div class="top" style="height:52px; display:flex; align-items:center; justify-content:center"><b style="font-size:9.5px; letter-spacing:.4px; text-transform:uppercase; white-space:nowrap">Votre marque</b></div><div class="bd"><i style="width:70%"></i><i style="width:50%"></i><div class="btn2">Rejoindre le club</div></div></div></div></div>
+      </div>
+      <div class="how-card" data-reveal>
+        <div class="how-num">03</div>
+        <h3>Vous créez une relation directe</h3>
+        <p>Un profil consommateur enrichi, exploitable pour vos futures campagnes.</p>
+        <div class="how-visual"><div class="card hf-crm">
+          <div class="kv"><span>Produit préféré</span><b>Édition Limitée n°4</b></div>
+          <div class="kv"><span>Scans</span><b>12</b></div>
+          <div class="kv" style="border-bottom:0"><span>Statut</span><b>Fidèle</b></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURE STORYTELLING ============ -->
   <section class="feat spad" id="story">
     <div class="story-row" data-reveal>
       <div class="story-text">
@@ -649,55 +696,18 @@
     </div>
   </section>
 
-  <!-- ============ HOW (3 steps) ============ -->
-  <section class="feat spad" id="how">
-    <div class="sec-title" data-reveal><div class="eyebrow">Le mécanisme</div><h2>Chaque scan devient une opportunité.</h2></div>
-    <div class="how-grid">
-      <div class="how-card" data-reveal>
-        <div class="how-num">01</div>
-        <h3>Le consommateur scanne</h3>
-        <p>Sur un produit, son emballage ou une affiche — où qu'il se trouve dans le circuit de vente.</p>
-        <div class="how-visual">
-          <div class="scan-visual">
-            <div class="qr-glyph">
-              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
-              <div class="scan-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><div class="scan-line"></div></div>
-            </div>
-            <div class="sector-row">
-              <span class="sector-ico" title="Boissons artisanales"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2h6v3l2 3v12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V8l2-3V2z"/></svg></span>
-              <span class="sector-ico" title="Petfood premium"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8c0-3 2-5 5-5s5 2 5 5v9a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3V8z"/><path d="M9.5 8h5"/></svg></span>
-              <span class="sector-ico" title="Chocolaterie & confiserie"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="8" width="16" height="9" rx="1.5"/><path d="M8 8v9M12 8v9M16 8v9M4 12.5h16"/></svg></span>
-              <span class="sector-ico" title="Épicerie fine"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6v3H9z"/><path d="M8 6h8l1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L8 6z"/></svg></span>
-              <span class="sector-ico" title="Cosmétique naturelle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="9" width="8" height="12" rx="2"/><path d="M11 9V6.5a1 1 0 0 1 1-1v0a1 1 0 0 1 1 1V9"/><path d="M9.5 4h5"/></svg></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="how-card" data-reveal>
-        <div class="how-num">02</div>
-        <h3>Il rejoint votre univers</h3>
-        <p>Landing personnalisée, récompense, contenu ou programme de fidélité — à votre image.</p>
-        <div class="how-visual"><div class="hf-phone" style="width:104px;height:200px"><div class="scr"><div class="top" style="height:52px"><i></i><b>Votre Marque</b></div><div class="bd"><i style="width:70%"></i><i style="width:50%"></i><div class="btn2">Rejoindre le club</div></div></div></div></div>
-      </div>
-      <div class="how-card" data-reveal>
-        <div class="how-num">03</div>
-        <h3>Vous créez une relation directe</h3>
-        <p>Un profil consommateur enrichi, exploitable pour vos futures campagnes.</p>
-        <div class="how-visual"><div class="card hf-crm">
-          <div class="kv"><span>Produit préféré</span><b>Édition Limitée n°4</b></div>
-          <div class="kv"><span>Scans</span><b>12</b></div>
-          <div class="kv" style="border-bottom:0"><span>Statut</span><b>Fidèle</b></div>
-        </div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PRODUCT SHOWCASE ============ -->
+  <!-- ============ PRODUCT SHOWCASE (Clients + Tableau de bord) ============ -->
   <section class="feat spad" id="product" style="background:var(--lav3)">
     <div class="sec-title" data-reveal><div class="eyebrow">La plateforme</div><h2>Une seule plateforme.<br>Toute la relation avec vos consommateurs.</h2></div>
     <div class="device-frame" data-reveal>
-      <div class="device-bar"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div>
-      <div class="device-body">
+      <div class="device-bar">
+        <div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div>
+        <div class="device-tabs">
+          <button type="button" class="device-tab active" id="tabClients" onclick="showDeviceTab('clients')">Clients</button>
+          <button type="button" class="device-tab" id="tabDash" onclick="showDeviceTab('dashboard')">Tableau de bord</button>
+        </div>
+      </div>
+      <div class="device-body" id="deviceViewClients">
         <div class="device-list" id="deviceList">
           <div class="device-row active"><div class="avatar" style="width:30px;height:30px;font-size:11px">CR</div><div><span class="nm">Camille Rousseau</span><span class="sg">Amateurs de nouveautés</span></div></div>
           <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">TM</div><div><span class="nm">Thomas Morel</span><span class="sg">Nouveau contact</span></div></div>
@@ -714,6 +724,37 @@
           <div class="kv" style="border-bottom:0"><span>Campagnes reçues</span><b id="devCamp">3</b></div>
         </div>
       </div>
+      <div class="device-dash" id="deviceViewDash" style="display:none">
+        <div class="grid cards-4">
+          <div class="card kpi"><div class="top"><div class="label">Contacts connus</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/></svg></div></div><div class="val" data-count="1248">0</div><div class="delta">+126 cette semaine</div></div>
+          <div class="card kpi"><div class="top"><div class="label">Scans QR</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div></div><div class="val" data-count="3906">0</div><div class="delta">+312 cette semaine</div></div>
+          <div class="card kpi"><div class="top"><div class="label">Scan → inscription</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12l5 5L20 6"/></svg></div></div><div class="val" data-count="34" data-suffix="%">0</div><div class="delta">+3 pts vs sem. dernière</div></div>
+          <div class="card kpi"><div class="top"><div class="label">Nouveaux contacts</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="val" data-count="126" data-prefix="+">0</div><div class="delta flat">cette semaine</div></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Acquisition de contacts</h3><div class="sub">Nouveaux contacts par canal, 6 dernières semaines</div>
+          <div class="chart-wrap">
+            <svg viewBox="0 0 580 170" style="width:100%; height:170px; display:block" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--amber)" stop-opacity=".32"/>
+                  <stop offset="100%" stop-color="var(--amber)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <line x1="20" y1="30" x2="560" y2="30" stroke="var(--line)" stroke-width="1"/>
+              <line x1="20" y1="80" x2="560" y2="80" stroke="var(--line)" stroke-width="1"/>
+              <line x1="20" y1="130" x2="560" y2="130" stroke="var(--line)" stroke-width="1"/>
+              <path d="M20,123 C60,118 90,112 128,113 C170,114 200,108 236,110 C280,112 310,105 344,103 C385,101 415,100 452,97 C495,94 525,90 560,87" fill="none" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+              <path d="M20,97 C60,85 90,75 128,73 C170,71 200,90 236,83 C280,74 310,55 344,53 C385,51 415,70 452,63 C495,55 525,35 560,23 L560,160 L20,160 Z" fill="url(#chartGrad)"/>
+              <path d="M20,97 C60,85 90,75 128,73 C170,71 200,90 236,83 C280,74 310,55 344,53 C385,51 415,70 452,63 C495,55 525,35 560,23" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="560" cy="23" r="4.5" fill="var(--amber)"/>
+              <circle class="chart-pulse" cx="560" cy="23" r="4.5" fill="var(--amber)" opacity=".45"><animate attributeName="r" values="5;13;5" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".45;0;.45" dur="2.2s" repeatCount="indefinite"/></circle>
+            </svg>
+            <div class="chart-labels"><span>S-5</span><span>S-4</span><span>S-3</span><span>S-2</span><span>S-1</span><span>Cette sem.</span></div>
+          </div>
+          <div class="legend" style="margin-top:10px"><span><i style="background:var(--amber)"></i>Via QR (indirect)</span><span><i style="background:var(--ink-soft)"></i>Via page fidélité (direct)</span></div>
+        </div>
+      </div>
     </div>
     <div class="mini-chip-row" data-reveal>
       <span class="mini-chip">Produits scannés</span>
@@ -722,41 +763,6 @@
       <span class="mini-chip">Préférences</span>
       <span class="mini-chip">Statut fidélité</span>
       <span class="mini-chip">Campagnes reçues</span>
-    </div>
-  </section>
-
-  <section class="feat spad">
-    <div class="sec-title" data-reveal><div class="eyebrow">Pilotage</div><h2>Comprenez ce qui fonctionne vraiment.</h2></div>
-    <div class="dash-mock" data-reveal>
-      <div class="grid cards-4">
-        <div class="card kpi"><div class="top"><div class="label">Contacts connus</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/></svg></div></div><div class="val" data-count="1248">0</div><div class="delta">+126 cette semaine</div></div>
-        <div class="card kpi"><div class="top"><div class="label">Scans QR</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div></div><div class="val" data-count="3906">0</div><div class="delta">+312 cette semaine</div></div>
-        <div class="card kpi"><div class="top"><div class="label">Scan → inscription</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12l5 5L20 6"/></svg></div></div><div class="val" data-count="34" data-suffix="%">0</div><div class="delta">+3 pts vs sem. dernière</div></div>
-        <div class="card kpi"><div class="top"><div class="label">Nouveaux contacts</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="val" data-count="126" data-prefix="+">0</div><div class="delta flat">cette semaine</div></div>
-      </div>
-      <div class="card" style="margin-top:16px">
-        <h3>Acquisition de contacts</h3><div class="sub">Nouveaux contacts par canal, 6 dernières semaines</div>
-        <div class="chart-wrap">
-          <svg viewBox="0 0 580 170" style="width:100%; height:170px; display:block" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="var(--amber)" stop-opacity=".32"/>
-                <stop offset="100%" stop-color="var(--amber)" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <line x1="20" y1="30" x2="560" y2="30" stroke="var(--line)" stroke-width="1"/>
-            <line x1="20" y1="80" x2="560" y2="80" stroke="var(--line)" stroke-width="1"/>
-            <line x1="20" y1="130" x2="560" y2="130" stroke="var(--line)" stroke-width="1"/>
-            <path d="M20,123 C60,118 90,112 128,113 C170,114 200,108 236,110 C280,112 310,105 344,103 C385,101 415,100 452,97 C495,94 525,90 560,87" fill="none" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-            <path d="M20,97 C60,85 90,75 128,73 C170,71 200,90 236,83 C280,74 310,55 344,53 C385,51 415,70 452,63 C495,55 525,35 560,23 L560,160 L20,160 Z" fill="url(#chartGrad)"/>
-            <path d="M20,97 C60,85 90,75 128,73 C170,71 200,90 236,83 C280,74 310,55 344,53 C385,51 415,70 452,63 C495,55 525,35 560,23" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="560" cy="23" r="4.5" fill="var(--amber)"/>
-            <circle class="chart-pulse" cx="560" cy="23" r="4.5" fill="var(--amber)" opacity=".45"><animate attributeName="r" values="5;13;5" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".45;0;.45" dur="2.2s" repeatCount="indefinite"/></circle>
-          </svg>
-          <div class="chart-labels"><span>S-5</span><span>S-4</span><span>S-3</span><span>S-2</span><span>S-1</span><span>Cette sem.</span></div>
-        </div>
-        <div class="legend" style="margin-top:10px"><span><i style="background:var(--amber)"></i>Via QR (indirect)</span><span><i style="background:var(--ink-soft)"></i>Via page fidélité (direct)</span></div>
-      </div>
     </div>
   </section>
 
@@ -1351,6 +1357,19 @@
       }, 2800);
     }
   })();
+
+  function showDeviceTab(name){
+    const clientsView = document.getElementById('deviceViewClients');
+    const dashView = document.getElementById('deviceViewDash');
+    const tabClients = document.getElementById('tabClients');
+    const tabDash = document.getElementById('tabDash');
+    if(!clientsView || !dashView) return;
+    const showDash = name === 'dashboard';
+    clientsView.style.display = showDash ? 'none' : 'grid';
+    dashView.style.display = showDash ? 'block' : 'none';
+    tabClients.classList.toggle('active', !showDash);
+    tabDash.classList.toggle('active', showDash);
+  }
 </script>
 </body>
 </html>
