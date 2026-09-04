@@ -237,7 +237,7 @@
   @media (max-width:900px){ .hero-txt h1{font-size:34px} .hero-mosaic-wrap{padding:22px} .hero-mosaic{grid-template-columns:1fr} .hf-float{display:none} }
 
   /* shared visual atoms (bottle / phone / crm snippet) reused across sections */
-  .scan-visual{display:flex; flex-direction:column; align-items:center; gap:16px}
+  .scan-visual{display:flex; flex-direction:column; align-items:center; gap:12px}
   .qr-glyph{width:88px; height:88px; background:#fff; border-radius:18px; box-shadow:0 14px 32px rgba(30,27,70,.18); display:grid; place-items:center; color:var(--ink); position:relative}
   .sector-row{display:flex; gap:8px}
   .sector-ico{width:28px; height:28px; border-radius:9px; background:var(--amber-soft); color:var(--amber-d); display:grid; place-items:center}
@@ -264,33 +264,14 @@
   .hf-crm{width:220px; text-align:left; padding:16px}
   .hf-crm .kv{padding:6px 0; font-size:11.5px}
 
-  /* ---------- PROBLEM (vertical) ---------- */
-  .problem-cols{display:grid; grid-template-columns:1fr 1fr; gap:28px; max-width:840px; margin:0 auto; align-items:start}
-  .problem-col{background:#fff; border:1px solid var(--line); border-radius:22px; padding:32px 30px; box-shadow:var(--shadow)}
-  .pc-label{font-size:11.5px; font-weight:800; letter-spacing:.6px; text-transform:uppercase; margin-bottom:22px}
-  .problem-col.bad .pc-label{color:#B3261E}
-  .problem-col.good .pc-label{color:#127A54}
-  .pc-step{position:relative; padding:0 0 22px 26px; border-left:2px solid var(--line)}
-  .pc-step:last-child{padding-bottom:0; border-left-color:transparent}
-  .pc-step:before{content:''; position:absolute; left:-7px; top:0; width:14px; height:14px; border-radius:50%; background:#fff; border:2px solid var(--line)}
-  .pc-step b{font-size:14.5px; color:var(--ink); font-weight:700}
-  .problem-col.bad .pc-step{opacity:var(--o,1)}
-  .problem-col.bad .pc-step:before{border-color:#E39184}
-  .problem-col.bad .pc-step.end{opacity:1}
-  .problem-col.bad .pc-step.end:before{background:#FDEDEA; border-color:#B3261E}
-  .problem-col.bad .pc-step.end b{color:#B3261E}
-  .problem-col.good .pc-step:before{background:var(--ink); border-color:var(--ink)}
-  .problem-col.good .pc-step.end:before{background:#127A54; border-color:#127A54}
-  .problem-col.good .pc-step.end b{color:#127A54}
-  @media (max-width:760px){ .problem-cols{grid-template-columns:1fr} }
 
   /* ---------- HOW (3 steps) ---------- */
   .how-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1120px; margin:0 auto}
-  .how-card{background:#fff; border:1px solid var(--line); border-radius:20px; padding:30px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow); min-height:300px}
+  .how-card{background:#fff; border:1px solid var(--line); border-radius:20px; padding:30px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow); min-height:280px}
   .how-num{font-size:12.5px; font-weight:800; color:var(--amber-d); letter-spacing:.6px}
   .how-card h3{margin:0; font-size:19px; color:var(--ink); letter-spacing:-.2px}
   .how-card p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.55}
-  .how-visual{display:flex; justify-content:center; align-items:flex-start; position:relative}
+  .how-visual{display:flex; justify-content:center; align-items:flex-start; position:relative; margin-top:-6px}
   @media (max-width:900px){ .how-grid{grid-template-columns:1fr} }
 
   /* ---------- DEVICE FRAME (product showcase) ---------- */
@@ -514,46 +495,17 @@
     <div class="hero-txt">
       <span class="badge-pill hero-in" style="animation-delay:.05s">CRM nouvelle génération pour la vente indirecte</span>
       <h1 class="hero-in" style="animation-delay:.15s">Vous vendez vos produits <span class="hl">partout</span>.<br>Enfin, sachez qui les <span class="hl">achète</span>.</h1>
-      <p class="hero-in" style="animation-delay:.28s">Même lorsque vos produits sont vendus en magasin, chez un revendeur spécialisé ou lors d'un événement, SmartQonsumer centralise vos ventes, votre CRM, votre fidélité et vos campagnes pour recréer un lien direct avec vos consommateurs.</p>
+      <p class="hero-in" style="animation-delay:.28s">SmartQonsumer vous permet de connaître vos consommateurs, d'échanger directement avec eux et de les fidéliser, même lorsque vous ne maîtrisez pas le point de vente.</p>
       <div class="hero-cta hero-in" style="animation-delay:.4s">
         <button class="btn cta big" onclick="enterApp()">Explorer la démo</button>
         <button class="btn outline big" onclick="scrollTo2('how')">Voir comment ça marche</button>
       </div>
       <div class="hero-note hero-in" style="animation-delay:.5s">Connaissance client · Engagement client · Fidélisation</div>
     </div>
-
-    <div class="hero-mosaic-wrap hero-in" style="animation-delay:.55s">
-      <div class="hero-mosaic">
-        <div class="hm-tile">
-          <div class="hm-label">CRM</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><div class="avatar" style="width:26px;height:26px;font-size:10px">CR</div><b style="font-size:12.5px;color:var(--ink)">Camille Rousseau</b></div>
-          <div class="kv"><span>Produit préféré</span><b>Édition Limitée n°4</b></div>
-          <div class="kv" style="border-bottom:0"><span>Segment</span><b>Amateurs de nouveautés</b></div>
-        </div>
-        <div class="hm-tile">
-          <div class="hm-label">Fidélité</div>
-          <div class="hm-big">320<span class="hm-sub">points</span></div>
-          <div class="member-track" style="margin:10px 0 4px; background:var(--lav2)"><i></i></div>
-          <div style="font-size:11px;color:var(--muted)">120 pts avant le palier suivant</div>
-        </div>
-        <div class="hm-tile">
-          <div class="hm-label">Campagne</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px">Une nouvelle édition arrive vendredi.</div>
-          <div class="hm-stat-row"><div><b>48 %</b><span>ouverture</span></div><div><b>31</b><span>conversions</span></div></div>
-        </div>
-        <div class="hm-tile">
-          <div class="hm-label">Scans</div>
-          <div class="hm-big">3 906</div>
-          <div class="hm-delta">+312 cette semaine</div>
-        </div>
-      </div>
-      <div class="hf-float float-badge" style="top:-16px; left:-18px"><span class="fdot"></span>+1 nouveau contact</div>
-      <div class="hf-float float-badge" style="bottom:-16px; right:-14px; animation-delay:1.4s">34 % conversion scan → inscription</div>
-    </div>
   </section>
 
   <!-- ============ HOW (3 steps) ============ -->
-  <section class="feat spad" id="how">
+  <section class="feat spad" id="how" style="padding-bottom:40px">
     <div class="sec-title" data-reveal><div class="eyebrow">Le mécanisme</div><h2>Chaque scan devient une opportunité.</h2></div>
     <div class="how-grid">
       <div class="how-card" data-reveal>
@@ -596,10 +548,10 @@
   </section>
 
   <!-- ============ FEATURE STORYTELLING ============ -->
-  <section class="feat spad" id="story">
+  <section class="feat spad" id="story" style="padding-top:40px">
     <div class="story-row" data-reveal>
       <div class="story-text">
-        <div class="story-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20"/></svg></div>
+        <div class="story-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.3 13.6a4.6 4.6 0 0 1 6.2 4.3"/></svg></div>
         <div class="story-eyebrow">Connaître</div>
         <h3>Découvrez qui se cache derrière vos ventes.</h3>
         <p>Chaque scan enrichit progressivement le profil du consommateur : produit préféré, contexte d'achat, canal d'entrée. Une fiche client 360 se construit sans qu'il ait à remplir un long formulaire.</p>
@@ -615,7 +567,7 @@
 
     <div class="story-row rev" data-reveal>
       <div class="story-text">
-        <div class="story-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19h16"/><rect x="6" y="10" width="3" height="9" rx="1"/><rect x="11" y="6" width="3" height="13" rx="1"/><rect x="16" y="13" width="3" height="6" rx="1"/></svg></div>
+        <div class="story-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"/></svg></div>
         <div class="story-eyebrow">Comprendre</div>
         <h3>Vos données deviennent des opportunités.</h3>
         <p>Des segments se forment automatiquement à partir des comportements réels de vos consommateurs — sans tableur, sans requête, sans data analyst.</p>
@@ -664,33 +616,6 @@
             <span class="cta2">Découvrir la prévente</span>
           </div>
           <div class="campaign-results"><div><b>48 %</b><span>ouverture</span></div><div><b>31</b><span>conversions</span></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PROBLEM (vertical) ============ -->
-  <section class="feat spad" id="problem" style="background:var(--lav3)">
-    <div class="sec-title" data-reveal><div class="eyebrow">Le problème</div><h2>Vous connaissez vos ventes.<br>Pas toujours vos clients.</h2></div>
-    <div class="problem-cols" data-reveal>
-      <div class="problem-col bad">
-        <div class="pc-label">Sans SmartQonsumer</div>
-        <div class="pc-chain">
-          <div class="pc-step" style="--o:1"><b>Producteur</b></div>
-          <div class="pc-step" style="--o:.82"><b>Distributeur</b></div>
-          <div class="pc-step" style="--o:.66"><b>Revendeur spécialisé</b></div>
-          <div class="pc-step" style="--o:.5"><b>Magasin</b></div>
-          <div class="pc-step" style="--o:.36"><b>Point de vente</b></div>
-          <div class="pc-step end"><b>? Qui est le consommateur</b></div>
-        </div>
-      </div>
-      <div class="problem-col good">
-        <div class="pc-label">Avec SmartQonsumer</div>
-        <div class="pc-chain">
-          <div class="pc-step"><b>Produit</b></div>
-          <div class="pc-step"><b>QR scanné</b></div>
-          <div class="pc-step"><b>Consommateur identifié</b></div>
-          <div class="pc-step end"><b>✓ SmartQonsumer CRM</b></div>
         </div>
       </div>
     </div>
@@ -758,11 +683,10 @@
     </div>
     <div class="mini-chip-row" data-reveal>
       <span class="mini-chip">Produits scannés</span>
-      <span class="mini-chip">Fréquence d'achat</span>
-      <span class="mini-chip">Canal d'origine</span>
+      <span class="mini-chip">Profil client</span>
       <span class="mini-chip">Préférences</span>
-      <span class="mini-chip">Statut fidélité</span>
-      <span class="mini-chip">Campagnes reçues</span>
+      <span class="mini-chip">Canal d'acquisition</span>
+      <span class="mini-chip">Fidélité</span>
     </div>
   </section>
 
