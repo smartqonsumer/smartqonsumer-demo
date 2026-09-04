@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DataToForm AI — Prototype SaaS Brasseries</title>
+<title>SmartQonsumeR — CRM et fidélité pour marques vendues en revendeurs</title>
+<meta name="description" content="SmartQonsumeR réconcilie vos ventes directes et indirectes (GMS, cavistes, pharmacies, boutiques) pour identifier et fidéliser vos clients finaux, sans changer de caisse ni lancer de projet IT lourd.">
+<meta property="og:title" content="SmartQonsumeR — CRM et fidélité pour marques vendues en revendeurs">
+<meta property="og:description" content="Identifiez et fidélisez les clients qui achètent vos produits chez vos revendeurs — sans projet IT lourd.">
+<meta property="og:type" content="website">
 <style>
   :root{
     --ink:#3B3F7B; --accent:#5742DE; --accentd:#4534B0;
@@ -192,18 +196,18 @@
   .faq-item p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.55}
 
   .pricing{padding:58px 40px; background:var(--lav3)}
-  .price-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1020px; margin:0 auto; align-items:stretch}
-  .price-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:28px 24px; display:flex; flex-direction:column; box-shadow:var(--shadow)}
-  .price-card.pop{border:2px solid var(--accent); box-shadow:0 20px 50px rgba(87,66,222,.18); position:relative}
-  .pop-badge{position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; font-size:12px; font-weight:700; padding:5px 14px; border-radius:999px}
-  .price-card h3{margin:0 0 4px; color:var(--ink); font-size:18px}
-  .price-card .price{font-size:38px; font-weight:800; color:var(--ink); letter-spacing:-1px; margin:10px 0 2px}
-  .price-card .price small{font-size:15px; font-weight:600; color:var(--muted)}
-  .price-card .tagline{color:var(--muted); font-size:13px; margin-bottom:16px}
-  .price-card ul{list-style:none; padding:0; margin:0 0 22px; display:flex; flex-direction:column; gap:9px; flex:1}
-  .price-card li{font-size:13.5px; color:#3a3a52; display:flex; gap:9px; align-items:flex-start}
-  .price-card li:before{content:'✓'; color:var(--accent); font-weight:800}
-  .price-note{text-align:center; color:var(--muted); font-size:12.5px; margin-top:18px}
+
+  .check-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px}
+  .check-list li{font-size:13.5px; color:#3a3a52; line-height:1.55; display:flex; gap:9px; align-items:flex-start}
+  .check-list li:before{content:'✓'; color:var(--accent); font-weight:800}
+  .check-list.problem li:before{content:'—'; color:#C2410C}
+
+  .segment-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:16px; max-width:1080px; margin:0 auto}
+  .segment-card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px 14px; text-align:center; box-shadow:var(--shadow); display:flex; flex-direction:column; align-items:center; gap:4px}
+  .segment-card .sg-ico{font-size:26px; margin-bottom:6px}
+  .segment-card b{font-size:13px; color:var(--ink); line-height:1.3}
+  .segment-card small{color:var(--muted); font-size:11.5px}
+  @media (max-width:900px){ .segment-grid{grid-template-columns:repeat(2,1fr)} }
 
   .cta-band{background:linear-gradient(135deg,var(--ink),var(--accent)); color:#fff; text-align:center; padding:54px 40px}
   .cta-band h2{font-size:30px; margin:0 0 20px}
@@ -217,7 +221,7 @@
   .hf-col a:hover{color:#fff}
   .hf-legal{max-width:1080px; margin:0 auto; border-top:1px solid #3a3a52; padding-top:16px; font-size:12px; color:#8a89a8; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
 
-  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding:44px 22px} .feat-grid,.price-grid,.blog-grid{grid-template-columns:1fr} .hf-grid{grid-template-columns:1fr 1fr} .home-nav{padding:12px 20px} .hn-links{display:none} }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding:44px 22px} .feat-grid,.blog-grid{grid-template-columns:1fr} .hf-grid{grid-template-columns:1fr 1fr} .home-nav{padding:12px 20px} .hn-links{display:none} }
 
   /* toggles */
   .switch{position:relative; width:42px; height:24px; flex:0 0 42px}
@@ -304,12 +308,12 @@
 <body>
 <div id="home">
   <header class="home-nav">
-    <div class="hn-left"><span class="hn-logo">Démo SaaS Brasseries</span><span class="hn-demo">DÉMO · données fictives</span></div>
+    <div class="hn-left"><span class="hn-logo">SmartQonsumeR</span><span class="hn-demo">DÉMO · données fictives</span></div>
     <nav class="hn-links">
       <a onclick="scrollTo2('feat')">Fonctionnalités</a>
+      <a onclick="scrollTo2('segments')">Pour qui</a>
       <a onclick="scrollTo2('blog')">Blog</a>
       <a onclick="scrollTo2('faq')">FAQ</a>
-      <a onclick="scrollTo2('pricing')">Tarifs</a>
       <a onclick="scrollTo2('contact')">Parlez-nous</a>
     </nav>
     <button class="btn ghost" onclick="enterApp()">Connexion</button>
@@ -318,40 +322,75 @@
 
   <section class="hero">
     <div class="hero-txt">
-      <div class="eyebrow">Le CRM des brasseries artisanales</div>
-      <h1>Transformez chaque bière scannée en client connu.</h1>
-      <p>Rendez visibles les consommateurs que vous ne voyez pas — en GMS, chez le caviste, au bar. Collectez, fidélisez et communiquez, sans compétence technique.</p>
-      <div class="hero-cta"><button class="btn primary big" onclick="enterApp()">Essayer la démo</button><button class="btn ghost big" onclick="scrollTo2('pricing')">Voir les offres</button></div>
+      <div class="eyebrow">Le CRM des marques vendues chez vos revendeurs</div>
+      <h1>Comprenez enfin qui achète vos produits — pas seulement combien ils commandent.</h1>
+      <p>Cavistes, GMS, animaleries, pharmacies, boutiques spécialisées : vos clients achètent vos produits sans que vous les connaissiez. SmartQonsumeR réconcilie vos ventes directes et indirectes pour identifier et fidéliser chaque client, sans changer de caisse ni lancer de projet IT lourd.</p>
+      <div class="hero-cta"><button class="btn primary big" onclick="enterApp()">Essayer la démo</button><button class="btn ghost big" onclick="scrollTo2('solution')">Voir la solution</button></div>
     </div>
     <div class="hero-card">
       <div class="hc-flow">
-        <div class="hc-step"><span class="hc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg></span><div><b>Scan d'une bouteille</b><small>en magasin, au bar, chez un caviste…</small></div></div>
+        <div class="hc-step"><span class="hc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><path d="M6 8h12l1 12H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span><div><b>Achat chez un revendeur</b><small>GMS, caviste, animalerie, pharmacie…</small></div></div>
         <div class="hc-arrow">↓</div>
-        <div class="hc-step"><span class="hc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg></span><div><b>E-mail + opt-ins</b><small>sur votre page hébergée</small></div></div>
+        <div class="hc-step"><span class="hc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M17 20h4M20 17v4"/></svg></span><div><b>Scan du QR produit</b><small>landing dédiée + recueil du consentement</small></div></div>
         <div class="hc-arrow">↓</div>
-        <div class="hc-step accent"><span class="hc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><circle cx="10" cy="8" r="3.2"/><path d="M4 20a6 6 0 0 1 11.5-2.3"/><path d="M15.5 18l2 2 3.5-3.5"/></svg></span><div><b>Un nouveau client connu</b><small>dans votre base 360</small></div></div>
+        <div class="hc-step accent"><span class="hc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8"><circle cx="10" cy="8" r="3.2"/><path d="M4 20a6 6 0 0 1 11.5-2.3"/><path d="M15.5 18l2 2 3.5-3.5"/></svg></span><div><b>Un client connu et fidélisé</b><small>dans votre base 360, tous canaux confondus</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat" id="solution" style="background:var(--lav3)">
+    <div class="sec-title"><div class="eyebrow">Le constat</div><h2>Vos revendeurs connaissent vos clients. Pas vous.</h2></div>
+    <div class="grid cards-2" style="max-width:980px; margin:0 auto">
+      <div class="card">
+        <h3>Le problème</h3>
+        <ul class="check-list problem">
+          <li>Vendus en GMS, cavistes, animaleries, pharmacies ou boutiques, vous ne savez pas qui achète vraiment vos produits.</li>
+          <li>Les programmes de fidélité existants appartiennent à l'enseigne, pas à votre marque.</li>
+          <li>Impossible de relier ventes directes et indirectes pour suivre un client dans le temps.</li>
+          <li>Un CDP ou un projet CRM « enterprise » est hors budget et hors compétences pour une PME.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Notre solution</h3>
+        <ul class="check-list">
+          <li>Une couche de réconciliation client, au-dessus de vos systèmes existants (caisse, e-commerce, ticket).</li>
+          <li>Des identifiants GS1 (GTIN, GS1 Digital Link) pour relier chaque scan à un produit, quel que soit le canal.</li>
+          <li>Une fiche client consentie qui agrège vos ventes directes et indirectes.</li>
+          <li>Un programme de fidélité activable en direct comme chez vos revendeurs, sans développement.</li>
+        </ul>
       </div>
     </div>
   </section>
 
   <section class="feat" id="feat">
-    <div class="sec-title"><div class="eyebrow">Ce que fait la plateforme</div><h2>Tout pour connaître et fidéliser vos buveurs</h2></div>
+    <div class="sec-title"><div class="eyebrow">Ce que fait la plateforme</div><h2>Tout pour connaître et fidéliser vos clients finaux</h2></div>
     <div class="feat-grid">
       <div class="feat-card"><div class="fi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div><h3>Tableau de bord unifié</h3><p>Suivez en un clin d'œil vos clients, vos scans produits, votre fidélité et vos campagnes email.</p></div>
       <div class="feat-card"><div class="fi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></div><h3>Base client 360 (CRM)</h3><p>Une fiche unique par client : coordonnées, historique de scans, segments, personas et statut fidélité.</p></div>
       <div class="feat-card"><div class="fi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M17 20h4M20 17v4"/></svg></div><h3>Produits & QR codes</h3><p>Un QR par produit, une landing page dédiée, et un lien direct vers votre base client à chaque scan.</p></div>
-      <div class="feat-card"><div class="fi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-6.2-3.8-8.3-7.3C2 10 3.2 7 6.2 7c1.8 0 2.9 1.1 3.8 2.3C10.9 8.1 12 7 13.8 7c3 0 4.2 3 2.5 5.7C18.2 16.2 12 20 12 20z"/></svg></div><h3>Club fidélité & récompenses</h3><p>Points, paliers, récompenses et validation des retraits en brasserie — sans développement.</p></div>
+      <div class="feat-card"><div class="fi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-6.2-3.8-8.3-7.3C2 10 3.2 7 6.2 7c1.8 0 2.9 1.1 3.8 2.3C10.9 8.1 12 7 13.8 7c3 0 4.2 3 2.5 5.7C18.2 16.2 12 20 12 20z"/></svg></div><h3>Club fidélité & récompenses</h3><p>Points, paliers, récompenses et validation des retraits en point de vente — sans développement.</p></div>
       <div class="feat-card"><div class="fi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg></div><h3>Campagnes email ciblées</h3><p>Ciblez un segment et envoyez depuis la plateforme, avec suivi des performances.</p></div>
       <div class="feat-card"><div class="fi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 1.3-2.1-.5-.8-.1-1.9 1-1.9H16a5 5 0 0 0 5-5 9 9 0 0 0-9-9z"/><circle cx="7.5" cy="10.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="11.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="9" r="1.2" fill="currentColor" stroke="none"/></svg></div><h3>Votre marque, votre espace</h3><p>Logo, couleurs et informations d'entreprise personnalisables depuis votre compte.</p></div>
     </div>
   </section>
 
-  <section class="feat" id="blog" style="background:var(--lav3)">
-    <div class="sec-title"><div class="eyebrow">Blog</div><h2>Conseils & actus pour brasseries connectées</h2></div>
+  <section class="feat" id="segments" style="background:var(--lav3)">
+    <div class="sec-title"><div class="eyebrow">Pour qui</div><h2>Pensé pour les producteurs vendus en circuits indirects</h2><p class="muted" style="margin-top:8px">Des marques avec une identité propre, quelques centaines de k€ à quelques M€ de CA, vendues via cavistes, GMS, animaleries, pharmacies ou boutiques spécialisées.</p></div>
+    <div class="segment-grid">
+      <div class="segment-card"><div class="sg-ico">🍺</div><b>Brasseries & boissons artisanales</b><small>Bière, kombucha, softs</small></div>
+      <div class="segment-card"><div class="sg-ico">🐾</div><b>Petfood premium</b><small>Alimentation animale haut de gamme</small></div>
+      <div class="segment-card"><div class="sg-ico">🍫</div><b>Chocolaterie & biscuiterie</b><small>Confiseries artisanales</small></div>
+      <div class="segment-card"><div class="sg-ico">🫙</div><b>Épicerie fine</b><small>Spécialités régionales</small></div>
+      <div class="segment-card"><div class="sg-ico">🧴</div><b>Cosmétique naturelle</b><small>Hygiène & entretien écolo</small></div>
+    </div>
+  </section>
+
+  <section class="feat" id="blog">
+    <div class="sec-title"><div class="eyebrow">Blog</div><h2>Conseils & actus pour marques vendues en circuits indirects</h2></div>
     <div class="blog-grid">
-      <div class="blog-card"><div class="bc-top">📈</div><div class="bc-body"><span class="bc-date">Guide</span><h3>Transformer un scan en client fidèle</h3><p>Les bonnes pratiques pour convertir un acheteur en GMS ou chez le caviste en contact connu.</p><a onclick="toast('Article — démo statique')">Lire l'article →</a></div></div>
-      <div class="blog-card"><div class="bc-top">🔗</div><div class="bc-body"><span class="bc-date">Décryptage</span><h3>GS1 Digital Link, le futur du QR produit</h3><p>Comprendre le standard qui relie chaque bouteille à une expérience digitale unique.</p><a onclick="toast('Article — démo statique')">Lire l'article →</a></div></div>
-      <div class="blog-card"><div class="bc-top">🎁</div><div class="bc-body"><span class="bc-date">Idées</span><h3>5 récompenses fidélité qui font revenir</h3><p>Des idées simples à mettre en place dans votre programme, du code promo au retrait en brasserie.</p><a onclick="toast('Article — démo statique')">Lire l'article →</a></div></div>
+      <div class="blog-card"><div class="bc-top">📈</div><div class="bc-body"><span class="bc-date">Guide</span><h3>Transformer une vente indirecte en client connu</h3><p>Les bonnes pratiques pour convertir un acheteur en GMS ou chez un revendeur en contact identifié.</p><a onclick="toast('Article — démo statique')">Lire l'article →</a></div></div>
+      <div class="blog-card"><div class="bc-top">🔗</div><div class="bc-body"><span class="bc-date">Décryptage</span><h3>GS1 Digital Link, le futur du QR produit</h3><p>Comprendre le standard qui relie chaque produit à une expérience digitale unique, quel que soit le canal.</p><a onclick="toast('Article — démo statique')">Lire l'article →</a></div></div>
+      <div class="blog-card"><div class="bc-top">🎁</div><div class="bc-body"><span class="bc-date">Idées</span><h3>5 récompenses fidélité qui font revenir</h3><p>Des idées simples à mettre en place dans votre programme, du code promo au retrait en point de vente.</p><a onclick="toast('Article — démo statique')">Lire l'article →</a></div></div>
     </div>
   </section>
 
@@ -359,38 +398,15 @@
     <div class="sec-title"><div class="eyebrow">Questions fréquentes</div><h2>Tout savoir sur la plateforme</h2></div>
     <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
       <div class="faq-item"><h3>Ai-je besoin de compétences techniques ?</h3><p>Non. La génération des QR codes, la création des landing pages produits et l'envoi de campagnes se font depuis l'interface, sans développeur.</p></div>
-      <div class="faq-item"><h3>Comment un QR code transforme-t-il un acheteur en client connu ?</h3><p>Chaque bouteille, bec ou affiche porte un QR unique. Le consommateur scanne, arrive sur une landing page à votre marque, et rejoint votre base client en quelques secondes.</p></div>
-      <div class="faq-item"><h3>Puis-je lancer un programme de fidélité sans développement ?</h3><p>Oui. Points, paliers et récompenses (réduction, retrait en brasserie) se paramètrent directement dans votre espace tenant.</p></div>
+      <div class="faq-item"><h3>Comment un QR code transforme-t-il un acheteur en client connu ?</h3><p>Chaque produit, emballage ou affiche porte un QR unique. Le consommateur scanne, arrive sur une landing page à votre marque, et rejoint votre base client en quelques secondes.</p></div>
+      <div class="faq-item"><h3>Puis-je lancer un programme de fidélité sans développement ?</h3><p>Oui. Points, paliers et récompenses (réduction, retrait en point de vente) se paramètrent directement dans votre espace tenant.</p></div>
       <div class="faq-item"><h3>Mes données clients sont-elles conformes RGPD ?</h3><p>Oui. La plateforme est conçue pour le marché français, avec recueil du consentement, accès sécurisé (MFA) et conformité RGPD dès la conception.</p></div>
-      <div class="faq-item"><h3>Combien coûte l'abonnement ?</h3><p>Nos offres démarrent sous 50 €/mois, sans engagement. Voir le détail dans la section <a onclick="scrollTo2('pricing')" style="color:var(--accent);font-weight:700;cursor:pointer">Tarifs</a>.</p></div>
+      <div class="faq-item"><h3>En quoi est-ce différent du programme fidélité de mon revendeur ?</h3><p>Contrairement à une carte ou un programme propriété de l'enseigne, SmartQonsumeR vous appartient : vous accédez à la donnée nominative de vos propres clients, quel que soit leur point d'achat.</p></div>
     </div>
-  </section>
-
-  <section class="pricing" id="pricing">
-    <div class="sec-title"><div class="eyebrow">Abonnement</div><h2>Une offre simple, sous les 50 €/mois</h2><p class="muted">Tarifs indicatifs — à définir. Sans engagement, résiliable à tout moment.</p></div>
-    <div class="price-grid">
-      <div class="price-card">
-        <h3>Découverte</h3><div class="price">19 €<small> / mois</small></div><div class="tagline">Pour démarrer la collecte.</div>
-        <ul><li>Base client 360</li><li>QR codes illimités</li><li>Landing de scan personnalisable</li><li>Jusqu'à 1 000 contacts</li></ul>
-        <button class="btn ghost" onclick="toast('Souscription — démo statique')">Choisir cette offre</button>
-      </div>
-      <div class="price-card pop">
-        <div class="pop-badge">Le plus choisi</div>
-        <h3>Brasserie</h3><div class="price">39 €<small> / mois</small></div><div class="tagline">Le cœur du produit.</div>
-        <ul><li>Tout Découverte</li><li>Campagnes SMS & e-mail</li><li>Fidélité & segments automatiques</li><li>Insights IA par persona</li><li>Jusqu'à 10 000 contacts</li></ul>
-        <button class="btn primary" onclick="toast('Souscription — démo statique')">Choisir cette offre</button>
-      </div>
-      <div class="price-card">
-        <h3>Multi-sites</h3><div class="price">49 €<small> / mois</small></div><div class="tagline">Pour aller plus loin.</div>
-        <ul><li>Tout Brasserie</li><li>Intégrations POS</li><li>Plusieurs établissements</li><li>Support prioritaire</li><li>Contacts illimités</li></ul>
-        <button class="btn ghost" onclick="toast('Souscription — démo statique')">Choisir cette offre</button>
-      </div>
-    </div>
-    <div class="price-note">Tarifs et paliers indicatifs — à cadrer avec l'éditeur. Le CDC fixe une cible &lt; 50 €/mois, sans grille détaillée.</div>
   </section>
 
   <section class="pricing" id="contact">
-    <div class="sec-title"><div class="eyebrow">Parlez-nous</div><h2>Une question ? Discutons de votre brasserie.</h2><p class="muted">Notre équipe commerciale répond sous 24h ouvrées.</p></div>
+    <div class="sec-title"><div class="eyebrow">Parlez-nous</div><h2>Une question ? Discutons de votre marque.</h2><p class="muted">Notre équipe commerciale répond sous 24h ouvrées.</p></div>
     <div style="max-width:560px;margin:0 auto;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <button class="btn primary big" onclick="toast('Message envoyé — démo statique')">Contacter l'équipe commerciale</button>
       <button class="btn ghost big" onclick="enterApp()">Demander une démonstration</button>
@@ -398,14 +414,14 @@
   </section>
 
   <section class="cta-band">
-    <h2>Prêt à savoir qui boit vos bières ?</h2>
+    <h2>Prêt à savoir qui achète vraiment vos produits ?</h2>
     <button class="btn light big" onclick="enterApp()">Commencer</button>
   </section>
 
   <footer class="home-footer">
     <div class="hf-grid">
-      <div class="hf-brand"><b>Démo SaaS Brasseries</b><p>Le CRM fidélité, QR et communication pour les brasseries artisanales. Prototype de démonstration.</p></div>
-      <div class="hf-col"><h4>Produit</h4><a onclick="scrollTo2('feat')">Fonctionnalités</a><a onclick="scrollTo2('pricing')">Tarifs</a><a onclick="enterApp()">Demander une démo</a><a onclick="toast('Prise de RDV — bientôt disponible')">Prendre RDV</a></div>
+      <div class="hf-brand"><b>SmartQonsumeR</b><p>Le CRM qui relie vos ventes directes et indirectes pour connaître et fidéliser vos clients. Prototype de démonstration.</p></div>
+      <div class="hf-col"><h4>Produit</h4><a onclick="scrollTo2('feat')">Fonctionnalités</a><a onclick="scrollTo2('segments')">Pour qui</a><a onclick="enterApp()">Demander une démo</a><a onclick="toast('Prise de RDV — bientôt disponible')">Prendre RDV</a></div>
       <div class="hf-col"><h4>Ressources</h4><a onclick="scrollTo2('blog')">Blog</a><a onclick="scrollTo2('faq')">FAQ</a><a onclick="toast('Plan du site — bientôt disponible')">Plan du site</a></div>
       <div class="hf-col"><h4>Entreprise</h4><a onclick="scrollTo2('contact')">Parlez-nous</a><a onclick="toast('À propos — bientôt disponible')">À propos</a><a onclick="toast('Réseaux sociaux — bientôt disponibles')">LinkedIn</a><a onclick="toast('Réseaux sociaux — bientôt disponibles')">Instagram</a></div>
       <div class="hf-col"><h4>Mentions légales</h4><a onclick="toast('Page légale — démo statique')">CGV</a><a onclick="toast('Page légale — démo statique')">Confidentialité</a><a onclick="toast('Page légale — démo statique')">RGPD</a><a onclick="toast('Page légale — démo statique')">Mentions légales</a></div>
@@ -418,7 +434,7 @@
   <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar(false)"></div>
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand demo"><b>Démo SaaS Brasseries</b><span>Données fictives · SaaS statique</span></div>
+    <div class="brand demo"><b>SmartQonsumeR</b><span>Données fictives · SaaS statique</span></div>
     <nav class="nav" id="nav">
       <button data-s="dash" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Tableau de bord</button>
       <button data-s="clients"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 8.2a3 3 0 0 1 0 5.6"/><path d="M18 20a5 5 0 0 0-3-4.6"/></svg>Base client</button>
