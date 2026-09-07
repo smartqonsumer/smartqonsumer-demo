@@ -1,0 +1,215 @@
+/* SmartQonsumeR — design tokens. Source of truth for app code. */
+:root{
+  /* ── Brand green (sampled from the logo: 500 = #51BD6F) ─────────────── */
+  --color-brand-50:#F2FBF5;
+  --color-brand-100:#DDF4E4;
+  --color-brand-200:#BAE8C8;
+  --color-brand-300:#8FD8A7;
+  --color-brand-400:#67C888;
+  --color-brand-500:#51BD6F;
+  --color-brand-600:#2FA55C;
+  --color-brand-700:#1F8443;
+  --color-brand-800:#176733;
+  --color-brand-900:#0F4A25;
+  --color-brand:var(--color-brand-500);
+  --color-brand-accent:var(--color-brand-700);
+
+  /* ── Neutrals ───────────────────────────────────────────────────────── */
+  --color-white:#FFFFFF;
+  --color-neutral-50:#F6F7F8;
+  --color-neutral-100:#EFF1F2;
+  --color-neutral-200:#E3E6E8;
+  --color-neutral-300:#D2D6DA;
+  --color-neutral-400:#AFB6BB;
+  --color-neutral-500:#8C949B;
+  --color-neutral-600:#6B747C;
+  --color-neutral-700:#4E565D;
+  --color-neutral-800:#343B41;
+  --color-neutral-900:#1F2429;
+  --color-neutral-950:#12161A;
+  --color-black:var(--color-neutral-950);
+
+  /* ── Backgrounds ────────────────────────────────────────────────────── */
+  --color-bg-marketing:#FFFFFF;
+  --color-bg-marketing-band:var(--color-neutral-50);
+  --color-bg-app:var(--color-neutral-50);
+  --color-bg-sidebar:#FFFFFF;
+  --color-bg-inverse:var(--color-neutral-950);
+
+  /* ── Surfaces ───────────────────────────────────────────────────────── */
+  --color-surface:#FFFFFF;
+  --color-surface-muted:var(--color-neutral-100);
+  --color-surface-elevated:#FFFFFF;
+  --color-surface-selected:var(--color-neutral-100);
+  --color-surface-inverse:var(--color-neutral-950);
+
+  /* ── Text ───────────────────────────────────────────────────────────── */
+  --color-text-primary:var(--color-neutral-950);
+  --color-text-secondary:var(--color-neutral-700);
+  --color-text-muted:var(--color-neutral-600);
+  --color-text-placeholder:var(--color-neutral-500);
+  --color-text-disabled:var(--color-neutral-400);
+  --color-text-inverse:#FFFFFF;
+  --color-text-inverse-muted:var(--color-neutral-400);
+  --color-text-brand:var(--color-brand-700);
+  --color-text-link:var(--color-brand-700);
+  --color-text-link-hover:var(--color-brand-800);
+  --color-text-on-brand:#FFFFFF;
+
+  /* ── Borders ────────────────────────────────────────────────────────── */
+  --color-border:var(--color-neutral-200);
+  --color-border-strong:var(--color-neutral-300);
+  --color-border-heavy:var(--color-neutral-400);
+  --color-border-brand:var(--color-brand-600);
+  --color-border-inverse:rgba(255,255,255,.12);
+  --border-width:1px;
+  --border-width-strong:1.5px;
+
+  /* ── Interaction: primary action (green) ────────────────────────────── */
+  --color-action-primary:var(--color-brand-700);
+  --color-action-primary-hover:var(--color-brand-800);
+  --color-action-primary-active:var(--color-brand-900);
+  --color-action-primary-text:#FFFFFF;
+
+  /* ── Interaction: secondary action (white, bordered) ────────────────── */
+  --color-action-secondary:#FFFFFF;
+  --color-action-secondary-hover:var(--color-neutral-50);
+  --color-action-secondary-active:var(--color-neutral-100);
+  --color-action-secondary-text:var(--color-neutral-900);
+
+  /* ── Interaction: ghost / neutral ───────────────────────────────────── */
+  --color-action-ghost-hover:var(--color-neutral-100);
+  --color-action-ghost-active:var(--color-neutral-200);
+  --color-action-ghost-text:var(--color-neutral-700);
+
+  /* ── Interaction: states ────────────────────────────────────────────── */
+  --color-hover-surface:var(--color-neutral-50);
+  --color-active-surface:var(--color-neutral-100);
+  --color-selected-surface:var(--color-neutral-100);
+  --color-selected-indicator:var(--color-brand-600);
+  --color-disabled-bg:var(--color-neutral-100);
+  --color-disabled-text:var(--color-neutral-400);
+
+  /* ── Focus ──────────────────────────────────────────────────────────── */
+  --focus-ring-color:rgba(81,189,111,.35);
+  --focus-ring-color-strong:rgba(81,189,111,.45);
+  --focus-ring-width:3px;
+  --focus-ring:0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+  --focus-border-color:var(--color-brand-600);
+
+  /* ── Status ─────────────────────────────────────────────────────────── */
+  --color-success:#16794A;
+  --color-success-bg:#E8F6EE;
+  --color-warning:#8A5A00;
+  --color-warning-bg:#FBF1DC;
+  --color-error:#B3261E;
+  --color-error-bg:#FBEAE8;
+  --color-info:#2A5FD0;
+  --color-info-bg:#EAF0FD;
+  --color-neutral-status:var(--color-neutral-700);
+  --color-neutral-status-bg:var(--color-neutral-100);
+
+  /* ── Data visualisation ─────────────────────────────────────────────── */
+  --color-chart-1:#1F8443;
+  --color-chart-2:#51BD6F;
+  --color-chart-3:#8FD8A7;
+  --color-chart-4:#34424C;
+  --color-chart-5:#78909C;
+  --color-chart-6:#C3D0D6;
+
+  /* ── Typography: families ───────────────────────────────────────────── */
+  --font-sans:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --font-display:var(--font-sans);
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  /* ── Typography: sizes ──────────────────────────────────────────────── */
+  --font-size-display:40px;
+  --font-size-h1:30px;
+  --font-size-h2:24px;
+  --font-size-h3:19px;
+  --font-size-h4:16px;
+  --font-size-body-lg:17px;
+  --font-size-body:15px;
+  --font-size-body-sm:14px;
+  --font-size-caption:13px;
+  --font-size-label:12px;
+  --font-size-micro:11px;
+
+  /* ── Typography: weights ────────────────────────────────────────────── */
+  --font-weight-regular:400;
+  --font-weight-medium:500;
+  --font-weight-semibold:600;
+  --font-weight-bold:700;
+
+  /* ── Typography: line heights ───────────────────────────────────────── */
+  --line-height-display:1.1;
+  --line-height-h1:1.18;
+  --line-height-h2:1.25;
+  --line-height-h3:1.3;
+  --line-height-h4:1.35;
+  --line-height-body-lg:1.6;
+  --line-height-body:1.55;
+  --line-height-body-sm:1.5;
+  --line-height-caption:1.45;
+  --line-height-tight:1.3;
+
+  /* ── Typography: tracking ───────────────────────────────────────────── */
+  --letter-spacing-display:-0.022em;
+  --letter-spacing-h1:-0.018em;
+  --letter-spacing-h2:-0.014em;
+  --letter-spacing-h3:-0.01em;
+  --letter-spacing-h4:-0.006em;
+  --letter-spacing-body:0em;
+  --letter-spacing-label:0.01em;
+  --letter-spacing-eyebrow:0.1em;
+
+  /* ── Spacing ────────────────────────────────────────────────────────── */
+  --space-1:2px;
+  --space-2:4px;
+  --space-3:6px;
+  --space-4:8px;
+  --space-5:12px;
+  --space-6:16px;
+  --space-7:20px;
+  --space-8:24px;
+  --space-9:32px;
+  --space-10:40px;
+  --space-11:48px;
+  --space-12:64px;
+  --space-13:80px;
+  --space-14:96px;
+
+  /* ── Layout ─────────────────────────────────────────────────────────── */
+  --card-padding:20px;
+  --card-padding-lg:24px;
+  --section-gap:40px;
+  --gutter-app:24px;
+  --gutter-page:32px;
+  --max-content:1200px;
+  --sidebar-width:244px;
+  --topbar-height:60px;
+  --header-height:78px;
+  --header-height-condensed:62px;
+
+  /* ── Radius ─────────────────────────────────────────────────────────── */
+  --radius-xs:4px;
+  --radius-sm:6px;
+  --radius-md:10px;
+  --radius-lg:14px;
+  --radius-pill:999px;
+
+  /* ── Elevation ──────────────────────────────────────────────────────── */
+  --shadow-none:none;
+  --shadow-sm:0 1px 2px rgba(18,22,26,.05);
+  --shadow-md:0 1px 3px rgba(18,22,26,.06),0 1px 2px rgba(18,22,26,.04);
+  --shadow-lg:0 6px 16px rgba(18,22,26,.08),0 1px 3px rgba(18,22,26,.05);
+  --shadow-xl:0 16px 40px rgba(18,22,26,.12);
+
+  /* ── Motion ─────────────────────────────────────────────────────────── */
+  --duration-instant:80ms;
+  --duration-fast:140ms;
+  --duration-base:200ms;
+  --duration-slow:320ms;
+  --ease-standard:cubic-bezier(.2,.6,.2,1);
+  --ease-out:cubic-bezier(0,0,.2,1);
+}
