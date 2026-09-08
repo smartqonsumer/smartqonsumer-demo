@@ -255,6 +255,9 @@
 
   .hero-eyebrow{font-size:var(--font-size-micro); font-weight:var(--font-weight-bold); letter-spacing:var(--letter-spacing-eyebrow); text-transform:uppercase; color:var(--color-brand-400); margin:0}
   .hero-title{font-size:var(--font-size-display); font-weight:var(--font-weight-bold); line-height:var(--line-height-display); letter-spacing:var(--letter-spacing-display); color:#fff; margin:14px 0 0; text-wrap:pretty}
+  .hero-title.hero-in{animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both, heroTitleGlow 10s ease-in-out infinite}
+  @keyframes heroTitleGlow{0%,12%,88%,100%{color:#fff} 50%{color:var(--color-brand-200)}}
+  @media (prefers-reduced-motion:reduce){ .hero-title.hero-in{animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both} }
   .hero-subtitle{font-size:var(--font-size-body-lg); line-height:1.6; color:var(--color-neutral-300); max-width:520px; margin:18px 0 0}
   .hero-actions{margin-top:26px; display:flex; align-items:center; gap:12px; flex-wrap:wrap}
   .hero-proof{display:flex; gap:20px; margin-top:26px; font-size:var(--font-size-caption); color:var(--color-neutral-400)}
@@ -293,7 +296,7 @@
   .hero-funnel-row b{font-family:var(--font-mono); font-weight:400; color:var(--color-text-primary); font-variant-numeric:tabular-nums}
   .hero-funnel-track{margin-top:3px; height:4px; border-radius:var(--radius-xs); background:var(--color-neutral-100); overflow:hidden}
   .hero-funnel-fill{display:block; height:100%; border-radius:var(--radius-xs)}
-  .hero-funnel-fill.neutral{background:var(--color-neutral-400)}
+  .hero-funnel-fill.neutral{background:var(--color-info)}
   .hero-funnel-fill.brand{background:var(--color-brand-600)}
 
   .hero-segments{margin-top:16px; padding-top:14px; border-top:1px solid var(--color-border)}
@@ -488,22 +491,22 @@
   .hf-social a{width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:1px solid var(--color-border); border-radius:var(--radius-sm); color:var(--color-neutral-600); cursor:pointer}
   .hf-social a:hover{border-color:var(--color-border-strong); color:var(--color-text-primary)}
   .hf-social svg{width:16px; height:16px}
-  .hf-ai-links{margin:16px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px}
-  .hf-ai-links a{display:flex; align-items:center; gap:7px; color:var(--color-text-muted); font-size:11.5px; cursor:pointer; text-decoration:none; transition:color var(--duration-fast) var(--ease-standard)}
-  .hf-ai-links a:hover{color:var(--color-text-primary)}
-  .hf-ai-links svg{width:13px; height:13px; flex:none; color:var(--color-brand-600)}
-  .hf-big-logo{margin-top:40px; padding-top:32px; border-top:1px solid var(--color-border); text-align:center}
+  .hf-ai-row{display:flex; align-items:center; gap:20px; flex-wrap:nowrap; overflow-x:auto; margin-top:28px}
+  .hf-ai-row a{display:flex; align-items:center; gap:6px; color:var(--color-text-muted); font-size:11.5px; font-weight:600; cursor:pointer; text-decoration:none; white-space:nowrap; flex:none; transition:color var(--duration-fast) var(--ease-standard)}
+  .hf-ai-row a:hover{color:var(--color-text-primary)}
+  .hf-ai-row svg{width:14px; height:14px; flex:none; color:var(--color-brand-600)}
+  .hf-big-logo{margin-top:28px; padding:32px 0; border-top:1px solid var(--color-border); text-align:center; display:flex; align-items:center; justify-content:center}
   .hf-big-logo img{height:120px; width:auto; max-width:100%}
-  @media (max-width:640px){ .hf-big-logo img{height:64px} }
+  @media (max-width:640px){ .hf-big-logo img{height:64px} .hf-ai-row{gap:14px} }
   .hf-col h4{margin:0; font-size:var(--font-size-micro); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-eyebrow); text-transform:uppercase; color:var(--color-text-muted)}
   .hf-col a{display:block; margin-bottom:9px; color:var(--color-text-secondary); font-size:var(--font-size-caption); cursor:pointer; text-decoration:none; transition:color var(--duration-fast) var(--ease-standard)}
   .hf-col a:last-child{margin-bottom:0}
   .hf-col a:hover{color:var(--color-text-primary)}
   .hf-links{margin:14px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px}
-  .hf-trust{display:flex; gap:22px; flex-wrap:wrap; margin-top:28px; padding-top:22px; border-top:1px solid var(--color-border)}
+  .hf-trust{display:flex; align-items:center; justify-content:center; gap:22px; flex-wrap:wrap; margin-top:28px; padding-top:22px; border-top:1px solid var(--color-border)}
   .trust-badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--color-text-secondary); font-weight:600}
   .trust-badge svg{width:16px; height:16px; color:var(--color-brand-600); flex:0 0 auto}
-  .hf-legal{margin-top:44px; padding-top:20px; border-top:1px solid var(--color-border); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap}
+  .hf-legal{margin-top:0; padding-top:20px; border-top:1px solid var(--color-border); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap}
   .hf-legal *{font-size:var(--font-size-micro); color:var(--color-text-muted)}
   .hf-legal .hf-note{font-family:var(--font-mono)}
 
@@ -635,7 +638,7 @@
         <div class="sq-nav-item"><button type="button" onclick="scrollTo2('story')">Fonctionnalités</button><span aria-hidden="true"></span></div>
       </nav>
       <a class="sq-login" onclick="enterApp()">Se connecter</a>
-      <button class="sq-cta" onclick="enterApp()">Get Started for free</button>
+      <button class="sq-cta" onclick="enterApp()">Commencer gratuitement</button>
       <div class="sq-spacer"></div>
       <button class="sq-burger" onclick="toggleMobileMenu(true)" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
     </div>
@@ -653,7 +656,7 @@
     </div>
     <div class="sq-mm-foot">
       <button class="sq-mm-secondary" onclick="enterApp()">Se connecter</button>
-      <button class="sq-cta" onclick="enterApp()">Get Started for free</button>
+      <button class="sq-cta" onclick="enterApp()">Commencer gratuitement</button>
     </div>
   </div>
 
@@ -666,7 +669,7 @@
         <h1 class="hero-title hero-in" style="animation-delay:.15s">Vous vendez vos produits partout.<br>Enfin, sachez qui les achète.</h1>
         <p class="hero-subtitle hero-in" style="animation-delay:.28s">SmartQonsumer vous permet de connaître vos consommateurs, d'échanger directement avec eux et de les fidéliser, même lorsque vous ne maîtrisez pas le point de vente.</p>
         <div class="hero-actions hero-in" style="animation-delay:.4s">
-          <button class="btn-primary btn-lg" onclick="enterApp()">Get Started for Free</button>
+          <button class="btn-primary btn-lg" onclick="enterApp()">Commencer gratuitement</button>
           <button class="btn-secondary btn-lg" onclick="enterApp()">Demander une démo</button>
         </div>
         <div class="hero-proof hero-in" style="animation-delay:.5s">
@@ -826,7 +829,7 @@
         <div class="story-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-6.2-3.8-8.3-7.3C2 10 3.2 7 6.2 7c1.8 0 2.9 1.1 3.8 2.3C10.9 8.1 12 7 13.8 7c3 0 4.2 3 2.5 5.7C18.2 16.2 12 20 12 20z"/></svg></div>
         <div class="story-eyebrow">Fidéliser</div>
         <h3>Donnez une raison de revenir.</h3>
-        <p>Points, paliers et récompenses activables directement par vos consommateurs — pour transformer chaque scan en réflexe de fidélité.</p>
+        <p>Points, paliers et récompenses activables directement par vos consommateurs — pour transformer chaque scan en réflexe de fidélité. Vous pouvez piloter plusieurs programmes de récompenses en parallèle depuis la même solution.</p>
       </div>
       <div class="story-visual">
         <div class="member-card">
@@ -875,10 +878,10 @@
       </div>
       <div class="device-body" id="deviceViewClients">
         <div class="device-list" id="deviceList">
-          <div class="device-row active"><div class="avatar" style="width:30px;height:30px;font-size:11px">CR</div><div><span class="nm">Camille Rousseau</span><span class="sg">Amateurs de nouveautés</span></div></div>
-          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">TM</div><div><span class="nm">Thomas Morel</span><span class="sg">Nouveau contact</span></div></div>
-          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">LP</div><div><span class="nm">Léa Petit</span><span class="sg">Membre fidèle</span></div></div>
-          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">SB</div><div><span class="nm">Sami Ben</span><span class="sg">À réactiver</span></div></div>
+          <div class="device-row active"><div class="avatar" style="width:30px;height:30px;font-size:11px">CR</div><div><span class="nm">Camille Rousseau</span><span class="sg">Adeptes des bons plans</span></div></div>
+          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">TM</div><div><span class="nm">Thomas Morel</span><span class="sg">Ambassadeurs de la marque</span></div></div>
+          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">LP</div><div><span class="nm">Léa Petit</span><span class="sg">Acheteurs premium</span></div></div>
+          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">SB</div><div><span class="nm">Sami Ben</span><span class="sg">Adeptes des bons plans</span></div></div>
         </div>
         <div class="device-detail">
           <div class="dh"><div class="avatar" style="width:40px;height:40px" id="devAvatar">CR</div><div><b id="devName">Camille Rousseau</b><br><span class="tag green" id="devTag">Membre fidèle</span></div></div>
@@ -886,7 +889,7 @@
           <div class="kv"><span>Fréquence</span><b id="devFreq">1 achat / 3 semaines</b></div>
           <div class="kv"><span>Origine</span><b id="devOrigin">Scan chez un revendeur</b></div>
           <div class="kv"><span>Scans</span><b id="devScans">12</b></div>
-          <div class="kv"><span>Segment</span><b id="devSegment">Amateurs de nouveautés</b></div>
+          <div class="kv"><span>Segment</span><b id="devSegment">Adeptes des bons plans</b></div>
           <div class="kv" style="border-bottom:0"><span>Campagnes reçues</span><b id="devCamp">3</b></div>
         </div>
       </div>
@@ -963,19 +966,19 @@
             <a onclick="toast('Réseaux sociaux — bientôt disponibles')" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h3v11H4z"/><circle cx="5.5" cy="5.5" r="1.6"/><path d="M11 9h3v1.8c.6-1.1 1.8-2 3.4-2 3 0 3.6 1.9 3.6 4.5V20h-3v-6.1c0-1.5 0-3.3-2-3.3s-2.4 1.6-2.4 3.2V20h-3z"/></svg></a>
             <a onclick="toast('Réseaux sociaux — bientôt disponibles')" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
           </div>
-          <ul class="hf-ai-links">
-            <li><a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Demander un résumé IA de SmartQonsumer</a></li>
-            <li><a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>SmartQonsumer vu par ChatGPT</a></li>
-            <li><a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>SmartQonsumer vu par Claude</a></li>
-            <li><a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>SmartQonsumer vu par Gemini</a></li>
-            <li><a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>SmartQonsumer vu par Grok</a></li>
-            <li><a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>SmartQonsumer vu par Perplexity</a></li>
-            <li><a onclick="toast('Version Markdown — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Lire en Markdown</a></li>
-          </ul>
         </div>
         <div class="hf-col"><h4>Produit</h4><ul class="hf-links"><li><a onclick="scrollTo2('product')">Produit</a></li><li><a onclick="scrollTo2('how')">Comment ça marche</a></li><li><a onclick="scrollTo2('story')">Fonctionnalités</a></li></ul></div>
         <div class="hf-col"><h4>Ressources</h4><ul class="hf-links"><li><a onclick="scrollTo2('faq')">FAQ</a></li><li><a onclick="toast('Plan du site — bientôt disponible')">Plan du site</a></li></ul></div>
         <div class="hf-col"><h4>Légal</h4><ul class="hf-links"><li><a onclick="toast('Page légale — démo statique')">CGV</a></li><li><a onclick="toast('Page légale — démo statique')">Confidentialité</a></li><li><a onclick="toast('Page légale — démo statique')">RGPD</a></li><li><a onclick="toast('Page légale — démo statique')">Mentions légales</a></li></ul></div>
+      </div>
+      <div class="hf-ai-row">
+        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Résumé IA</a>
+        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>ChatGPT</a>
+        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Claude</a>
+        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Gemini</a>
+        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Grok</a>
+        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Perplexity</a>
+        <a onclick="toast('Version Markdown — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Markdown</a>
       </div>
       <div class="hf-trust">
         <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><g transform="translate(0,-1.3)"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></g></svg>Conforme RGPD</span>
@@ -1510,10 +1513,10 @@
     const deviceRows = document.querySelectorAll('#deviceList .device-row');
     if(deviceRows.length && !reduceMotion){
       const deviceData = [
-        {initials:'CR', name:'Camille Rousseau', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 3 semaines', origin:'Scan chez un revendeur', scans:'12', segment:'Amateurs de nouveautés', camp:'3'},
-        {initials:'TM', name:'Thomas Morel', tag:'Nouveau contact', tagClass:'grey', fav:'Coffret Découverte', freq:'1er achat', origin:'Scan en magasin', scans:'1', segment:'Nouveau contact', camp:'0'},
-        {initials:'LP', name:'Léa Petit', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 2 semaines', origin:'Scan à un événement', scans:'8', segment:'Fidèle', camp:'5'},
-        {initials:'SB', name:'Sami Ben', tag:'À réactiver', tagClass:'teal', fav:'Coffret Découverte', freq:'Dernier achat il y a 2 mois', origin:'Scan en magasin', scans:'4', segment:'À réactiver', camp:'1'},
+        {initials:'CR', name:'Camille Rousseau', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 3 semaines', origin:'Scan chez un revendeur', scans:'12', segment:'Adeptes des bons plans', camp:'3'},
+        {initials:'TM', name:'Thomas Morel', tag:'Nouveau contact', tagClass:'grey', fav:'Coffret Découverte', freq:'1er achat', origin:'Scan en magasin', scans:'1', segment:'Ambassadeurs de la marque', camp:'0'},
+        {initials:'LP', name:'Léa Petit', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 2 semaines', origin:'Scan à un événement', scans:'8', segment:'Acheteurs premium', camp:'5'},
+        {initials:'SB', name:'Sami Ben', tag:'À réactiver', tagClass:'teal', fav:'Coffret Découverte', freq:'Dernier achat il y a 2 mois', origin:'Scan en magasin', scans:'4', segment:'Adeptes des bons plans', camp:'1'},
       ];
       let devIdx = 0;
       setInterval(()=>{
