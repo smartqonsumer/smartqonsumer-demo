@@ -178,17 +178,51 @@
     .chart-pulse{display:none}
   }
 
-  /* nav */
-  .home-nav{position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:20px; padding:20px 40px; background:rgba(255,255,255,.82); backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:box-shadow .25s ease, padding .25s ease, border-color .25s ease}
-  .home-nav.scrolled{padding:12px 40px; box-shadow:0 6px 28px rgba(20,20,50,.08); border-bottom-color:var(--line)}
-  .hn-left{display:flex; align-items:center; gap:10px}
-  .hn-logo{font-weight:800; font-size:18px; color:var(--ink); letter-spacing:-.2px}
-  .hn-demo{font-size:10px; font-weight:800; letter-spacing:.4px; color:var(--color-warning); background:var(--color-warning-bg); padding:4px 9px; border-radius:999px}
-  .hn-links{display:flex; gap:28px; margin-left:16px; flex:1}
-  .hn-links a{font-size:14px; color:var(--ink-soft); font-weight:600; cursor:pointer; position:relative; padding:4px 0}
-  .hn-links a:after{content:''; position:absolute; left:0; right:100%; bottom:-2px; height:2px; background:var(--amber); transition:right .22s ease}
-  .hn-links a:hover{color:var(--ink)}
-  .hn-links a:hover:after{right:0}
+  /* ===== sq-header (marketing-shell-spec §2) ===== */
+  .home-nav{position:sticky; top:0; z-index:40; height:var(--header-height); display:flex; align-items:center;
+    background:var(--color-bg-marketing); border-bottom:1px solid var(--color-border); box-shadow:none;
+    transition:height var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard)}
+  .home-nav .sq-container{width:100%; max-width:var(--max-content); margin:0 auto; padding:0 var(--gutter-page); display:flex; align-items:center; gap:28px; min-width:0}
+  .home-nav.scrolled{height:var(--header-height-condensed); box-shadow:var(--shadow-md)}
+
+  .sq-logo{display:flex; flex:none; border:0}
+  .sq-logo img{height:22px; width:auto; display:block; transition:height var(--duration-base) var(--ease-standard)}
+  .home-nav.scrolled .sq-logo img{height:19px}
+  .hn-left{display:flex; align-items:center; gap:14px; flex:none}
+  .hn-demo{font-size:10px; font-weight:800; letter-spacing:.4px; color:var(--color-warning); background:var(--color-warning-bg); padding:4px 9px; border-radius:999px; flex:none}
+
+  .sq-nav{display:flex; align-items:center; gap:2px; flex:1 1 auto; min-width:0; margin-left:12px}
+  .sq-nav-item{position:relative}
+  .sq-nav-item>button{display:inline-flex; align-items:center; gap:5px; height:34px; padding:0 12px; border:0;
+    background:transparent; cursor:pointer; font:inherit; font-size:var(--font-size-body-sm); font-weight:var(--font-weight-medium);
+    color:var(--color-text-secondary); border-radius:var(--radius-sm); white-space:nowrap;
+    transition:color var(--duration-fast) var(--ease-standard)}
+  .sq-nav-item>span{position:absolute; left:12px; right:12px; bottom:-1px; height:2px; border-radius:var(--radius-xs);
+    background:transparent; transition:background var(--duration-fast) var(--ease-standard)}
+  .sq-nav-item:hover>button{color:var(--color-text-primary)}
+  .sq-nav-item:hover>span{background:var(--color-neutral-300)}
+
+  .sq-login{height:36px; padding:0 4px; border:0; background:transparent; cursor:pointer; font:inherit;
+    font-size:var(--font-size-body-sm); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-label);
+    color:var(--color-text-secondary); text-decoration:none; white-space:nowrap; flex:none; display:inline-flex; align-items:center;
+    transition:color var(--duration-fast) var(--ease-standard)}
+  .sq-login:hover{color:var(--color-text-primary); text-decoration:underline; text-underline-offset:3px}
+
+  .sq-cta{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:0 18px; flex:none;
+    font:inherit; font-size:var(--font-size-body); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-label);
+    border:1px solid transparent; border-radius:var(--radius-sm); background:var(--color-action-primary); color:var(--color-action-primary-text);
+    box-shadow:var(--shadow-sm); cursor:pointer; white-space:nowrap; transition:background var(--duration-fast) var(--ease-standard)}
+  .sq-cta:hover{background:var(--color-action-primary-hover)}
+  .sq-cta:active{background:var(--color-action-primary-active)}
+  .sq-cta svg{width:18px; height:18px; flex:none}
+  .home-nav.scrolled .sq-cta{height:36px; padding:0 14px; font-size:var(--font-size-body-sm); gap:7px}
+  .home-nav.scrolled .sq-cta svg{width:16px; height:16px}
+
+  .sq-burger{display:none; flex:none; width:40px; height:40px; align-items:center; justify-content:center; border:0;
+    background:transparent; border-radius:var(--radius-sm); color:var(--color-neutral-700); cursor:pointer}
+  .sq-burger:hover{background:var(--color-action-ghost-active)}
+  .sq-burger svg{width:20px; height:20px}
+  .sq-spacer{flex:1}
   .btn.big{padding:13px 24px; font-size:15px}
   .btn.light{background:#fff; color:var(--ink)}
   .btn.light:hover{background:var(--color-neutral-50)}
@@ -419,21 +453,60 @@
   .cta-band p{font-size:16px; color:#CFCDEF; max-width:520px; margin:0 auto 30px}
   .cta-band .hero-cta{margin-top:0}
 
-  /* ---------- FOOTER ---------- */
-  .home-footer{background:var(--color-bg-inverse); color:var(--color-text-inverse-muted); padding:44px 40px 26px}
-  .hf-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:26px; max-width:1080px; margin:0 auto 26px}
-  .hf-brand b{color:var(--color-text-inverse); font-size:17px}
-  .hf-brand p{font-size:13px; color:var(--color-text-inverse-muted); margin:8px 0 0; max-width:260px}
-  .hf-col h4{color:var(--color-text-inverse); font-size:13px; margin:0 0 12px; text-transform:uppercase; letter-spacing:.5px}
-  .hf-col a{display:block; color:var(--color-text-inverse-muted); font-size:13.5px; margin-bottom:8px; cursor:pointer}
-  .hf-col a:hover{color:var(--color-text-inverse)}
-  .hf-trust{display:flex; gap:22px; flex-wrap:wrap; max-width:1080px; margin:0 auto; padding-top:22px; padding-bottom:22px; border-top:1px solid var(--color-border-inverse)}
-  .trust-badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--color-text-inverse-muted); font-weight:600}
-  .trust-badge svg{width:16px; height:16px; color:var(--color-brand-500); flex:0 0 auto}
-  .hf-legal{max-width:1080px; margin:0 auto; border-top:1px solid var(--color-border-inverse); padding-top:16px; font-size:12px; color:var(--color-text-inverse-muted); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  /* ===== sq-footer (marketing-shell-spec §7) ===== */
+  .home-footer{background:var(--color-bg-marketing); border-top:1px solid var(--color-border); color:var(--color-text-secondary)}
+  .home-footer>.sq-container{width:100%; max-width:var(--max-content); margin:0 auto; padding:56px 32px 28px; box-sizing:border-box}
+  .hf-grid{display:grid; grid-template-columns:1.5fr repeat(3,1fr); gap:var(--space-10)}
+  .hf-brand img{height:22px; width:auto; display:block}
+  .hf-brand b{display:none}
+  .hf-brand p{margin:14px 0 0; max-width:280px; font-size:var(--font-size-caption); line-height:var(--line-height-body); color:var(--color-text-secondary)}
+  .hf-social{margin-top:18px; display:flex; gap:6px}
+  .hf-social a{width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:1px solid var(--color-border); border-radius:var(--radius-sm); color:var(--color-neutral-600); cursor:pointer}
+  .hf-social a:hover{border-color:var(--color-border-strong); color:var(--color-text-primary)}
+  .hf-social svg{width:16px; height:16px}
+  .hf-col h4{margin:0; font-size:var(--font-size-micro); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-eyebrow); text-transform:uppercase; color:var(--color-text-muted)}
+  .hf-col a{display:block; margin-bottom:9px; color:var(--color-text-secondary); font-size:var(--font-size-caption); cursor:pointer; text-decoration:none; transition:color var(--duration-fast) var(--ease-standard)}
+  .hf-col a:last-child{margin-bottom:0}
+  .hf-col a:hover{color:var(--color-text-primary)}
+  .hf-links{margin:14px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px}
+  .hf-trust{display:flex; gap:22px; flex-wrap:wrap; margin-top:28px; padding-top:22px; border-top:1px solid var(--color-border)}
+  .trust-badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--color-text-secondary); font-weight:600}
+  .trust-badge svg{width:16px; height:16px; color:var(--color-brand-600); flex:0 0 auto}
+  .hf-legal{margin-top:44px; padding-top:20px; border-top:1px solid var(--color-border); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap}
+  .hf-legal *{font-size:var(--font-size-micro); color:var(--color-text-muted)}
+  .hf-legal .hf-note{font-family:var(--font-mono)}
 
-  @media (max-width:900px){ .hf-grid{grid-template-columns:1fr 1fr} .home-nav{padding:12px 20px} .hn-links{display:none} }
-  @media (max-width:640px){ .home-nav{gap:8px} .hn-demo{display:none} .home-nav .btn.outline{display:none} .btn.cta{padding:10px 16px; font-size:13px} .hn-logo{font-size:15.5px} }
+  @media (max-width:900px){
+    .home-nav .sq-container{padding:0 var(--space-7); gap:16px}
+    .home-nav .sq-nav, .home-nav .sq-login, .home-nav .sq-cta{display:none}
+    .sq-burger{display:inline-flex}
+  }
+  @media (max-width:1000px){
+    .hf-grid{grid-template-columns:1fr 1fr; gap:32px}
+    .hf-brand{grid-column:1/-1}
+  }
+  @media (max-width:640px){
+    .home-footer>.sq-container{padding:40px 20px 24px}
+    .hf-grid{grid-template-columns:1fr; gap:28px}
+    .hf-legal{flex-direction:column; align-items:flex-start; gap:10px}
+  }
+
+  /* ===== mobile menu panel (marketing-shell-spec §6) ===== */
+  .sq-mobile-menu{position:fixed; inset:0; z-index:60; background:var(--color-surface); display:none; flex-direction:column; animation:fadeUp var(--duration-fast) var(--ease-out)}
+  .sq-mobile-menu.open{display:flex}
+  .sq-mm-head{flex:none; height:68px; padding:0 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--color-border)}
+  .sq-mm-head img{height:20px; width:auto; display:block}
+  .sq-mm-close{width:34px; height:34px; display:flex; align-items:center; justify-content:center; border:0; background:transparent; border-radius:var(--radius-sm); color:var(--color-neutral-700); cursor:pointer}
+  .sq-mm-close:hover{background:var(--color-action-ghost-active)}
+  .sq-mm-close svg{width:17px; height:17px}
+  .sq-mm-body{flex:1; overflow:auto; padding:8px 20px}
+  .sq-mm-row{width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--color-border); background:transparent; border-left:0; border-right:0; border-top:0; font:inherit; font-size:var(--font-size-h4); font-weight:var(--font-weight-semibold); color:var(--color-text-primary); cursor:pointer; text-align:left}
+  .sq-mm-row svg{width:17px; height:17px; color:var(--color-neutral-400); flex:none}
+  .sq-mm-foot{flex:none; padding:20px; border-top:1px solid var(--color-border); display:flex; flex-direction:column; gap:10px}
+  .sq-mm-foot .sq-cta, .sq-mm-foot .sq-mm-secondary{width:100%; height:44px; justify-content:center}
+  .sq-mm-secondary{display:inline-flex; align-items:center; gap:8px; border-radius:var(--radius-sm); font:inherit; font-size:var(--font-size-body); font-weight:var(--font-weight-semibold); cursor:pointer; background:var(--color-action-secondary); color:var(--color-action-secondary-text); border:1px solid var(--color-border-strong); box-shadow:var(--shadow-sm)}
+  .sq-mm-secondary:hover{background:var(--color-action-secondary-hover)}
+  .sq-mm-secondary:active{background:var(--color-action-secondary-active)}
 
   /* toggles */
   .switch{position:relative; width:42px; height:24px; flex:0 0 42px}
@@ -520,15 +593,38 @@
 <body>
 <div id="home">
   <header class="home-nav" id="siteNav">
-    <div class="hn-left"><span class="hn-logo">SmartQonsumer</span><span class="hn-demo">DÉMO · données fictives</span></div>
-    <nav class="hn-links">
-      <a onclick="scrollTo2('product')">Produit</a>
-      <a onclick="scrollTo2('how')">Comment ça marche</a>
-      <a onclick="scrollTo2('story')">Fonctionnalités</a>
-    </nav>
-    <button class="btn outline" onclick="enterApp()">Connexion</button>
-    <button class="btn cta" onclick="enterApp()">Voir la démo</button>
+    <div class="sq-container">
+      <div class="hn-left">
+        <a class="sq-logo" href="#" onclick="return false" aria-label="SmartQonsumer — accueil"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer"></a>
+        <span class="hn-demo">DÉMO · données fictives</span>
+      </div>
+      <nav class="sq-nav">
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('product')">Produit</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('how')">Comment ça marche</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('story')">Fonctionnalités</button><span aria-hidden="true"></span></div>
+      </nav>
+      <a class="sq-login" onclick="enterApp()">Se connecter</a>
+      <button class="sq-cta" onclick="enterApp()">Demander une démo<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+      <div class="sq-spacer"></div>
+      <button class="sq-burger" onclick="toggleMobileMenu(true)" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+    </div>
   </header>
+
+  <div class="sq-mobile-menu" id="mobileMenu">
+    <div class="sq-mm-head">
+      <img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer">
+      <button class="sq-mm-close" onclick="toggleMobileMenu(false)" aria-label="Fermer le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <div class="sq-mm-body">
+      <button class="sq-mm-row" onclick="mobileNavGo('product')">Produit<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('how')">Comment ça marche<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('story')">Fonctionnalités<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+    </div>
+    <div class="sq-mm-foot">
+      <button class="sq-mm-secondary" onclick="enterApp()">Se connecter</button>
+      <button class="sq-cta" onclick="enterApp()">Demander une démo<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+    </div>
+  </div>
 
   <!-- ============ HERO ============ -->
   <section class="hero">
@@ -880,18 +976,27 @@
   </section>
 
   <footer class="home-footer">
-    <div class="hf-grid">
-      <div class="hf-brand"><b>SmartQonsumer</b><p>Le CRM qui reconnecte les marques vendues en circuits indirects à leurs consommateurs finaux. Prototype de démonstration.</p></div>
-      <div class="hf-col"><h4>Produit</h4><a onclick="scrollTo2('product')">Produit</a><a onclick="scrollTo2('how')">Comment ça marche</a><a onclick="scrollTo2('story')">Fonctionnalités</a></div>
-      <div class="hf-col"><h4>Ressources</h4><a onclick="scrollTo2('faq')">FAQ</a><a onclick="toast('Plan du site — bientôt disponible')">Plan du site</a></div>
-      <div class="hf-col"><h4>Légal</h4><a onclick="toast('Page légale — démo statique')">CGV</a><a onclick="toast('Page légale — démo statique')">Confidentialité</a><a onclick="toast('Page légale — démo statique')">RGPD</a><a onclick="toast('Page légale — démo statique')">Mentions légales</a></div>
+    <div class="sq-container">
+      <div class="hf-grid">
+        <div class="hf-brand">
+          <img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer">
+          <p>Le CRM qui reconnecte les marques vendues en circuits indirects à leurs consommateurs finaux. Prototype de démonstration.</p>
+          <div class="hf-social">
+            <a onclick="toast('Réseaux sociaux — bientôt disponibles')" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h3v11H4z"/><circle cx="5.5" cy="5.5" r="1.6"/><path d="M11 9h3v1.8c.6-1.1 1.8-2 3.4-2 3 0 3.6 1.9 3.6 4.5V20h-3v-6.1c0-1.5 0-3.3-2-3.3s-2.4 1.6-2.4 3.2V20h-3z"/></svg></a>
+            <a onclick="toast('Réseaux sociaux — bientôt disponibles')" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+          </div>
+        </div>
+        <div class="hf-col"><h4>Produit</h4><ul class="hf-links"><li><a onclick="scrollTo2('product')">Produit</a></li><li><a onclick="scrollTo2('how')">Comment ça marche</a></li><li><a onclick="scrollTo2('story')">Fonctionnalités</a></li></ul></div>
+        <div class="hf-col"><h4>Ressources</h4><ul class="hf-links"><li><a onclick="scrollTo2('faq')">FAQ</a></li><li><a onclick="toast('Plan du site — bientôt disponible')">Plan du site</a></li></ul></div>
+        <div class="hf-col"><h4>Légal</h4><ul class="hf-links"><li><a onclick="toast('Page légale — démo statique')">CGV</a></li><li><a onclick="toast('Page légale — démo statique')">Confidentialité</a></li><li><a onclick="toast('Page légale — démo statique')">RGPD</a></li><li><a onclick="toast('Page légale — démo statique')">Mentions légales</a></li></ul></div>
+      </div>
+      <div class="hf-trust">
+        <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></svg>Conforme RGPD</span>
+        <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg>Connexion sécurisée (MFA)</span>
+        <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></svg>Vos données vous appartiennent</span>
+      </div>
+      <div class="hf-legal"><span>© 2026 SmartQonsumer — données fictives</span><span class="hf-note">Prototype non contractuel</span></div>
     </div>
-    <div class="hf-trust">
-      <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></svg>Conforme RGPD</span>
-      <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg>Connexion sécurisée (MFA)</span>
-      <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></svg>Vos données vous appartiennent</span>
-    </div>
-    <div class="hf-legal"><span>© 2026 — Démo · données fictives · SaaS statique</span><span>Prototype non contractuel</span></div>
   </footer>
 </div>
 
@@ -1211,6 +1316,13 @@
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
   function scrollTo2(id){const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:'smooth'});}
+  function toggleMobileMenu(open){
+    const m = document.getElementById('mobileMenu');
+    if(!m) return;
+    m.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function mobileNavGo(id){ toggleMobileMenu(false); setTimeout(()=>scrollTo2(id), 200); }
   function go(s){
     document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));
     document.getElementById(s).classList.add('active');
@@ -1379,7 +1491,7 @@
 
     const nav = document.getElementById('siteNav');
     if(nav){
-      window.addEventListener('scroll', ()=>{ nav.classList.toggle('scrolled', window.scrollY > 18); }, {passive:true});
+      window.addEventListener('scroll', ()=>{ nav.classList.toggle('scrolled', window.scrollY > 8); }, {passive:true});
     }
 
     function animateCount(el){
