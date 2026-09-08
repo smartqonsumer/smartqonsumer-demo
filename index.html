@@ -255,9 +255,16 @@
 
   .hero-eyebrow{font-size:var(--font-size-micro); font-weight:var(--font-weight-bold); letter-spacing:var(--letter-spacing-eyebrow); text-transform:uppercase; color:var(--color-brand-400); margin:0}
   .hero-title{font-size:var(--font-size-display); font-weight:var(--font-weight-bold); line-height:var(--line-height-display); letter-spacing:var(--letter-spacing-display); color:#fff; margin:14px 0 0; text-wrap:pretty}
-  .hero-title.hero-in{animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both, heroTitleGlow 10s ease-in-out infinite}
-  @keyframes heroTitleGlow{0%,12%,88%,100%{color:#fff} 50%{color:var(--color-brand-200)}}
-  @media (prefers-reduced-motion:reduce){ .hero-title.hero-in{animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both} }
+  .hero-title.hero-in{animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both, heroTitleShine 5s linear infinite}
+  @supports (background-clip:text) or (-webkit-background-clip:text){
+    .hero-title.hero-in{
+      background-image:linear-gradient(100deg, #fff 15%, var(--color-brand-300) 32%, var(--color-brand-400) 40%, #fff 52%, var(--color-brand-300) 66%, #fff 84%);
+      background-size:280% 100%;
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent; color:transparent}
+  }
+  @keyframes heroTitleShine{ 0%{background-position:180% 0} 100%{background-position:-100% 0} }
+  @media (prefers-reduced-motion:reduce){ .hero-title.hero-in{animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both; background-image:none; -webkit-text-fill-color:currentColor; color:#fff} }
   .hero-subtitle{font-size:var(--font-size-body-lg); line-height:1.6; color:var(--color-neutral-300); max-width:520px; margin:18px 0 0}
   .hero-actions{margin-top:26px; display:flex; align-items:center; gap:12px; flex-wrap:wrap}
   .hero-proof{display:flex; gap:20px; margin-top:26px; font-size:var(--font-size-caption); color:var(--color-neutral-400)}
@@ -296,7 +303,7 @@
   .hero-funnel-row b{font-family:var(--font-mono); font-weight:400; color:var(--color-text-primary); font-variant-numeric:tabular-nums}
   .hero-funnel-track{margin-top:3px; height:4px; border-radius:var(--radius-xs); background:var(--color-neutral-100); overflow:hidden}
   .hero-funnel-fill{display:block; height:100%; border-radius:var(--radius-xs)}
-  .hero-funnel-fill.neutral{background:var(--color-info)}
+  .hero-funnel-fill.neutral{background:var(--color-brand-300)}
   .hero-funnel-fill.brand{background:var(--color-brand-600)}
 
   .hero-segments{margin-top:16px; padding-top:14px; border-top:1px solid var(--color-border)}
@@ -372,7 +379,7 @@
   .hf-phone .scr .bd .ph-chip svg{flex:none}
   .hf-phone .scr .bd .btn2{margin-top:auto; background:var(--amber); color:#fff; font-size:9.5px; font-weight:800; text-align:center; padding:9px; border-radius:8px}
 
-  .hf-crm{width:220px; text-align:left; padding:16px}
+  .hf-crm{width:246px; text-align:left; padding:16px}
   .hf-crm .kv{padding:6px 0; font-size:11.5px}
 
 
@@ -495,18 +502,19 @@
   .hf-ai-row a{display:flex; align-items:center; gap:6px; color:var(--color-text-muted); font-size:11.5px; font-weight:600; cursor:pointer; text-decoration:none; white-space:nowrap; flex:none; transition:color var(--duration-fast) var(--ease-standard)}
   .hf-ai-row a:hover{color:var(--color-text-primary)}
   .hf-ai-row svg{width:14px; height:14px; flex:none; color:var(--color-brand-600)}
-  .hf-big-logo{margin-top:28px; padding:32px 0; border-top:1px solid var(--color-border); text-align:center; display:flex; align-items:center; justify-content:center}
-  .hf-big-logo img{height:120px; width:auto; max-width:100%}
-  @media (max-width:640px){ .hf-big-logo img{height:64px} .hf-ai-row{gap:14px} }
   .hf-col h4{margin:0; font-size:var(--font-size-micro); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-eyebrow); text-transform:uppercase; color:var(--color-text-muted)}
   .hf-col a{display:block; margin-bottom:9px; color:var(--color-text-secondary); font-size:var(--font-size-caption); cursor:pointer; text-decoration:none; transition:color var(--duration-fast) var(--ease-standard)}
   .hf-col a:last-child{margin-bottom:0}
   .hf-col a:hover{color:var(--color-text-primary)}
   .hf-links{margin:14px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px}
-  .hf-trust{display:flex; align-items:center; justify-content:center; gap:22px; flex-wrap:wrap; margin-top:28px; padding-top:22px; border-top:1px solid var(--color-border)}
+  .hf-bottom{margin-top:32px; padding:32px 28px; border-radius:var(--radius-lg); background:var(--color-brand-50)}
+  .hf-trust{display:flex; align-items:center; justify-content:center; gap:22px; flex-wrap:wrap}
   .trust-badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--color-text-secondary); font-weight:600}
   .trust-badge svg{width:16px; height:16px; color:var(--color-brand-600); flex:0 0 auto}
-  .hf-legal{margin-top:0; padding-top:20px; border-top:1px solid var(--color-border); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap}
+  .hf-big-logo{margin-top:28px; padding:12px 0; text-align:center; display:flex; align-items:center; justify-content:center}
+  .hf-big-logo img{height:120px; width:auto; max-width:100%}
+  @media (max-width:640px){ .hf-big-logo img{height:64px} .hf-ai-row{gap:14px} }
+  .hf-legal{margin-top:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap}
   .hf-legal *{font-size:var(--font-size-micro); color:var(--color-text-muted)}
   .hf-legal .hf-note{font-family:var(--font-mono)}
 
@@ -783,6 +791,8 @@
         <p>Un profil consommateur enrichi, exploitable pour vos futures campagnes.</p>
         <div class="how-visual"><div class="card hf-crm">
           <div class="kv"><span>Produit préféré</span><b>Produit exemple</b></div>
+          <div class="kv"><span>Segment</span><b>Adeptes des bons plans</b></div>
+          <div class="kv"><span>Canal d'entrée</span><b>Scan en magasin</b></div>
           <div class="kv"><span>Scans</span><b>12</b></div>
           <div class="kv" style="border-bottom:0"><span>Statut</span><b>Fidèle</b></div>
         </div></div>
@@ -817,9 +827,9 @@
       </div>
       <div class="story-visual">
         <div class="mini-stat-col">
-          <div class="mini-stat"><span>Adeptes des bons plans</span><b>92</b></div>
-          <div class="mini-stat"><span>Nouveaux clients cette sem.</span><b>126</b></div>
-          <div class="mini-stat"><span>Clients à réactiver</span><b>18</b></div>
+          <div class="mini-stat"><span>Adeptes des bons plans</span><b>1&nbsp;840</b></div>
+          <div class="mini-stat"><span>Ambassadeurs de la marque</span><b>1&nbsp;220</b></div>
+          <div class="mini-stat"><span>Acheteurs premium</span><b>960</b></div>
         </div>
       </div>
     </div>
@@ -980,13 +990,15 @@
         <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Perplexity</a>
         <a onclick="toast('Version Markdown — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Markdown</a>
       </div>
-      <div class="hf-trust">
-        <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><g transform="translate(0,-1.3)"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></g></svg>Conforme RGPD</span>
-        <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg>Connexion sécurisée (MFA)</span>
-        <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><g transform="translate(0,-1.3)"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></g></svg>Vos données vous appartiennent</span>
+      <div class="hf-bottom">
+        <div class="hf-trust">
+          <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><g transform="translate(0,-1.3)"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></g></svg>Conforme RGPD</span>
+          <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg>Connexion sécurisée (MFA)</span>
+          <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><g transform="translate(0,-1.3)"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></g></svg>Vos données vous appartiennent</span>
+        </div>
+        <div class="hf-big-logo"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer"></div>
+        <div class="hf-legal"><span>© 2026 SmartQonsumer — données fictives</span><span class="hf-note">Prototype non contractuel</span></div>
       </div>
-      <div class="hf-big-logo"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer"></div>
-      <div class="hf-legal"><span>© 2026 SmartQonsumer — données fictives</span><span class="hf-note">Prototype non contractuel</span></div>
     </div>
   </footer>
 </div>
