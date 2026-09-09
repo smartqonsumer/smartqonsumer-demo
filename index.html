@@ -124,7 +124,8 @@
   .drawer.open{right:0}
   .drawer .dh{padding:20px 22px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; background:var(--ink); color:#fff}
   .drawer .dh b{font-size:16px}
-  .drawer .db{padding:22px; overflow:auto}
+  .drawer .db{padding:22px; overflow:auto; flex:1}
+  .drawer .df{padding:14px 22px; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px; flex:none}
   .x{cursor:pointer; border:0; background:rgba(255,255,255,.14); color:#fff; width:30px;height:30px;border-radius:8px; font-size:16px}
   .kv{display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--color-neutral-100); font-size:13px}
   .kv span:first-child{color:var(--muted)}
@@ -144,14 +145,6 @@
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
   .toast .ck{width:20px;height:20px;border-radius:50%;background:var(--ok); display:grid;place-items:center}
 
-  .modal-back{position:fixed; inset:0; background:rgba(18,22,26,.34); display:none; z-index:30}
-  .modal-back.open{display:block}
-  .modal{position:fixed; z-index:31; top:50%; left:50%; transform:translate(-50%,-48%); width:470px; max-width:94vw; background:var(--color-white); border-radius:16px; box-shadow:var(--shadow-xl); display:none; overflow:hidden}
-  .modal.open{display:block}
-  .modal .mh{background:var(--ink); color:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center}
-  .modal .mh b{font-size:16px}
-  .modal .mb{padding:20px 20px 6px}
-  .modal .mf{padding:14px 20px; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px}
 
   /* ===== Homepage (déconnecté) — refonte premium v2 ===== */
   #home{background:var(--white); color:var(--color-text-primary); overflow-x:clip}
@@ -1013,7 +1006,7 @@
     <div class="brand demo"><b>SmartQonsumer</b><span>Données fictives · SaaS statique</span></div>
     <nav class="nav" id="nav">
       <button data-s="dash" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Tableau de bord</button>
-      <button data-s="clients"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 8.2a3 3 0 0 1 0 5.6"/><path d="M18 20a5 5 0 0 0-3-4.6"/></svg>Base client</button>
+      <button data-s="clients"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 8.2a3 3 0 0 1 0 5.6"/><path d="M18 20a5 5 0 0 0-3-4.6"/></svg>Clients</button>
       <button data-s="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>Produits</button>
       <button data-s="qr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M20 14v0M17 20h4M20 17v4"/></svg>QR Codes</button>
       <button data-s="editor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Personnaliser la landing</button>
@@ -1068,11 +1061,11 @@
     <!-- CLIENTS -->
     <section class="screen" id="clients">
       <div class="screen-head">
-        <div><div class="eyebrow">CRM 360</div><h2 style="margin:2px 0 0;color:var(--ink)">Base client</h2><p>Chaque scan et chaque inscription enrichit une fiche unique. Cliquez une ligne pour l'ouvrir.</p></div>
+        <div><div class="eyebrow">CRM 360</div><h2 style="margin:2px 0 0;color:var(--ink)">Clients</h2><p>Chaque scan et chaque inscription enrichit une fiche unique. Cliquez une ligne pour l'ouvrir.</p></div>
         <div class="row">
           <select id="segFilter" style="width:200px" onchange="renderClients()">
             <option value="">Tous les segments</option>
-            <option>Amateurs d'IPA</option><option>Clients taproom</option><option>Fidèles (5+ achats)</option><option>Découvreurs (1 achat)</option><option>En sommeil</option>
+            <option>Adeptes des bons plans</option><option>Ambassadeurs de la marque</option><option>Premium engagés</option>
           </select>
         </div>
       </div>
@@ -1085,25 +1078,25 @@
     <!-- PRODUCTS -->
     <section class="screen" id="products">
       <div class="screen-head">
-        <div><div class="eyebrow">Catalogue</div><h2 style="margin:2px 0 0;color:var(--ink)">Base produits</h2><p>Vos bières sont déclarées ici. C'est cette base qui alimente les QR : chaque QR encode un produit (GTIN) et, en option, un lot ou une série.</p></div>
+        <div><div class="eyebrow">Catalogue</div><h2 style="margin:2px 0 0;color:var(--ink)">Base produits</h2><p>Vos produits sont déclarés ici. C'est cette base qui alimente les QR : chaque QR encode un produit (GTIN) et, en option, un lot ou une série.</p></div>
         <button class="btn primary" onclick="openProd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Ajouter un produit</button>
       </div>
       <div class="card" style="border-left:4px solid var(--accent); background:var(--lav3); margin-bottom:16px">
         <h3>D'où viennent ces données ?</h3>
         <p class="muted" style="margin:6px 0 0;font-size:12.5px;line-height:1.6">
-          <b style="color:var(--ink)">Le produit</b> (nom, format) est déclaré par la brasserie. &nbsp;·&nbsp;
-          <b style="color:var(--ink)">Le GTIN</b> provient de son inscription GS1 (le code-barres de la bouteille). &nbsp;·&nbsp;
+          <b style="color:var(--ink)">Le produit</b> (nom, format) est déclaré par votre marque. &nbsp;·&nbsp;
+          <b style="color:var(--ink)">Le GTIN</b> provient de son inscription GS1 (le code-barres du produit). &nbsp;·&nbsp;
           <b style="color:var(--ink)">Le lot / la série</b> viennent de la production, pour les QR dynamiques. <br>
-          Sans GTIN, un identifiant interne est utilisé — <i>point à valider avec la brasserie (conformité GS1).</i>
+          Sans GTIN, un identifiant interne est utilisé — <i>point à valider avec vos équipes (conformité GS1).</i>
         </p>
       </div>
       <div class="card" style="padding:4px 4px 0">
         <table><thead><tr><th>Produit</th><th>Format</th><th>GTIN</th><th>Dernier lot</th><th class="right">QR actifs</th><th>Statut</th></tr></thead>
         <tbody id="prodRows">
-          <tr><td><b style="color:var(--ink)">IPA Houblon Libre</b></td><td>Bouteille 33 cl</td><td>3701234500017</td><td>L-2607-A</td><td class="right">2</td><td><span class="tag green">Actif</span></td></tr>
-          <tr><td><b style="color:var(--ink)">Blonde de Comptoir</b></td><td>Bouteille 75 cl</td><td>3701234500024</td><td>L-2606-C</td><td class="right">1</td><td><span class="tag green">Actif</span></td></tr>
-          <tr><td><b style="color:var(--ink)">Ambrée des Fûts</b></td><td>Fût 20 L</td><td>3701234500031</td><td>L-2605-B</td><td class="right">1</td><td><span class="tag green">Actif</span></td></tr>
-          <tr><td><b style="color:var(--ink)">Stout Minuit</b></td><td>Canette 44 cl</td><td><span class="muted">— (SKU interne)</span></td><td>—</td><td class="right">0</td><td><span class="tag grey">Sans GTIN</span></td></tr>
+          <tr><td><b style="color:var(--ink)">Produit Édition Standard</b></td><td>Format standard</td><td>3701234500017</td><td>L-2607-A</td><td class="right">2</td><td><span class="tag green">Actif</span></td></tr>
+          <tr><td><b style="color:var(--ink)">Produit Édition Premium</b></td><td>Format premium</td><td>3701234500024</td><td>L-2606-C</td><td class="right">1</td><td><span class="tag green">Actif</span></td></tr>
+          <tr><td><b style="color:var(--ink)">Produit Collection Limitée</b></td><td>Format collection</td><td>3701234500031</td><td>L-2605-B</td><td class="right">1</td><td><span class="tag green">Actif</span></td></tr>
+          <tr><td><b style="color:var(--ink)">Produit Découverte</b></td><td>Format découverte</td><td><span class="muted">— (SKU interne)</span></td><td>—</td><td class="right">0</td><td><span class="tag grey">Sans GTIN</span></td></tr>
         </tbody></table>
       </div>
     </section>
@@ -1115,7 +1108,7 @@
         <div class="card">
           <h3>Générer un QR</h3><div class="sub">Il pointera vers la page de scan de votre choix.</div>
           <div class="field"><label>Produit <small>· issu de votre base produits (GTIN + lot) — <a href="#" onclick="go('products');return false;" style="color:var(--accent);font-weight:600">gérer les produits</a></small></label>
-            <select id="qrProd"><option>IPA Houblon Libre</option><option>Blonde de Comptoir</option><option>Ambrée des Fûts</option><option>Stout Minuit (sans GTIN)</option></select></div>
+            <select id="qrProd"><option>Produit Édition Standard</option><option>Produit Édition Premium</option><option>Produit Collection Limitée</option><option>Produit Découverte (sans GTIN)</option></select></div>
           <div class="field"><label>Objectif de la page</label>
             <select id="qrGoal"><option>Inscription fidélité + page produit</option><option>Page produit seule</option><option>Jeu / tirage au sort</option></select></div>
           <div class="field"><label>Campagne rattachée <small>(pour le suivi)</small></label>
@@ -1303,22 +1296,21 @@
   <div class="db" id="dBody"></div>
 </aside>
 
-<div class="modal-back" id="prodBack" onclick="closeProd()"></div>
-<div class="modal" id="prodModal">
-  <div class="mh"><b>Ajouter un produit</b><button class="x" onclick="closeProd()">✕</button></div>
-  <div class="mb">
-    <div class="field"><label>Nom de la bière</label><input type="text" id="npName" placeholder="Ex. Triple des Vosges"></div>
-    <div class="field"><label>Format</label><select id="npFormat"><option>Bouteille 33 cl</option><option>Bouteille 75 cl</option><option>Canette 44 cl</option><option>Fût 20 L</option><option>Autre</option></select></div>
+<div class="drawer-back" id="prodBack" onclick="closeProd()"></div>
+<aside class="drawer" id="prodDrawer">
+  <div class="dh"><div><div style="font-size:11px;color:#BCBAEB;letter-spacing:.6px;text-transform:uppercase">Catalogue produits</div><b>Ajouter un produit</b></div><button class="x" onclick="closeProd()">✕</button></div>
+  <div class="db">
+    <div class="field"><label>Nom du produit</label><input type="text" id="npName" placeholder="Ex. Édition Limitée n°5"></div>
     <div class="field"><label>GTIN <small>· code-barres GS1 — laissez vide si vous n'en avez pas (un identifiant interne sera utilisé)</small></label><input type="text" id="npGtin" placeholder="3701234500048"></div>
     <div class="field"><label>Dernier lot <small>· optionnel, pour les QR dynamiques</small></label><input type="text" id="npLot" placeholder="L-2607-A"></div>
   </div>
-  <div class="mf"><button class="btn ghost" onclick="closeProd()">Annuler</button><button class="btn primary" onclick="addProduct()">Ajouter au catalogue</button></div>
-</div>
+  <div class="df"><button class="btn ghost" onclick="closeProd()">Annuler</button><button class="btn primary" onclick="addProduct()">Ajouter au catalogue</button></div>
+</aside>
 
 <div class="toast" id="toast"><span class="ck"><svg width="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span><span id="toastMsg">Enregistré</span></div>
 
 <script>
-  const titles={dash:'Tableau de bord',clients:'Base client',products:'Produits',qr:'QR Codes',editor:'Personnaliser la landing',campaigns:'Campagnes',loyalty:'Fidélité',landing:'Landing de scan'};
+  const titles={dash:'Tableau de bord',clients:'Clients',products:'Produits',qr:'QR Codes',editor:'Personnaliser la landing',campaigns:'Campagnes',loyalty:'Fidélité',landing:'Landing de scan'};
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
   function scrollTo2(id){const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:'smooth'});}
@@ -1351,13 +1343,13 @@
 
   // clients data
   const clients=[
-    {n:'Camille Rousseau',p:'IPA Houblon Libre',s:'Amateurs d\'IPA',sc:7,f:'Club',fc:'green',mail:'camille.r@email.com',since:'Mars 2026',src:'Scan QR (Monoprix)',spend:'96 €'},
-    {n:'Thomas Girard',p:'Stout Minuit',s:'Fidèles (5+ achats)',sc:12,f:'Club',fc:'green',mail:'t.girard@email.com',since:'Janv. 2026',src:'Page fidélité',spend:'184 €'},
-    {n:'Léa Fontaine',p:'Blonde de Comptoir',s:'Clients taproom',sc:4,f:'Membre',fc:'teal',mail:'lea.f@email.com',since:'Avril 2026',src:'Taproom',spend:'52 €'},
-    {n:'Hugo Mercier',p:'Ambrée des Fûts',s:'Découvreurs (1 achat)',sc:1,f:'Prospect',fc:'grey',mail:'hugo.m@email.com',since:'Juil. 2026',src:'Scan QR (caviste)',spend:'8 €'},
-    {n:'Sarah Benali',p:'IPA Houblon Libre',s:'En sommeil',sc:3,f:'Membre',fc:'teal',mail:'s.benali@email.com',since:'Nov. 2025',src:'Scan QR (bar)',spend:'41 €'},
-    {n:'Antoine Lefevre',p:'IPA Houblon Libre',s:'Amateurs d\'IPA',sc:6,f:'Club',fc:'green',mail:'a.lefevre@email.com',since:'Fév. 2026',src:'Événement',spend:'120 €'},
-    {n:'Manon Dupuis',p:'Blonde de Comptoir',s:'En sommeil',sc:2,f:'Prospect',fc:'grey',mail:'manon.d@email.com',since:'Oct. 2025',src:'Scan QR (GMS)',spend:'16 €'},
+    {n:'Camille Rousseau',p:'Produit Édition Standard',s:'Adeptes des bons plans',sc:7,f:'Club',fc:'green',mail:'camille.r@email.com',since:'Mars 2026',src:'Scan QR (Monoprix)',spend:'96 €'},
+    {n:'Thomas Girard',p:'Produit Découverte',s:'Ambassadeurs de la marque',sc:12,f:'Club',fc:'green',mail:'t.girard@email.com',since:'Janv. 2026',src:'Page fidélité',spend:'184 €'},
+    {n:'Léa Fontaine',p:'Produit Édition Premium',s:'Premium engagés',sc:4,f:'Membre',fc:'teal',mail:'lea.f@email.com',since:'Avril 2026',src:'Boutique de la marque',spend:'52 €'},
+    {n:'Hugo Mercier',p:'Produit Collection Limitée',s:'Adeptes des bons plans',sc:1,f:'Prospect',fc:'grey',mail:'hugo.m@email.com',since:'Juil. 2026',src:'Scan QR (revendeur)',spend:'8 €'},
+    {n:'Sarah Benali',p:'Produit Édition Standard',s:'Premium engagés',sc:3,f:'Membre',fc:'teal',mail:'s.benali@email.com',since:'Nov. 2025',src:'Scan QR (point de vente)',spend:'41 €'},
+    {n:'Antoine Lefevre',p:'Produit Édition Standard',s:'Adeptes des bons plans',sc:6,f:'Club',fc:'green',mail:'a.lefevre@email.com',since:'Fév. 2026',src:'Événement',spend:'120 €'},
+    {n:'Manon Dupuis',p:'Produit Édition Premium',s:'Ambassadeurs de la marque',sc:2,f:'Prospect',fc:'grey',mail:'manon.d@email.com',since:'Oct. 2025',src:'Scan QR (GMS)',spend:'16 €'},
   ];
   function renderClients(){
     const f=document.getElementById('segFilter').value;
@@ -1377,7 +1369,7 @@
       <div class="kv"><span>Premier contact</span><b>${c.since}</b></div>
       <div class="kv"><span>Origine</span><b>${c.src}</b></div>
       <div class="kv"><span>Scans QR</span><b>${c.sc}</b></div>
-      <div class="kv"><span>Style favori (déduit)</span><b>${c.p.includes('IPA')?'IPA':c.p.includes('Blonde')?'Blonde':c.p.includes('Ambrée')?'Ambrée':c.p.includes('Stout')?'Stout':'—'}</b></div>
+      <div class="kv"><span>Produit préféré</span><b>${c.p}</b></div>
       <div class="kv"><span>Panier moyen</span><b class="muted" style="font-weight:600">—  ·  via POS ou déclaration</b></div>
       <h4 style="color:var(--ink);margin:18px 0 8px">Activité récente</h4>
       <div class="timeline">
@@ -1441,16 +1433,15 @@
   }
 
   // product creation
-  function openProd(){document.getElementById('prodModal').classList.add('open');document.getElementById('prodBack').classList.add('open');document.getElementById('npName').focus();}
-  function closeProd(){document.getElementById('prodModal').classList.remove('open');document.getElementById('prodBack').classList.remove('open');}
+  function openProd(){document.getElementById('prodDrawer').classList.add('open');document.getElementById('prodBack').classList.add('open');document.getElementById('npName').focus();}
+  function closeProd(){document.getElementById('prodDrawer').classList.remove('open');document.getElementById('prodBack').classList.remove('open');}
   function addProduct(){
-    const name=document.getElementById('npName').value.trim()||'Nouvelle bière';
-    const fmt=document.getElementById('npFormat').value;
+    const name=document.getElementById('npName').value.trim()||'Nouveau produit';
     const gtin=document.getElementById('npGtin').value.trim();
     const lot=document.getElementById('npLot').value.trim();
     const gcell = gtin ? gtin : '<span class="muted">— (SKU interne)</span>';
     const status = gtin ? '<span class="tag green">Actif</span>' : '<span class="tag grey">Sans GTIN</span>';
-    const row='<tr><td><b style="color:var(--ink)">'+name+'</b></td><td>'+fmt+'</td><td>'+gcell+'</td><td>'+(lot||'—')+'</td><td class="right">0</td><td>'+status+'</td></tr>';
+    const row='<tr><td><b style="color:var(--ink)">'+name+'</b></td><td>—</td><td>'+gcell+'</td><td>'+(lot||'—')+'</td><td class="right">0</td><td>'+status+'</td></tr>';
     document.getElementById('prodRows').insertAdjacentHTML('afterbegin',row);
     const sel=document.getElementById('qrProd'); const opt=document.createElement('option');
     opt.textContent = gtin ? name : name+' (sans GTIN)'; sel.insertBefore(opt, sel.firstChild); sel.value=opt.textContent;
