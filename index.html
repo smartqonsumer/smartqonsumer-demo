@@ -1429,38 +1429,26 @@
 
     <!-- LOYALTY -->
     <section class="screen" id="loyalty-settings-general">
-      <div class="screen-head"><div><div class="eyebrow">Rétention</div><h2 style="margin:2px 0 0;color:var(--ink)">Programme de fidélité</h2><p>Réglez vos règles ; l'aperçu se met à jour à droite.</p></div>
-        <button class="btn primary" onclick="toast('Programme enregistré')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
+      <div class="screen-head"><div><div class="eyebrow">Club Fidélité · Paramétrage</div><h2 style="margin:2px 0 0;color:var(--ink)">Paramétrages généraux</h2><p>Identité, statut, règles de points et liens du Club.</p></div>
+        <button class="btn primary" onclick="saveClubGeneral()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
       </div>
       <div class="grid cards-2">
         <div class="card">
-          <h3>Règles</h3><div class="sub">Comment vos clients gagnent des points</div>
-          <div style="background:#FFF4E6; border:1px solid #FFD9A8; color:#9A5B00; border-radius:10px; padding:10px 12px; font-size:12px; margin-bottom:14px"><b>À définir :</b> le CDC liste les incitations (contenu exclusif, loterie, préventes, points, réductions) mais pas les seuils. Barème, paliers et récompenses restent à cadrer avec la brasserie — les valeurs ci-dessous sont indicatives.</div>
-          <div class="field"><label>1 point tous les</label>
-            <select id="ptRule" onchange="syncLoyalty()"><option>1 scan de bouteille</option><option>5 € d'achat</option><option>1 visite au taproom</option></select></div>
-          <div class="opt"><div><b>Palier « Club »</b><br><small>Débloqué à partir de X points</small></div>
-            <input type="text" id="tier" value="100" style="width:90px" oninput="syncLoyalty()"></div>
-          <div style="margin-top:6px"><b style="font-size:13px;color:var(--ink)">Récompenses proposées</b>
-            <div class="chips" id="rewards">
-              <div class="chip active" onclick="tog(this)">Contenu exclusif</div>
-              <div class="chip active" onclick="tog(this)">Réduction boutique</div>
-              <div class="chip" onclick="tog(this)">Accès prévente</div>
-              <div class="chip" onclick="tog(this)">Loterie</div>
-            </div>
-          </div>
+          <h3>Configuration</h3><div class="sub">Identité et message du Club</div>
+          <div class="field"><label>Nom du Club</label><input type="text" id="clubName"></div>
+          <div class="field"><label>Message de bienvenue</label><textarea id="clubWelcome" rows="3"></textarea></div>
+          <div class="opt"><div><b>Statut du Club</b><br><small>Active les inscriptions, points et campagnes liées au Club</small></div><label class="switch"><input type="checkbox" id="clubActive"><span class="slider"></span></label></div>
         </div>
-        <div class="card" style="background:linear-gradient(160deg,var(--lav3),#fff)">
-          <h3>Aperçu carte membre</h3><div class="sub">Ce que voit le client (wallet)</div>
-          <div style="background:var(--ink); color:#fff; border-radius:16px; padding:20px; box-shadow:var(--shadow)">
-            <div style="font-size:11px;letter-spacing:.8px;color:#BCBAEB;text-transform:uppercase">Club · Nicolas Wicke</div>
-            <div style="font-size:20px;font-weight:800;margin:6px 0 2px">Camille Rousseau</div>
-            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px">
-              <div><div style="font-size:11px;color:#CFCDEF">Points</div><div style="font-size:26px;font-weight:800" id="pvPoints">128</div></div>
-              <div style="text-align:right"><div style="font-size:11px;color:#CFCDEF">Palier</div><div style="font-weight:700" id="pvTier">Club débloqué</div></div>
-            </div>
-          </div>
-          <p class="muted" style="font-size:12px;margin-top:12px" id="pvRule">1 point par scan · Club à 100 pts</p>
+        <div class="card">
+          <h3>Règles de points</h3><div class="sub">Comment vos consommateurs gagnent des points</div>
+          <div id="pointsRulesList"></div>
+          <button type="button" class="rule-add" style="margin-top:8px" onclick="addPointsRule()">+ Ajouter une règle</button>
         </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>Liens</h3><div class="sub">Liens automatiques de la plateforme, pages légales du tenant et liens libres — position et ordre configurables</div>
+        <div id="clubLinksList"></div>
+        <button type="button" class="rule-add" style="margin-top:8px" onclick="addClubLink()">+ Ajouter un lien libre</button>
       </div>
     </section>
 
@@ -1611,9 +1599,71 @@
       </div>
       <div id="lpEditorView" style="display:none"></div>
     </section>
-    <section class="screen" id="loyalty-members"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Membres</h2></div></div><div class="card" id="ph-loyalty-members"></div></section>
-    <section class="screen" id="loyalty-rewards"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Récompenses</h2></div></div><div class="card" id="ph-loyalty-rewards"></div></section>
-    <section class="screen" id="loyalty-settings-appearance"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Personnalisation du Club</h2></div></div><div class="card" id="ph-loyalty-settings-appearance"></div></section>
+    <section class="screen" id="loyalty-members">
+      <div class="screen-head">
+        <div><div class="eyebrow">Club Fidélité</div><h2 style="margin:2px 0 0;color:var(--ink)"><span id="membersTotal">0</span> membres</h2><p>Chaque membre correspond à un contact de votre base.</p></div>
+      </div>
+      <div class="filters-bar">
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="memberSearch" placeholder="Nom ou e-mail" oninput="renderMembers()"></div>
+        <select id="mfTier" onchange="renderMembers()"><option value="">Niveau (tous)</option><option>Prospect</option><option>Membre</option><option>Club</option></select>
+        <select id="mfActive" onchange="renderMembers()"><option value="">Activité (toutes)</option><option value="active">Actif</option><option value="inactive">Inactif</option></select>
+        <div class="filters-active" id="membersFiltersActive"></div>
+      </div>
+      <div class="card" style="padding:4px 4px 0">
+        <table><thead><tr>
+          <th data-sort-key="name">Membre</th><th>Statut</th><th data-sort-key="tier">Niveau</th><th class="right" data-sort-key="pointsBalance">Solde</th><th class="right">Obtenus</th><th class="right">Utilisés</th><th>Dernière activité</th><th class="right">Récompenses</th><th></th>
+        </tr></thead>
+        <tbody id="memberRows"></tbody></table>
+        <div class="pagination" id="membersPagination"></div>
+      </div>
+    </section>
+    <section class="screen" id="loyalty-rewards">
+      <div class="screen-head">
+        <div><div class="eyebrow">Club Fidélité</div><h2 style="margin:2px 0 0;color:var(--ink)">Récompenses</h2><p>Ce que vos membres peuvent obtenir avec leurs points.</p></div>
+        <button class="btn primary" onclick="openRewardPanel(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une récompense</button>
+      </div>
+      <div class="grid cards-3" id="rewardsGrid"></div>
+    </section>
+    <section class="screen" id="loyalty-settings-appearance">
+      <div class="screen-head">
+        <div><div class="eyebrow">Club Fidélité · Paramétrage</div><h2 style="margin:2px 0 0;color:var(--ink)">Personnalisation du Club</h2><p>Apparence de la page publique du Club et choix du modèle.</p></div>
+        <button class="btn primary" onclick="saveClubAppearance()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="kv"><span>URL publique</span><b id="clubPublicUrl" style="font-size:12px"></b></div>
+        <div class="kv" style="border-bottom:0"><span>Statut</span><b id="clubStatusBadge"></b></div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <h3>Modèle</h3><div class="sub">Choisissez la mise en page de la page publique du Club</div>
+        <div class="row" style="gap:10px;flex-wrap:nowrap">
+          <div class="lp-template-card" data-template="essentiel" id="clubTplEssentiel" onclick="selectClubTemplate('essentiel')"><b>Essentiel</b><small>Inclus dans votre offre</small></div>
+          <div class="lp-template-card" data-template="premium" id="clubTplPremium" onclick="selectClubTemplate('premium')"><b>Premium <span id="clubTplPremiumLock"></span></b><small>Personnalisation avancée, sections supplémentaires</small></div>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="card" style="flex:1;min-width:320px;max-width:520px">
+          <h3>Apparence</h3>
+          <div class="field"><label>Logo</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Logo (démo)</div></div>
+          <div class="row" style="gap:12px">
+            <div class="field" style="flex:1"><label>Couleur principale</label><input type="color" id="clubColorPrimary" style="height:42px;padding:4px"></div>
+            <div class="field" style="flex:1"><label>Couleur secondaire</label><input type="color" id="clubColorSecondary" style="height:42px;padding:4px"></div>
+          </div>
+          <div class="field"><label>Image d'en-tête</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image d'en-tête (démo)</div></div>
+          <div class="field"><label>Contenu du pied de page</label><textarea id="clubFooter" rows="2"></textarea></div>
+        </div>
+        <div style="flex:1;min-width:300px">
+          <div class="device-tabs" id="clubDeviceTabs" style="margin-bottom:14px">
+            <button type="button" class="active" data-device="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Mobile</button>
+            <button type="button" data-device="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>Ordinateur</button>
+          </div>
+          <div id="clubPreviewMobile" class="phone"><div class="screen2"><div class="ph-body" id="clubPreviewMobileBody"></div></div></div>
+          <div id="clubPreviewDesktop" style="display:none; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); max-width:480px">
+            <div class="device-bar"><div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div><div></div></div>
+            <div style="padding:28px" id="clubPreviewDesktopBody"></div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="screen" id="campaigns-lists"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Listes de contacts</h2></div></div><div class="card" id="ph-campaigns-lists"></div></section>
     <section class="screen" id="campaigns-new"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Créer une campagne</h2></div></div><div class="card" id="ph-campaigns-new"></div></section>
     <section class="screen" id="analytics-overview"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Vue d'ensemble</h2></div></div><div class="card" id="ph-analytics-overview"></div></section>
@@ -1646,10 +1696,10 @@
     'products.all':{screenId:'products-all', title:'Tous les produits', group:'products', onEnter:()=>renderProductsTable()},
     'products.landing':{screenId:'products-landing', title:'Landing Pages', group:'products', onEnter:()=>enterProductsLanding()},
     'products.qr':{screenId:'products-qr', title:'QR Codes', group:'products', onEnter:()=>enterProductsQr()},
-    'loyalty.members':{screenId:'loyalty-members', title:'Membres', group:'loyalty'},
-    'loyalty.rewards':{screenId:'loyalty-rewards', title:'Récompenses', group:'loyalty'},
-    'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', subgroup:'loyalty-settings'},
-    'loyalty.settings.general':{screenId:'loyalty-settings-general', title:'Paramétrages généraux', group:'loyalty', subgroup:'loyalty-settings'},
+    'loyalty.members':{screenId:'loyalty-members', title:'Membres', group:'loyalty', onEnter:()=>renderMembers()},
+    'loyalty.rewards':{screenId:'loyalty-rewards', title:'Récompenses', group:'loyalty', onEnter:()=>renderRewards()},
+    'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', subgroup:'loyalty-settings', onEnter:()=>renderClubAppearance()},
+    'loyalty.settings.general':{screenId:'loyalty-settings-general', title:'Paramétrages généraux', group:'loyalty', subgroup:'loyalty-settings', onEnter:()=>renderClubGeneral()},
     'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns'},
     'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns'},
     'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns'},
@@ -2506,13 +2556,246 @@
   }
   renderQrCodes();
 
-  // loyalty preview
-  function syncLoyalty(){
-    const rule=document.getElementById('ptRule').value; const tier=document.getElementById('tier').value||'0';
-    document.getElementById('pvRule').textContent=rule.charAt(0).toUpperCase()+rule.slice(1)+' · Club à '+tier+' pts';
-    document.getElementById('pvTier').textContent = (128>=+tier)?'Club débloqué':'Membre';
+  // ============================================================
+  // CLUB FIDÉLITÉ — Membres
+  // ============================================================
+  const memberState={page:1,pageSize:15,sort:{key:'name',dir:'asc'}};
+  function memberFiltersActive(){ return {tier:document.getElementById('mfTier').value, active:document.getElementById('mfActive').value}; }
+  function filteredMembers(){
+    const q=document.getElementById('memberSearch').value;
+    const f=memberFiltersActive();
+    let list=DB.LOYALTY_MEMBERS.map(m=>({m,c:DB.contactById(m.contactId)})).filter(({m,c})=>
+      matchesSearch(c.name+' '+c.email,q) &&
+      (!f.tier||m.tier===f.tier) &&
+      (!f.active||(f.active==='active'?DB.memberIsActive(m.id):!DB.memberIsActive(m.id))));
+    const {key,dir}=memberState.sort;
+    list.sort((a,b)=>{
+      let av,bv;
+      if(key==='tier'){ av=a.m.tier; bv=b.m.tier; }
+      else if(key==='pointsBalance'){ av=a.m.pointsBalance; bv=b.m.pointsBalance; }
+      else { av=a.c.name; bv=b.c.name; }
+      if(av<bv) return dir==='asc'?-1:1; if(av>bv) return dir==='asc'?1:-1; return 0;
+    });
+    return list;
   }
-  function tog(el){el.classList.toggle('active');}
+  function renderMembersFilterChips(){
+    const f=memberFiltersActive();
+    const labels={tier:'Niveau',active:'Activité'};
+    const valueLabels={active:{active:'Actif',inactive:'Inactif'}};
+    const entries=Object.entries(f).filter(([,v])=>v);
+    const el=document.getElementById('membersFiltersActive');
+    if(!entries.length){ el.innerHTML=''; return; }
+    el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${(valueLabels[k]&&valueLabels[k][v])||v}<button type="button" onclick="document.getElementById('${k==='tier'?'mfTier':'mfActive'}').value='';renderMembers()">✕</button></span>`).join('');
+  }
+  function renderMembers(keepPage){
+    if(!keepPage) memberState.page=1;
+    const list=filteredMembers();
+    document.getElementById('membersTotal').textContent=list.length;
+    const {items,page,total}=paginateArr(list,memberState.page,memberState.pageSize);
+    memberState.page=page;
+    document.getElementById('memberRows').innerHTML = items.length ? items.map(({m,c})=>`
+      <tr onclick="openMemberPanel('${m.id}')">
+        <td><b style="color:var(--ink)">${c.name}</b><br><span class="muted" style="font-size:11.5px">${c.email}</span></td>
+        <td>${DB.memberIsActive(m.id)?'<span class="tag green">Actif</span>':'<span class="tag grey">Inactif</span>'}</td>
+        <td><span class="tag ${m.tier==='Club'?'green':(m.tier==='Membre'?'teal':'')}">${m.tier}</span></td>
+        <td class="right">${m.pointsBalance}</td>
+        <td class="right">${m.pointsEarned}</td>
+        <td class="right">${m.pointsUsed}</td>
+        <td>${fmtDateFR(m.lastActivityAt)}</td>
+        <td class="right">${m.rewardIds.length}</td>
+        <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`).join('')
+      : `<tr><td colspan="9">${emptyStateHtml({icon:'search',title:'Aucun membre trouvé'})}</td></tr>`;
+    renderPagination('membersPagination', total, page, memberState.pageSize, p=>{ memberState.page=p; renderMembers(true); });
+    renderMembersFilterChips();
+    const thead=document.querySelector('#loyalty-members thead');
+    if(thead) wireSortable(thead, memberState.sort, ()=>renderMembers(true));
+  }
+  function openMemberPanel(mid){
+    const m=DB.memberById(mid); const c=DB.contactById(m.contactId);
+    const campaigns=(c.campaignsReceivedIds||[]).map(id=>DB.campaignById(id)).filter(Boolean);
+    const nextReward=DB.pointsToNextReward(mid);
+    const bodyHtml=`
+      <div class="kv"><span>E-mail</span><b>${c.email}</b></div>
+      <div class="kv"><span>Membre depuis</span><b>${fmtDateFR(m.joinedAt)}</b></div>
+      <div class="kv"><span>Niveau</span><b>${m.tier}</b></div>
+      <div class="kv"><span>Solde de points</span><b>${m.pointsBalance}</b></div>
+      <div class="kv"><span>Points obtenus</span><b>${m.pointsEarned}</b></div>
+      <div class="kv"><span>Points utilisés</span><b>${m.pointsUsed}</b></div>
+      <div class="kv"><span>Prochaine récompense dans</span><b>${nextReward===Infinity?'—':nextReward+' pts'}</b></div>
+      <div class="kv"><span>Dernière activité</span><b>${fmtDateFR(m.lastActivityAt)}</b></div>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Progression vers la prochaine récompense</h4>
+      <div class="hbar-track"><span class="hbar-fill" style="width:${Math.min(100,m.pointsBalance%100)}%"></span></div>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Récompenses obtenues (${m.rewardIds.length})</h4>
+      <div class="timeline">${m.rewardIds.map(rid=>{const r=DB.REWARDS.find(x=>x.id===rid); return r?`<div class="t"><b>${r.name}</b></div>`:'';}).join('')||'<div class="t"><b>Aucune récompense obtenue</b></div>'}</div>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Scans (${c.scannedProductIds.length})</h4>
+      <div class="timeline">${c.scannedProductIds.map(pid=>`<div class="t"><b>${DB.productById(pid).name}</b></div>`).join('')||'<div class="t"><b>Aucun scan</b></div>'}</div>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Campagnes reçues (${campaigns.length})</h4>
+      <div class="timeline">${campaigns.map(cp=>`<div class="t"><b>${cp.name}</b></div>`).join('')||'<div class="t"><b>Aucune campagne reçue</b></div>'}</div>`;
+    openPanel({eyebrow:'Fiche membre', title:c.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+  }
+
+  // ============================================================
+  // CLUB FIDÉLITÉ — Récompenses
+  // ============================================================
+  function rewardTypeLabel(t){ return {'promo-generic':'Code promo générique','promo-unique':'Code unique','qr-onsite':'QR à présenter sur place','custom':'Récompense personnalisée'}[t]||t; }
+  function renderRewards(){
+    const grid=document.getElementById('rewardsGrid'); if(!grid) return;
+    grid.innerHTML=DB.REWARDS.map(r=>`
+      <div class="card" onclick="openRewardPanel('${r.id}')" style="cursor:pointer">
+        <div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap"><h3 style="margin:0">${r.name}</h3><span class="tag ${r.status==='active'?'green':'grey'}">${r.status==='active'?'Active':'Archivée'}</span></div>
+        <div class="sub" style="margin-bottom:12px">${rewardTypeLabel(r.type)}</div>
+        <div class="kv"><span>Coût</span><b>${r.pointsCost} pts</b></div>
+        <div class="kv"><span>Validité</span><b>${r.validity}</b></div>
+        <div class="kv"><span>Obtentions</span><b>${r.obtainedCount}</b></div>
+        <div class="kv" style="border-bottom:0"><span>Consommations</span><b>${r.redeemedCount}</b></div>
+      </div>`).join('');
+  }
+  function rewardFormBodyHtml(r){
+    const types=[['promo-generic','Code promo générique'],['promo-unique','Code unique'],['qr-onsite','QR à présenter sur place'],['custom','Récompense personnalisée']];
+    return `
+      <div class="field"><label>Nom</label><input type="text" id="rwName" value="${r?r.name:''}" placeholder="Ex. -15% sur la prochaine commande"></div>
+      <div class="field"><label>Type</label><select id="rwType">${types.map(([v,l])=>`<option value="${v}" ${r&&r.type===v?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="row" style="gap:12px">
+        <div class="field" style="flex:1"><label>Coût en points</label><input type="number" id="rwCost" value="${r?r.pointsCost:100}" min="0"></div>
+        <div class="field" style="flex:1"><label>Validité</label><input type="text" id="rwValidity" value="${r?r.validity:'90 jours'}"></div>
+      </div>
+      <div class="field"><label>Statut</label><select id="rwStatus"><option value="active" ${!r||r.status==='active'?'selected':''}>Active</option><option value="archivee" ${r&&r.status==='archivee'?'selected':''}>Archivée</option></select></div>`;
+  }
+  function openRewardPanel(rid){
+    const r=rid?DB.REWARDS.find(x=>x.id===rid):null;
+    openPanel({eyebrow:'Récompense', title:r?'Modifier la récompense':'Créer une récompense', bodyHtml:rewardFormBodyHtml(r),
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveReward(${r?`'${r.id}'`:'null'})">Enregistrer</button>`});
+  }
+  function saveReward(rid){
+    const name=document.getElementById('rwName').value.trim()||'Nouvelle récompense';
+    const type=document.getElementById('rwType').value;
+    const pointsCost=parseInt(document.getElementById('rwCost').value,10)||0;
+    const validity=document.getElementById('rwValidity').value.trim();
+    const status=document.getElementById('rwStatus').value;
+    if(rid){ const r=DB.REWARDS.find(x=>x.id===rid); Object.assign(r,{name,type,pointsCost,validity,status}); toast('Récompense mise à jour'); }
+    else { DB.addReward({id:'r'+String(DB.REWARDS.length+1).padStart(2,'0'), name, type, pointsCost, validity, status, obtainedCount:0, redeemedCount:0}); toast('Récompense créée'); }
+    closePanel(); renderRewards();
+  }
+
+  // ============================================================
+  // CLUB FIDÉLITÉ — Paramétrage > Paramétrages généraux
+  // ============================================================
+  function pointsRuleRowHtml(rule){
+    return `<div class="opt" data-rule-id="${rule.id}">
+      <div style="flex:1;min-width:0"><input type="text" class="prLabel" value="${rule.label}" style="border:0;background:transparent;font-weight:600;padding:0;font-size:13px;color:var(--ink);width:100%"></div>
+      <input type="number" class="prPoints" value="${rule.points}" style="width:70px;margin-right:10px" min="0">
+      <label class="switch"><input type="checkbox" class="prActive" ${rule.active?'checked':''}><span class="slider"></span></label>
+    </div>`;
+  }
+  function addPointsRule(){
+    const rule={id:'pr'+(DB.CLUB.pointsRules.length+1), label:'Nouvelle règle', points:5, active:true};
+    DB.CLUB.pointsRules.push(rule);
+    document.getElementById('pointsRulesList').insertAdjacentHTML('beforeend',pointsRuleRowHtml(rule));
+  }
+  function clubLinkRowHtml(link){
+    return `<div class="opt" data-link-id="${link.id}">
+      <div style="flex:1;min-width:0">
+        <input type="text" class="clLabel" value="${link.label}" placeholder="Libellé" style="border:0;background:transparent;font-weight:600;padding:0;font-size:13px;color:var(--ink);width:100%">
+        <input type="text" class="clUrl" value="${link.url}" placeholder="URL" style="border:0;background:transparent;padding:0;font-size:11.5px;color:var(--muted);width:100%;margin-top:2px">
+      </div>
+      <select class="clPosition" style="width:auto;padding:6px 8px;font-size:12px;margin-right:8px"><option value="header" ${link.position==='header'?'selected':''}>En-tête</option><option value="footer" ${link.position==='footer'?'selected':''}>Pied de page</option></select>
+      <label class="switch"><input type="checkbox" class="clActive" ${link.active?'checked':''}><span class="slider"></span></label>
+      ${link.type==='custom'?`<button type="button" class="rm" onclick="this.closest('[data-link-id]').remove()" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:'<span class="tag grey" style="margin-left:8px;flex:none">Auto</span>'}
+    </div>`;
+  }
+  function addClubLink(){
+    const link={id:'lk'+(DB.CLUB.links.length+1), label:'Nouveau lien', type:'custom', url:'#', position:'footer', order:DB.CLUB.links.length+1, active:true};
+    DB.CLUB.links.push(link);
+    document.getElementById('clubLinksList').insertAdjacentHTML('beforeend',clubLinkRowHtml(link));
+  }
+  function renderClubGeneral(){
+    const nameEl=document.getElementById('clubName'); if(!nameEl) return;
+    nameEl.value=DB.CLUB.name;
+    document.getElementById('clubWelcome').value=DB.CLUB.welcomeMessage;
+    document.getElementById('clubActive').checked=DB.CLUB.active;
+    document.getElementById('pointsRulesList').innerHTML=DB.CLUB.pointsRules.map(pointsRuleRowHtml).join('');
+    document.getElementById('clubLinksList').innerHTML=DB.CLUB.links.map(clubLinkRowHtml).join('');
+  }
+  function saveClubGeneral(){
+    DB.CLUB.name=document.getElementById('clubName').value.trim()||DB.CLUB.name;
+    DB.CLUB.welcomeMessage=document.getElementById('clubWelcome').value.trim();
+    DB.CLUB.active=document.getElementById('clubActive').checked;
+    document.querySelectorAll('#pointsRulesList [data-rule-id]').forEach(el=>{
+      const rule=DB.CLUB.pointsRules.find(r=>r.id===el.dataset.ruleId);
+      if(rule){ rule.label=el.querySelector('.prLabel').value.trim()||rule.label; rule.points=parseInt(el.querySelector('.prPoints').value,10)||0; rule.active=el.querySelector('.prActive').checked; }
+    });
+    document.querySelectorAll('#clubLinksList [data-link-id]').forEach(el=>{
+      const link=DB.CLUB.links.find(l=>l.id===el.dataset.linkId);
+      if(link){ link.label=el.querySelector('.clLabel').value.trim()||link.label; link.url=el.querySelector('.clUrl').value.trim(); link.position=el.querySelector('.clPosition').value; link.active=el.querySelector('.clActive').checked; }
+    });
+    toast('Paramétrages du Club enregistrés');
+  }
+
+  // ============================================================
+  // CLUB FIDÉLITÉ — Paramétrage > Personnalisation du Club
+  // ============================================================
+  function slugifyClubName(){ return (DB.CLUB.name||'club').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-'); }
+  function clubPreviewBodyHtml(){
+    const name=(document.getElementById('clubName')||{}).value||DB.CLUB.name;
+    const primary=(document.getElementById('clubColorPrimary')||{}).value||DB.CLUB.colors.primary;
+    const footer=(document.getElementById('clubFooter')||{}).value||DB.CLUB.footerContent;
+    return `<div style="text-align:center">
+      <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)">Club</div>
+      <div style="font-weight:800;font-size:16px;color:var(--ink);margin:4px 0 14px">${name}</div>
+      <div style="background:${primary};color:#fff;padding:14px;border-radius:12px;margin-bottom:14px">
+        <div style="font-size:11px;opacity:.85">Vos points</div><div style="font-size:24px;font-weight:800">320</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5">${DB.CLUB.welcomeMessage}</div>
+    </div>
+    <div style="margin-top:24px;text-align:center;font-size:10.5px;color:var(--muted)">${footer}</div>`;
+  }
+  function updateClubPreview(){
+    const html=clubPreviewBodyHtml();
+    const m=document.getElementById('clubPreviewMobileBody'); if(m) m.innerHTML=html;
+    const d=document.getElementById('clubPreviewDesktopBody'); if(d) d.innerHTML=html;
+  }
+  function selectClubTemplateVisual(t){
+    document.getElementById('clubTplEssentiel').classList.toggle('selected',t==='essentiel');
+    document.getElementById('clubTplPremium').classList.toggle('selected',t==='premium');
+  }
+  function selectClubTemplate(t){
+    if(t==='premium' && !isPremium()){ openPremiumUpsell('Modèle Premium du Club'); return; }
+    selectClubTemplateVisual(t);
+    document.getElementById('loyalty-settings-appearance').dataset.template=t;
+  }
+  function renderClubAppearance(){
+    const urlEl=document.getElementById('clubPublicUrl'); if(!urlEl) return;
+    urlEl.textContent='https://club.smartqonsumer.com/'+slugifyClubName();
+    document.getElementById('clubStatusBadge').innerHTML=DB.CLUB.active?'<span class="tag green">Actif</span>':'<span class="tag grey">Inactif</span>';
+    document.getElementById('clubColorPrimary').value=DB.CLUB.colors.primary;
+    document.getElementById('clubColorSecondary').value=DB.CLUB.colors.secondary;
+    document.getElementById('clubFooter').value=DB.CLUB.footerContent;
+    document.getElementById('clubTplPremiumLock').innerHTML=isPremium()?'':premiumLockBadge();
+    document.getElementById('loyalty-settings-appearance').dataset.template=DB.CLUB.template;
+    selectClubTemplateVisual(DB.CLUB.template);
+    const tabs=document.getElementById('clubDeviceTabs');
+    if(tabs && !tabs.dataset.wired){
+      tabs.addEventListener('click',e=>{
+        const b=e.target.closest('button'); if(!b) return;
+        tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+        const dev=b.dataset.device;
+        document.getElementById('clubPreviewMobile').style.display=dev==='mobile'?'block':'none';
+        document.getElementById('clubPreviewDesktop').style.display=dev==='desktop'?'block':'none';
+      });
+      tabs.dataset.wired='1';
+    }
+    const section=document.getElementById('loyalty-settings-appearance');
+    if(!section.dataset.inputWired){ section.addEventListener('input',updateClubPreview); section.dataset.inputWired='1'; }
+    updateClubPreview();
+  }
+  function saveClubAppearance(){
+    DB.CLUB.colors.primary=document.getElementById('clubColorPrimary').value;
+    DB.CLUB.colors.secondary=document.getElementById('clubColorSecondary').value;
+    DB.CLUB.footerContent=document.getElementById('clubFooter').value.trim();
+    DB.CLUB.template=document.getElementById('loyalty-settings-appearance').dataset.template||'essentiel';
+    toast('Apparence du Club enregistrée');
+  }
+  renderMembers(); renderRewards(); renderClubGeneral();
 
   // campaigns
   function launch(){
