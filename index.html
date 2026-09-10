@@ -1506,29 +1506,20 @@
 
     <!-- CAMPAIGNS -->
     <section class="screen" id="campaigns-all">
-      <div class="screen-head"><div><div class="eyebrow">Activation</div><h2 style="margin:2px 0 0;color:var(--ink)">Campagnes</h2><p>Touchez le bon segment, par SMS ou e-mail, depuis la plateforme.</p></div></div>
-      <div class="grid cards-2">
-        <div class="card">
-          <h3>Nouvelle campagne</h3><div class="sub">3 réglages, puis envoi.</div>
-          <div class="field"><label>Cible</label>
-            <select id="cSeg"><option>En sommeil (18 contacts)</option><option>Amateurs d'IPA (92)</option><option>Clients taproom (240)</option><option>Toute la base (1 248)</option></select></div>
-          <div class="field"><label>Canal</label>
-            <div class="row"><label class="row" style="gap:6px;font-weight:500"><input type="radio" name="chan" checked> E-mail</label>
-            <label class="row" style="gap:6px;font-weight:500"><input type="radio" name="chan"> SMS</label></div>
-            <small class="muted">Coût d'envoi estimé calculé automatiquement.</small></div>
-          <div class="field"><label>Message</label>
-            <textarea id="cMsg" rows="3">On vous a manqué ! -15% sur votre prochaine commande avec le code WICKE15 🍺</textarea></div>
-          <button class="btn primary" onclick="launch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg>Lancer la campagne</button>
-        </div>
-        <div class="card" style="padding:4px 4px 0">
-          <div style="padding:14px 14px 0"><h3>Historique</h3><div class="sub">Performances récentes</div></div>
-          <table><thead><tr><th>Campagne</th><th>Canal</th><th class="right">Ouv.</th><th class="right">Ventes</th></tr></thead>
-          <tbody id="campRows">
-            <tr><td>Préventes Stout Minuit</td><td><span class="tag teal">E-mail</span></td><td class="right">48 %</td><td class="right">31</td></tr>
-            <tr><td>Réveil « en sommeil »</td><td><span class="tag">SMS</span></td><td class="right">—</td><td class="right">12</td></tr>
-            <tr><td>Newsletter de juin</td><td><span class="tag teal">E-mail</span></td><td class="right">41 %</td><td class="right">27</td></tr>
-          </tbody></table>
-        </div>
+      <div class="screen-head">
+        <div><div class="eyebrow">Campagnes e-mail</div><h2 style="margin:2px 0 0;color:var(--ink)"><span id="campTotal">0</span> campagnes</h2><p>Envoyées, planifiées ou en préparation.</p></div>
+        <button class="btn primary" onclick="startCampaignCreation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une campagne</button>
+      </div>
+      <div class="filters-bar">
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="campSearch" placeholder="Nom de la campagne" oninput="renderCampaigns()"></div>
+        <select id="cfStatus" onchange="renderCampaigns()"><option value="">Statut (tous)</option></select>
+        <select id="cfProduct" onchange="renderCampaigns()"><option value="">Produit (tous)</option></select>
+        <select id="cfList" onchange="renderCampaigns()"><option value="">Liste (toutes)</option></select>
+        <div class="filters-active" id="campFiltersActive"></div>
+      </div>
+      <div class="card" style="padding:4px 4px 0">
+        <table><thead><tr><th data-sort-key="name">Campagne</th><th>Audience</th><th>Produit</th><th>Statut</th><th class="right" data-sort-key="delivered">Destinataires</th><th class="right">Taux d'ouverture</th><th data-sort-key="sentAt">Date d'envoi</th><th></th></tr></thead>
+        <tbody id="campRows"></tbody></table>
       </div>
     </section>
 
@@ -1664,8 +1655,35 @@
         </div>
       </div>
     </section>
-    <section class="screen" id="campaigns-lists"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Listes de contacts</h2></div></div><div class="card" id="ph-campaigns-lists"></div></section>
-    <section class="screen" id="campaigns-new"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Créer une campagne</h2></div></div><div class="card" id="ph-campaigns-new"></div></section>
+    <section class="screen" id="campaigns-lists">
+      <div class="screen-head">
+        <div><div class="eyebrow">Campagnes e-mail</div><h2 style="margin:2px 0 0;color:var(--ink)">Listes de contacts</h2><p>Une liste est un instantané d'audience pour vos campagnes — distincte des segments CRM, qui restent dynamiques.</p></div>
+        <button class="btn primary" onclick="openListBuilder()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une liste de contacts</button>
+      </div>
+      <div class="card" style="padding:4px 4px 0">
+        <table><thead><tr><th>Nom</th><th>Source</th><th class="right">Contacts</th><th>Type</th><th>Dernière actualisation</th><th class="right">Campagnes</th><th>Statut</th><th></th></tr></thead>
+        <tbody id="listRows"></tbody></table>
+      </div>
+    </section>
+    <section class="screen" id="campaigns-new">
+      <div id="campGateView" style="display:none">
+        <div class="screen-head"><div><div class="eyebrow">Campagnes e-mail</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer une campagne</h2></div></div>
+        <div class="premium-gate">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
+          <h4>Le Club Fidélité doit être configuré</h4>
+          <p>Les campagnes s'appuient sur le Club Fidélité (statut, règles de points). Activez-le avant de créer une campagne.</p>
+          <button class="btn primary" onclick="go('loyalty.settings.general')">Configurer le Club Fidélité</button>
+        </div>
+      </div>
+      <div id="campWizardView" style="display:none">
+        <div class="screen-head">
+          <div><div class="eyebrow">Campagnes e-mail</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer une campagne</h2></div>
+          <button class="btn ghost" onclick="cancelCampaignWizard()">Annuler</button>
+        </div>
+        <div class="wizard-steps" id="campWizardSteps"></div>
+        <div id="campWizardBody"></div>
+      </div>
+    </section>
     <section class="screen" id="analytics-overview"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Vue d'ensemble</h2></div></div><div class="card" id="ph-analytics-overview"></div></section>
     <section class="screen" id="analytics-contacts"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Contacts et acquisition</h2></div></div><div class="card" id="ph-analytics-contacts"></div></section>
     <section class="screen" id="analytics-products"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Produits et scans</h2></div></div><div class="card" id="ph-analytics-products"></div></section>
@@ -1700,9 +1718,9 @@
     'loyalty.rewards':{screenId:'loyalty-rewards', title:'Récompenses', group:'loyalty', onEnter:()=>renderRewards()},
     'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', subgroup:'loyalty-settings', onEnter:()=>renderClubAppearance()},
     'loyalty.settings.general':{screenId:'loyalty-settings-general', title:'Paramétrages généraux', group:'loyalty', subgroup:'loyalty-settings', onEnter:()=>renderClubGeneral()},
-    'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns'},
-    'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns'},
-    'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns'},
+    'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns', onEnter:()=>renderCampaigns()},
+    'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns', onEnter:()=>enterCampaignsNew()},
+    'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns', onEnter:()=>renderContactLists()},
     'analytics.overview':{screenId:'analytics-overview', title:"Vue d'ensemble", group:'analytics'},
     'analytics.contacts':{screenId:'analytics-contacts', title:'Contacts et acquisition', group:'analytics'},
     'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics'},
@@ -2797,13 +2815,353 @@
   }
   renderMembers(); renderRewards(); renderClubGeneral();
 
-  // campaigns
-  function launch(){
-    const seg=document.getElementById('cSeg').value; const chan=document.querySelector('input[name=chan]:checked').parentElement.textContent.trim();
-    const tag = chan==='E-mail'?'<span class="tag teal">E-mail</span>':'<span class="tag">SMS</span>';
-    document.getElementById('campRows').insertAdjacentHTML('afterbegin','<tr><td>Campagne — '+seg.split(' (')[0]+'</td><td>'+tag+'</td><td class="right">envoi…</td><td class="right">—</td></tr>');
-    toast('Campagne lancée vers « '+seg.split(' (')[0]+' »');
+  // ============================================================
+  // CAMPAGNES E-MAIL — Listes de contacts
+  // ============================================================
+  function tog(el){ el.classList.toggle('active'); }
+  let manualSelectedIds=new Set();
+  function listSourceFieldsHtml(sourceType){
+    if(sourceType==='segments') return `<div class="field"><label>Segments inclus</label><div class="chips" id="listSegChips">${DB.allSegments().map(s=>`<div class="chip" data-seg="${s.id}" onclick="tog(this);updateListPreview();">${s.name}</div>`).join('')}</div></div>`;
+    if(sourceType==='manual') return `<div class="field"><label>Sélection manuelle</label>
+      <div class="search-input" style="max-width:none;margin-bottom:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="listManualSearch" placeholder="Rechercher un contact" oninput="renderManualPicker()"></div>
+      <div id="manualPickerList" style="max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:6px"></div></div>`;
+    return '';
   }
+  function renderManualPicker(){
+    const q=(document.getElementById('listManualSearch')||{}).value||'';
+    const el=document.getElementById('manualPickerList'); if(!el) return;
+    const list=DB.CONTACTS.filter(c=>matchesSearch(c.name+' '+c.email,q)).slice(0,60);
+    el.innerHTML=list.map(c=>`<label style="display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:12.5px"><input type="checkbox" ${manualSelectedIds.has(c.id)?'checked':''} onchange="toggleManualPick('${c.id}',this.checked)">${c.name} <span class="muted">(${c.email})</span></label>`).join('') || '<p class="muted" style="font-size:12px;padding:8px">Aucun contact trouvé.</p>';
+  }
+  function toggleManualPick(cid,checked){ if(checked) manualSelectedIds.add(cid); else manualSelectedIds.delete(cid); updateListPreview(); }
+  function readListDraft(){
+    const sourceType=document.getElementById('listSourceType').value;
+    return {
+      sourceType,
+      sourceSegmentIds: sourceType==='segments' ? Array.from(document.querySelectorAll('#listSegChips .chip.active')).map(c=>c.dataset.seg) : [],
+      manualContactIds: sourceType==='manual' ? Array.from(manualSelectedIds) : [],
+      excludeNonConsenting: document.getElementById('listExcludeConsent').checked,
+    };
+  }
+  function updateListPreview(){
+    const el=document.getElementById('listPreview'); if(!el) return;
+    const contacts=DB.deriveListContacts(readListDraft());
+    el.innerHTML=`<div class="count">${contacts.length} destinataire${contacts.length>1?'s':''} éligible${contacts.length>1?'s':''}</div>
+      <div class="sample">${contacts.slice(0,5).map(c=>`<div>${c.name} — ${c.email}</div>`).join('')||'<div>Aucun contact éligible pour le moment.</div>'}</div>`;
+  }
+  function openListBuilder(){
+    manualSelectedIds=new Set();
+    const bodyHtml=`
+      <div class="field"><label>Nom de la liste</label><input type="text" id="listName" placeholder="Ex. Clients VIP printemps"></div>
+      <div class="field"><label>Description</label><input type="text" id="listDesc" placeholder="À quoi sert cette liste ?"></div>
+      <div class="field"><label>Source</label>
+        <select id="listSourceType" onchange="document.getElementById('listSourceFields').innerHTML=listSourceFieldsHtml(this.value); if(this.value==='manual') renderManualPicker(); updateListPreview();">
+          <option value="all">Toute la base Clients</option><option value="club">Membres du Club</option><option value="segments">Un ou plusieurs segments</option><option value="manual">Sélection manuelle</option>
+        </select></div>
+      <div id="listSourceFields">${listSourceFieldsHtml('all')}</div>
+      <div class="opt"><div><b>Exclure les contacts sans consentement</b></div><label class="switch"><input type="checkbox" id="listExcludeConsent" checked onchange="updateListPreview()"><span class="slider"></span></label></div>
+      <div class="segment-preview" id="listPreview"></div>`;
+    openPanel({eyebrow:'Liste de contacts', title:'Créer une liste de contacts', bodyHtml, wide:true,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveContactList()">Créer la liste</button>`});
+    updateListPreview();
+  }
+  function saveContactList(){
+    const name=document.getElementById('listName').value.trim()||'Nouvelle liste';
+    const description=document.getElementById('listDesc').value.trim();
+    const draft=readListDraft();
+    DB.addContactList(Object.assign({id:'cl'+String(DB.CONTACT_LISTS.length+1).padStart(2,'0'), name, description, createdAt:new Date(), lastRefreshedAt:new Date(), campaignIds:[]},draft));
+    toast('Liste créée');
+    closePanel(); renderContactLists();
+  }
+  function renderContactLists(){
+    const rows=document.getElementById('listRows'); if(!rows) return;
+    const sourceLabel={all:'Toute la base',club:'Membres du Club',segments:'Segments',manual:'Sélection manuelle'};
+    rows.innerHTML=DB.CONTACT_LISTS.map(l=>{
+      const contacts=DB.deriveListContacts(l);
+      return `<tr onclick="openListDetail('${l.id}')">
+        <td><b style="color:var(--ink)">${l.name}</b><br><span class="muted" style="font-size:11.5px">${l.description}</span></td>
+        <td>${sourceLabel[l.sourceType]}</td>
+        <td class="right">${contacts.length}</td>
+        <td class="muted">Liste (instantané)</td>
+        <td>${fmtDateFR(l.lastRefreshedAt)}</td>
+        <td class="right">${l.campaignIds.length}</td>
+        <td><span class="tag green">Active</span></td>
+        <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
+    }).join('');
+  }
+  function openListDetail(lid){
+    const l=DB.listById(lid); const contacts=DB.deriveListContacts(l);
+    const sourceLabel={all:'Toute la base Clients',club:'Membres du Club',segments:'Un ou plusieurs segments',manual:'Sélection manuelle'};
+    const bodyHtml=`
+      <div class="kv"><span>Description</span><b>${l.description||'—'}</b></div>
+      <div class="kv"><span>Source</span><b>${sourceLabel[l.sourceType]}</b></div>
+      <div class="kv"><span>Créée le</span><b>${fmtDateFR(l.createdAt)}</b></div>
+      <div class="kv"><span>Dernière actualisation</span><b>${fmtDateFR(l.lastRefreshedAt)}</b></div>
+      <div class="kv" style="border-bottom:0"><span>Destinataires actuels</span><b>${contacts.length}</b></div>
+      <p class="muted" style="font-size:11.5px;margin-top:10px">Une liste dynamique (base/Club/segments) est recalculée à chaque consultation. La liste de destinataires réellement envoyée à une campagne, elle, est figée au moment de l'envoi.</p>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Aperçu (5 premiers)</h4>
+      <div class="timeline">${contacts.slice(0,5).map(c=>`<div class="t"><b>${c.name}</b><br><small>${c.email}</small></div>`).join('')||'<div class="t"><b>Aucun contact</b></div>'}</div>`;
+    openPanel({eyebrow:'Liste de contacts', title:l.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+  }
+
+  // ============================================================
+  // CAMPAGNES E-MAIL — Toutes les campagnes
+  // ============================================================
+  const CAMP_STATUS_LABELS={brouillon:'Brouillon','audience-a-definir':'Audience à définir',prete:'Prête',planifiee:'Planifiée','en-cours':'En cours',sent:'Envoyée',annulee:'Annulée',echec:'Échec'};
+  function campStatusTag(s){ const cls={sent:'green',planifiee:'teal','en-cours':'teal'}[s]||'grey'; return `<span class="tag ${cls}">${CAMP_STATUS_LABELS[s]||s}</span>`; }
+  const campState={sort:{key:'name',dir:'asc'}};
+  function populateCampFilterSelects(){
+    const statusSel=document.getElementById('cfStatus');
+    if(statusSel && !statusSel.dataset.filled){ Object.entries(CAMP_STATUS_LABELS).forEach(([v,l])=>statusSel.insertAdjacentHTML('beforeend',`<option value="${v}">${l}</option>`)); statusSel.dataset.filled='1'; }
+    const prodSel=document.getElementById('cfProduct');
+    if(prodSel && !prodSel.dataset.filled){ DB.PRODUCTS.forEach(p=>prodSel.insertAdjacentHTML('beforeend',`<option value="${p.id}">${p.name}</option>`)); prodSel.dataset.filled='1'; }
+    const listSel=document.getElementById('cfList');
+    if(listSel && !listSel.dataset.filled){ DB.CONTACT_LISTS.forEach(l=>listSel.insertAdjacentHTML('beforeend',`<option value="${l.id}">${l.name}</option>`)); listSel.dataset.filled='1'; }
+  }
+  function campFiltersActive(){ return {status:document.getElementById('cfStatus').value, product:document.getElementById('cfProduct').value, list:document.getElementById('cfList').value}; }
+  function filteredCampaigns(){
+    const q=document.getElementById('campSearch').value;
+    const f=campFiltersActive();
+    let list=DB.CAMPAIGNS.filter(c=>matchesSearch(c.name,q) && (!f.status||c.status===f.status) && (!f.product||c.productId===f.product) && (!f.list||c.listId===f.list));
+    const {key,dir}=campState.sort;
+    list.sort((a,b)=>{
+      let av,bv;
+      if(key==='delivered'){ av=a.stats.delivered; bv=b.stats.delivered; }
+      else if(key==='sentAt'){ av=a.sentAt?a.sentAt.getTime():0; bv=b.sentAt?b.sentAt.getTime():0; }
+      else { av=a.name; bv=b.name; }
+      if(av<bv) return dir==='asc'?-1:1; if(av>bv) return dir==='asc'?1:-1; return 0;
+    });
+    return list;
+  }
+  function renderCampFilterChips(){
+    const f=campFiltersActive();
+    const el=document.getElementById('campFiltersActive');
+    const entries=[];
+    if(f.status) entries.push(['Statut',CAMP_STATUS_LABELS[f.status],'cfStatus']);
+    if(f.product) entries.push(['Produit',(DB.productById(f.product)||{}).name,'cfProduct']);
+    if(f.list) entries.push(['Liste',(DB.listById(f.list)||{}).name,'cfList']);
+    if(!entries.length){ el.innerHTML=''; return; }
+    el.innerHTML=entries.map(([label,val,id])=>`<span class="filter-chip">${label} : ${val}<button type="button" onclick="document.getElementById('${id}').value='';renderCampaigns()">✕</button></span>`).join('');
+  }
+  function renderCampaigns(){
+    populateCampFilterSelects();
+    const list=filteredCampaigns();
+    document.getElementById('campTotal').textContent=list.length;
+    document.getElementById('campRows').innerHTML = list.length ? list.map(c=>{
+      const l=DB.listById(c.listId); const p=c.productId?DB.productById(c.productId):null;
+      const openRate=c.stats.delivered>0?Math.round(c.stats.opened/c.stats.delivered*100):null;
+      return `<tr onclick="openCampaignDetail('${c.id}')">
+        <td><b style="color:var(--ink)">${c.name}</b></td>
+        <td>${l?l.name:'—'}</td>
+        <td>${p?p.name:'—'}</td>
+        <td>${campStatusTag(c.status)}</td>
+        <td class="right">${c.stats.delivered||'—'}</td>
+        <td class="right">${openRate==null?'—':openRate+' %'}</td>
+        <td>${c.sentAt?fmtDateFR(c.sentAt):(c.scheduledAt?fmtDateFR(c.scheduledAt)+' (planifiée)':'—')}</td>
+        <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
+    }).join('') : `<tr><td colspan="8">${emptyStateHtml({icon:'search',title:'Aucune campagne trouvée'})}</td></tr>`;
+    renderCampFilterChips();
+    const thead=document.querySelector('#campaigns-all thead');
+    if(thead) wireSortable(thead, campState.sort, renderCampaigns);
+  }
+  function openCampaignDetail(cid){
+    const c=DB.campaignById(cid); const l=DB.listById(c.listId); const p=c.productId?DB.productById(c.productId):null;
+    const openRate=c.stats.delivered>0?Math.round(c.stats.opened/c.stats.delivered*100):null;
+    const bodyHtml=`
+      <div class="kv"><span>Statut</span><b>${CAMP_STATUS_LABELS[c.status]||c.status}</b></div>
+      <div class="kv"><span>Audience</span><b>${l?l.name:'—'}</b></div>
+      <div class="kv"><span>Produit</span><b>${p?p.name:'—'}</b></div>
+      <div class="kv"><span>Objet</span><b>${c.subject}</b></div>
+      <div class="kv"><span>Destinataires</span><b>${c.stats.delivered||'—'}</b></div>
+      <div class="kv"><span>Taux d'ouverture</span><b>${openRate==null?'—':openRate+' %'}</b></div>
+      <div class="kv" style="border-bottom:0"><span>Date d'envoi</span><b>${c.sentAt?fmtDateFR(c.sentAt):(c.scheduledAt?fmtDateFR(c.scheduledAt):'—')}</b></div>`;
+    openPanel({eyebrow:'Campagne', title:c.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+  }
+
+  // ============================================================
+  // CAMPAGNES E-MAIL — Assistant de création (5 étapes)
+  // ============================================================
+  let campDraft=null, campStep=1;
+  const CAMP_STEP_LABELS=['Informations','Audience','Contenu','Planification','Vérification'];
+  function renderWizardSteps(){
+    document.getElementById('campWizardSteps').innerHTML=CAMP_STEP_LABELS.map((label,i)=>{
+      const n=i+1, cls=n<campStep?'done':(n===campStep?'current':'');
+      return `<div class="ws ${cls}"><div class="dot">${n<campStep?'✓':n}</div><span>${label}</span></div>${i<CAMP_STEP_LABELS.length-1?'<div class="wl"></div>':''}`;
+    }).join('');
+  }
+  function readCurrentStepIntoDraft(){
+    if(campStep===1){ campDraft.name=(document.getElementById('cwName')||{}).value||''; campDraft.productId=(document.getElementById('cwProduct')||{}).value||''; }
+    else if(campStep===2){ campDraft.listId=(document.getElementById('cwList')||{}).value||''; }
+    else if(campStep===3){
+      campDraft.subject=(document.getElementById('cwSubject')||{}).value||'';
+      campDraft.preheader=(document.getElementById('cwPreheader')||{}).value||'';
+      campDraft.shortDesc=(document.getElementById('cwShortDesc')||{}).value||'';
+      campDraft.longDesc=(document.getElementById('cwLongDesc')||{}).value||'';
+      campDraft.ctaLabel=(document.getElementById('cwCtaLabel')||{}).value||'Découvrir';
+      campDraft.ctaType=(document.getElementById('cwCtaType')||{}).value||'club';
+      campDraft.ctaTarget=(document.getElementById('cwCtaTarget')||{}).value||'';
+    } else if(campStep===4){
+      campDraft.sendMode=(document.getElementById('cwSendMode')||{}).value||'now';
+      campDraft.scheduledAt=(document.getElementById('cwScheduledAt')||{}).value||'';
+    }
+  }
+  function step1Html(){
+    return `<div class="card" style="max-width:560px">
+      <h3>Informations générales</h3>
+      <div class="field"><label>Nom de la campagne</label><input type="text" id="cwName" value="${campDraft.name}" placeholder="Ex. Relance printemps"></div>
+      <div class="field"><label>Produit associé <small>(optionnel)</small></label><select id="cwProduct"><option value="">Aucun</option>${DB.PRODUCTS.map(p=>`<option value="${p.id}" ${campDraft.productId===p.id?'selected':''}>${p.name}</option>`).join('')}</select></div>
+      <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="wizardNext()">Suivant</button></div>
+    </div>`;
+  }
+  function step2Html(){
+    return `<div class="card" style="max-width:560px">
+      <h3>Audience</h3><div class="sub">Choisissez une liste de contacts existante.</div>
+      <div class="field"><label>Liste de contacts</label><select id="cwList" onchange="updateAudiencePreview()"><option value="">Sélectionner une liste</option>${DB.CONTACT_LISTS.map(l=>`<option value="${l.id}" ${campDraft.listId===l.id?'selected':''}>${l.name}</option>`).join('')}</select>
+        <p class="muted" style="font-size:12px;margin-top:6px">Pas de liste adaptée ? <a onclick="go('campaigns.lists')" style="color:var(--accent);font-weight:700;cursor:pointer">Créer une liste →</a></p></div>
+      <div class="segment-preview" id="cwAudiencePreview"></div>
+      <div class="row" style="justify-content:space-between;margin-top:8px"><button class="btn ghost" onclick="wizardBack()">Précédent</button><button class="btn primary" onclick="wizardNext()">Suivant</button></div>
+    </div>`;
+  }
+  function updateAudiencePreview(){
+    const listId=document.getElementById('cwList').value;
+    const el=document.getElementById('cwAudiencePreview');
+    if(!listId){ el.innerHTML=''; return; }
+    const contacts=DB.deriveListContacts(DB.listById(listId));
+    el.innerHTML=`<div class="count">${contacts.length} destinataires éligibles</div><div class="sample">${contacts.slice(0,3).map(c=>`<div>${c.name}</div>`).join('')}</div>`;
+  }
+  function step3Html(){
+    return `<div class="phone-wrap">
+      <div class="card" style="flex:1;min-width:340px;max-width:520px">
+        <h3>Contenu</h3>
+        <div class="field"><label>Titre</label><input type="text" id="cwTitle" value="${campDraft.name||''}"></div>
+        <div class="field"><label>Objet de l'e-mail</label><input type="text" id="cwSubject" value="${campDraft.subject}"></div>
+        <div class="field"><label>Préheader</label><input type="text" id="cwPreheader" value="${campDraft.preheader}"></div>
+        <div class="field"><label>Description courte</label><input type="text" id="cwShortDesc" value="${campDraft.shortDesc}"></div>
+        <div class="field"><label>Description longue</label><textarea id="cwLongDesc" rows="3">${campDraft.longDesc}</textarea></div>
+        <div class="field"><label>Image d'en-tête</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image d'en-tête (démo)</div></div>
+        <div class="field"><label>Image de contenu</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image de contenu (démo)</div></div>
+        <div class="row" style="gap:12px">
+          <div class="field" style="flex:1"><label>Bouton d'action</label><input type="text" id="cwCtaLabel" value="${campDraft.ctaLabel}"></div>
+          <div class="field" style="flex:1"><label>Destination</label><select id="cwCtaType">
+            <option value="landing" ${campDraft.ctaType==='landing'?'selected':''}>Landing Page</option>
+            <option value="product" ${campDraft.ctaType==='product'?'selected':''}>Produit</option>
+            <option value="club" ${campDraft.ctaType==='club'?'selected':''}>Club Fidélité</option>
+            <option value="external" ${campDraft.ctaType==='external'?'selected':''}>URL externe</option>
+          </select></div>
+        </div>
+        <div class="field"><label>URL <small>(si destination externe)</small></label><input type="text" id="cwCtaTarget" value="${campDraft.ctaTarget}" placeholder="https://…"></div>
+        <div class="row" style="justify-content:space-between;margin-top:8px"><button class="btn ghost" onclick="wizardBack()">Précédent</button><button class="btn primary" onclick="wizardNext()">Suivant</button></div>
+      </div>
+      <div style="flex:1;min-width:300px">
+        <div class="device-tabs" id="cwDeviceTabs" style="margin-bottom:14px">
+          <button type="button" class="active" data-device="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Mobile</button>
+          <button type="button" data-device="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>Ordinateur</button>
+        </div>
+        <div id="cwPreviewMobile" class="phone"><div class="screen2"><div class="ph-body" id="cwPreviewMobileBody"></div></div></div>
+        <div id="cwPreviewDesktop" style="display:none; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); max-width:480px">
+          <div class="device-bar"><div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div><div></div></div>
+          <div style="padding:28px" id="cwPreviewDesktopBody"></div>
+        </div>
+      </div>
+    </div>`;
+  }
+  function updateCampPreview(){
+    const title=(document.getElementById('cwTitle')||{}).value||'';
+    const shortDesc=(document.getElementById('cwShortDesc')||{}).value||'';
+    const longDesc=(document.getElementById('cwLongDesc')||{}).value||'';
+    const ctaLabel=(document.getElementById('cwCtaLabel')||{}).value||'Découvrir';
+    const html=`<div style="font-weight:800;font-size:15px;color:var(--ink)">${title}</div>
+      <div style="font-size:12px;color:var(--muted);margin:6px 0 10px">${shortDesc}</div>
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;margin-bottom:14px">${longDesc}</div>
+      <div style="background:var(--accent);color:#fff;text-align:center;padding:10px;border-radius:9px;font-size:12.5px;font-weight:700">${ctaLabel}</div>`;
+    const m=document.getElementById('cwPreviewMobileBody'); if(m) m.innerHTML=html;
+    const d=document.getElementById('cwPreviewDesktopBody'); if(d) d.innerHTML=html;
+  }
+  function wireCampPreview(){
+    document.getElementById('campWizardBody').addEventListener('input',updateCampPreview);
+    const tabs=document.getElementById('cwDeviceTabs');
+    if(tabs) tabs.addEventListener('click',e=>{
+      const b=e.target.closest('button'); if(!b) return;
+      tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+      const dev=b.dataset.device;
+      document.getElementById('cwPreviewMobile').style.display=dev==='mobile'?'block':'none';
+      document.getElementById('cwPreviewDesktop').style.display=dev==='desktop'?'block':'none';
+    });
+    updateCampPreview();
+  }
+  function step4Html(){
+    return `<div class="card" style="max-width:480px">
+      <h3>Planification</h3>
+      <div class="field"><label>Envoi</label>
+        <select id="cwSendMode" onchange="document.getElementById('cwScheduleField').style.display=this.value==='later'?'flex':'none'">
+          <option value="now" ${campDraft.sendMode==='now'?'selected':''}>Envoyer immédiatement après validation</option>
+          <option value="later" ${campDraft.sendMode==='later'?'selected':''}>Planifier l'envoi</option>
+        </select></div>
+      <div class="field" id="cwScheduleField" style="display:${campDraft.sendMode==='later'?'flex':'none'}"><label>Date et heure d'envoi</label><input type="datetime-local" id="cwScheduledAt" value="${campDraft.scheduledAt}"></div>
+      <div class="row" style="justify-content:space-between;margin-top:8px"><button class="btn ghost" onclick="wizardBack()">Précédent</button><button class="btn primary" onclick="wizardNext()">Suivant</button></div>
+    </div>`;
+  }
+  function step5Html(){
+    const list=campDraft.listId?DB.listById(campDraft.listId):null;
+    const contacts=list?DB.deriveListContacts(list):[];
+    const product=campDraft.productId?DB.productById(campDraft.productId):null;
+    return `<div class="card" style="max-width:560px">
+      <h3>Vérification</h3>
+      <div class="kv"><span>Nom</span><b>${campDraft.name}</b></div>
+      <div class="kv"><span>Produit</span><b>${product?product.name:'—'}</b></div>
+      <div class="kv"><span>Audience</span><b>${list?list.name:'—'} (${contacts.length} destinataires)</b></div>
+      <div class="kv"><span>Objet</span><b>${campDraft.subject||campDraft.name}</b></div>
+      <div class="kv"><span>Bouton d'action</span><b>${campDraft.ctaLabel} → ${campDraft.ctaType}</b></div>
+      <div class="kv" style="border-bottom:0"><span>Envoi</span><b>${campDraft.sendMode==='now'?'Immédiat':('Planifié · '+(campDraft.scheduledAt||'—'))}</b></div>
+      <div class="row" style="justify-content:space-between;margin-top:16px"><button class="btn ghost" onclick="wizardBack()">Précédent</button><button class="btn primary" onclick="finishCampaignWizard()">${campDraft.sendMode==='now'?'Envoyer la campagne':'Planifier la campagne'}</button></div>
+    </div>`;
+  }
+  function renderWizardStepBody(){
+    const body=document.getElementById('campWizardBody');
+    body.innerHTML = campStep===1?step1Html() : campStep===2?step2Html() : campStep===3?step3Html() : campStep===4?step4Html() : step5Html();
+    if(campStep===2) updateAudiencePreview();
+    if(campStep===3) wireCampPreview();
+  }
+  function wizardNext(){
+    readCurrentStepIntoDraft();
+    if(campStep===1 && !campDraft.name){ toast('Le nom de la campagne est requis.'); return; }
+    if(campStep===2 && !campDraft.listId){ toast('Choisissez une liste de contacts.'); return; }
+    campStep=Math.min(5,campStep+1);
+    renderWizardSteps(); renderWizardStepBody();
+  }
+  function wizardBack(){ readCurrentStepIntoDraft(); campStep=Math.max(1,campStep-1); renderWizardSteps(); renderWizardStepBody(); }
+  function cancelCampaignWizard(){ campDraft=null; go('campaigns.all'); }
+  function finishCampaignWizard(){
+    readCurrentStepIntoDraft();
+    const list=DB.listById(campDraft.listId);
+    const recipientIds=DB.deriveListContacts(list).map(c=>c.id);
+    const status=campDraft.sendMode==='now'?'sent':'planifiee';
+    const newCamp={
+      id:'cmp'+String(DB.CAMPAIGNS.length+1).padStart(2,'0'), name:campDraft.name, status,
+      productId:campDraft.productId||null, listId:campDraft.listId,
+      subject:campDraft.subject||campDraft.name, preheader:campDraft.preheader, shortDesc:campDraft.shortDesc, longDesc:campDraft.longDesc,
+      headerImg:null, contentImg:null, ctaType:campDraft.ctaType, ctaUrl:campDraft.ctaTarget,
+      scheduledAt: status==='planifiee' ? new Date(campDraft.scheduledAt||Date.now()) : null,
+      sentAt: status==='sent' ? new Date() : null,
+      recipientSnapshotIds: status==='sent' ? recipientIds : [],
+      stats: status==='sent' ? {delivered:recipientIds.length, opened:0, clicked:0} : {delivered:0,opened:0,clicked:0},
+    };
+    DB.addCampaign(newCamp);
+    if(status==='sent') recipientIds.forEach(cid=>{ const c=DB.contactById(cid); if(c) c.campaignsReceivedIds.push(newCamp.id); });
+    list.campaignIds.push(newCamp.id);
+    campDraft=null;
+    toast(status==='sent'?'Campagne envoyée':'Campagne planifiée');
+    go('campaigns.all');
+  }
+  function startCampaignCreation(){ campDraft=null; go('campaigns.new'); }
+  function enterCampaignsNew(){
+    const gate=document.getElementById('campGateView'), wiz=document.getElementById('campWizardView');
+    if(!DB.CLUB.active){ gate.style.display='block'; wiz.style.display='none'; return; }
+    gate.style.display='none'; wiz.style.display='block';
+    if(!campDraft){ campDraft={name:'',productId:'',listId:'',subject:'',preheader:'',shortDesc:'',longDesc:'',ctaLabel:'Découvrir',ctaType:'club',ctaTarget:'',sendMode:'now',scheduledAt:''}; campStep=1; }
+    renderWizardSteps(); renderWizardStepBody();
+  }
+  renderContactLists(); renderCampaigns();
 
   // landing
   function joinClub(){
