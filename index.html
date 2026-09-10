@@ -34,7 +34,7 @@
   .app{display:flex; min-height:100vh;}
 
   /* Sidebar */
-  .sidebar{width:244px; background:var(--color-bg-sidebar); color:var(--color-text-secondary); border-right:1px solid var(--color-border); display:flex; flex-direction:column; padding:20px 14px; position:sticky; top:0; height:100vh;}
+  .sidebar{width:244px; background:var(--color-bg-sidebar); color:var(--color-text-secondary); border-right:1px solid var(--color-border); display:flex; flex-direction:column; padding:20px 14px; position:sticky; top:0; height:100vh; overflow-y:auto;}
   .brand{display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px;}
   .brand b{font-size:17px; color:var(--color-text-primary); letter-spacing:.2px}
   .brand span{font-size:11px; color:var(--color-text-muted); letter-spacing:.6px; text-transform:uppercase}
@@ -44,6 +44,17 @@
   .nav button.active{background:var(--color-selected-surface); border-left-color:var(--color-selected-indicator); color:var(--color-brand-700); font-weight:600}
   .nav button svg{width:18px;height:18px;flex:0 0 18px;stroke-width:1.9}
   .nav .sep{margin:12px 10px 6px; font-size:10.5px; letter-spacing:.7px; text-transform:uppercase; color:var(--color-text-placeholder)}
+  /* ===== Sidebar nav v2 (collapsible groups) ===== */
+  .nav-group{display:flex; flex-direction:column}
+  .nav-group-head{justify-content:flex-start}
+  .nav-group-head .chev{width:13px!important; height:13px!important; flex:0 0 13px!important; margin-left:auto; stroke-width:2.2; transition:transform .18s ease}
+  .nav-group.open>.nav-group-head .chev{transform:rotate(90deg)}
+  .nav-group.open>.nav-group-head{color:var(--color-text-primary)}
+  .nav-sub{max-height:0; overflow:hidden; transition:max-height .2s ease}
+  .nav-group.open>.nav-sub{max-height:420px}
+  .nav-sub-item{padding-left:33px!important; font-size:12.5px!important}
+  .nav-group .nav-group .nav-group-head{padding-left:33px!important; font-size:12.5px!important}
+  .nav-group .nav-group .nav-sub-item{padding-left:54px!important}
   .side-foot{margin-top:auto; padding:12px 10px 2px; font-size:11px; color:var(--color-text-muted); border-top:1px solid var(--color-border)}
 
   /* Main */
@@ -129,6 +140,69 @@
   .filter-chip{display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--line); padding:5px 6px 5px 10px; border-radius:999px; font-size:11.5px; font-weight:600; color:var(--ink)}
   .filter-chip button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;padding:2px;display:grid;place-items:center}
   .filter-reset{border:0; background:transparent; color:var(--accent); font-weight:700; font-size:12px; cursor:pointer; font-family:inherit; padding:4px 6px}
+
+  /* ===== Shared: search, sortable th, pagination, empty-state, premium-lock, dropdown, device-tabs, wizard, rule-builder ===== */
+  .search-input{position:relative; flex:1; min-width:180px; max-width:320px}
+  .search-input svg{position:absolute; left:11px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--muted); pointer-events:none}
+  .search-input input{padding-left:34px!important}
+  th[data-sort-key]{cursor:pointer; user-select:none; white-space:nowrap}
+  th[data-sort-key] .sort-ic{display:inline-block; width:10px; margin-left:3px; opacity:.35}
+  th[data-sort-key].sorted .sort-ic{opacity:1}
+  th[data-sort-key].sorted.desc .sort-ic{transform:rotate(180deg)}
+  .pagination{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 4px 6px; font-size:12.5px; color:var(--muted); flex-wrap:wrap}
+  .pagination .pg-btns{display:flex; gap:6px; align-items:center}
+  .pagination button{border:1px solid var(--line); background:#fff; color:var(--ink); width:30px; height:30px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:12.5px; font-weight:600}
+  .pagination button:disabled{opacity:.4; cursor:default}
+  .pagination button.active{background:var(--accent); border-color:var(--accent); color:#fff}
+  .empty-state{display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:48px 20px; color:var(--muted)}
+  .empty-state .ic{width:44px;height:44px;border-radius:12px;background:var(--lav);display:grid;place-items:center;color:var(--accent);margin-bottom:14px}
+  .empty-state .ic svg{width:22px;height:22px}
+  .empty-state h4{margin:0 0 6px; color:var(--ink); font-size:14.5px}
+  .empty-state p{margin:0 0 14px; font-size:12.5px; max-width:340px; line-height:1.55}
+  .premium-lock{display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:800; letter-spacing:.3px; text-transform:uppercase; background:var(--lav3); color:var(--accentd); padding:3px 8px; border-radius:999px}
+  .premium-lock svg{width:11px;height:11px}
+  .premium-gate{display:flex; flex-direction:column; align-items:center; text-align:center; padding:40px 24px; border:1px dashed var(--line); border-radius:14px; background:var(--lav3)}
+  .premium-gate .ic{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--accentd);margin-bottom:12px;box-shadow:var(--shadow)}
+  .premium-gate h4{margin:0 0 6px; color:var(--ink)}
+  .premium-gate p{margin:0 0 16px; font-size:12.5px; color:var(--muted); max-width:360px}
+  .dropdown-wrap{position:relative; display:inline-block}
+  .dropdown-menu{position:absolute; top:calc(100% + 6px); right:0; background:#fff; border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow-xl); padding:6px; min-width:210px; z-index:15; display:none}
+  .dropdown-menu.open{display:block}
+  .dropdown-menu button{display:flex; align-items:center; gap:10px; width:100%; border:0; background:transparent; text-align:left; padding:9px 10px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:13px; color:var(--ink)}
+  .dropdown-menu button:hover{background:var(--lav)}
+  .dropdown-menu button svg{width:16px;height:16px;color:var(--accent);flex:none}
+  .device-tabs{display:inline-flex; background:var(--lav2); border-radius:10px; padding:3px; gap:2px}
+  .device-tabs button{border:0; background:transparent; color:var(--muted); padding:6px 10px; border-radius:7px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600}
+  .device-tabs button.active{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(18,22,26,.14)}
+  .device-tabs svg{width:14px;height:14px}
+  .wizard-steps{display:flex; align-items:center; margin-bottom:22px}
+  .wizard-steps .ws{display:flex; align-items:center; gap:9px; color:var(--muted); font-size:12.5px; font-weight:600}
+  .wizard-steps .ws .dot{width:26px;height:26px;border-radius:50%;background:var(--lav2);color:var(--muted);display:grid;place-items:center;font-size:11.5px;font-weight:800;flex:none}
+  .wizard-steps .ws.current .dot{background:var(--accent); color:#fff}
+  .wizard-steps .ws.current{color:var(--ink)}
+  .wizard-steps .ws.done .dot{background:var(--ok); color:#fff}
+  .wizard-steps .ws.done{color:var(--ink)}
+  .wizard-steps .wl{flex:1; height:2px; background:var(--line); margin:0 10px}
+  .wizard-step{display:none}
+  .wizard-step.active{display:block}
+  .rule-group{border:1px solid var(--line); border-radius:12px; padding:14px; background:var(--lav3)}
+  .rule-group + .rule-group{margin-top:12px}
+  .rule-op-toggle{display:inline-flex; background:#fff; border:1px solid var(--line); border-radius:8px; padding:2px; gap:2px; margin-bottom:10px}
+  .rule-op-toggle button{border:0; background:transparent; padding:5px 12px; border-radius:6px; cursor:pointer; font-family:inherit; font-size:11.5px; font-weight:700; color:var(--muted)}
+  .rule-op-toggle button.active{background:var(--accent); color:#fff}
+  .rule-row{display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap}
+  .rule-row select, .rule-row input{width:auto; flex:1; min-width:120px; padding:8px 10px; font-size:12.5px}
+  .rule-row .rm{border:0; background:transparent; color:var(--muted); cursor:pointer; width:26px;height:26px;border-radius:7px;flex:none;display:grid;place-items:center}
+  .rule-row .rm:hover{background:var(--lav2); color:var(--ink)}
+  .rule-add{border:1px dashed var(--line); background:transparent; color:var(--accentd); font-weight:600; font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer; font-family:inherit}
+  .drawer.wide{width:640px}
+  .segment-preview{background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; margin-top:14px}
+  .segment-preview .count{font-size:26px; font-weight:800; color:var(--ink)}
+  .segment-preview .sample{margin-top:10px; display:flex; flex-direction:column; gap:6px}
+  .segment-preview .sample div{font-size:12px; color:var(--muted)}
+  .badge-status{display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px}
+  .badge-status.on{background:var(--okbg); color:var(--ok)}
+  .badge-status.off{background:var(--color-neutral-100); color:var(--muted)}
 
   .kpi-info{margin-left:auto; color:var(--muted); cursor:help; position:relative; display:inline-flex; background:transparent; border:0; padding:0}
   .kpi-info svg{width:14px;height:14px}
@@ -1082,15 +1156,60 @@
   <aside class="sidebar">
     <div class="brand demo"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" style="height:20px;width:auto;display:block;align-self:center"></div>
     <nav class="nav" id="nav">
-      <button data-s="dash" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Tableau de bord</button>
-      <button data-s="clients"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 8.2a3 3 0 0 1 0 5.6"/><path d="M18 20a5 5 0 0 0-3-4.6"/></svg>Clients</button>
-      <button data-s="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>Produits</button>
-      <button data-s="qr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M20 14v0M17 20h4M20 17v4"/></svg>QR Codes</button>
-      <button data-s="editor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Personnaliser la landing</button>
-      <button data-s="campaigns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg>Campagnes</button>
-      <button data-s="loyalty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg>Fidélité</button>
-      <div class="sep">Côté consommateur</div>
-      <button data-s="landing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>Landing de scan</button>
+      <button data-route="dash" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Tableau de bord</button>
+
+      <div class="nav-group" data-group="contacts">
+        <button class="nav-group-head" data-group-toggle="contacts" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 8.2a3 3 0 0 1 0 5.6"/><path d="M18 20a5 5 0 0 0-3-4.6"/></svg><span>Contacts</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="nav-sub">
+          <button class="nav-sub-item" data-route="contacts.all">Tous les contacts</button>
+          <button class="nav-sub-item" data-route="contacts.segments">Segments</button>
+        </div>
+      </div>
+
+      <div class="nav-group" data-group="products">
+        <button class="nav-group-head" data-group-toggle="products" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg><span>Produits</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="nav-sub">
+          <button class="nav-sub-item" data-route="products.all">Tous les produits</button>
+          <button class="nav-sub-item" data-route="products.landing">Landing Pages</button>
+          <button class="nav-sub-item" data-route="products.qr">QR Codes</button>
+        </div>
+      </div>
+
+      <div class="nav-group" data-group="loyalty">
+        <button class="nav-group-head" data-group-toggle="loyalty" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg><span>Club Fidélité</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="nav-sub">
+          <button class="nav-sub-item" data-route="loyalty.members">Membres</button>
+          <button class="nav-sub-item" data-route="loyalty.rewards">Récompenses</button>
+          <div class="nav-group" data-group="loyalty-settings">
+            <button class="nav-group-head" data-group-toggle="loyalty-settings" aria-expanded="false"><span>Paramétrage</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+            <div class="nav-sub">
+              <button class="nav-sub-item" data-route="loyalty.settings.appearance">Personnalisation du Club</button>
+              <button class="nav-sub-item" data-route="loyalty.settings.general">Paramétrages généraux</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-group" data-group="campaigns">
+        <button class="nav-group-head" data-group-toggle="campaigns" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Campagnes e-mail</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="nav-sub">
+          <button class="nav-sub-item" data-route="campaigns.all">Toutes les campagnes</button>
+          <button class="nav-sub-item" data-route="campaigns.lists">Listes de contacts</button>
+        </div>
+      </div>
+
+      <div class="nav-group" data-group="analytics">
+        <button class="nav-group-head" data-group-toggle="analytics" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg><span>Analyses</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="nav-sub">
+          <button class="nav-sub-item" data-route="analytics.overview">Vue d'ensemble</button>
+          <button class="nav-sub-item" data-route="analytics.contacts">Contacts et acquisition</button>
+          <button class="nav-sub-item" data-route="analytics.products">Produits et scans</button>
+          <button class="nav-sub-item" data-route="analytics.loyalty">Fidélité</button>
+          <button class="nav-sub-item" data-route="analytics.email">Campagnes e-mail</button>
+        </div>
+      </div>
+
+      <button data-route="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres</button>
     </nav>
     <div class="side-foot"><button onclick="showHome()" style="width:100%;background:var(--color-surface-muted);color:var(--color-text-secondary);border:1px solid var(--color-border);padding:8px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:12.5px;margin-bottom:10px">← Se déconnecter</button>Prototype de démonstration · V0.1 · données fictives</div>
   </aside>
@@ -1115,7 +1234,7 @@
             <p class="screen-head-p" style="margin:4px 0 0;color:var(--muted);font-size:13px">Suivez l'acquisition, l'engagement et la fidélisation de vos consommateurs.</p>
             <div class="dash-meta">Dernière actualisation : <b id="dashUpdated" style="color:var(--ink)">—</b></div>
           </div>
-          <button class="btn primary" onclick="go('campaigns')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg>Lancer une campagne</button>
+          <button class="btn primary" onclick="go('campaigns.all')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg>Lancer une campagne</button>
         </div>
         <div class="dash-toolbar">
           <div class="seg-tabs" id="periodTabs" role="tablist" aria-label="Période">
@@ -1193,7 +1312,7 @@
           </div>
           <div id="topProducts" style="margin-top:6px"></div>
           <div class="row" style="justify-content:flex-end; margin-top:8px">
-            <a href="#" onclick="go('products'); return false;" style="font-size:12.5px; font-weight:700; color:var(--accent)">Voir tous les produits →</a>
+            <a href="#" onclick="go('products.all'); return false;" style="font-size:12.5px; font-weight:700; color:var(--accent)">Voir tous les produits →</a>
           </div>
         </div>
         <div class="card">
@@ -1224,7 +1343,7 @@
         <div class="card">
           <div class="row" style="justify-content:space-between">
             <h3 style="margin:0">Campagnes e-mailing</h3>
-            <button class="btn primary" onclick="go('campaigns')" style="padding:8px 13px; font-size:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une campagne</button>
+            <button class="btn primary" onclick="go('campaigns.all')" style="padding:8px 13px; font-size:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une campagne</button>
           </div>
           <div class="sub">5 dernières campagnes</div>
           <div id="emailList"></div>
@@ -1240,7 +1359,7 @@
     </section>
 
     <!-- CLIENTS -->
-    <section class="screen" id="clients">
+    <section class="screen" id="contacts-all">
       <div class="screen-head">
         <div><div class="eyebrow">CRM 360</div><h2 style="margin:2px 0 0;color:var(--ink)">Clients</h2><p>Chaque scan et chaque inscription enrichit une fiche unique. Cliquez une ligne pour l'ouvrir.</p></div>
         <div class="row">
@@ -1257,7 +1376,7 @@
     </section>
 
     <!-- PRODUCTS -->
-    <section class="screen" id="products">
+    <section class="screen" id="products-all">
       <div class="screen-head">
         <div><div class="eyebrow">Catalogue</div><h2 style="margin:2px 0 0;color:var(--ink)">Base produits</h2><p>Vos produits sont déclarés ici. C'est cette base qui alimente les QR : chaque QR encode un produit (GTIN) et, en option, un lot ou une série.</p></div>
         <button class="btn primary" onclick="openProd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Ajouter un produit</button>
@@ -1283,12 +1402,12 @@
     </section>
 
     <!-- QR -->
-    <section class="screen" id="qr">
+    <section class="screen" id="products-qr">
       <div class="screen-head"><div><div class="eyebrow">Acquisition</div><h2 style="margin:2px 0 0;color:var(--ink)">QR Codes produits</h2><p>Générés et suivis depuis la plateforme. À imprimer sur vos étiquettes.</p></div></div>
       <div class="grid cards-2">
         <div class="card">
           <h3>Générer un QR</h3><div class="sub">Il pointera vers la page de scan de votre choix.</div>
-          <div class="field"><label>Produit <small>· issu de votre base produits (GTIN + lot) — <a href="#" onclick="go('products');return false;" style="color:var(--accent);font-weight:600">gérer les produits</a></small></label>
+          <div class="field"><label>Produit <small>· issu de votre base produits (GTIN + lot) — <a href="#" onclick="go('products.all');return false;" style="color:var(--accent);font-weight:600">gérer les produits</a></small></label>
             <select id="qrProd"><option>Produit Édition Standard</option><option>Produit Édition Premium</option><option>Produit Collection Limitée</option><option>Produit Découverte (sans GTIN)</option></select></div>
           <div class="field"><label>Objectif de la page</label>
             <select id="qrGoal"><option>Inscription fidélité + page produit</option><option>Page produit seule</option><option>Jeu / tirage au sort</option></select></div>
@@ -1314,7 +1433,7 @@
     </section>
 
     <!-- LOYALTY -->
-    <section class="screen" id="loyalty">
+    <section class="screen" id="loyalty-settings-general">
       <div class="screen-head"><div><div class="eyebrow">Rétention</div><h2 style="margin:2px 0 0;color:var(--ink)">Programme de fidélité</h2><p>Réglez vos règles ; l'aperçu se met à jour à droite.</p></div>
         <button class="btn primary" onclick="toast('Programme enregistré')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
       </div>
@@ -1403,7 +1522,7 @@
     </section>
 
     <!-- CAMPAIGNS -->
-    <section class="screen" id="campaigns">
+    <section class="screen" id="campaigns-all">
       <div class="screen-head"><div><div class="eyebrow">Activation</div><h2 style="margin:2px 0 0;color:var(--ink)">Campagnes</h2><p>Touchez le bon segment, par SMS ou e-mail, depuis la plateforme.</p></div></div>
       <div class="grid cards-2">
         <div class="card">
@@ -1467,8 +1586,30 @@
       </div>
     </section>
 
+    <section class="screen" id="contacts-segments"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Segments</h2></div></div><div class="card" id="ph-contacts-segments"></div></section>
+    <section class="screen" id="products-landing"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Landing Pages</h2></div></div><div class="card" id="ph-products-landing"></div></section>
+    <section class="screen" id="loyalty-members"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Membres</h2></div></div><div class="card" id="ph-loyalty-members"></div></section>
+    <section class="screen" id="loyalty-rewards"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Récompenses</h2></div></div><div class="card" id="ph-loyalty-rewards"></div></section>
+    <section class="screen" id="loyalty-settings-appearance"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Personnalisation du Club</h2></div></div><div class="card" id="ph-loyalty-settings-appearance"></div></section>
+    <section class="screen" id="campaigns-lists"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Listes de contacts</h2></div></div><div class="card" id="ph-campaigns-lists"></div></section>
+    <section class="screen" id="campaigns-new"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Créer une campagne</h2></div></div><div class="card" id="ph-campaigns-new"></div></section>
+    <section class="screen" id="analytics-overview"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Vue d'ensemble</h2></div></div><div class="card" id="ph-analytics-overview"></div></section>
+    <section class="screen" id="analytics-contacts"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Contacts et acquisition</h2></div></div><div class="card" id="ph-analytics-contacts"></div></section>
+    <section class="screen" id="analytics-products"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Produits et scans</h2></div></div><div class="card" id="ph-analytics-products"></div></section>
+    <section class="screen" id="analytics-loyalty"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Fidélité</h2></div></div><div class="card" id="ph-analytics-loyalty"></div></section>
+    <section class="screen" id="analytics-email"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Campagnes e-mail</h2></div></div><div class="card" id="ph-analytics-email"></div></section>
+    <section class="screen" id="settings"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Paramètres</h2></div></div><div class="card" id="ph-settings"></div></section>
+
   </div>
 </div>
+
+<!-- Generic side panel (all NEW screens use openPanel()/closePanel()) -->
+<div class="drawer-back" id="panelBack" onclick="closePanel()"></div>
+<aside class="drawer" id="panel">
+  <div class="dh"><div><div style="font-size:11px;color:#BCBAEB;letter-spacing:.6px;text-transform:uppercase" id="panelEyebrow"></div><b id="panelTitle">—</b></div><button class="x" onclick="closePanel()">✕</button></div>
+  <div class="db" id="panelBody"></div>
+  <div class="df" id="panelFooter" style="display:none"></div>
+</aside>
 
 <!-- Drawer client 360 -->
 <div class="drawer-back" id="drawerBack" onclick="closeDrawer()"></div>
@@ -1491,7 +1632,29 @@
 <div class="toast" id="toast"><span class="ck"><svg width="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span><span id="toastMsg">Enregistré</span></div>
 
 <script>
-  const titles={dash:'Tableau de bord',clients:'Clients',products:'Produits',qr:'QR Codes',editor:'Personnaliser la landing',campaigns:'Campagnes',loyalty:'Fidélité',landing:'Landing de scan'};
+  // ROUTES: single source of truth for the nav — screenId (DOM id, dash-case),
+  // title (topbar heading), group/subgroup (which nav-group(s) auto-expand).
+  const ROUTES={
+    'dash':{screenId:'dash', title:'Tableau de bord'},
+    'contacts.all':{screenId:'contacts-all', title:'Tous les contacts', group:'contacts'},
+    'contacts.segments':{screenId:'contacts-segments', title:'Segments', group:'contacts'},
+    'products.all':{screenId:'products-all', title:'Tous les produits', group:'products'},
+    'products.landing':{screenId:'products-landing', title:'Landing Pages', group:'products'},
+    'products.qr':{screenId:'products-qr', title:'QR Codes', group:'products'},
+    'loyalty.members':{screenId:'loyalty-members', title:'Membres', group:'loyalty'},
+    'loyalty.rewards':{screenId:'loyalty-rewards', title:'Récompenses', group:'loyalty'},
+    'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', subgroup:'loyalty-settings'},
+    'loyalty.settings.general':{screenId:'loyalty-settings-general', title:'Paramétrages généraux', group:'loyalty', subgroup:'loyalty-settings'},
+    'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns'},
+    'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns'},
+    'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns'},
+    'analytics.overview':{screenId:'analytics-overview', title:"Vue d'ensemble", group:'analytics'},
+    'analytics.contacts':{screenId:'analytics-contacts', title:'Contacts et acquisition', group:'analytics'},
+    'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics'},
+    'analytics.loyalty':{screenId:'analytics-loyalty', title:'Fidélité', group:'analytics'},
+    'analytics.email':{screenId:'analytics-email', title:'Campagnes e-mail', group:'analytics'},
+    'settings':{screenId:'settings', title:'Paramètres'},
+  };
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
   function scrollTo2(id){const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:'smooth'});}
@@ -1502,510 +1665,499 @@
     document.body.style.overflow = open ? 'hidden' : '';
   }
   function mobileNavGo(id){ toggleMobileMenu(false); setTimeout(()=>scrollTo2(id), 200); }
-  function go(s){
+  function go(routeId){
+    const r=ROUTES[routeId];
+    if(!r){ console.warn('Route inconnue :', routeId); return; }
     document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));
-    document.getElementById(s).classList.add('active');
-    document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active', b.dataset.s===s));
-    document.getElementById('pageTitle').textContent=titles[s];
+    const target=document.getElementById(r.screenId);
+    if(target) target.classList.add('active');
+    document.querySelectorAll('#nav button[data-route]').forEach(b=>b.classList.toggle('active', b.dataset.route===routeId));
+    document.getElementById('pageTitle').textContent=r.title;
+    syncNavGroups(routeId);
+    if(typeof r.onEnter==='function') r.onEnter();
     window.scrollTo({top:0,behavior:'smooth'});
   }
-  document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){go(b.dataset.s); toggleSidebar(false);}});
+  function syncNavGroups(routeId){
+    const r=ROUTES[routeId]||{};
+    document.querySelectorAll('.nav-group').forEach(g=>{
+      const name=g.dataset.group;
+      const isOpen = name===r.group || name===r.subgroup;
+      g.classList.toggle('open', isOpen);
+      const head=g.querySelector(':scope>.nav-group-head');
+      if(head) head.setAttribute('aria-expanded', isOpen?'true':'false');
+    });
+  }
+  function toggleNavGroup(groupEl){
+    const willOpen=!groupEl.classList.contains('open');
+    groupEl.classList.toggle('open', willOpen);
+    groupEl.querySelector(':scope>.nav-group-head').setAttribute('aria-expanded', willOpen?'true':'false');
+  }
+  document.getElementById('nav').addEventListener('click',e=>{
+    const groupHead=e.target.closest('.nav-group-head');
+    if(groupHead){ toggleNavGroup(groupHead.closest('.nav-group')); return; }
+    const b=e.target.closest('button[data-route]');
+    if(b){ go(b.dataset.route); toggleSidebar(false); }
+  });
   function toggleSidebar(force){var sb=document.querySelector('.sidebar'),bd=document.getElementById('sidebarBackdrop');var open=(typeof force==='boolean')?force:!sb.classList.contains('open');sb.classList.toggle('open',open);if(bd)bd.classList.toggle('open',open);}
 
   // ============================================================
-  // DASHBOARD — mock data-access layer (client-side demo only).
-  // This site has no backend: there is no tenant auth, no real
-  // period/timezone handling and no PostHog/Mailjet integration.
-  // Everything below is a self-contained, clearly-isolated mock
-  // dataset + aggregation layer standing in for what a real API
-  // would return. See the end-of-task summary for the endpoint
-  // contract this is meant to approximate. Do not reuse this data
-  // as if it were real in any other context.
+  // SHARED UI HELPERS (search, sort, pagination, generic side panel,
+  // empty-state, premium lock, dropdown) — reused by every screen.
   // ============================================================
-  (function(){
-    const DASH_PRODUCTS=['Produit Édition Standard','Produit Édition Premium','Produit Collection Limitée','Produit Découverte'];
-    const DASH_SEGMENTS=['Adeptes des bons plans','Ambassadeurs de la marque','Premium engagés'];
-    const DASH_PERSONAS=['Découvreur','Habitué','Ambassadeur','Dormant'];
-    const DASH_SOURCES=['Scan en magasin','Scan chez un revendeur','Boutique de la marque','Événement'];
-    const UNSPECIFIED='Non renseigné';
+  function normText(s){ return (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+  function matchesSearch(text,query){ if(!query) return true; return normText(text).includes(normText(query)); }
+  function fmtDateFR(d){ if(!d) return '—'; const dt=(d instanceof Date)?d:new Date(d); return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}); }
+  function fmtDateTimeFR(d){ if(!d) return '—'; const dt=(d instanceof Date)?d:new Date(d); return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+' · '+dt.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
+  function daysSince(d){ if(!d) return Infinity; const dt=(d instanceof Date)?d:new Date(d); return Math.floor((Date.now()-dt.getTime())/86400000); }
 
-    function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
-
-    // Crosstab of product x segment x source cells. Each cell carries a
-    // monthly rate (scans/contacts) plus a persona-share split, so any
-    // combination of the 4 filters can be aggregated from this single
-    // table — no formula is duplicated per chart.
-    const DASH_CELLS=(function(){
-      const rnd=mulberry32(20260910);
-      const cells=[];
-      DASH_PRODUCTS.forEach((product,pi)=>{
-        DASH_SEGMENTS.forEach((segment,si)=>{
-          DASH_SOURCES.forEach((source)=>{
-            const popularity=(1+pi*0.35)*(1+si*0.22)*(0.55+rnd()*0.9);
-            const stock=Math.round(28*popularity+rnd()*14);
-            const monthlyScans=Math.round(34*popularity+rnd()*20);
-            const scanToUnique=0.74+rnd()*0.12;
-            const uniqueToSignup=(pi===3?0.14:0.24)+rnd()*0.16; // "Découverte" converts a bit lower on purpose (feeds a recommendation)
-            const growth=0.04+rnd()*0.18;
-            const personaShare={}; let remaining=1;
-            DASH_PERSONAS.forEach((persona,pj)=>{
-              if(pj===DASH_PERSONAS.length-1){ personaShare[persona]=Math.max(.03,remaining); }
-              else{ const s=Math.min(remaining-0.03*(DASH_PERSONAS.length-1-pj), remaining*(0.2+rnd()*0.35)); personaShare[persona]=Math.max(0,s); remaining-=personaShare[persona]; }
-            });
-            cells.push({product,segment,source,stock,monthlyScans,scanToUnique,uniqueToSignup,personaShare,growth});
-          });
-        });
-      });
-      return cells;
-    })();
-    const UNSPEC_SHARE=0.045; // small "Non renseigné" slice added on top of the crosstab for segments/personas
-
-    function filterCells(f){
-      return DASH_CELLS.filter(c=>
-        (!f.product||c.product===f.product) &&
-        (!f.segment||c.segment===f.segment) &&
-        (!f.source||c.source===f.source));
+  function paginateArr(arr,page,pageSize){
+    const totalPages=Math.max(1,Math.ceil(arr.length/pageSize));
+    page=Math.min(Math.max(1,page),totalPages);
+    return {items:arr.slice((page-1)*pageSize,page*pageSize), page, totalPages, total:arr.length};
+  }
+  function renderPagination(containerId,total,page,pageSize,onPage){
+    const el=document.getElementById(containerId); if(!el) return;
+    const totalPages=Math.max(1,Math.ceil(total/pageSize));
+    const from=total===0?0:(page-1)*pageSize+1, to=Math.min(total,page*pageSize);
+    let btns='';
+    for(let p=1;p<=totalPages;p++){
+      if(p===1||p===totalPages||Math.abs(p-page)<=1){ btns+=`<button class="${p===page?'active':''}" data-pg="${p}">${p}</button>`; }
+      else if(Math.abs(p-page)===2){ btns+=`<span style="padding:0 2px">…</span>`; }
     }
-    function personaFactor(c,f){ return f.persona ? (c.personaShare[f.persona]||0) : 1; }
+    el.innerHTML=`<div>${total===0?'Aucun résultat':`${from}–${to} sur ${total}`}</div><div class="pg-btns">
+      <button data-pg="${page-1}" ${page<=1?'disabled':''} aria-label="Page précédente">‹</button>${btns}<button data-pg="${page+1}" ${page>=totalPages?'disabled':''} aria-label="Page suivante">›</button></div>`;
+    el.querySelectorAll('button[data-pg]').forEach(b=>b.addEventListener('click',()=>onPage(parseInt(b.dataset.pg,10))));
+  }
+  function wireSortable(theadEl,state,onSort){
+    theadEl.querySelectorAll('th[data-sort-key]').forEach(th=>{
+      th.classList.toggle('sorted', state.key===th.dataset.sortKey);
+      th.classList.toggle('desc', state.key===th.dataset.sortKey && state.dir==='desc');
+      if(!th.querySelector('.sort-ic')) th.insertAdjacentHTML('beforeend','<span class="sort-ic">▲</span>');
+      th.onclick=()=>{ if(state.key===th.dataset.sortKey){ state.dir=state.dir==='asc'?'desc':'asc'; } else { state.key=th.dataset.sortKey; state.dir='asc'; } onSort(); };
+    });
+  }
+  function emptyStateHtml({icon='inbox',title,text,ctaLabel,ctaOnclick}){
+    const icons={inbox:'<path d="M3 8l2-5h14l2 5"/><path d="M3 8v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8"/><path d="M3 8h18M9 12h6"/>',
+      search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>'};
+    return `<div class="empty-state"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icons[icon]||icons.inbox}</svg></div><h4>${title}</h4>${text?`<p>${text}</p>`:''}${ctaLabel?`<button class="btn primary" onclick="${ctaOnclick||''}">${ctaLabel}</button>`:''}</div>`;
+  }
+  function isPremium(){ return DB.PLAN.tier==='premium'; }
+  const ICO_LOCK='<path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/>';
+  function premiumLockBadge(){ return `<span class="premium-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ICO_LOCK}</svg>Premium</span>`; }
+  function premiumGateHtml(featureLabel){
+    return `<div class="premium-gate"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO_LOCK}</svg></div><h4>${featureLabel} — fonctionnalité Premium</h4><p>Cette fonctionnalité est réservée à l'offre Premium. Passez à Premium pour la débloquer.</p><button class="btn primary" onclick="go('settings')">Voir les offres</button></div>`;
+  }
 
-    // trendMult<1 shrinks a cell's *rate* to approximate the previous period.
-    function aggregate(periodDays,f,previous){
-      const cells=filterCells(f);
-      const scale=periodDays/30;
-      let stock=0,scans=0,unique=0,signups=0;
-      cells.forEach(c=>{
-        const pf=personaFactor(c,f);
-        const trendMult=previous ? 1/(1+c.growth) : 1;
-        stock+=c.stock*pf*trendMult;
-        const scansC=c.monthlyScans*scale*pf*trendMult;
-        scans+=scansC;
-        unique+=scansC*c.scanToUnique;
-        signups+=scansC*c.scanToUnique*c.uniqueToSignup;
-      });
-      return {stock:Math.round(stock),scans:Math.round(scans),unique:Math.round(unique),signups:Math.round(signups)};
-    }
+  // Generic side panel: one drawer instance, re-rendered per call (see #panel/#panelBack near end of body).
+  function openPanel({eyebrow='',title='',bodyHtml='',footerHtml='',wide=false}){
+    document.getElementById('panelEyebrow').textContent=eyebrow;
+    document.getElementById('panelTitle').textContent=title;
+    document.getElementById('panelBody').innerHTML=bodyHtml;
+    const foot=document.getElementById('panelFooter');
+    if(footerHtml){ foot.innerHTML=footerHtml; foot.style.display='flex'; } else { foot.innerHTML=''; foot.style.display='none'; }
+    const panel=document.getElementById('panel');
+    panel.classList.toggle('wide',!!wide);
+    panel.classList.add('open');
+    document.getElementById('panelBack').classList.add('open');
+  }
+  function closePanel(){
+    document.getElementById('panel').classList.remove('open');
+    document.getElementById('panelBack').classList.remove('open');
+  }
 
-    function loyaltyForPeriod(periodDays,previous){
-      const scale=periodDays/30;
-      const trendMult=previous?1/1.12:1;
-      const totalMembers=612;
-      return {
-        totalMembers,
-        activeMembers:Math.round(totalMembers*0.34*scale*trendMult),
-        newMembers:Math.round(38*scale*trendMult),
-        pointsIssued:Math.round(9200*scale*trendMult),
-        pointsRedeemed:Math.round(3100*scale*trendMult*0.92),
-        rewardsConsumed:Math.round(54*scale*trendMult),
-        membersNearReward:27
-      };
-    }
+  function toggleDropdown(btn){
+    const menu=btn.nextElementSibling;
+    const isOpen=menu.classList.contains('open');
+    document.querySelectorAll('.dropdown-menu.open').forEach(m=>m.classList.remove('open'));
+    if(!isOpen) menu.classList.add('open');
+  }
+  document.addEventListener('click',e=>{ if(!e.target.closest('.dropdown-wrap')) document.querySelectorAll('.dropdown-menu.open').forEach(m=>m.classList.remove('open')); });
 
-    const ALL_CAMPAIGNS=[
-      {name:'Relance club — printemps',audience:'Adeptes des bons plans',recipients:842,openRate:.38,date:'12 mars 2026',status:'Envoyée'},
-      {name:'Nouvelle collection',audience:'Toute la base',recipients:1248,openRate:.29,date:'2 mars 2026',status:'Envoyée'},
-      {name:'Réactivation dormants',audience:'Contacts en sommeil',recipients:186,openRate:.21,date:'18 févr. 2026',status:'Envoyée'},
-      {name:'Programme fidélité — lancement',audience:'Ambassadeurs de la marque',recipients:412,openRate:.44,date:'30 janv. 2026',status:'Envoyée'},
-      {name:'Bienvenue nouveaux membres',audience:'Nouveaux inscrits',recipients:126,openRate:.51,date:'14 janv. 2026',status:'Envoyée'},
+  // ============================================================
+  // UNIFIED MOCK DATA LAYER (client-side demo only, no backend).
+  // Single source of truth for every screen in the app — every
+  // screen reads through DB.* / DERIVE.* below and never invents
+  // a number that already lives here, so lists, panels and charts
+  // can never disagree with each other. Seeded RNG => stable
+  // numbers across reloads. Never treat this as real data.
+  // ============================================================
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+
+  const DB = (function(){
+    const rnd = mulberry32(20260910);
+    function pick(arr){ return arr[Math.floor(rnd()*arr.length)]; }
+    function pickN(arr,n){ const c=arr.slice(); const out=[]; while(out.length<n && c.length) out.push(c.splice(Math.floor(rnd()*c.length),1)[0]); return out; }
+    function randInt(min,max){ return Math.floor(min+rnd()*(max-min+1)); }
+    function daysAgo(n){ return new Date(Date.now()-n*86400000); }
+
+    const SOURCES=['Scan en magasin','Scan chez un revendeur','Boutique de la marque','Événement'];
+    const PERSONAS=['Découvreur','Habitué','Ambassadeur','Dormant'];
+    const SEGMENT_NAMES=['Adeptes des bons plans','Ambassadeurs de la marque','Premium engagés'];
+
+    // ---- PRODUCTS (12) ----
+    const PRODUCT_DEFS=[
+      ['Produit Édition Standard','Édition standard','33 cl'],
+      ['Produit Édition Premium','Édition premium','75 cl'],
+      ['Produit Collection Limitée','Collection limitée','Coffret'],
+      ['Produit Découverte','Découverte','Format voyage'],
+      ['Produit Format Duo','Édition standard','Duo 2x33 cl'],
+      ['Produit Format Famille','Édition standard','Format famille'],
+      ['Produit Édition Hiver','Collection limitée','33 cl'],
+      ['Produit Édition Été','Collection limitée','33 cl'],
+      ['Produit Coffret Cadeau','Édition premium','Coffret'],
+      ['Produit Format Voyage','Découverte','Format voyage'],
+      ['Produit Édition Anniversaire','Collection limitée','Coffret'],
+      ['Produit Nouveauté','Découverte','33 cl'],
     ];
-    function emailForPeriod(periodDays){
-      // 7 jours : volontairement aucune campagne envoyée (démontre l'état "sans donnée").
-      const campaigns = periodDays===7 ? [] : periodDays===30 ? ALL_CAMPAIGNS.slice(0,3) : ALL_CAMPAIGNS;
-      const delivered=campaigns.reduce((s,c)=>s+c.recipients,0);
-      const opens=campaigns.reduce((s,c)=>s+Math.round(c.recipients*c.openRate),0);
-      return {delivered,opens,campaigns};
+    const PRODUCTS=PRODUCT_DEFS.map((d,i)=>{
+      const noGtin=(i===3||i===11);
+      return {
+        id:'p'+String(i+1).padStart(2,'0'), name:d[0], brand:'SmartQonsumer', category:d[1], format:d[2],
+        sku:'SKU-'+(1000+i), gtin: noGtin?null:('37012345'+String(1000+i)),
+        gtinState: noGtin?'none':'verified',
+        status: i===11?'draft':'active',
+        createdAt: daysAgo(randInt(25,310)),
+        landingPageId:null, qrCodeId:null,
+      };
+    });
+    function productById(pid){ return PRODUCTS.find(p=>p.id===pid); }
+
+    // ---- LANDING_PAGES (8 of 12 products) ----
+    const LP_PRODUCT_IDS=PRODUCTS.slice(0,8).map(p=>p.id);
+    let LANDING_PAGES=LP_PRODUCT_IDS.map((pid,i)=>({
+      id:'lp'+String(i+1).padStart(3,'0'), productId:pid,
+      template: i%4===0?'premium':'essentiel',
+      status: i===0?'brouillon':(i===7?'desactivee':'publiee'),
+      title:'Découvrez '+productById(pid).name, subtitle:'Une expérience pensée pour vous',
+      description:"Scannez, découvrez l'histoire du produit et rejoignez le Club fidélité.",
+      heroImg:null, gallery:[], features:['Origine du produit','Conseils de dégustation','Programme de fidélité'],
+      ctaLabel:'Rejoindre le club', ctaTarget:'club', lastModified:daysAgo(randInt(1,60)),
+    }));
+    LANDING_PAGES.forEach(lp=>{ productById(lp.productId).landingPageId=lp.id; });
+    function landingPageByProduct(pid){ return LANDING_PAGES.find(l=>l.productId===pid)||null; }
+    function landingPageById(id){ return LANDING_PAGES.find(l=>l.id===id)||null; }
+
+    // ---- QR_CODES (1:1 with the 7 products that already have a published-eligible landing page) ----
+    let QR_CODES=LP_PRODUCT_IDS.slice(0,7).map((pid,i)=>{
+      const p=productById(pid);
+      const destinations=[
+        {type:'landing', label:'Landing Page Produit', url:'https://scan.smartqonsumer.com/lp/'+pid, linkType:'gs1:pip', active:true, isPrimary:true},
+        {type:'club', label:'Club Fidélité', url:'https://scan.smartqonsumer.com/club', linkType:'gs1:loyaltyProgram', active:true, isPrimary:false},
+        {type:'external', label:'URL externe', url:'', linkType:'gs1:homepage', active:false, isPrimary:false},
+      ];
+      return {
+        id:'qr'+String(i+1).padStart(3,'0'), productId:pid,
+        idType: p.gtin?'gtin':'sqid',
+        permanentUrl: p.gtin ? ('https://qr.smartqonsumer.com/01/'+p.gtin) : ('https://qr.smartqonsumer.com/p/'+p.id),
+        status:'active', lastActivityAt: daysAgo(randInt(0,5)),
+        destinations,
+      };
+    });
+    QR_CODES.forEach(q=>{ productById(q.productId).qrCodeId=q.id; });
+    function qrByProduct(pid){ return QR_CODES.find(q=>q.productId===pid)||null; }
+    function qrById(id){ return QR_CODES.find(q=>q.id===id)||null; }
+    function setPrimaryDestination(qrId,destType){
+      const qr=QR_CODES.find(q=>q.id===qrId); if(!qr) return;
+      qr.destinations.forEach(d=>{ d.isPrimary=(d.type===destType); if(d.type===destType) d.active=true; });
     }
 
-    // ---- formatting helpers (centralized, fr-FR locale) ----
-    const fmtN=n=>Math.round(n).toLocaleString('fr-FR');
-    const fmtPct=(n,d=1)=>n==null?'—':n.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:d})+' %';
-    function pctDelta(curr,prev){ if(!prev) return null; return (curr-prev)/prev*100; }
-    function deltaHtml(pct,{goodDirection='up',suffix=' vs période précédente',ptsMode=false}={}){
-      if(pct==null||!isFinite(pct)) return '<span class="delta flat">Pas de comparaison disponible</span>';
-      if(Math.abs(pct)<0.5) return `<span class="delta flat">Stable${suffix}</span>`;
-      const good = goodDirection==='up' ? pct>=0 : pct<=0;
-      const cls = good?'':'bad';
-      const arrow = pct>=0
-        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M6 11l6-6 6 6"/></svg>'
-        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
-      const val = ptsMode ? Math.abs(pct).toLocaleString('fr-FR',{maximumFractionDigits:1})+' pts' : Math.abs(pct).toLocaleString('fr-FR',{maximumFractionDigits:1})+' %';
-      return `<span class="delta ${cls}">${arrow}${pct>=0?'+':'-'}${val}${suffix}</span>`;
-    }
-
-    // ---- state ----
-    const state={period:30,compare:true,filters:{product:'',segment:'',persona:'',source:''},sort:'unique',audienceTab:'segments'};
-
-    function populateFilterOptions(){
-      const map={filterProduct:DASH_PRODUCTS,filterSegment:DASH_SEGMENTS,filterPersona:DASH_PERSONAS,filterSource:DASH_SOURCES};
-      Object.keys(map).forEach(id=>{
-        const sel=document.getElementById(id);
-        map[id].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
+    // ---- CONTACTS (140) ----
+    const FIRST=['Camille','Thomas','Léa','Hugo','Sarah','Antoine','Manon','Lucas','Emma','Nathan','Chloé','Maxime','Julie','Alexandre','Inès','Louis','Clara','Nicolas','Sophie','Julien','Marie','Paul','Laura','Romain','Charlotte','Adrien','Pauline','Vincent','Anaïs','Simon','Léo','Jade','Enzo','Lina','Mathis','Zoé','Théo','Lucie','Arthur','Eva'];
+    const LAST=['Rousseau','Girard','Fontaine','Mercier','Benali','Lefevre','Dupuis','Moreau','Lambert','Bonnet','Francois','Martinez','Legrand','Garnier','Faure','Blanc','Guerin','Muller','Henry','Roussel','Perrin','Morin','Mathieu','Clement','Gauthier','Dumas','Marchand','Lopez','Robin','Fournier'];
+    function slug(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/g,''); }
+    const CONTACTS=[];
+    for(let i=0;i<140;i++){
+      const first=FIRST[i%FIRST.length], last=LAST[(i*7)%LAST.length];
+      const createdAt=daysAgo(randInt(1,400));
+      const isDormant = rnd()<0.16;
+      const scannedCount=randInt(0,6);
+      const scannedProductIds=pickN(PRODUCTS.map(p=>p.id), Math.min(scannedCount,PRODUCTS.length));
+      const isLoyaltyMember = i<50;
+      CONTACTS.push({
+        id:'c'+String(i+1).padStart(3,'0'), name:first+' '+last,
+        email:slug(first)+'.'+slug(last)+i+'@email.com',
+        createdAt, source:pick(SOURCES), persona:pick(PERSONAS), segment:pick(SEGMENT_NAMES),
+        consentMarketing: rnd()<0.82, consentDate:createdAt,
+        lastScanAt: scannedCount>0 ? daysAgo(randInt(0,85)) : null,
+        scannedProductIds,
+        isLoyaltyMember, loyaltyMemberId:null,
+        campaignsReceivedIds:[],
+        status: isDormant?'dormant':'active',
       });
     }
+    function contactById(cid){ return CONTACTS.find(c=>c.id===cid); }
 
-    function renderActiveFilters(){
-      const labels={product:'Produit',segment:'Segment',persona:'Persona',source:'Source'};
-      const entries=Object.entries(state.filters).filter(([,v])=>v);
-      const el=document.getElementById('filtersActive');
-      if(!entries.length){ el.innerHTML=''; return; }
-      el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${v}<button type="button" aria-label="Retirer le filtre ${labels[k]}" onclick="dashRemoveFilter('${k}')">✕</button></span>`).join('')
-        + '<button type="button" class="filter-reset" onclick="dashResetFilters()">Réinitialiser</button>';
-    }
-
-    function skeletonKpis(){
-      ['contacts','new','scans','conv','loyalty','email'].forEach(k=>{
-        document.getElementById('kpi-'+k+'-val').classList.add('skel');
-        document.getElementById('kpi-'+k+'-val').textContent='—';
-        document.getElementById('kpi-'+k+'-delta').innerHTML='&nbsp;';
-      });
-    }
-
-    function render(){
-      const f=state.filters, days=state.period, compare=state.compare;
-      const curr=aggregate(days,f,false);
-      const prev=compare?aggregate(days,f,true):null;
-      const loyCurr=loyaltyForPeriod(days,false);
-      const loyPrev=compare?loyaltyForPeriod(days,true):null;
-      const email=emailForPeriod(days);
-
-      // ---- KPI 1: contacts connus (stock) ----
-      document.getElementById('kpi-contacts-val').classList.remove('skel');
-      document.getElementById('kpi-contacts-val').textContent=fmtN(curr.stock);
-      document.getElementById('kpi-contacts-delta').innerHTML = compare
-        ? deltaHtml(pctDelta(curr.stock,prev.stock),{goodDirection:'up'})
-        : '<span class="delta flat">Comparaison désactivée</span>';
-
-      // ---- KPI 2: nouveaux contacts ----
-      document.getElementById('kpi-new-val').classList.remove('skel');
-      document.getElementById('kpi-new-val').textContent=fmtN(curr.signups);
-      document.getElementById('kpi-new-delta').innerHTML = compare ? deltaHtml(pctDelta(curr.signups,prev.signups)) : '<span class="delta flat">Comparaison désactivée</span>';
-
-      // ---- KPI 3: scans uniques ----
-      document.getElementById('kpi-scans-val').classList.remove('skel');
-      document.getElementById('kpi-scans-val').textContent=fmtN(curr.unique);
-      document.getElementById('kpi-scans-delta').innerHTML = (compare ? deltaHtml(pctDelta(curr.unique,prev.unique)) : '<span class="delta flat">Comparaison désactivée</span>') + ` <span class="muted">· ${fmtN(curr.scans)} scans au total</span>`;
-
-      // ---- KPI 4: conversion scan → inscription ----
-      const convRate = curr.unique>0 ? curr.signups/curr.unique*100 : null;
-      const prevConvRate = prev && prev.unique>0 ? prev.signups/prev.unique*100 : null;
-      document.getElementById('kpi-conv-val').classList.remove('skel');
-      document.getElementById('kpi-conv-val').textContent = convRate==null ? '—' : fmtPct(convRate);
-      document.getElementById('kpi-conv-tip').textContent = `Inscriptions attribuées à un scan (${fmtN(curr.signups)}) ÷ scanners uniques éligibles (${fmtN(curr.unique)}).`;
-      document.getElementById('kpi-conv-delta').innerHTML = convRate==null ? '<span class="delta flat">Pas de scan sur la période</span>'
-        : (compare && prevConvRate!=null ? deltaHtml(convRate-prevConvRate,{ptsMode:true}) : '<span class="delta flat">Comparaison désactivée</span>');
-
-      // ---- KPI 5: membres actifs Club ----
-      const activeRate = loyCurr.totalMembers>0 ? loyCurr.activeMembers/loyCurr.totalMembers*100 : null;
-      document.getElementById('kpi-loyalty-val').classList.remove('skel');
-      document.getElementById('kpi-loyalty-val').textContent=fmtN(loyCurr.activeMembers);
-      document.getElementById('kpi-loyalty-tip').textContent = `Taux de membres actifs : ${fmtN(loyCurr.activeMembers)} ÷ ${fmtN(loyCurr.totalMembers)} membres inscrits = ${fmtPct(activeRate)}.`;
-      document.getElementById('kpi-loyalty-delta').innerHTML = compare ? deltaHtml(pctDelta(loyCurr.activeMembers,loyPrev.activeMembers)) + ` <span class="muted">· ${fmtPct(activeRate)} de la base</span>` : `<span class="muted">${fmtPct(activeRate)} de la base</span>`;
-
-      // ---- KPI 6: taux d'ouverture e-mail ----
-      const openRate = email.delivered>0 ? email.opens/email.delivered*100 : null;
-      const valEl=document.getElementById('kpi-email-val'); valEl.classList.remove('skel');
-      const deltaEl=document.getElementById('kpi-email-delta');
-      if(email.campaigns.length===0){
-        valEl.textContent='—';
-        deltaEl.innerHTML='<span class="delta flat">Aucune campagne envoyée sur la période</span>';
-      } else {
-        valEl.textContent=fmtPct(openRate);
-        document.getElementById('kpi-email-tip').textContent=`${fmtN(email.opens)} ouvertures uniques ÷ ${fmtN(email.delivered)} e-mails délivrés.`;
-        deltaEl.innerHTML=`<span class="muted">${fmtN(email.delivered)} e-mails délivrés</span>`;
-      }
-
-      renderTrend(curr,days);
-      renderFunnel(curr);
-      renderProducts(f,days,compare);
-      renderAudience(f);
-      renderLoyalty(loyCurr,loyPrev,compare);
-      renderEmail(email);
-      renderRecommendations({curr,prev,convRate,loyCurr,email,f,days});
-
-      document.getElementById('dashUpdated').textContent = new Date().toLocaleString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-      renderActiveFilters();
-    }
-
-    function renderTrend(curr,days){
-      const weeks = days===7?1:days===30?4:12;
-      const label = days===7 ? 'Répartition quotidienne (7 jours)' : `Nouveaux vs. contacts connus, granularité hebdomadaire (${weeks} semaines)`;
-      document.getElementById('trendSub').textContent = label;
-      const perStepNew=curr.signups/weeks;
-      const returning=Math.max(0,curr.unique-curr.signups);
-      const perStepReturning=returning/weeks;
-      const maxVal=Math.max(perStepNew,perStepReturning,1)*1.15;
-      const cols=[];
-      for(let i=0;i<weeks;i++){
-        const jitter=0.75+((i*37)%23)/23*0.5; // deterministic wobble, no Math.random on re-render
-        const nv=Math.max(2,Math.round(perStepNew*jitter));
-        const rv=Math.max(1,Math.round(perStepReturning*(1.3-jitter*0.3)));
-        const total=nv+rv;
-        const hNew=Math.round(nv/maxVal*100);
-        const hRet=Math.round(rv/maxVal*100);
-        const lbl = days===7 ? ['L','M','M','J','V','S','D'][i] : days===30 ? `S-${weeks-i}` : `S-${(weeks-i)*1}`;
-        cols.push(`<div class="stacked-col" title="${lbl} — total ${fmtN(total)} (nouveaux ${fmtN(nv)}, connus ${fmtN(rv)})"><span class="seg new" style="height:${hNew}%"></span><span class="seg returning" style="height:${hRet}%"></span><span class="lbl">${lbl}</span></div>`);
-      }
-      document.getElementById('trendChart').innerHTML=cols.join('');
-    }
-
-    function renderFunnel(curr){
-      const steps=[
-        {label:'Scans totaux',small:'Tous les scans enregistrés, y compris répétés',val:curr.scans},
-        {label:'Scanners uniques',small:'Visiteurs ou appareils distincts',val:curr.unique},
-        {label:'Inscriptions attribuées',small:'Inscription au Club suite à un scan',val:curr.signups},
-      ];
-      const max=Math.max(curr.scans,1);
-      document.getElementById('scanFunnel').innerHTML = steps.map(s=>`
-        <div class="funnel-step">
-          <div class="funnel-label">${s.label}<small>${s.small}</small></div>
-          <div class="funnel-track"><span class="funnel-fill" style="width:${Math.max(3,Math.round(s.val/max*100))}%"></span></div>
-          <div class="funnel-val">${fmtN(s.val)}</div>
-        </div>`).join('')
-        + `<div class="funnel-step"><div class="funnel-label">Taux de conversion<small>Inscriptions ÷ scanners uniques</small></div><div></div><div class="funnel-val">${curr.unique>0?fmtPct(curr.signups/curr.unique*100):'—'}</div></div>`;
-    }
-
-    function productMetrics(product,f,days,previous){
-      const f2=Object.assign({},f,{product});
-      return aggregate(days,f2,previous);
-    }
-    function renderProducts(f,days,compare){
-      const list=DASH_PRODUCTS
-        .filter(p=>!f.product||f.product===p)
-        .map(p=>{
-          const m=productMetrics(p,f,days,false);
-          const pm=compare?productMetrics(p,f,days,true):null;
-          const conv=m.unique>0?m.signups/m.unique*100:null;
-          return {product:p,...m,conv,deltaUnique:compare?pctDelta(m.unique,pm.unique):null};
-        });
-      const sortKey=state.sort;
-      list.sort((a,b)=> sortKey==='total'?b.scans-a.scans : sortKey==='conv'?(b.conv||0)-(a.conv||0) : b.unique-a.unique);
-      const top=list.slice(0,5);
-      const maxUnique=Math.max(...top.map(t=>t.unique),1);
-      document.getElementById('topProducts').innerHTML = top.map(t=>`
-        <div class="hbar-row">
-          <div class="hbar-label">${t.product}<small>${fmtN(t.unique)} uniques · ${fmtN(t.scans)} scans</small></div>
-          <div class="hbar-track"><span class="hbar-fill" style="width:${Math.max(4,Math.round(t.unique/maxUnique*100))}%"></span></div>
-          <div class="hbar-val"><b>${t.conv==null?'—':fmtPct(t.conv)}</b> conv.${t.deltaUnique!=null?`<br>${t.deltaUnique>=0?'+':''}${t.deltaUnique.toLocaleString('fr-FR',{maximumFractionDigits:0})}% uniques`:''}</div>
-        </div>`).join('') || '<p class="muted" style="font-size:12.5px">Aucun produit ne correspond aux filtres actifs.</p>';
-    }
-    window.dashRenderProducts=function(){ state.sort=document.getElementById('productSort').value; renderProducts(state.filters,state.period,state.compare); };
-
-    function groupBy(dim,f){
-      const cells=filterCells(dim==='segment'?Object.assign({},f,{segment:''}):f);
-      const totals={};
-      let grandTotal=0;
-      if(dim==='segment'){
-        DASH_SEGMENTS.forEach(s=>totals[s]={contacts:0,newContacts:0});
-        cells.filter(c=>!f.segment||c.segment===f.segment).forEach(c=>{
-          const pf=personaFactor(c,f);
-          const key=c.segment;
-          if(!totals[key]) totals[key]={contacts:0,newContacts:0};
-          totals[key].contacts+=c.stock*pf;
-          totals[key].newContacts+=c.monthlyScans*(state.period/30)*pf*c.scanToUnique*c.uniqueToSignup;
-        });
-      } else {
-        DASH_PERSONAS.forEach(p=>totals[p]={contacts:0,newContacts:0});
-        filterCells(f).forEach(c=>{
-          DASH_PERSONAS.forEach(persona=>{
-            if(f.persona&&f.persona!==persona) return;
-            const share=c.personaShare[persona]||0;
-            totals[persona].contacts+=c.stock*share;
-            totals[persona].newContacts+=c.monthlyScans*(state.period/30)*share*c.scanToUnique*c.uniqueToSignup;
-          });
-        });
-      }
-      Object.values(totals).forEach(t=>grandTotal+=t.contacts);
-      // "Non renseigné" bucket (skipped if the corresponding filter is active)
-      if(!f[dim]){
-        const unspecContacts=grandTotal*UNSPEC_SHARE/(1-UNSPEC_SHARE);
-        totals[UNSPECIFIED]={contacts:unspecContacts,newContacts:unspecContacts*0.05};
-        grandTotal+=unspecContacts;
-      }
-      return {totals,grandTotal};
-    }
-
-    function renderGroupPanel(elId,dim,f){
-      const {totals,grandTotal}=groupBy(dim,f);
-      let rows=Object.entries(totals).map(([name,v])=>({name,...v}));
-      rows.sort((a,b)=>b.contacts-a.contacts);
-      // group very small slices under "Autres" (keep "Non renseigné" separate/explicit)
-      const THRESHOLD=0.035;
-      const kept=[],others=[];
-      rows.forEach(r=>{ if(r.name!==UNSPECIFIED && grandTotal>0 && r.contacts/grandTotal<THRESHOLD && rows.length>4) others.push(r); else kept.push(r); });
-      if(others.length){
-        kept.push({name:'Autres',contacts:others.reduce((s,r)=>s+r.contacts,0),newContacts:others.reduce((s,r)=>s+r.newContacts,0)});
-        kept.sort((a,b)=>b.contacts-a.contacts);
-      }
-      const max=Math.max(...kept.map(r=>r.contacts),1);
-      document.getElementById(elId).innerHTML = kept.map(r=>`
-        <div class="hbar-row">
-          <div class="hbar-label">${r.name}</div>
-          <div class="hbar-track"><span class="hbar-fill" style="width:${Math.max(3,Math.round(r.contacts/max*100))}%"></span></div>
-          <div class="hbar-val"><b>${fmtN(r.contacts)}</b> · ${grandTotal>0?fmtPct(r.contacts/grandTotal*100):'—'}<br>+${fmtN(r.newContacts)} nouveaux</div>
-        </div>`).join('');
-    }
-    function renderAudience(f){
-      renderGroupPanel('segmentsPanel','segment',f);
-      renderGroupPanel('personasPanel','persona',f);
-    }
-
-    function renderLoyalty(curr,prev,compare){
-      const stats=[
-        {label:'Nouvelles inscriptions',val:curr.newMembers,prev:prev&&prev.newMembers},
-        {label:'Points distribués',val:curr.pointsIssued,prev:prev&&prev.pointsIssued},
-        {label:'Points utilisés',val:curr.pointsRedeemed,prev:prev&&prev.pointsRedeemed},
-        {label:'Récompenses consommées',val:curr.rewardsConsumed,prev:prev&&prev.rewardsConsumed},
-      ];
-      document.getElementById('loyaltyStats').innerHTML = stats.map(s=>`
-        <div class="card kpi" style="box-shadow:none; padding:14px">
-          <div class="label">${s.label}</div>
-          <div class="val" style="font-size:22px">${fmtN(s.val)}</div>
-          <div class="delta" style="font-size:11px">${compare&&s.prev!=null?deltaHtml(pctDelta(s.val,s.prev)):'<span class="delta flat">—</span>'}</div>
-        </div>`).join('');
-      const redemptionRate=curr.pointsIssued>0?curr.pointsRedeemed/curr.pointsIssued*100:null;
-      document.getElementById('loyaltyRedemption').textContent = redemptionRate==null?'—':fmtPct(redemptionRate);
-      document.getElementById('loyaltyRedemptionBar').style.width=(redemptionRate||0)+'%';
-      document.getElementById('loyaltyNearReward').textContent = curr.membersNearReward+' membre'+(curr.membersNearReward>1?'s':'')+' →';
-    }
-    window.dashGoNearReward=function(){ go('clients'); toast('Filtrez la base sur les membres proches d\'une récompense (fonctionnalité à cabler côté fiche fidélité).'); };
-
-    function renderEmail(email){
-      if(!email.campaigns.length){
-        document.getElementById('emailList').innerHTML='<p class="muted" style="font-size:12.5px; margin-top:10px">Aucune campagne envoyée sur cette période.</p>';
-        return;
-      }
-      document.getElementById('emailList').innerHTML = email.campaigns.map(c=>`
-        <div class="email-row">
-          <div><div class="nm">${c.name}</div><div class="meta">${c.audience} · ${fmtN(c.recipients)} destinataires · ${c.date} · <span class="tag green">${c.status}</span></div></div>
-          <div class="rate">${fmtPct(c.openRate*100,0)}<div class="meta" style="text-align:right">ouverture</div></div>
-        </div>`).join('');
-    }
-
-    const RECICONS={
-      megaphone:'<path d="M3 11v2a1 1 0 0 0 1 1h2l4 4v-9l-4-3H4a1 1 0 0 0-1 1v4z"/><path d="M13 8a4 4 0 0 1 0 8"/><path d="M18 5a9 9 0 0 1 0 14"/>',
-      trend:'<path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/>',
-      users:'<circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 8.2a3 3 0 0 1 0 5.6"/><path d="M18 20a5 5 0 0 0-3-4.6"/>',
-      gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><rect x="5" y="12" width="14" height="8" rx="1"/><path d="M12 8v12M12 8c-1.6-3.2-5.2-3-5.2-1s2 1 5.2 1M12 8c1.6-3.2 5.2-3 5.2-1s-2 1-5.2 1"/>',
-      alert:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
-    };
-    function recCard(icon,title,text,actionLabel,onClick){
-      return `<div class="rec-card"><div class="rec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${RECICONS[icon]}</svg></div><div class="rec-body"><b>${title}</b><p>${text}</p><a onclick="${onClick}">${actionLabel} →</a></div></div>`;
-    }
-    function renderRecommendations({curr,prev,convRate,loyCurr,email,f,days}){
-      const recs=[];
-      if(email.campaigns.length===0){
-        recs.push({impact:3,html:recCard('megaphone','Aucune campagne envoyée récemment','Aucun e-mail n\'a été envoyé sur les 7 derniers jours. Une campagne régulière maintient l\'engagement de la base.','Créer une campagne',"go('campaigns')")});
-      }
-      if(prev){
-        const scanDelta=pctDelta(curr.scans,prev.scans);
-        if(scanDelta!=null && scanDelta<=-15){
-          recs.push({impact:3,html:recCard('trend',`Baisse des scans de ${Math.abs(scanDelta).toLocaleString('fr-FR',{maximumFractionDigits:0})} %`,'Les scans reculent nettement par rapport à la période précédente. Vérifiez les produits concernés et la visibilité des QR codes.','Voir les produits',"go('products')")});
-        }
-      }
-      const dormantEstimate=Math.round(curr.stock*0.14);
-      if(dormantEstimate>0){
-        recs.push({impact:2,html:recCard('users',`${fmtN(dormantEstimate)} contacts en sommeil`,'Ces contacts n\'ont pas interagi depuis longtemps. Une campagne de réactivation ciblée peut les relancer.','Créer une campagne de réactivation',"go('campaigns')")});
-      }
-      if(loyCurr.membersNearReward>0){
-        recs.push({impact:2,html:recCard('gift',`${loyCurr.membersNearReward} membres proches d'une récompense`,'Ces membres sont à moins de 50 points du prochain palier — une campagne ciblée peut accélérer la conversion.','Cibler cette liste',"go('campaigns')")});
-      }
-      if(convRate!=null && convRate<20){
-        recs.push({impact:3,html:recCard('alert',`Conversion scan → inscription faible (${fmtPct(convRate)})`,'Moins d\'un scanner sur cinq s\'inscrit au Club. Vérifiez la landing page et le parcours d\'inscription.','Vérifier la landing',"go('editor')")});
-      }
-      // product with many scans but comparatively few signups
-      const prodList=DASH_PRODUCTS.map(p=>{ const m=productMetrics(p,f,days,false); return {p,...m,conv:m.unique>0?m.signups/m.unique*100:0}; });
-      const avgConv=prodList.reduce((s,x)=>s+x.conv,0)/prodList.length;
-      const flagged=prodList.filter(x=>x.unique>0).sort((a,b)=>b.unique-a.unique)[0];
-      if(flagged && flagged.conv < avgConv*0.7 && flagged.unique>50){
-        recs.push({impact:2,html:recCard('alert',`« ${flagged.p} » scanne beaucoup mais convertit peu`,`${fmtN(flagged.unique)} scanners uniques pour seulement ${fmtPct(flagged.conv)} de conversion, contre ${fmtPct(avgConv)} en moyenne.`,'Analyser ce produit',"go('products')")});
-      }
-      recs.sort((a,b)=>b.impact-a.impact);
-      const top=recs.slice(0,3);
-      document.getElementById('recActions').innerHTML = top.length ? top.map(r=>r.html).join('') : '<p class="muted" style="font-size:12.5px">Rien à signaler pour le moment : tous les indicateurs sont dans les clous.</p>';
-    }
-
-    // ---- wiring ----
-    window.dashOnFilterChange=function(){
-      state.filters.product=document.getElementById('filterProduct').value;
-      state.filters.segment=document.getElementById('filterSegment').value;
-      state.filters.persona=document.getElementById('filterPersona').value;
-      state.filters.source=document.getElementById('filterSource').value;
-      render();
-    };
-    window.dashRemoveFilter=function(key){
-      state.filters[key]='';
-      document.getElementById('filter'+key.charAt(0).toUpperCase()+key.slice(1)).value='';
-      render();
-    };
-    window.dashResetFilters=function(){
-      ['Product','Segment','Persona','Source'].forEach(k=>document.getElementById('filter'+k).value='');
-      state.filters={product:'',segment:'',persona:'',source:''};
-      render();
-    };
-
-    document.getElementById('periodTabs').addEventListener('click',e=>{
-      const b=e.target.closest('button'); if(!b) return;
-      state.period=parseInt(b.dataset.period,10);
-      document.querySelectorAll('#periodTabs button').forEach(x=>{ x.classList.toggle('active',x===b); x.setAttribute('aria-pressed',x===b?'true':'false'); });
-      skeletonKpis(); setTimeout(render,180);
+    // ---- LOYALTY_MEMBERS (50, each references a real CONTACTS id) ----
+    const LOYALTY_MEMBERS=CONTACTS.slice(0,50).map((c,i)=>{
+      const pointsEarned=randInt(20,600);
+      const pointsUsed=randInt(0,Math.floor(pointsEarned*0.6));
+      const tier = pointsEarned>400?'Club':(pointsEarned>150?'Membre':'Prospect');
+      const m={
+        id:'m'+String(i+1).padStart(3,'0'), contactId:c.id, joinedAt:daysAgo(randInt(5,380)), tier,
+        pointsEarned, pointsUsed, pointsBalance: pointsEarned-pointsUsed,
+        lastActivityAt: daysAgo(randInt(0, c.status==='dormant'?120:40)),
+        rewardIds:[],
+      };
+      c.loyaltyMemberId=m.id;
+      return m;
     });
-    document.getElementById('audienceTabs').addEventListener('click',e=>{
-      const b=e.target.closest('button'); if(!b) return;
-      const tab=b.dataset.tab; state.audienceTab=tab;
-      document.querySelectorAll('#audienceTabs button').forEach(x=>{ x.classList.toggle('active',x.dataset.tab===tab); x.setAttribute('aria-pressed',x.dataset.tab===tab?'true':'false'); });
-      document.getElementById('segmentsPanel').classList.toggle('active',tab==='segments');
-      document.getElementById('personasPanel').classList.toggle('active',tab==='personas');
-    });
-    document.getElementById('compareToggle').addEventListener('change',e=>{ state.compare=e.target.checked; render(); });
-    document.getElementById('dashRefreshBtn').addEventListener('click',function(){
-      this.classList.add('spin'); skeletonKpis();
-      setTimeout(()=>{ render(); this.classList.remove('spin'); toast('Tableau de bord actualisé'); },420);
+    function memberById(id){ return LOYALTY_MEMBERS.find(m=>m.id===id); }
+    function loyaltyMemberByContact(cid){ return LOYALTY_MEMBERS.find(m=>m.contactId===cid)||null; }
+    function daysSinceD(d){ if(!d) return Infinity; return Math.floor((Date.now()-d.getTime())/86400000); }
+    function memberIsActive(memberId){ const m=memberById(memberId); return m ? daysSinceD(m.lastActivityAt)<=30 : false; }
+    function pointsToNextReward(memberId){ const m=memberById(memberId); if(!m) return Infinity; const next=Math.ceil((m.pointsBalance+1)/100)*100; return next-m.pointsBalance; }
+
+    // ---- REWARDS (6) ----
+    const REWARDS=[
+      {id:'r01', name:'-15% sur la prochaine commande', type:'promo-generic', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0, redeemedCount:0},
+      {id:'r02', name:'Produit offert (édition découverte)', type:'promo-unique', pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0, redeemedCount:0},
+      {id:'r03', name:'Accès prévente collection limitée', type:'custom', pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0, redeemedCount:0},
+      {id:'r04', name:'Dégustation en boutique', type:'qr-onsite', pointsCost:300, validity:'120 jours', status:'active', obtainedCount:0, redeemedCount:0},
+      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0, redeemedCount:0},
+      {id:'r06', name:'Invitation événement privé', type:'qr-onsite', pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0, redeemedCount:0},
+    ];
+    LOYALTY_MEMBERS.forEach(m=>{
+      const nb=Math.floor(m.pointsUsed/150);
+      for(let k=0;k<nb && k<3;k++){ const rw=pick(REWARDS); m.rewardIds.push(rw.id); rw.obtainedCount++; if(rnd()<0.7) rw.redeemedCount++; }
     });
 
-    populateFilterOptions();
-    render();
+    // ---- SCAN_EVENTS (90-day log — single ledger every scan count derives from) ----
+    const SCAN_EVENTS=[];
+    let scanSeq=1;
+    for(let day=0;day<90;day++){
+      const dayDate=daysAgo(day);
+      const scansToday=randInt(8,28);
+      for(let k=0;k<scansToday;k++){
+        const product=pick(PRODUCTS.filter(p=>p.status==='active'));
+        const qr=qrByProduct(product.id);
+        const anon = rnd()<0.25;
+        const contact = anon?null:pick(CONTACTS);
+        SCAN_EVENTS.push({
+          id:'sc'+(scanSeq++), contactId:contact?contact.id:null, productId:product.id,
+          qrCodeId: qr?qr.id:null, timestamp:dayDate,
+          source:pick(SOURCES), resultedInSignup: !anon && rnd()<0.22,
+        });
+      }
+    }
+
+    // ---- SEGMENTS: 5 system (computed predicates) + custom (rule-tree, mutable) = 6 total ----
+    const SYSTEM_SEGMENTS=[
+      {id:'sys-new', name:'Nouveaux contacts', description:'Contacts créés au cours des 30 derniers jours.', system:true, predicate:c=>daysSinceD(c.createdAt)<=30},
+      {id:'sys-active', name:'Contacts actifs', description:'Contacts avec une activité récente.', system:true, predicate:c=>c.status==='active'},
+      {id:'sys-dormant', name:'Contacts en sommeil', description:'Aucune activité depuis plus de 60 jours.', system:true, predicate:c=>c.status==='dormant'},
+      {id:'sys-loyal-active', name:'Membres actifs', description:'Membres du Club avec une activité fidélité récente.', system:true, predicate:c=>c.isLoyaltyMember && memberIsActive(c.loyaltyMemberId)},
+      {id:'sys-near-reward', name:"Membres proches d'une récompense", description:'Membres à moins de 50 points de leur prochaine récompense.', system:true, predicate:c=>c.isLoyaltyMember && pointsToNextReward(c.loyaltyMemberId)<=50},
+    ];
+    let CUSTOM_SEGMENTS=[
+      {id:'cus-001', name:'Amateurs multi-scans', description:'Contacts ayant scanné au moins 3 produits différents.', system:false,
+        rules:{op:'AND', conditions:[{field:'scanCount', operator:'gte', value:3}]},
+        createdAt:daysAgo(40), lastUpdated:daysAgo(5)},
+    ];
+    function evaluateCondition(cond,c){
+      const v=cond.value;
+      switch(cond.field){
+        case 'segment': return c.segment===v;
+        case 'persona': return c.persona===v;
+        case 'source': return c.source===v;
+        case 'status': return c.status===v;
+        case 'consent': return (v==='oui')===!!c.consentMarketing;
+        case 'isMember': return (v==='oui')===!!c.isLoyaltyMember;
+        case 'scanCount': return (c.scannedProductIds||[]).length >= Number(v||0);
+        case 'daysSinceCreated': return daysSinceD(c.createdAt) <= Number(v||0);
+        case 'daysSinceScan': return c.lastScanAt!=null && daysSinceD(c.lastScanAt) <= Number(v||0);
+        case 'scannedProduct': return (c.scannedProductIds||[]).includes(v);
+        case 'pointsBalance': { const m=c.isLoyaltyMember?memberById(c.loyaltyMemberId):null; return !!m && m.pointsBalance>=Number(v||0); }
+        default: return true;
+      }
+    }
+    function evaluateRuleTree(tree,c){
+      if(!tree || !tree.conditions || !tree.conditions.length) return true;
+      const results=tree.conditions.map(cond=>evaluateCondition(cond,c));
+      return tree.op==='OR' ? results.some(Boolean) : results.every(Boolean);
+    }
+    function allSegments(){ return SYSTEM_SEGMENTS.concat(CUSTOM_SEGMENTS); }
+    function computeSegmentMembers(segment){
+      if(segment.system) return CONTACTS.filter(segment.predicate);
+      return CONTACTS.filter(c=>evaluateRuleTree(segment.rules,c));
+    }
+
+    // ---- CONTACT_LISTS (5) ----
+    function deriveListContacts(list){
+      let base;
+      if(list.sourceType==='all') base=CONTACTS.slice();
+      else if(list.sourceType==='club') base=CONTACTS.filter(c=>c.isLoyaltyMember);
+      else if(list.sourceType==='segments'){
+        const segs=allSegments().filter(s=>(list.sourceSegmentIds||[]).includes(s.id));
+        const ids=new Set(); segs.forEach(s=>computeSegmentMembers(s).forEach(c=>ids.add(c.id)));
+        base=CONTACTS.filter(c=>ids.has(c.id));
+      } else { base=CONTACTS.filter(c=>(list.manualContactIds||[]).includes(c.id)); }
+      if(list.excludeNonConsenting!==false) base=base.filter(c=>c.consentMarketing);
+      return base;
+    }
+    let CONTACT_LISTS=[
+      {id:'cl01', name:'Toute la base opt-in', description:'Ensemble des contacts ayant consenti au marketing.', sourceType:'all', sourceSegmentIds:[], manualContactIds:[], excludeNonConsenting:true, createdAt:daysAgo(200), lastRefreshedAt:daysAgo(0), campaignIds:[]},
+      {id:'cl02', name:'Membres du Club', description:'Tous les membres actuels du programme de fidélité.', sourceType:'club', sourceSegmentIds:[], manualContactIds:[], excludeNonConsenting:true, createdAt:daysAgo(180), lastRefreshedAt:daysAgo(0), campaignIds:[]},
+      {id:'cl03', name:'Adeptes des bons plans', description:'Contacts du segment marketing « Adeptes des bons plans ».', sourceType:'manual', sourceSegmentIds:[], manualContactIds: CONTACTS.filter(c=>c.segment==='Adeptes des bons plans').map(c=>c.id), excludeNonConsenting:true, createdAt:daysAgo(90), lastRefreshedAt:daysAgo(90), campaignIds:[]},
+      {id:'cl04', name:'Contacts en sommeil', description:'Pour une campagne de réactivation ciblée.', sourceType:'segments', sourceSegmentIds:['sys-dormant'], manualContactIds:[], excludeNonConsenting:true, createdAt:daysAgo(60), lastRefreshedAt:daysAgo(0), campaignIds:[]},
+      {id:'cl05', name:'Sélection VIP', description:'Sélection manuelle de contacts à forte valeur.', sourceType:'manual', sourceSegmentIds:[], manualContactIds: pickN(CONTACTS.map(c=>c.id),18), excludeNonConsenting:true, createdAt:daysAgo(15), lastRefreshedAt:daysAgo(15), campaignIds:[]},
+    ];
+    function listById(id){ return CONTACT_LISTS.find(l=>l.id===id); }
+
+    // ---- CAMPAIGNS (8) ----
+    const CAMPAIGN_DEFS=[
+      ['Relance club — printemps','cl02','sent',12],
+      ['Nouvelle collection','cl01','sent',20],
+      ['Réactivation dormants','cl04','sent',35],
+      ['Programme fidélité — lancement','cl02','sent',55],
+      ['Bienvenue nouveaux membres','cl02','sent',8],
+      ['Sélection VIP — avant-première','cl05','sent',3],
+      ['Offre Adeptes des bons plans','cl03','planifiee',-4],
+      ['Campagne de test','cl01','brouillon',null],
+    ];
+    let CAMPAIGNS=CAMPAIGN_DEFS.map((d,i)=>{
+      const [name,listId,status,daysOffset]=d;
+      const list=listById(listId);
+      const recipientIds = (status==='sent') ? deriveListContacts(list).map(c=>c.id) : [];
+      const delivered=recipientIds.length;
+      const openRate = status==='sent' ? (0.2+rnd()*0.35) : 0;
+      const opened=Math.round(delivered*openRate);
+      const cid='cmp'+String(i+1).padStart(2,'0');
+      recipientIds.forEach(rcid=>{ const c=contactById(rcid); if(c) c.campaignsReceivedIds.push(cid); });
+      return {
+        id:cid, name, status,
+        productId: i%3===0 ? PRODUCTS[i%PRODUCTS.length].id : null,
+        listId, subject:name, preheader:'Découvrez les nouveautés SmartQonsumer',
+        shortDesc:'Une sélection pensée pour vous.', longDesc:"Merci de faire partie de notre communauté — voici ce qui vous attend.",
+        headerImg:null, contentImg:null, ctaType:'club', ctaUrl:'',
+        scheduledAt: status==='planifiee' ? daysAgo(daysOffset) : null,
+        sentAt: status==='sent' ? daysAgo(daysOffset) : null,
+        recipientSnapshotIds:recipientIds,
+        stats:{delivered, opened, clicked:Math.round(opened*0.3)},
+      };
+    });
+    CAMPAIGNS.forEach(cmp=>{ const list=listById(cmp.listId); if(list) list.campaignIds.push(cmp.id); });
+    function campaignById(id){ return CAMPAIGNS.find(c=>c.id===id); }
+
+    // ---- CLUB (singleton config) ----
+    let CLUB={
+      name:'Club SmartQonsumer',
+      welcomeMessage:'Bienvenue dans notre communauté ! Scannez, gagnez des points, débloquez des récompenses.',
+      active:true, template:'essentiel',
+      logo:null, colors:{primary:'#2FA55C', secondary:'#12161A'}, headerImg:null,
+      footerContent:'© 2026 — Programme de fidélité SmartQonsumer',
+      pointsRules:[
+        {id:'pr1', label:"Inscription au Club", points:20, active:true},
+        {id:'pr2', label:'Profil complété', points:10, active:true},
+        {id:'pr3', label:"Scan d'un produit", points:5, active:true},
+        {id:'pr4', label:'Action personnalisée', points:15, active:false},
+      ],
+      links:[
+        {id:'lk1', label:'CGV', type:'legal', url:'#', position:'footer', order:1, active:true},
+        {id:'lk2', label:'Mentions légales', type:'legal', url:'#', position:'footer', order:2, active:true},
+        {id:'lk3', label:'Politique de confidentialité', type:'legal', url:'#', position:'footer', order:3, active:true},
+        {id:'lk4', label:'Notre site', type:'custom', url:'https://smartqonsumer.com', position:'header', order:1, active:true},
+      ],
+    };
+
+    // ---- PLAN (singleton, persisted, drives premium locks) ----
+    let PLAN={tier:(function(){ try{ return localStorage.getItem('sq_plan_tier')||'essentiel'; }catch(e){ return 'essentiel'; } })()};
+    function setPlanTier(tier){ PLAN.tier=tier; try{ localStorage.setItem('sq_plan_tier',tier); }catch(e){} }
+
+    return {
+      PRODUCTS, CONTACTS, SCAN_EVENTS, SYSTEM_SEGMENTS,
+      get CUSTOM_SEGMENTS(){ return CUSTOM_SEGMENTS; },
+      allSegments, computeSegmentMembers, evaluateRuleTree,
+      addCustomSegment(seg){ CUSTOM_SEGMENTS.push(seg); },
+      removeCustomSegment(segId){ CUSTOM_SEGMENTS=CUSTOM_SEGMENTS.filter(s=>s.id!==segId); },
+      CONTACT_LISTS, listById, deriveListContacts, addContactList(l){ CONTACT_LISTS.push(l); },
+      CAMPAIGNS, campaignById, addCampaign(c){ CAMPAIGNS.push(c); },
+      LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward,
+      REWARDS, addReward(r){ REWARDS.push(r); },
+      LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; },
+      QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; },
+      CLUB, PLAN, setPlanTier,
+      SOURCES, PERSONAS, SEGMENT_NAMES,
+      productById, contactById, addProduct(p){ PRODUCTS.push(p); }, addContact(c){ CONTACTS.push(c); },
+      pick, pickN, randInt, daysAgo,
+    };
   })();
 
-  // clients data
-  const clients=[
-    {n:'Camille Rousseau',p:'Produit Édition Standard',s:'Adeptes des bons plans',sc:7,f:'Club',fc:'green',mail:'camille.r@email.com',since:'Mars 2026',src:'Scan QR (Monoprix)',spend:'96 €'},
-    {n:'Thomas Girard',p:'Produit Découverte',s:'Ambassadeurs de la marque',sc:12,f:'Club',fc:'green',mail:'t.girard@email.com',since:'Janv. 2026',src:'Page fidélité',spend:'184 €'},
-    {n:'Léa Fontaine',p:'Produit Édition Premium',s:'Premium engagés',sc:4,f:'Membre',fc:'teal',mail:'lea.f@email.com',since:'Avril 2026',src:'Boutique de la marque',spend:'52 €'},
-    {n:'Hugo Mercier',p:'Produit Collection Limitée',s:'Adeptes des bons plans',sc:1,f:'Prospect',fc:'grey',mail:'hugo.m@email.com',since:'Juil. 2026',src:'Scan QR (revendeur)',spend:'8 €'},
-    {n:'Sarah Benali',p:'Produit Édition Standard',s:'Premium engagés',sc:3,f:'Membre',fc:'teal',mail:'s.benali@email.com',since:'Nov. 2025',src:'Scan QR (point de vente)',spend:'41 €'},
-    {n:'Antoine Lefevre',p:'Produit Édition Standard',s:'Adeptes des bons plans',sc:6,f:'Club',fc:'green',mail:'a.lefevre@email.com',since:'Fév. 2026',src:'Événement',spend:'120 €'},
-    {n:'Manon Dupuis',p:'Produit Édition Premium',s:'Ambassadeurs de la marque',sc:2,f:'Prospect',fc:'grey',mail:'manon.d@email.com',since:'Oct. 2025',src:'Scan QR (GMS)',spend:'16 €'},
-  ];
+  // ---- DERIVE: aggregation functions every screen calls — never recompute inline ----
+  const DERIVE = (function(){
+    function scansForProduct(productId,days){
+      const since=Date.now()-days*86400000;
+      return DB.SCAN_EVENTS.filter(e=>e.productId===productId && e.timestamp.getTime()>=since);
+    }
+    function productMetrics(productId,days){
+      const evs=scansForProduct(productId,days);
+      const uniqueContacts=new Set(evs.filter(e=>e.contactId).map(e=>e.contactId));
+      const anonCount=evs.filter(e=>!e.contactId).length;
+      const signups=evs.filter(e=>e.resultedInSignup).length;
+      const unique=uniqueContacts.size+anonCount;
+      return {scans:evs.length, unique, signups, conv: unique>0 ? signups/unique*100 : null};
+    }
+    function allScans(days){
+      const since=Date.now()-days*86400000;
+      return DB.SCAN_EVENTS.filter(e=>e.timestamp.getTime()>=since);
+    }
+    function scanTotals(days){
+      const evs=allScans(days);
+      const uniqueSet=new Set(evs.filter(e=>e.contactId).map(e=>e.contactId));
+      const anon=evs.filter(e=>!e.contactId).length;
+      const signups=evs.filter(e=>e.resultedInSignup).length;
+      const unique=uniqueSet.size+anon;
+      return {scans:evs.length, unique, signups, conv: unique>0 ? signups/unique*100 : null};
+    }
+    function newContactsCount(days){ return DB.CONTACTS.filter(c=>daysSince(c.createdAt)<=days).length; }
+    function dormantCount(){ return DB.CONTACTS.filter(c=>c.status==='dormant').length; }
+    function activeMembersCount(){ return DB.LOYALTY_MEMBERS.filter(m=>DB.memberIsActive(m.id)).length; }
+    function membersNearRewardCount(){ return DB.LOYALTY_MEMBERS.filter(m=>DB.pointsToNextReward(m.id)<=50).length; }
+    function topProduct(days){
+      let best=null,bestScans=-1;
+      DB.PRODUCTS.forEach(p=>{ const m=productMetrics(p.id,days); if(m.scans>bestScans){ bestScans=m.scans; best=Object.assign({product:p},m); } });
+      return best;
+    }
+    function lastCampaign(){
+      const sent=DB.CAMPAIGNS.filter(c=>c.status==='sent').sort((a,b)=>b.sentAt-a.sentAt);
+      return sent[0]||null;
+    }
+    return { scansForProduct, productMetrics, allScans, scanTotals, newContactsCount, dormantCount, activeMembersCount, membersNearRewardCount, topProduct, lastCampaign };
+  })();
+
   function renderClients(){
-    const f=document.getElementById('segFilter').value;
-    document.getElementById('clientRows').innerHTML=clients.filter(c=>!f||c.s===f).map((c,i)=>`
-      <tr onclick='openClient(${clients.indexOf(c)})'>
-        <td><b style="color:var(--ink)">${c.n}</b><br><span class="muted" style="font-size:11.5px">${c.mail}</span></td>
-        <td>${c.p}</td><td><span class="tag">${c.s}</span></td><td class="right">${c.sc}</td>
-        <td><span class="tag ${c.fc}">${c.f}</span></td></tr>`).join('');
+    const rows=document.getElementById('clientRows'); if(!rows) return;
+    const f=document.getElementById('segFilter')?document.getElementById('segFilter').value:'';
+    const filtered=DB.CONTACTS.filter(c=>!f||c.segment===f);
+    rows.innerHTML=filtered.slice(0,50).map(c=>`
+      <tr onclick="openClient('${c.id}')">
+        <td><b style="color:var(--ink)">${c.name}</b><br><span class="muted" style="font-size:11.5px">${c.email}</span></td>
+        <td>${c.scannedProductIds.length?DB.productById(c.scannedProductIds[c.scannedProductIds.length-1]).name:'—'}</td>
+        <td><span class="tag">${c.segment}</span></td><td class="right">${c.scannedProductIds.length}</td>
+        <td><span class="tag ${c.isLoyaltyMember?'green':'grey'}">${c.isLoyaltyMember?'Membre':'Non membre'}</span></td></tr>`).join('');
   }
-  function openClient(i){
-    const c=clients[i];
-    document.getElementById('dName').textContent=c.n;
+  function openClient(cid){
+    const c=DB.contactById(cid); if(!c) return;
+    const m=c.isLoyaltyMember?DB.memberById(c.loyaltyMemberId):null;
+    document.getElementById('dName').textContent=c.name;
     document.getElementById('dBody').innerHTML=`
-      <div class="kv"><span>E-mail</span><b>${c.mail}</b></div>
-      <div class="kv"><span>Segment</span><b>${c.s}</b></div>
-      <div class="kv"><span>Statut fidélité</span><b>${c.f}</b></div>
-      <div class="kv"><span>Premier contact</span><b>${c.since}</b></div>
-      <div class="kv"><span>Origine</span><b>${c.src}</b></div>
-      <div class="kv"><span>Scans QR</span><b>${c.sc}</b></div>
-      <div class="kv"><span>Produit préféré</span><b>${c.p}</b></div>
-      <div class="kv"><span>Panier moyen</span><b class="muted" style="font-weight:600">—  ·  via POS ou déclaration</b></div>
-      <h4 style="color:var(--ink);margin:18px 0 8px">Activité récente</h4>
-      <div class="timeline">
-        <div class="t"><b>A scanné ${c.p}</b><br><small>il y a 2 jours · ${c.src}</small></div>
-        <div class="t"><b>Ouverture campagne « Préventes »</b><br><small>il y a 1 semaine</small></div>
-        <div class="t"><b>Inscription au club</b><br><small>${c.since}</small></div>
-      </div>`;
+      <div class="kv"><span>E-mail</span><b>${c.email}</b></div>
+      <div class="kv"><span>Segment</span><b>${c.segment}</b></div>
+      <div class="kv"><span>Persona</span><b>${c.persona}</b></div>
+      <div class="kv"><span>Statut Club</span><b>${c.isLoyaltyMember?('Membre · '+m.tier):'Non membre'}</b></div>
+      <div class="kv"><span>Premier contact</span><b>${fmtDateFR(c.createdAt)}</b></div>
+      <div class="kv"><span>Origine</span><b>${c.source}</b></div>
+      <div class="kv"><span>Produits scannés</span><b>${c.scannedProductIds.length}</b></div>
+      <div class="kv"><span>Consentement marketing</span><b>${c.consentMarketing?'Oui':'Non'}</b></div>
+      ${m?`<div class="kv"><span>Solde de points</span><b>${m.pointsBalance}</b></div>`:''}
+      <h4 style="color:var(--ink);margin:18px 0 8px">Produits consultés</h4>
+      <div class="timeline">${c.scannedProductIds.map(pid=>`<div class="t"><b>A scanné ${DB.productById(pid).name}</b></div>`).join('')||'<div class="t"><b>Aucun scan enregistré</b></div>'}</div>`;
     document.getElementById('drawer').classList.add('open');
     document.getElementById('drawerBack').classList.add('open');
   }
   function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawerBack').classList.remove('open');}
   renderClients();
+  document.querySelectorAll('[id^="ph-"]').forEach(el=>{ el.innerHTML=emptyStateHtml({title:'Bientôt disponible', text:"Cet écran est en cours de construction dans la démo."}); });
+
 
   // QR generation
   function genQR(){
