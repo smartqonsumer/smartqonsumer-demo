@@ -203,6 +203,18 @@
   .badge-status{display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px}
   .badge-status.on{background:var(--okbg); color:var(--ok)}
   .badge-status.off{background:var(--color-neutral-100); color:var(--muted)}
+  .lp-template-card{flex:1; border:1.5px solid var(--line); border-radius:12px; padding:14px; cursor:pointer}
+  .lp-template-card b{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--ink)}
+  .lp-template-card small{display:block; color:var(--muted); font-size:11.5px; margin-top:4px}
+  .lp-template-card.selected{border-color:var(--accent); background:var(--lav3)}
+  .lp-template-card.locked{opacity:.85}
+  .dest-row{display:flex; align-items:flex-start; gap:10px; padding:12px; border:1px solid var(--line); border-radius:10px}
+  .dest-row + .dest-row{margin-top:8px}
+  .dest-row input[type=radio]{margin-top:3px}
+  .dest-row .dr-body{flex:1; min-width:0}
+  .dest-row .dr-body b{display:block; font-size:12.5px; color:var(--ink)}
+  .dest-row .dr-body small{display:block; color:var(--muted); font-size:11px; word-break:break-all; margin-top:2px}
+  .dest-row.primary{border-color:var(--accent); background:var(--lav3)}
 
   .kpi-info{margin-left:auto; color:var(--muted); cursor:help; position:relative; display:inline-flex; background:transparent; border:0; padding:0}
   .kpi-info svg{width:14px;height:14px}
@@ -1386,57 +1398,32 @@
     <!-- PRODUCTS -->
     <section class="screen" id="products-all">
       <div class="screen-head">
-        <div><div class="eyebrow">Catalogue</div><h2 style="margin:2px 0 0;color:var(--ink)">Base produits</h2><p>Vos produits sont déclarés ici. C'est cette base qui alimente les QR : chaque QR encode un produit (GTIN) et, en option, un lot ou une série.</p></div>
+        <div><div class="eyebrow">Catalogue</div><h2 style="margin:2px 0 0;color:var(--ink)"><span id="prodTotal">0</span> produits</h2><p>Cette base alimente les Landing Pages et les QR : chaque produit peut avoir au plus une Landing Page et un QR Code.</p></div>
         <button class="btn primary" onclick="openProd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Ajouter un produit</button>
       </div>
-      <div class="card" style="border-left:4px solid var(--accent); background:var(--lav3); margin-bottom:16px">
-        <h3>D'où viennent ces données ?</h3>
-        <p class="muted" style="margin:6px 0 0;font-size:12.5px;line-height:1.6">
-          <b style="color:var(--ink)">Le produit</b> (nom, format) est déclaré par votre marque. &nbsp;·&nbsp;
-          <b style="color:var(--ink)">Le GTIN</b> provient de son inscription GS1 (le code-barres du produit). &nbsp;·&nbsp;
-          <b style="color:var(--ink)">Le lot / la série</b> viennent de la production, pour les QR dynamiques. <br>
-          Sans GTIN, un identifiant interne est utilisé — <i>point à valider avec vos équipes (conformité GS1).</i>
-        </p>
+      <div class="filters-bar">
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="prodSearch" placeholder="Nom du produit" oninput="renderProductsTable()"></div>
+        <select id="pfGtin" onchange="renderProductsTable()"><option value="">GTIN (tous)</option><option value="with">Avec GTIN</option><option value="without">Sans GTIN</option></select>
+        <select id="pfCategory" onchange="renderProductsTable()"><option value="">Toutes catégories</option></select>
+        <select id="pfStatus" onchange="renderProductsTable()"><option value="">Statut (tous)</option><option value="active">Actif</option><option value="draft">Brouillon</option></select>
+        <select id="pfLanding" onchange="renderProductsTable()"><option value="">Landing Page (toutes)</option><option value="with">Avec Landing Page</option><option value="without">Sans Landing Page</option></select>
+        <select id="pfQr" onchange="renderProductsTable()"><option value="">QR (tous)</option><option value="with">Avec QR</option><option value="without">Sans QR</option></select>
+        <div class="filters-active" id="prodFiltersActive"></div>
       </div>
       <div class="card" style="padding:4px 4px 0">
-        <table><thead><tr><th>Produit</th><th>Format</th><th>GTIN</th><th>Dernier lot</th><th class="right">QR actifs</th><th>Statut</th></tr></thead>
-        <tbody id="prodRows">
-          <tr><td><b style="color:var(--ink)">Produit Édition Standard</b></td><td>Format standard</td><td>3701234500017</td><td>L-2607-A</td><td class="right">2</td><td><span class="tag green">Actif</span></td></tr>
-          <tr><td><b style="color:var(--ink)">Produit Édition Premium</b></td><td>Format premium</td><td>3701234500024</td><td>L-2606-C</td><td class="right">1</td><td><span class="tag green">Actif</span></td></tr>
-          <tr><td><b style="color:var(--ink)">Produit Collection Limitée</b></td><td>Format collection</td><td>3701234500031</td><td>L-2605-B</td><td class="right">1</td><td><span class="tag green">Actif</span></td></tr>
-          <tr><td><b style="color:var(--ink)">Produit Découverte</b></td><td>Format découverte</td><td><span class="muted">— (SKU interne)</span></td><td>—</td><td class="right">0</td><td><span class="tag grey">Sans GTIN</span></td></tr>
-        </tbody></table>
+        <table><thead><tr>
+          <th data-sort-key="name">Produit</th><th>Catégorie</th><th>GTIN</th><th>Landing Page</th><th>QR Code</th><th>Destination active</th><th class="right" data-sort-key="scans30">Scans 30j</th><th>Statut</th><th></th>
+        </tr></thead>
+        <tbody id="prodRows"></tbody></table>
       </div>
     </section>
 
     <!-- QR -->
     <section class="screen" id="products-qr">
-      <div class="screen-head"><div><div class="eyebrow">Acquisition</div><h2 style="margin:2px 0 0;color:var(--ink)">QR Codes produits</h2><p>Générés et suivis depuis la plateforme. À imprimer sur vos étiquettes.</p></div></div>
-      <div class="grid cards-2">
-        <div class="card">
-          <h3>Générer un QR</h3><div class="sub">Il pointera vers la page de scan de votre choix.</div>
-          <div class="field"><label>Produit <small>· issu de votre base produits (GTIN + lot) — <a href="#" onclick="go('products.all');return false;" style="color:var(--accent);font-weight:600">gérer les produits</a></small></label>
-            <select id="qrProd"><option>Produit Édition Standard</option><option>Produit Édition Premium</option><option>Produit Collection Limitée</option><option>Produit Découverte (sans GTIN)</option></select></div>
-          <div class="field"><label>Objectif de la page</label>
-            <select id="qrGoal"><option>Inscription fidélité + page produit</option><option>Page produit seule</option><option>Jeu / tirage au sort</option></select></div>
-          <div class="field"><label>Campagne rattachée <small>(pour le suivi)</small></label>
-            <select id="qrCamp"><option>Été 2026 — Terrasses</option><option>Lancement IPA</option><option>Aucune</option></select></div>
-          <button class="btn primary" onclick="genQR()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Générer le QR</button>
-        </div>
-        <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
-          <div id="qrHolder" style="text-align:center;color:var(--muted)">
-            <div class="qr" id="qrGrid" style="opacity:.15"></div>
-            <div style="margin-top:12px;font-size:12.5px">Votre QR apparaîtra ici.</div>
-          </div>
-        </div>
-      </div>
-      <div class="card" style="margin-top:16px;padding:4px 4px 0">
-        <table><thead><tr><th>Produit</th><th>Campagne</th><th class="right">Scans</th><th class="right">Inscriptions</th><th>Support</th></tr></thead>
-        <tbody id="qrRows">
-          <tr><td>IPA Houblon Libre</td><td>Lancement IPA</td><td class="right">1 204</td><td class="right">438</td><td><span class="tag grey">Bouteille</span></td></tr>
-          <tr><td>Blonde de Comptoir</td><td>Été 2026 — Terrasses</td><td class="right">861</td><td class="right">252</td><td><span class="tag grey">Sous-bock</span></td></tr>
-          <tr><td>Ambrée des Fûts</td><td>—</td><td class="right">513</td><td class="right">120</td><td><span class="tag grey">Affiche</span></td></tr>
-        </tbody></table>
+      <div class="screen-head"><div><div class="eyebrow">Acquisition</div><h2 style="margin:2px 0 0;color:var(--ink)">QR Codes produits</h2><p>Chaque produit possède au maximum un seul QR Code. Le même resolver sert les identifiants GTIN et SmartQonsumer.</p></div></div>
+      <div class="card" style="padding:4px 4px 0">
+        <table><thead><tr><th>Produit</th><th>Identifiant</th><th>Type</th><th>URL permanente</th><th>Destination active</th><th class="right">Scans</th><th>Dernière activité</th><th>Statut</th><th></th></tr></thead>
+        <tbody id="qrRows"></tbody></table>
       </div>
     </section>
 
@@ -1612,7 +1599,18 @@
         <tbody id="segRows"></tbody></table>
       </div>
     </section>
-    <section class="screen" id="products-landing"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Landing Pages</h2></div></div><div class="card" id="ph-products-landing"></div></section>
+    <section class="screen" id="products-landing">
+      <div id="lpListView">
+        <div class="screen-head">
+          <div><div class="eyebrow">Produits</div><h2 style="margin:2px 0 0;color:var(--ink)">Landing Pages</h2><p>Chaque Landing Page est associée à un seul produit et doit exister avant de créer son QR Code.</p></div>
+        </div>
+        <div class="card" style="padding:4px 4px 0">
+          <table><thead><tr><th>Landing Page</th><th>Produit</th><th>Modèle</th><th>Statut</th><th>QR associé</th><th>Destination principale</th><th>Dernière modification</th><th></th></tr></thead>
+          <tbody id="lpRows"></tbody></table>
+        </div>
+      </div>
+      <div id="lpEditorView" style="display:none"></div>
+    </section>
     <section class="screen" id="loyalty-members"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Membres</h2></div></div><div class="card" id="ph-loyalty-members"></div></section>
     <section class="screen" id="loyalty-rewards"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Récompenses</h2></div></div><div class="card" id="ph-loyalty-rewards"></div></section>
     <section class="screen" id="loyalty-settings-appearance"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Personnalisation du Club</h2></div></div><div class="card" id="ph-loyalty-settings-appearance"></div></section>
@@ -1636,17 +1634,6 @@
   <div class="df" id="panelFooter" style="display:none"></div>
 </aside>
 
-<div class="drawer-back" id="prodBack" onclick="closeProd()"></div>
-<aside class="drawer" id="prodDrawer">
-  <div class="dh"><div><div style="font-size:11px;color:#BCBAEB;letter-spacing:.6px;text-transform:uppercase">Catalogue produits</div><b>Ajouter un produit</b></div><button class="x" onclick="closeProd()">✕</button></div>
-  <div class="db">
-    <div class="field"><label>Nom du produit</label><input type="text" id="npName" placeholder="Ex. Édition Limitée n°5"></div>
-    <div class="field"><label>GTIN <small>· code-barres GS1 — laissez vide si vous n'en avez pas (un identifiant interne sera utilisé)</small></label><input type="text" id="npGtin" placeholder="3701234500048"></div>
-    <div class="field"><label>Dernier lot <small>· optionnel, pour les QR dynamiques</small></label><input type="text" id="npLot" placeholder="L-2607-A"></div>
-  </div>
-  <div class="df"><button class="btn ghost" onclick="closeProd()">Annuler</button><button class="btn primary" onclick="addProduct()">Ajouter au catalogue</button></div>
-</aside>
-
 <div class="toast" id="toast"><span class="ck"><svg width="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></span><span id="toastMsg">Enregistré</span></div>
 
 <script>
@@ -1654,11 +1641,11 @@
   // title (topbar heading), group/subgroup (which nav-group(s) auto-expand).
   const ROUTES={
     'dash':{screenId:'dash', title:'Tableau de bord'},
-    'contacts.all':{screenId:'contacts-all', title:'Tous les contacts', group:'contacts'},
-    'contacts.segments':{screenId:'contacts-segments', title:'Segments', group:'contacts'},
-    'products.all':{screenId:'products-all', title:'Tous les produits', group:'products'},
-    'products.landing':{screenId:'products-landing', title:'Landing Pages', group:'products'},
-    'products.qr':{screenId:'products-qr', title:'QR Codes', group:'products'},
+    'contacts.all':{screenId:'contacts-all', title:'Tous les contacts', group:'contacts', onEnter:()=>renderContacts()},
+    'contacts.segments':{screenId:'contacts-segments', title:'Segments', group:'contacts', onEnter:()=>renderSegments()},
+    'products.all':{screenId:'products-all', title:'Tous les produits', group:'products', onEnter:()=>renderProductsTable()},
+    'products.landing':{screenId:'products-landing', title:'Landing Pages', group:'products', onEnter:()=>enterProductsLanding()},
+    'products.qr':{screenId:'products-qr', title:'QR Codes', group:'products', onEnter:()=>enterProductsQr()},
     'loyalty.members':{screenId:'loyalty-members', title:'Membres', group:'loyalty'},
     'loyalty.rewards':{screenId:'loyalty-rewards', title:'Récompenses', group:'loyalty'},
     'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', subgroup:'loyalty-settings'},
@@ -2409,25 +2396,115 @@
   document.querySelectorAll('[id^="ph-"]').forEach(el=>{ el.innerHTML=emptyStateHtml({title:'Bientôt disponible', text:"Cet écran est en cours de construction dans la démo."}); });
 
 
-  // QR generation
-  function genQR(){
-    const grid=document.getElementById('qrGrid'); grid.style.opacity='1';
+  // ============================================================
+  // PRODUITS — QR Codes
+  // ============================================================
+  let pendingQrProductId=null;
+  function qrGridHtml(seed){
     let html=''; const N=21;
     const finder=(r,c)=> (r<7&&c<7)||(r<7&&c>=N-7)||(r>=N-7&&c<7);
+    let s=(seed||1)>>>0;
+    const rnd2=()=>{ s^=s<<13; s^=s>>>17; s^=s<<5; return ((s>>>0)%1000)/1000; };
     for(let r=0;r<N;r++)for(let c=0;c<N;c++){
       let on;
-      if(finder(r,c)){ const rr=r%(N-7), cc=c% (N-7); const lr=r<7?r:r-(N-7), lc=c<7?c:c-(N-7);
-        on = (lr===0||lr===6||lc===0||lc===6||(lr>=2&&lr<=4&&lc>=2&&lc<=4)); }
-      else on = Math.random()>0.52;
+      if(finder(r,c)){ const lr=r<7?r:r-(N-7), lc=c<7?c:c-(N-7);
+        on=(lr===0||lr===6||lc===0||lc===6||(lr>=2&&lr<=4&&lc>=2&&lc<=4)); }
+      else on=rnd2()>0.52;
       html+='<i class="'+(on?'':'off')+'"></i>';
     }
-    grid.innerHTML=html;
-    const prod=document.getElementById('qrProd').value, camp=document.getElementById('qrCamp').value;
-    document.getElementById('qrHolder').querySelector('div:last-child').innerHTML='<b style="color:var(--ink)">'+prod+'</b><br><span style="font-size:12px;color:var(--muted)">Prêt à exporter (PNG / SVG / PDF)</span>';
-    const tb=document.getElementById('qrRows');
-    tb.insertAdjacentHTML('afterbegin','<tr><td>'+prod+'</td><td>'+(camp==='Aucune'?'—':camp)+'</td><td class="right">0</td><td class="right">0</td><td><span class="tag teal">Nouveau</span></td></tr>');
-    toast('QR généré — prêt à imprimer');
+    return html;
   }
+  function renderQrCodes(){
+    const rows=document.getElementById('qrRows'); if(!rows) return;
+    rows.innerHTML=DB.PRODUCTS.map(p=>{
+      const lp=DB.landingPageByProduct(p.id);
+      const qr=DB.qrByProduct(p.id);
+      if(!qr){
+        const canCreate=!!lp;
+        return `<tr><td><b style="color:var(--ink)">${p.name}</b></td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td class="right muted">—</td><td class="muted">—</td><td><span class="tag grey">Aucun</span></td>
+          <td class="right">${canCreate?`<button class="btn ghost" style="padding:6px 11px;font-size:12px" onclick="createQrCode('${p.id}')">Créer</button>`:`<span class="muted" style="font-size:11.5px">Landing Page requise</span>`}</td></tr>`;
+      }
+      const primaryDest=qr.destinations.find(d=>d.isPrimary);
+      const m30=DERIVE.productMetrics(p.id,30);
+      return `<tr onclick="openQrConfig('${qr.id}')">
+        <td><b style="color:var(--ink)">${p.name}</b></td>
+        <td class="muted" style="font-size:12px">${qr.idType==='gtin'?p.gtin:qr.id}</td>
+        <td>${qr.idType==='gtin'?'GTIN':'SmartQonsumer'}</td>
+        <td class="muted" style="font-size:11.5px;word-break:break-all;max-width:220px">${qr.permanentUrl}</td>
+        <td>${primaryDest?primaryDest.label:'—'}</td>
+        <td class="right">${m30.scans}</td>
+        <td>${qr.lastActivityAt?fmtDateFR(qr.lastActivityAt):'—'}</td>
+        <td><span class="tag green">Actif</span></td>
+        <td class="right muted" style="font-size:12px">Configurer →</td></tr>`;
+    }).join('');
+  }
+  function createQrCode(productId){
+    const p=DB.productById(productId);
+    const lp=DB.landingPageByProduct(productId);
+    if(!lp){ toast('La Landing Page doit exister avant de créer un QR Code.'); return; }
+    const idType=p.gtin?'gtin':'sqid';
+    const newQr={
+      id:'qr'+String(DB.QR_CODES.length+1).padStart(3,'0'), productId,
+      idType, permanentUrl: p.gtin ? ('https://qr.smartqonsumer.com/01/'+p.gtin) : ('https://qr.smartqonsumer.com/p/'+p.id),
+      status:'active', lastActivityAt:null,
+      destinations:[
+        {type:'landing', label:'Landing Page Produit', url:'https://scan.smartqonsumer.com/lp/'+p.id, linkType:'gs1:pip', active:true, isPrimary:true},
+        {type:'club', label:'Club Fidélité', url:'https://scan.smartqonsumer.com/club', linkType:'gs1:loyaltyProgram', active:true, isPrimary:false},
+        {type:'external', label:'URL externe', url:'', linkType:'gs1:homepage', active:false, isPrimary:false},
+      ],
+    };
+    DB.addQrCode(newQr);
+    renderQrCodes();
+    toast('QR Code créé pour « '+p.name+' »');
+    setTimeout(()=>openQrConfig(newQr.id),250);
+  }
+  function destRowHtml(qr,dest){
+    return `<label class="dest-row ${dest.isPrimary?'primary':''}">
+      <input type="radio" name="qrPrimary" value="${dest.type}" ${dest.isPrimary?'checked':''} onchange="setQrPrimary('${qr.id}','${dest.type}')">
+      <div class="dr-body"><b>${dest.label} ${dest.isPrimary?'· Principale':''}</b><small>${dest.url||'URL à renseigner'}</small><small>Type : ${dest.linkType}${dest.active?'':' · inactive'}</small></div>
+    </label>`;
+  }
+  function qrConfigBodyHtml(qr){
+    const p=DB.productById(qr.productId);
+    return `
+      <div style="text-align:center;margin-bottom:16px"><div class="qr" style="margin:0 auto">${qrGridHtml(qr.id.length+qr.productId.length*17)}</div></div>
+      <div class="kv"><span>Produit associé</span><b>${p.name}</b></div>
+      <div class="kv"><span>Type d'identifiant</span><b>${qr.idType==='gtin'?'GTIN':'SmartQonsumer'}</b></div>
+      ${p.gtin?`<div class="kv"><span>GTIN</span><b>${p.gtin}</b></div>`:''}
+      <div class="kv"><span>URL permanente</span><b style="font-size:11.5px;word-break:break-all">${qr.permanentUrl}</b></div>
+      <div class="row" style="margin:12px 0 18px">
+        <button class="btn ghost" style="font-size:12px;padding:7px 12px" onclick="toast('Export SVG lancé (démo)')">Télécharger SVG</button>
+        <button class="btn ghost" style="font-size:12px;padding:7px 12px" onclick="toast('Export EPS lancé (démo)')">Télécharger EPS</button>
+        <button class="btn ghost" style="font-size:12px;padding:7px 12px" onclick="toast('Export PDF lancé (démo)')">Télécharger PDF</button>
+        <button class="btn ghost" style="font-size:12px;padding:7px 12px" onclick="toast('Scan de test envoyé — destination : '+(DB.qrById('${qr.id}').destinations.find(d=>d.isPrimary)||{}).label)">Tester le QR</button>
+      </div>
+      <h4 style="color:var(--ink);margin:14px 0 10px">Destinations</h4>
+      <p class="muted" style="font-size:12px;margin:-4px 0 10px">Une seule destination peut être principale.</p>
+      <div id="qrDestList">${qr.destinations.map(d=>destRowHtml(qr,d)).join('')}</div>`;
+  }
+  function openQrConfig(qrId){
+    const qr=DB.qrById(qrId); if(!qr) return;
+    openPanel({eyebrow:'QR Code', title:DB.productById(qr.productId).name, bodyHtml:qrConfigBodyHtml(qr), wide:true,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+  }
+  function setQrPrimary(qrId,destType){
+    DB.setPrimaryDestination(qrId,destType);
+    const qr=DB.qrById(qrId);
+    document.getElementById('qrDestList').innerHTML=qr.destinations.map(d=>destRowHtml(qr,d)).join('');
+    renderQrCodes();
+    toast('Destination principale mise à jour');
+  }
+  function enterProductsQr(){
+    if(pendingQrProductId){
+      const pid=pendingQrProductId; pendingQrProductId=null;
+      const qr=DB.qrByProduct(pid);
+      renderQrCodes();
+      if(qr) openQrConfig(qr.id); else createQrCode(pid);
+      return;
+    }
+    renderQrCodes();
+  }
+  renderQrCodes();
 
   // loyalty preview
   function syncLoyalty(){
@@ -2459,22 +2536,343 @@
   }
 
   // product creation
-  function openProd(){document.getElementById('prodDrawer').classList.add('open');document.getElementById('prodBack').classList.add('open');document.getElementById('npName').focus();}
-  function closeProd(){document.getElementById('prodDrawer').classList.remove('open');document.getElementById('prodBack').classList.remove('open');}
-  function addProduct(){
-    const name=document.getElementById('npName').value.trim()||'Nouveau produit';
-    const gtin=document.getElementById('npGtin').value.trim();
-    const lot=document.getElementById('npLot').value.trim();
-    const gcell = gtin ? gtin : '<span class="muted">— (SKU interne)</span>';
-    const status = gtin ? '<span class="tag green">Actif</span>' : '<span class="tag grey">Sans GTIN</span>';
-    const row='<tr><td><b style="color:var(--ink)">'+name+'</b></td><td>—</td><td>'+gcell+'</td><td>'+(lot||'—')+'</td><td class="right">0</td><td>'+status+'</td></tr>';
-    document.getElementById('prodRows').insertAdjacentHTML('afterbegin',row);
-    const sel=document.getElementById('qrProd'); const opt=document.createElement('option');
-    opt.textContent = gtin ? name : name+' (sans GTIN)'; sel.insertBefore(opt, sel.firstChild); sel.value=opt.textContent;
-    closeProd();
-    document.getElementById('npName').value=''; document.getElementById('npGtin').value=''; document.getElementById('npLot').value='';
-    toast('« '+name+' » ajouté au catalogue');
+  // ============================================================
+  // PRODUITS — Tous les produits
+  // ============================================================
+  const prodState={sort:{key:'name',dir:'asc'}};
+  function populateProductFilterSelects(){
+    const catSel=document.getElementById('pfCategory');
+    if(catSel && !catSel.dataset.filled){
+      const cats=Array.from(new Set(DB.PRODUCTS.map(p=>p.category)));
+      cats.forEach(c=>catSel.insertAdjacentHTML('beforeend',`<option>${c}</option>`));
+      catSel.dataset.filled='1';
+    }
   }
+  function productFiltersActive(){
+    return {gtin:document.getElementById('pfGtin').value, category:document.getElementById('pfCategory').value,
+      status:document.getElementById('pfStatus').value, landing:document.getElementById('pfLanding').value, qr:document.getElementById('pfQr').value};
+  }
+  function filteredProducts(){
+    const q=document.getElementById('prodSearch').value;
+    const f=productFiltersActive();
+    let list=DB.PRODUCTS.filter(p=>
+      matchesSearch(p.name,q) &&
+      (!f.gtin||(f.gtin==='with'?!!p.gtin:!p.gtin)) &&
+      (!f.category||p.category===f.category) &&
+      (!f.status||p.status===f.status) &&
+      (!f.landing||(f.landing==='with'?!!p.landingPageId:!p.landingPageId)) &&
+      (!f.qr||(f.qr==='with'?!!p.qrCodeId:!p.qrCodeId)));
+    const {key,dir}=prodState.sort;
+    list.sort((a,b)=>{
+      let av,bv;
+      if(key==='scans30'){ av=DERIVE.productMetrics(a.id,30).scans; bv=DERIVE.productMetrics(b.id,30).scans; }
+      else if(key==='name'){ av=a.name; bv=b.name; }
+      else { av=a.createdAt; bv=b.createdAt; }
+      if(av<bv) return dir==='asc'?-1:1; if(av>bv) return dir==='asc'?1:-1; return 0;
+    });
+    return list;
+  }
+  function renderProductFilterChips(){
+    const f=productFiltersActive();
+    const labels={gtin:'GTIN',category:'Catégorie',status:'Statut',landing:'Landing Page',qr:'QR'};
+    const valueLabels={gtin:{with:'Avec GTIN',without:'Sans GTIN'},status:{active:'Actif',draft:'Brouillon'},landing:{with:'Avec Landing Page',without:'Sans Landing Page'},qr:{with:'Avec QR',without:'Sans QR'}};
+    const entries=Object.entries(f).filter(([,v])=>v);
+    const el=document.getElementById('prodFiltersActive');
+    if(!entries.length){ el.innerHTML=''; return; }
+    el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${(valueLabels[k]&&valueLabels[k][v])||v}<button type="button" onclick="resetProductFilter('${k}')">✕</button></span>`).join('')+'<button type="button" class="filter-reset" onclick="resetAllProductFilters()">Réinitialiser</button>';
+  }
+  function resetProductFilter(key){
+    const map={gtin:'pfGtin',category:'pfCategory',status:'pfStatus',landing:'pfLanding',qr:'pfQr'};
+    document.getElementById(map[key]).value=''; renderProductsTable();
+  }
+  function resetAllProductFilters(){
+    ['pfGtin','pfCategory','pfStatus','pfLanding','pfQr'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('prodSearch').value=''; renderProductsTable();
+  }
+  function renderProductsTable(){
+    populateProductFilterSelects();
+    const list=filteredProducts();
+    document.getElementById('prodTotal').textContent=list.length;
+    const rows=document.getElementById('prodRows');
+    rows.innerHTML = list.length ? list.map(p=>{
+      const lp=DB.landingPageByProduct(p.id), qr=DB.qrByProduct(p.id);
+      const primaryDest=qr?qr.destinations.find(d=>d.isPrimary):null;
+      const m30=DERIVE.productMetrics(p.id,30);
+      const lpTag = lp ? `<span class="tag ${lp.status==='publiee'?'green':(lp.status==='brouillon'?'grey':'teal')}">${lp.status==='publiee'?'Publiée':(lp.status==='brouillon'?'Brouillon':'Désactivée')}</span>` : '<span class="tag grey">Aucune</span>';
+      return `<tr onclick="openProductPanel('${p.id}')">
+        <td><b style="color:var(--ink)">${p.name}</b></td>
+        <td>${p.category}</td>
+        <td>${p.gtin?p.gtin:'<span class="muted">— (SKU interne)</span>'}</td>
+        <td>${lpTag}</td>
+        <td>${qr?'<span class="tag green">Actif</span>':'<span class="tag grey">Aucun</span>'}</td>
+        <td>${primaryDest?primaryDest.label:'—'}</td>
+        <td class="right">${m30.scans}</td>
+        <td>${p.status==='active'?'<span class="tag green">Actif</span>':'<span class="tag grey">Brouillon</span>'}</td>
+        <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
+    }).join('') : `<tr><td colspan="9">${emptyStateHtml({icon:'search',title:'Aucun produit trouvé',text:'Essayez de modifier votre recherche ou vos filtres actifs.'})}</td></tr>`;
+    renderProductFilterChips();
+    const thead=document.querySelector('#products-all thead');
+    if(thead) wireSortable(thead, prodState.sort, renderProductsTable);
+  }
+
+  const PRODUCT_CATEGORIES=['Édition standard','Édition premium','Collection limitée','Découverte'];
+  function productDetailBodyHtml(p){
+    const lp=DB.landingPageByProduct(p.id), qr=DB.qrByProduct(p.id);
+    const m30=DERIVE.productMetrics(p.id,30);
+    return `
+      <div class="kv"><span>Marque</span><b>${p.brand}</b></div>
+      <div class="kv"><span>Catégorie</span><b>${p.category}</b></div>
+      <div class="kv"><span>Format</span><b>${p.format}</b></div>
+      <div class="kv"><span>Référence (SKU)</span><b>${p.sku}</b></div>
+      <div class="kv"><span>GTIN</span><b>${p.gtin||'— (SKU interne)'}</b></div>
+      <div class="kv"><span>Statut</span><b>${p.status==='active'?'Actif':'Brouillon'}</b></div>
+      <div class="kv"><span>Créé le</span><b>${fmtDateFR(p.createdAt)}</b></div>
+      <div class="kv"><span>Scans (30 derniers jours)</span><b>${m30.scans}</b></div>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Landing Page</h4>
+      ${lp?`<div class="kv"><span>Statut</span><b>${lp.status==='publiee'?'Publiée':(lp.status==='brouillon'?'Brouillon':'Désactivée')}</b></div><a onclick="closePanel();go('products.landing')" style="font-size:12.5px;font-weight:700;color:var(--accent);cursor:pointer">Voir les Landing Pages →</a>`
+        :`<p class="muted" style="font-size:12.5px">Aucune Landing Page pour ce produit. <a onclick="closePanel();pendingLandingProductId='${p.id}';go('products.landing')" style="color:var(--accent);font-weight:700;cursor:pointer">En créer une →</a></p>`}
+      <h4 style="color:var(--ink);margin:18px 0 8px">QR Code</h4>
+      ${qr?`<div class="kv"><span>Statut</span><b>Actif</b></div><a onclick="closePanel();go('products.qr')" style="font-size:12.5px;font-weight:700;color:var(--accent);cursor:pointer">Voir les QR Codes →</a>`
+        :`<p class="muted" style="font-size:12.5px">${lp?`<a onclick="closePanel();pendingQrProductId='${p.id}';go('products.qr')" style="color:var(--accent);font-weight:700;cursor:pointer">Créer le QR Code →</a>`:'La Landing Page doit exister avant de créer un QR Code.'}</p>`}`;
+  }
+  function productFormBodyHtml(p){
+    return `
+      <div class="field"><label>Nom du produit</label><input type="text" id="npName" value="${p?p.name:''}" placeholder="Ex. Édition Limitée n°5"></div>
+      <div class="field"><label>Marque</label><input type="text" id="npBrand" value="${p?p.brand:'SmartQonsumer'}"></div>
+      <div class="row" style="gap:12px">
+        <div class="field" style="flex:1"><label>Catégorie</label><select id="npCategory">${PRODUCT_CATEGORIES.map(c=>`<option ${p&&p.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+        <div class="field" style="flex:1"><label>Format / variante</label><input type="text" id="npFormat" value="${p?p.format:''}" placeholder="Ex. 33 cl"></div>
+      </div>
+      <div class="field"><label>Référence interne (SKU)</label><input type="text" id="npSku" value="${p?p.sku:''}" placeholder="SKU-1000"></div>
+      <div class="field"><label>Description</label><textarea id="npDesc" rows="2" placeholder="Description courte du produit"></textarea></div>
+      <div class="field"><label>Image</label><div style="border:1px dashed var(--line); border-radius:10px; padding:16px; text-align:center; color:var(--muted); font-size:12px">Glissez une image ici (démo — aucun fichier n'est réellement envoyé)</div></div>
+      <div class="field"><label>GTIN <small>· code-barres GS1 — laissez vide si vous n'en avez pas (un identifiant interne sera utilisé)</small></label><input type="text" id="npGtin" value="${p&&p.gtin?p.gtin:''}" placeholder="3701234500048" oninput="onGtinInput()"><div id="gtinStatus" style="margin-top:6px;font-size:12px"></div></div>
+      <div class="field"><label>Statut</label><select id="npStatus"><option value="active" ${!p||p.status==='active'?'selected':''}>Actif</option><option value="draft" ${p&&p.status==='draft'?'selected':''}>Brouillon</option></select></div>`;
+  }
+  let gtinCheckTimer=null;
+  function onGtinInput(){
+    const val=document.getElementById('npGtin').value.trim();
+    const statusEl=document.getElementById('gtinStatus');
+    clearTimeout(gtinCheckTimer);
+    if(!val){ statusEl.innerHTML='<span class="muted">Non renseigné — un identifiant interne sera utilisé.</span>'; statusEl.dataset.state='none'; return; }
+    statusEl.innerHTML='<span class="muted">Vérification en cours…</span>'; statusEl.dataset.state='checking';
+    gtinCheckTimer=setTimeout(()=>{
+      let state;
+      if(!/^\d{8,14}$/.test(val)) state='invalid';
+      else if(val.endsWith('999')) state='unavailable';
+      else state='verified';
+      const map={
+        verified:'<span style="color:var(--ok);font-weight:700">✓ GTIN vérifié</span>',
+        invalid:'<span style="color:var(--color-error);font-weight:700">GTIN invalide — doit contenir 8 à 14 chiffres</span>',
+        unavailable:'<span style="color:var(--color-warning);font-weight:700">Service de vérification indisponible — réessayez plus tard</span>',
+      };
+      statusEl.innerHTML=map[state]; statusEl.dataset.state=state;
+    },900);
+  }
+  function openProd(){ openProductPanel(null); }
+  function openProductPanel(pid){
+    if(!pid){
+      openPanel({eyebrow:'Catalogue produits', title:'Ajouter un produit', bodyHtml:productFormBodyHtml(null),
+        footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveProduct(null)">Ajouter au catalogue</button>`});
+      onGtinInput(); return;
+    }
+    const p=DB.productById(pid); if(!p) return;
+    openPanel({eyebrow:'Produit', title:p.name, bodyHtml:productDetailBodyHtml(p),
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn primary" onclick="openProductEditForm('${p.id}')">Modifier</button>`});
+  }
+  function openProductEditForm(pid){
+    const p=DB.productById(pid); if(!p) return;
+    openPanel({eyebrow:'Produit', title:'Modifier le produit', bodyHtml:productFormBodyHtml(p),
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveProduct('${p.id}')">Enregistrer</button>`});
+    onGtinInput();
+  }
+  function saveProduct(pid){
+    const name=document.getElementById('npName').value.trim()||'Nouveau produit';
+    const brand=document.getElementById('npBrand').value.trim()||'SmartQonsumer';
+    const category=document.getElementById('npCategory').value;
+    const format=document.getElementById('npFormat').value.trim();
+    const sku=document.getElementById('npSku').value.trim()||('SKU-'+Math.floor(1000+Math.random()*9000));
+    const gtin=document.getElementById('npGtin').value.trim()||null;
+    const status=document.getElementById('npStatus').value;
+    const gtinState=!gtin?'none':((document.getElementById('gtinStatus').dataset.state)||'checking');
+    if(pid){
+      const p=DB.productById(pid);
+      Object.assign(p,{name,brand,category,format,sku,gtin,gtinState,status});
+      closePanel(); renderProductsTable();
+      toast('Produit mis à jour');
+    } else {
+      const newP={id:'p'+(DB.PRODUCTS.length+1)+'x'+Math.floor(rndSuffix()), name, brand, category, format, sku, gtin, gtinState, status, createdAt:new Date(), landingPageId:null, qrCodeId:null};
+      DB.addProduct(newP);
+      closePanel(); renderProductsTable();
+      toast('« '+name+' » ajouté au catalogue');
+      setTimeout(()=>{
+        openPanel({eyebrow:'Produit ajouté', title:name, bodyHtml:`<p style="font-size:13px;color:var(--muted);line-height:1.6">Votre produit est enregistré dans le catalogue. L'étape suivante consiste à créer sa Landing Page — elle est nécessaire avant de pouvoir générer un QR Code.</p>`,
+          footerHtml:`<button class="btn ghost" onclick="closePanel()">Plus tard</button><button class="btn primary" onclick="closePanel(); pendingLandingProductId='${newP.id}'; go('products.landing');">Créer la Landing Page</button>`});
+      },250);
+    }
+  }
+  function rndSuffix(){ return Math.floor(Math.random()*900+100); }
+  renderProductsTable();
+
+  // ============================================================
+  // PRODUITS — Landing Pages
+  // ============================================================
+  let pendingLandingProductId=null;
+  function openPremiumUpsell(label){ toast(label+" — fonctionnalité Premium. Débloquez-la depuis Paramètres."); }
+  function featureRowHtml(text){
+    return `<div class="rule-row"><input type="text" class="lpFeature" value="${text||''}" placeholder="Ex. Origine du produit" style="flex:1"><button type="button" class="rm" onclick="this.closest('.rule-row').remove(); updateLandingPreview();" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>`;
+  }
+  function renderLandingPages(){
+    const rows=document.getElementById('lpRows'); if(!rows) return;
+    rows.innerHTML=DB.PRODUCTS.map(p=>{
+      const lp=DB.landingPageByProduct(p.id);
+      const qr=DB.qrByProduct(p.id);
+      const primaryDest=qr?qr.destinations.find(d=>d.isPrimary):null;
+      if(!lp){
+        return `<tr><td><span class="muted">— aucune —</span></td><td>${p.name}</td><td class="muted">—</td><td><span class="tag grey">Aucune</span></td><td>${qr?'Oui':'—'}</td><td>—</td><td>—</td>
+          <td class="right"><button class="btn ghost" style="padding:6px 11px;font-size:12px" onclick="openLandingEditor('${p.id}')">Créer</button></td></tr>`;
+      }
+      const statusTag = lp.status==='publiee'?'<span class="tag green">Publiée</span>':(lp.status==='brouillon'?'<span class="tag grey">Brouillon</span>':'<span class="tag teal">Désactivée</span>');
+      return `<tr>
+        <td><b style="color:var(--ink)">${lp.title}</b></td>
+        <td>${p.name}</td>
+        <td>${lp.template==='premium'?'Premium':'Essentiel'}</td>
+        <td>${statusTag}</td>
+        <td>${qr?'Oui':'Non'}</td>
+        <td>${primaryDest?primaryDest.label:'—'}</td>
+        <td>${fmtDateFR(lp.lastModified)}</td>
+        <td class="right" style="white-space:nowrap">
+          <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="openLandingEditor('${p.id}')">Modifier</button>
+          <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="previewLandingPage('${lp.id}')">Aperçu</button>
+          ${lp.status!=='publiee'?`<button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="setLandingStatus('${lp.id}','publiee')">Publier</button>`:`<button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="setLandingStatus('${lp.id}','desactivee')">Désactiver</button>`}
+        </td></tr>`;
+    }).join('');
+  }
+  function setLandingStatus(lpId,status){
+    const lp=DB.LANDING_PAGES.find(l=>l.id===lpId); if(!lp) return;
+    lp.status=status; lp.lastModified=new Date();
+    toast(status==='publiee'?'Landing Page publiée':'Landing Page désactivée');
+    renderLandingPages();
+  }
+  function landingPreviewBodyHtml(title,subtitle,description,cta,features){
+    return `<div style="font-weight:800;font-size:15px;color:var(--ink)">${title}</div>
+      <div style="font-size:12px;color:var(--muted);margin:4px 0 10px">${subtitle}</div>
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;margin-bottom:10px">${description}</div>
+      <ul style="margin:0 0 14px;padding-left:18px;font-size:11.5px;color:var(--muted)">${(features||[]).map(f=>`<li>${f}</li>`).join('')}</ul>
+      <div style="background:var(--accent);color:#fff;text-align:center;padding:10px;border-radius:9px;font-size:12.5px;font-weight:700">${cta}</div>`;
+  }
+  function previewLandingPage(lpId){
+    const lp=DB.LANDING_PAGES.find(l=>l.id===lpId); if(!lp) return;
+    openPanel({eyebrow:'Aperçu', title:lp.title, wide:true,
+      bodyHtml:`<div class="phone" style="margin:0 auto"><div class="screen2"><div class="ph-body">${landingPreviewBodyHtml(lp.title,lp.subtitle,lp.description,lp.ctaLabel,lp.features)}</div></div></div>`,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+  }
+  function landingEditorHtml(p,lp){
+    const premiumLocked=!isPremium();
+    const template=lp?lp.template:'essentiel';
+    return `
+      <div class="screen-head">
+        <div><div class="eyebrow">Produits · Landing Pages</div><h2 style="margin:2px 0 0;color:var(--ink)">${lp?'Modifier la':'Créer une'} Landing Page — ${p.name}</h2></div>
+        <div class="row"><button class="btn ghost" onclick="closeLandingEditor()">Annuler</button><button class="btn primary" onclick="saveLandingPage('${p.id}')">Enregistrer</button></div>
+      </div>
+      <div class="phone-wrap">
+        <div class="card" style="flex:1;min-width:340px;max-width:560px">
+          <h3>Modèle</h3>
+          <div class="row" style="gap:10px;margin-bottom:16px;flex-wrap:nowrap">
+            <div class="lp-template-card ${template==='essentiel'?'selected':''}" data-template="essentiel" onclick="selectLpTemplate('essentiel')"><b>Essentiel</b><small>Inclus dans votre offre</small></div>
+            <div class="lp-template-card ${template==='premium'?'selected':''} ${premiumLocked?'locked':''}" data-template="premium" onclick="selectLpTemplate('premium')"><b>Premium ${premiumLocked?premiumLockBadge():''}</b><small>Mise en page avancée, galerie étendue</small></div>
+          </div>
+          <h3>Contenu</h3>
+          <div class="field"><label>Titre</label><input type="text" id="lpTitle" value="${lp?lp.title:('Découvrez '+p.name)}"></div>
+          <div class="field"><label>Sous-titre</label><input type="text" id="lpSubtitle" value="${lp?lp.subtitle:'Une expérience pensée pour vous'}"></div>
+          <div class="field"><label>Description</label><textarea id="lpDescription" rows="3">${lp?lp.description:''}</textarea></div>
+          <div class="field"><label>Image principale</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image principale (démo)</div></div>
+          <div class="field"><label>Galerie</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Jusqu'à 4 images complémentaires (démo)</div></div>
+          <div class="field"><label>Caractéristiques produit</label><div id="lpFeatures">${(lp?lp.features:['Origine du produit']).map(f=>featureRowHtml(f)).join('')}</div>
+            <button type="button" class="rule-add" style="margin-top:8px" onclick="document.getElementById('lpFeatures').insertAdjacentHTML('beforeend',featureRowHtml('')); updateLandingPreview();">+ Ajouter une caractéristique</button></div>
+          <div class="field"><label>Informations complémentaires</label><textarea id="lpMoreInfo" rows="2" placeholder="Allergènes, conseils, origine…"></textarea></div>
+          <div class="field"><label>Bouton d'action</label><input type="text" id="lpCta" value="${lp?lp.ctaLabel:'Rejoindre le club'}"></div>
+        </div>
+        <div style="flex:1;min-width:320px">
+          <div class="device-tabs" id="lpDeviceTabs" style="margin-bottom:14px">
+            <button type="button" class="active" data-device="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Mobile</button>
+            <button type="button" data-device="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>Ordinateur</button>
+          </div>
+          <div id="lpPreviewMobile" class="phone"><div class="screen2"><div class="ph-body" id="lpPreviewMobileBody"></div></div></div>
+          <div id="lpPreviewDesktop" style="display:none; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); max-width:480px">
+            <div class="device-bar"><div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div><div></div></div>
+            <div style="padding:28px" id="lpPreviewDesktopBody"></div>
+          </div>
+        </div>
+      </div>`;
+  }
+  function selectLpTemplate(t){
+    if(t==='premium' && !isPremium()){ openPremiumUpsell('Modèle Premium'); return; }
+    document.querySelectorAll('.lp-template-card').forEach(el=>el.classList.toggle('selected',el.dataset.template===t));
+    document.getElementById('lpEditorView').dataset.template=t;
+  }
+  function updateLandingPreview(){
+    const title=(document.getElementById('lpTitle')||{}).value||'';
+    const subtitle=(document.getElementById('lpSubtitle')||{}).value||'';
+    const description=(document.getElementById('lpDescription')||{}).value||'';
+    const cta=(document.getElementById('lpCta')||{}).value||'Rejoindre le club';
+    const features=Array.from(document.querySelectorAll('.lpFeature')).map(i=>i.value).filter(Boolean);
+    const html=landingPreviewBodyHtml(title,subtitle,description,cta,features);
+    const m=document.getElementById('lpPreviewMobileBody'); if(m) m.innerHTML=html;
+    const d=document.getElementById('lpPreviewDesktopBody'); if(d) d.innerHTML=html;
+  }
+  function wireLandingEditorPreview(){
+    document.getElementById('lpEditorView').addEventListener('input',updateLandingPreview);
+    const tabs=document.getElementById('lpDeviceTabs');
+    tabs.addEventListener('click',e=>{
+      const b=e.target.closest('button'); if(!b) return;
+      tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+      const dev=b.dataset.device;
+      document.getElementById('lpPreviewMobile').style.display=dev==='mobile'?'block':'none';
+      document.getElementById('lpPreviewDesktop').style.display=dev==='desktop'?'block':'none';
+    });
+  }
+  function openLandingEditor(productId){
+    const p=DB.productById(productId); if(!p) return;
+    const lp=DB.landingPageByProduct(productId);
+    document.getElementById('lpListView').style.display='none';
+    const ev=document.getElementById('lpEditorView');
+    ev.style.display='block'; ev.dataset.template=lp?lp.template:'essentiel';
+    ev.innerHTML=landingEditorHtml(p,lp);
+    wireLandingEditorPreview(); updateLandingPreview();
+  }
+  function closeLandingEditor(){
+    document.getElementById('lpEditorView').style.display='none';
+    document.getElementById('lpListView').style.display='block';
+    renderLandingPages();
+  }
+  function saveLandingPage(productId){
+    const template=document.getElementById('lpEditorView').dataset.template||'essentiel';
+    if(template==='premium' && !isPremium()){ toast('Le modèle Premium nécessite l\'offre Premium.'); return; }
+    const title=document.getElementById('lpTitle').value.trim()||('Découvrez '+DB.productById(productId).name);
+    const subtitle=document.getElementById('lpSubtitle').value.trim();
+    const description=document.getElementById('lpDescription').value.trim();
+    const ctaLabel=document.getElementById('lpCta').value.trim()||'Rejoindre le club';
+    const features=Array.from(document.querySelectorAll('.lpFeature')).map(i=>i.value.trim()).filter(Boolean);
+    let lp=DB.landingPageByProduct(productId);
+    const isNew=!lp;
+    if(!lp){ lp={id:'lp'+String(DB.LANDING_PAGES.length+1).padStart(3,'0'), productId, status:'brouillon', lastModified:new Date()}; DB.addLandingPage(lp); }
+    Object.assign(lp,{template,title,subtitle,description,ctaLabel,features,lastModified:new Date()});
+    toast(isNew?'Landing Page créée':'Landing Page mise à jour');
+    closeLandingEditor();
+    if(isNew){
+      setTimeout(()=>{
+        openPanel({eyebrow:'Landing Page créée', title:DB.productById(productId).name,
+          bodyHtml:`<p style="font-size:13px;color:var(--muted);line-height:1.6">La Landing Page est enregistrée en brouillon. Vous pouvez maintenant créer le QR Code de ce produit — la Landing Page n'est pas obligatoirement sa destination principale.</p>`,
+          footerHtml:`<button class="btn ghost" onclick="closePanel()">Plus tard</button><button class="btn primary" onclick="closePanel(); pendingQrProductId='${productId}'; go('products.qr');">Continuer vers le QR Code</button>`});
+      },250);
+    }
+  }
+  function enterProductsLanding(){
+    if(pendingLandingProductId){ const pid=pendingLandingProductId; pendingLandingProductId=null; openLandingEditor(pid); }
+    else { document.getElementById('lpEditorView').style.display='none'; document.getElementById('lpListView').style.display='block'; renderLandingPages(); }
+  }
+  renderLandingPages();
 
   // landing editor (aperçu = vraie landing de scan)
   var GIFTJS="<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0E6FB0\" stroke-width=\"2\" style=\"vertical-align:-2px;margin-right:6px\"><rect x=\"3\" y=\"9\" width=\"18\" height=\"12\" rx=\"1\"/><path d=\"M3 13h18M12 9v12\"/><path d=\"M12 9C10 9 8.3 8.2 8.3 6.4 8.3 5.3 9.1 4.8 10 4.8c1.6 0 2 2.3 2 4.2zM12 9c2 0 3.7-.8 3.7-2.6 0-1.1-.8-1.6-1.7-1.6-1.6 0-2 2.3-2 4.2z\"/></svg>";
