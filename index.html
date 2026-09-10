@@ -96,15 +96,96 @@
   .muted{color:var(--muted)}
   .right{text-align:right}
 
-  /* bars */
-  .bars{display:flex; align-items:stretch; gap:14px; height:180px}
-  .bars .col{flex:1; display:flex; flex-direction:column; min-width:0}
-  .bars .track{flex:1; display:flex; gap:6px; align-items:flex-end; justify-content:center}
-  .bars .bar{width:34%; min-height:4px; border-radius:7px 7px 3px 3px; background:linear-gradient(180deg,var(--color-brand-600),var(--color-brand-300))}
-  .bars .bar.alt{background:linear-gradient(180deg,var(--color-neutral-700),var(--color-neutral-400))}
-  .bars .m{text-align:center; font-size:11px; color:var(--muted); padding-top:8px}
   .legend{display:flex; gap:16px; font-size:12px; color:var(--muted); margin-top:6px}
   .legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:middle}
+
+  /* ===== Dashboard v2 ===== */
+  .cards-6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:1320px){ .cards-6{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:900px){ .cards-6{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .cards-6{grid-template-columns:1fr} }
+
+  .dash-head{display:flex; flex-direction:column; gap:12px; margin-bottom:18px}
+  .dash-head-top{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  .dash-meta{font-size:11.5px; color:var(--muted); margin-top:4px}
+  .dash-toolbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .dash-compare{display:flex; align-items:center; gap:7px; font-size:12px; color:var(--ink); font-weight:600; cursor:pointer; user-select:none}
+  .dash-compare input{width:auto; margin:0}
+
+  .seg-tabs{display:inline-flex; background:var(--lav2); border-radius:999px; padding:3px; gap:2px; flex:none}
+  .seg-tabs button{border:0; background:transparent; color:var(--muted); font-size:12px; font-weight:700; padding:7px 14px; border-radius:999px; cursor:pointer; font-family:inherit; white-space:nowrap}
+  .seg-tabs button.active{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(18,22,26,.14)}
+  .seg-tabs button[aria-pressed="true"]{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(18,22,26,.14)}
+
+  .icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none}
+  .icon-btn:hover{background:var(--lav)}
+  .icon-btn svg{width:16px;height:16px;stroke-width:2}
+  .icon-btn.spin svg{animation:dashSpin .7s linear}
+  @keyframes dashSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+  .filters-bar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:12px 14px; background:var(--lav3); border-radius:12px; margin-bottom:18px}
+  .filters-bar select{width:auto; min-width:150px; padding:8px 10px; font-size:12.5px}
+  .filters-active{display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-left:auto}
+  .filter-chip{display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid var(--line); padding:5px 6px 5px 10px; border-radius:999px; font-size:11.5px; font-weight:600; color:var(--ink)}
+  .filter-chip button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;padding:2px;display:grid;place-items:center}
+  .filter-reset{border:0; background:transparent; color:var(--accent); font-weight:700; font-size:12px; cursor:pointer; font-family:inherit; padding:4px 6px}
+
+  .kpi-info{margin-left:auto; color:var(--muted); cursor:help; position:relative; display:inline-flex; background:transparent; border:0; padding:0}
+  .kpi-info svg{width:14px;height:14px}
+  .kpi-info .tip{position:absolute; top:calc(100% + 8px); right:-6px; width:230px; background:var(--ink); color:#fff; font-size:11.5px; font-weight:500; line-height:1.5; padding:10px 12px; border-radius:8px; box-shadow:var(--shadow-lg); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .15s ease; z-index:6; text-align:left}
+  .kpi-info:hover .tip, .kpi-info:focus .tip{opacity:1; visibility:visible}
+
+  .kpi .val.skel, .skel-line{background:linear-gradient(90deg,var(--lav2) 25%,var(--lav) 37%,var(--lav2) 63%); background-size:400% 100%; animation:skelShine 1.3s ease infinite; border-radius:6px; color:transparent!important}
+  @keyframes skelShine{0%{background-position:100% 0}100%{background-position:0 0}}
+  .kpi-empty{font-size:12px; color:var(--muted); margin-top:8px; font-style:italic}
+  .delta.bad{color:var(--color-error)}
+  .delta.warn{color:var(--color-warning)}
+  .delta svg{width:11px;height:11px;vertical-align:-1px;margin-right:3px}
+
+  .hbar-row{display:grid; grid-template-columns:180px 1fr auto; align-items:center; gap:12px; padding:10px 0}
+  .hbar-row + .hbar-row{border-top:1px solid var(--lav2)}
+  .hbar-label{font-size:12.5px; font-weight:600; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .hbar-label small{display:block; font-weight:400; color:var(--muted); font-size:11px}
+  .hbar-track{height:10px; border-radius:999px; background:var(--lav2); overflow:hidden}
+  .hbar-fill{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--color-brand-600),var(--color-brand-400))}
+  .hbar-val{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap}
+  .hbar-val b{color:var(--ink); font-weight:700}
+
+  .funnel-steps{display:flex; flex-direction:column; gap:11px}
+  .funnel-step{display:grid; grid-template-columns:200px 1fr 64px; align-items:center; gap:12px}
+  .funnel-label{font-size:12.5px; color:var(--ink); font-weight:600}
+  .funnel-label small{display:block; color:var(--muted); font-weight:400; font-size:11px; margin-top:1px}
+  .funnel-track{height:14px; border-radius:8px; background:var(--lav2); overflow:hidden}
+  .funnel-fill{display:block; height:100%; border-radius:8px; background:var(--color-brand-600)}
+  .funnel-val{font-size:13px; font-weight:700; color:var(--ink); text-align:right}
+
+  .stacked-bars{display:flex; align-items:flex-end; gap:10px; height:170px}
+  .stacked-col{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; cursor:default}
+  .stacked-col .seg{width:60%}
+  .stacked-col .seg.new{background:var(--color-brand-600); border-radius:4px 4px 0 0}
+  .stacked-col .seg.returning{background:var(--color-neutral-300); border-radius:0 0 3px 3px}
+  .stacked-col .lbl{margin-top:8px; font-size:10.5px; color:var(--muted)}
+
+  .rec-card{display:flex; gap:12px; padding:14px; border:1px solid var(--line); border-radius:12px; background:#fff}
+  .rec-card + .rec-card{margin-top:10px}
+  .rec-ico{width:36px;height:36px;border-radius:10px;background:var(--lav3);color:var(--accent);display:grid;place-items:center;flex:none}
+  .rec-ico svg{width:18px;height:18px}
+  .rec-body{min-width:0}
+  .rec-body b{display:block; font-size:13.5px; color:var(--ink)}
+  .rec-body p{margin:4px 0 8px; font-size:12.5px; color:var(--muted); line-height:1.5}
+  .rec-body a{font-size:12.5px; font-weight:700; color:var(--accent); cursor:pointer}
+
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+
+  .email-row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0}
+  .email-row + .email-row{border-top:1px solid var(--lav2)}
+  .email-row .nm{font-size:12.5px; font-weight:700; color:var(--ink)}
+  .email-row .meta{font-size:11.5px; color:var(--muted); margin-top:2px}
+  .email-row .rate{font-size:13px; font-weight:700; color:var(--ink); text-align:right; white-space:nowrap}
+
+  @media (max-width:1080px){ .hbar-row{grid-template-columns:130px 1fr 60px} .funnel-step{grid-template-columns:150px 1fr 56px} }
+  @media (max-width:640px){ .filters-bar{flex-direction:column; align-items:stretch} .filters-active{margin-left:0} .dash-toolbar{width:100%} }
 
   .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
   .field{display:flex; flex-direction:column; gap:6px; margin-bottom:14px}
@@ -1026,21 +1107,134 @@
 
     <!-- DASHBOARD -->
     <section class="screen active" id="dash">
-      <div class="screen-head">
-        <div><div class="eyebrow">Vue d'ensemble</div><h2 style="margin:2px 0 0;color:var(--ink)">Bonjour, voici votre semaine</h2><p>Ce qui se passe autour de vos produits.</p></div>
-        <button class="btn primary" onclick="go('campaigns')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg>Lancer une campagne</button>
+      <div class="dash-head">
+        <div class="dash-head-top">
+          <div>
+            <div class="eyebrow">Vue d'ensemble</div>
+            <h2 style="margin:2px 0 0;color:var(--ink)">Tableau de bord</h2>
+            <p class="screen-head-p" style="margin:4px 0 0;color:var(--muted);font-size:13px">Suivez l'acquisition, l'engagement et la fidélisation de vos consommateurs.</p>
+            <div class="dash-meta">Dernière actualisation : <b id="dashUpdated" style="color:var(--ink)">—</b></div>
+          </div>
+          <button class="btn primary" onclick="go('campaigns')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg>Lancer une campagne</button>
+        </div>
+        <div class="dash-toolbar">
+          <div class="seg-tabs" id="periodTabs" role="tablist" aria-label="Période">
+            <button type="button" data-period="7" aria-pressed="false">7 jours</button>
+            <button type="button" data-period="30" aria-pressed="true" class="active">30 jours</button>
+            <button type="button" data-period="90" aria-pressed="false">90 jours</button>
+          </div>
+          <label class="dash-compare"><input type="checkbox" id="compareToggle" checked>Comparer à la période précédente</label>
+          <button class="icon-btn" id="dashRefreshBtn" type="button" aria-label="Actualiser les données" title="Actualiser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/></svg></button>
+        </div>
       </div>
-      <div class="grid cards-4">
-        <div class="card kpi"><div class="top"><div class="label">Contacts connus</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/></svg></div></div><div class="val">1 248</div><div class="delta">+126 cette semaine</div></div>
-        <div class="card kpi"><div class="top"><div class="label">Scans QR</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div></div><div class="val">3 906</div><div class="delta">+312 cette semaine</div></div>
-        <div class="card kpi"><div class="top"><div class="label">Scan → inscription</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12l5 5L20 6"/></svg></div></div><div class="val">34 %</div><div class="delta">+3 pts vs sem. dernière</div></div>
-        <div class="card kpi"><div class="top"><div class="label">Campagnes actives</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div></div><div class="val">3</div><div class="delta flat">2 e-mail · 1 SMS</div></div>
+
+      <div class="filters-bar" role="group" aria-label="Filtres du tableau de bord">
+        <select id="filterProduct" aria-label="Filtrer par produit" onchange="dashOnFilterChange()"><option value="">Tous les produits</option></select>
+        <select id="filterSegment" aria-label="Filtrer par segment" onchange="dashOnFilterChange()"><option value="">Tous les segments</option></select>
+        <select id="filterPersona" aria-label="Filtrer par persona" onchange="dashOnFilterChange()"><option value="">Tous les personas</option></select>
+        <select id="filterSource" aria-label="Filtrer par source" onchange="dashOnFilterChange()"><option value="">Toutes les sources</option></select>
+        <div class="filters-active" id="filtersActive"></div>
       </div>
+
+      <div class="grid cards-6" id="kpiGrid">
+        <div class="card kpi" id="kpi-contacts">
+          <div class="top"><div class="label">Contacts connus<button class="kpi-info" type="button" aria-label="Définition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="tip" role="tooltip">Nombre total de contacts dans la base à date (indicateur de stock, distinct des contacts actifs sur la période).</span></button></div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/></svg></div></div>
+          <div class="val" id="kpi-contacts-val">—</div>
+          <div class="delta" id="kpi-contacts-delta">—</div>
+        </div>
+        <div class="card kpi" id="kpi-new">
+          <div class="top"><div class="label">Nouveaux contacts<button class="kpi-info" type="button" aria-label="Définition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="tip" role="tooltip">Contacts créés ou identifiés pour la première fois pendant la période sélectionnée.</span></button></div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></div></div>
+          <div class="val" id="kpi-new-val">—</div>
+          <div class="delta" id="kpi-new-delta">—</div>
+        </div>
+        <div class="card kpi" id="kpi-scans">
+          <div class="top"><div class="label">Scans uniques<button class="kpi-info" type="button" aria-label="Définition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="tip" role="tooltip">Visiteurs ou appareils uniques ayant scanné un QR code pendant la période. Le nombre de scans totaux est indiqué en dessous.</span></button></div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></div></div>
+          <div class="val" id="kpi-scans-val">—</div>
+          <div class="delta" id="kpi-scans-delta">—</div>
+        </div>
+        <div class="card kpi" id="kpi-conv">
+          <div class="top"><div class="label">Scan → inscription<button class="kpi-info" type="button" aria-label="Définition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="tip" role="tooltip" id="kpi-conv-tip">Inscriptions attribuées à un scan ÷ scanners uniques éligibles.</span></button></div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12l5 5L20 6"/></svg></div></div>
+          <div class="val" id="kpi-conv-val">—</div>
+          <div class="delta" id="kpi-conv-delta">—</div>
+        </div>
+        <div class="card kpi" id="kpi-loyalty">
+          <div class="top"><div class="label">Membres actifs Club<button class="kpi-info" type="button" aria-label="Définition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="tip" role="tooltip" id="kpi-loyalty-tip">Membres ayant réalisé au moins une activité fidélité (scan, points, récompense) pendant la période.</span></button></div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div></div>
+          <div class="val" id="kpi-loyalty-val">—</div>
+          <div class="delta" id="kpi-loyalty-delta">—</div>
+        </div>
+        <div class="card kpi" id="kpi-email">
+          <div class="top"><div class="label">Taux d'ouverture e-mail<button class="kpi-info" type="button" aria-label="Définition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="tip" role="tooltip" id="kpi-email-tip">Ouvertures uniques ÷ e-mails délivrés, sur les campagnes envoyées pendant la période.</span></button></div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div></div>
+          <div class="val" id="kpi-email-val">—</div>
+          <div class="delta" id="kpi-email-delta">—</div>
+        </div>
+      </div>
+
+      <div class="grid cards-2" style="margin-top:16px; align-items:start">
+        <div class="card">
+          <h3>Évolution des contacts</h3><div class="sub" id="trendSub">Nouveaux vs. contacts connus</div>
+          <div class="stacked-bars" id="trendChart"></div>
+          <div class="legend"><span><i style="background:var(--color-brand-600)"></i>Nouveaux contacts</span><span><i style="background:var(--color-neutral-300)"></i>Contacts connus (récurrents)</span></div>
+        </div>
+        <div class="card">
+          <h3>Acquisition par QR code</h3><div class="sub">Du scan à l'inscription au Club</div>
+          <div class="funnel-steps" id="scanFunnel"></div>
+        </div>
+      </div>
+
+      <div class="grid cards-2" style="margin-top:16px; align-items:start">
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <div><h3>Produits les plus scannés</h3><div class="sub" style="margin-bottom:0">Classement sur la période filtrée</div></div>
+            <select id="productSort" aria-label="Trier les produits" onchange="dashRenderProducts()" style="width:auto;min-width:170px;padding:8px 10px;font-size:12.5px;margin-top:14px">
+              <option value="unique">Trier par scans uniques</option>
+              <option value="total">Trier par scans totaux</option>
+              <option value="conv">Trier par taux de conversion</option>
+            </select>
+          </div>
+          <div id="topProducts" style="margin-top:6px"></div>
+          <div class="row" style="justify-content:flex-end; margin-top:8px">
+            <a href="#" onclick="go('products'); return false;" style="font-size:12.5px; font-weight:700; color:var(--accent)">Voir tous les produits →</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="seg-tabs" id="audienceTabs" role="tablist" aria-label="Segments ou personas">
+            <button type="button" data-tab="segments" aria-pressed="true" class="active">Segments</button>
+            <button type="button" data-tab="personas" aria-pressed="false">Personas</button>
+          </div>
+          <div class="sub" style="margin-top:10px">Répartition de la base filtrée</div>
+          <div class="tab-panel active" id="segmentsPanel"></div>
+          <div class="tab-panel" id="personasPanel"></div>
+        </div>
+      </div>
+
+      <div class="grid cards-2" style="margin-top:16px; align-items:start">
+        <div class="card">
+          <h3>Fidélité</h3><div class="sub">Activité du Club sur la période</div>
+          <div class="grid cards-4" id="loyaltyStats" style="gap:12px"></div>
+          <div class="row" style="justify-content:space-between; margin-top:16px">
+            <span class="muted" style="font-size:12.5px">Taux d'utilisation des points</span>
+            <b id="loyaltyRedemption" style="font-size:13px">—</b>
+          </div>
+          <div class="hbar-track" style="margin-top:6px"><span class="hbar-fill" id="loyaltyRedemptionBar" style="width:0%"></span></div>
+          <div class="row" style="justify-content:space-between; margin-top:14px">
+            <span class="muted" style="font-size:12.5px">Membres à moins de 50 points d'une récompense</span>
+            <a href="#" id="loyaltyNearReward" onclick="dashGoNearReward(); return false;" style="font-size:13px; font-weight:700; color:var(--accent)">—</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <h3 style="margin:0">Campagnes e-mailing</h3>
+            <button class="btn primary" onclick="go('campaigns')" style="padding:8px 13px; font-size:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une campagne</button>
+          </div>
+          <div class="sub">5 dernières campagnes</div>
+          <div id="emailList"></div>
+        </div>
+      </div>
+
       <div class="grid" style="margin-top:16px">
         <div class="card">
-          <h3>Acquisition de contacts</h3><div class="sub">Nouveaux contacts par canal, 6 dernières semaines</div>
-          <div class="bars" id="dashBars"></div>
-          <div class="legend"><span><i style="background:linear-gradient(180deg,var(--accent),#8B7FE8)"></i>Via QR (indirect)</span><span><i style="background:linear-gradient(180deg,var(--ink),#5B5F97)"></i>Via page fidélité (direct)</span></div>
+          <h3>Actions recommandées</h3><div class="sub">Générées à partir de vos données — jusqu'à 3 recommandations, triées par impact</div>
+          <div id="recActions"></div>
         </div>
       </div>
     </section>
@@ -1318,15 +1512,458 @@
   document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){go(b.dataset.s); toggleSidebar(false);}});
   function toggleSidebar(force){var sb=document.querySelector('.sidebar'),bd=document.getElementById('sidebarBackdrop');var open=(typeof force==='boolean')?force:!sb.classList.contains('open');sb.classList.toggle('open',open);if(bd)bd.classList.toggle('open',open);}
 
-  // dashboard bars
-  const data=[[22,14],[28,18],[26,22],[35,20],[31,26],[42,24]];
-  const labels=['S-5','S-4','S-3','S-2','S-1','Cette sem.'];
-  const max=60;
-  document.getElementById('dashBars').innerHTML=data.map((d,i)=>`
-    <div class="col"><div class="track">
-      <div class="bar" style="height:${Math.round(d[0]/max*100)}%" title="QR: ${d[0]}"></div>
-      <div class="bar alt" style="height:${Math.round(d[1]/max*100)}%" title="Fidélité: ${d[1]}"></div>
-    </div><div class="m">${labels[i]}</div></div>`).join('');
+  // ============================================================
+  // DASHBOARD — mock data-access layer (client-side demo only).
+  // This site has no backend: there is no tenant auth, no real
+  // period/timezone handling and no PostHog/Mailjet integration.
+  // Everything below is a self-contained, clearly-isolated mock
+  // dataset + aggregation layer standing in for what a real API
+  // would return. See the end-of-task summary for the endpoint
+  // contract this is meant to approximate. Do not reuse this data
+  // as if it were real in any other context.
+  // ============================================================
+  (function(){
+    const DASH_PRODUCTS=['Produit Édition Standard','Produit Édition Premium','Produit Collection Limitée','Produit Découverte'];
+    const DASH_SEGMENTS=['Adeptes des bons plans','Ambassadeurs de la marque','Premium engagés'];
+    const DASH_PERSONAS=['Découvreur','Habitué','Ambassadeur','Dormant'];
+    const DASH_SOURCES=['Scan en magasin','Scan chez un revendeur','Boutique de la marque','Événement'];
+    const UNSPECIFIED='Non renseigné';
+
+    function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+
+    // Crosstab of product x segment x source cells. Each cell carries a
+    // monthly rate (scans/contacts) plus a persona-share split, so any
+    // combination of the 4 filters can be aggregated from this single
+    // table — no formula is duplicated per chart.
+    const DASH_CELLS=(function(){
+      const rnd=mulberry32(20260910);
+      const cells=[];
+      DASH_PRODUCTS.forEach((product,pi)=>{
+        DASH_SEGMENTS.forEach((segment,si)=>{
+          DASH_SOURCES.forEach((source)=>{
+            const popularity=(1+pi*0.35)*(1+si*0.22)*(0.55+rnd()*0.9);
+            const stock=Math.round(28*popularity+rnd()*14);
+            const monthlyScans=Math.round(34*popularity+rnd()*20);
+            const scanToUnique=0.74+rnd()*0.12;
+            const uniqueToSignup=(pi===3?0.14:0.24)+rnd()*0.16; // "Découverte" converts a bit lower on purpose (feeds a recommendation)
+            const growth=0.04+rnd()*0.18;
+            const personaShare={}; let remaining=1;
+            DASH_PERSONAS.forEach((persona,pj)=>{
+              if(pj===DASH_PERSONAS.length-1){ personaShare[persona]=Math.max(.03,remaining); }
+              else{ const s=Math.min(remaining-0.03*(DASH_PERSONAS.length-1-pj), remaining*(0.2+rnd()*0.35)); personaShare[persona]=Math.max(0,s); remaining-=personaShare[persona]; }
+            });
+            cells.push({product,segment,source,stock,monthlyScans,scanToUnique,uniqueToSignup,personaShare,growth});
+          });
+        });
+      });
+      return cells;
+    })();
+    const UNSPEC_SHARE=0.045; // small "Non renseigné" slice added on top of the crosstab for segments/personas
+
+    function filterCells(f){
+      return DASH_CELLS.filter(c=>
+        (!f.product||c.product===f.product) &&
+        (!f.segment||c.segment===f.segment) &&
+        (!f.source||c.source===f.source));
+    }
+    function personaFactor(c,f){ return f.persona ? (c.personaShare[f.persona]||0) : 1; }
+
+    // trendMult<1 shrinks a cell's *rate* to approximate the previous period.
+    function aggregate(periodDays,f,previous){
+      const cells=filterCells(f);
+      const scale=periodDays/30;
+      let stock=0,scans=0,unique=0,signups=0;
+      cells.forEach(c=>{
+        const pf=personaFactor(c,f);
+        const trendMult=previous ? 1/(1+c.growth) : 1;
+        stock+=c.stock*pf*trendMult;
+        const scansC=c.monthlyScans*scale*pf*trendMult;
+        scans+=scansC;
+        unique+=scansC*c.scanToUnique;
+        signups+=scansC*c.scanToUnique*c.uniqueToSignup;
+      });
+      return {stock:Math.round(stock),scans:Math.round(scans),unique:Math.round(unique),signups:Math.round(signups)};
+    }
+
+    function loyaltyForPeriod(periodDays,previous){
+      const scale=periodDays/30;
+      const trendMult=previous?1/1.12:1;
+      const totalMembers=612;
+      return {
+        totalMembers,
+        activeMembers:Math.round(totalMembers*0.34*scale*trendMult),
+        newMembers:Math.round(38*scale*trendMult),
+        pointsIssued:Math.round(9200*scale*trendMult),
+        pointsRedeemed:Math.round(3100*scale*trendMult*0.92),
+        rewardsConsumed:Math.round(54*scale*trendMult),
+        membersNearReward:27
+      };
+    }
+
+    const ALL_CAMPAIGNS=[
+      {name:'Relance club — printemps',audience:'Adeptes des bons plans',recipients:842,openRate:.38,date:'12 mars 2026',status:'Envoyée'},
+      {name:'Nouvelle collection',audience:'Toute la base',recipients:1248,openRate:.29,date:'2 mars 2026',status:'Envoyée'},
+      {name:'Réactivation dormants',audience:'Contacts en sommeil',recipients:186,openRate:.21,date:'18 févr. 2026',status:'Envoyée'},
+      {name:'Programme fidélité — lancement',audience:'Ambassadeurs de la marque',recipients:412,openRate:.44,date:'30 janv. 2026',status:'Envoyée'},
+      {name:'Bienvenue nouveaux membres',audience:'Nouveaux inscrits',recipients:126,openRate:.51,date:'14 janv. 2026',status:'Envoyée'},
+    ];
+    function emailForPeriod(periodDays){
+      // 7 jours : volontairement aucune campagne envoyée (démontre l'état "sans donnée").
+      const campaigns = periodDays===7 ? [] : periodDays===30 ? ALL_CAMPAIGNS.slice(0,3) : ALL_CAMPAIGNS;
+      const delivered=campaigns.reduce((s,c)=>s+c.recipients,0);
+      const opens=campaigns.reduce((s,c)=>s+Math.round(c.recipients*c.openRate),0);
+      return {delivered,opens,campaigns};
+    }
+
+    // ---- formatting helpers (centralized, fr-FR locale) ----
+    const fmtN=n=>Math.round(n).toLocaleString('fr-FR');
+    const fmtPct=(n,d=1)=>n==null?'—':n.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:d})+' %';
+    function pctDelta(curr,prev){ if(!prev) return null; return (curr-prev)/prev*100; }
+    function deltaHtml(pct,{goodDirection='up',suffix=' vs période précédente',ptsMode=false}={}){
+      if(pct==null||!isFinite(pct)) return '<span class="delta flat">Pas de comparaison disponible</span>';
+      if(Math.abs(pct)<0.5) return `<span class="delta flat">Stable${suffix}</span>`;
+      const good = goodDirection==='up' ? pct>=0 : pct<=0;
+      const cls = good?'':'bad';
+      const arrow = pct>=0
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M6 11l6-6 6 6"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
+      const val = ptsMode ? Math.abs(pct).toLocaleString('fr-FR',{maximumFractionDigits:1})+' pts' : Math.abs(pct).toLocaleString('fr-FR',{maximumFractionDigits:1})+' %';
+      return `<span class="delta ${cls}">${arrow}${pct>=0?'+':'-'}${val}${suffix}</span>`;
+    }
+
+    // ---- state ----
+    const state={period:30,compare:true,filters:{product:'',segment:'',persona:'',source:''},sort:'unique',audienceTab:'segments'};
+
+    function populateFilterOptions(){
+      const map={filterProduct:DASH_PRODUCTS,filterSegment:DASH_SEGMENTS,filterPersona:DASH_PERSONAS,filterSource:DASH_SOURCES};
+      Object.keys(map).forEach(id=>{
+        const sel=document.getElementById(id);
+        map[id].forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
+      });
+    }
+
+    function renderActiveFilters(){
+      const labels={product:'Produit',segment:'Segment',persona:'Persona',source:'Source'};
+      const entries=Object.entries(state.filters).filter(([,v])=>v);
+      const el=document.getElementById('filtersActive');
+      if(!entries.length){ el.innerHTML=''; return; }
+      el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${v}<button type="button" aria-label="Retirer le filtre ${labels[k]}" onclick="dashRemoveFilter('${k}')">✕</button></span>`).join('')
+        + '<button type="button" class="filter-reset" onclick="dashResetFilters()">Réinitialiser</button>';
+    }
+
+    function skeletonKpis(){
+      ['contacts','new','scans','conv','loyalty','email'].forEach(k=>{
+        document.getElementById('kpi-'+k+'-val').classList.add('skel');
+        document.getElementById('kpi-'+k+'-val').textContent='—';
+        document.getElementById('kpi-'+k+'-delta').innerHTML='&nbsp;';
+      });
+    }
+
+    function render(){
+      const f=state.filters, days=state.period, compare=state.compare;
+      const curr=aggregate(days,f,false);
+      const prev=compare?aggregate(days,f,true):null;
+      const loyCurr=loyaltyForPeriod(days,false);
+      const loyPrev=compare?loyaltyForPeriod(days,true):null;
+      const email=emailForPeriod(days);
+
+      // ---- KPI 1: contacts connus (stock) ----
+      document.getElementById('kpi-contacts-val').classList.remove('skel');
+      document.getElementById('kpi-contacts-val').textContent=fmtN(curr.stock);
+      document.getElementById('kpi-contacts-delta').innerHTML = compare
+        ? deltaHtml(pctDelta(curr.stock,prev.stock),{goodDirection:'up'})
+        : '<span class="delta flat">Comparaison désactivée</span>';
+
+      // ---- KPI 2: nouveaux contacts ----
+      document.getElementById('kpi-new-val').classList.remove('skel');
+      document.getElementById('kpi-new-val').textContent=fmtN(curr.signups);
+      document.getElementById('kpi-new-delta').innerHTML = compare ? deltaHtml(pctDelta(curr.signups,prev.signups)) : '<span class="delta flat">Comparaison désactivée</span>';
+
+      // ---- KPI 3: scans uniques ----
+      document.getElementById('kpi-scans-val').classList.remove('skel');
+      document.getElementById('kpi-scans-val').textContent=fmtN(curr.unique);
+      document.getElementById('kpi-scans-delta').innerHTML = (compare ? deltaHtml(pctDelta(curr.unique,prev.unique)) : '<span class="delta flat">Comparaison désactivée</span>') + ` <span class="muted">· ${fmtN(curr.scans)} scans au total</span>`;
+
+      // ---- KPI 4: conversion scan → inscription ----
+      const convRate = curr.unique>0 ? curr.signups/curr.unique*100 : null;
+      const prevConvRate = prev && prev.unique>0 ? prev.signups/prev.unique*100 : null;
+      document.getElementById('kpi-conv-val').classList.remove('skel');
+      document.getElementById('kpi-conv-val').textContent = convRate==null ? '—' : fmtPct(convRate);
+      document.getElementById('kpi-conv-tip').textContent = `Inscriptions attribuées à un scan (${fmtN(curr.signups)}) ÷ scanners uniques éligibles (${fmtN(curr.unique)}).`;
+      document.getElementById('kpi-conv-delta').innerHTML = convRate==null ? '<span class="delta flat">Pas de scan sur la période</span>'
+        : (compare && prevConvRate!=null ? deltaHtml(convRate-prevConvRate,{ptsMode:true}) : '<span class="delta flat">Comparaison désactivée</span>');
+
+      // ---- KPI 5: membres actifs Club ----
+      const activeRate = loyCurr.totalMembers>0 ? loyCurr.activeMembers/loyCurr.totalMembers*100 : null;
+      document.getElementById('kpi-loyalty-val').classList.remove('skel');
+      document.getElementById('kpi-loyalty-val').textContent=fmtN(loyCurr.activeMembers);
+      document.getElementById('kpi-loyalty-tip').textContent = `Taux de membres actifs : ${fmtN(loyCurr.activeMembers)} ÷ ${fmtN(loyCurr.totalMembers)} membres inscrits = ${fmtPct(activeRate)}.`;
+      document.getElementById('kpi-loyalty-delta').innerHTML = compare ? deltaHtml(pctDelta(loyCurr.activeMembers,loyPrev.activeMembers)) + ` <span class="muted">· ${fmtPct(activeRate)} de la base</span>` : `<span class="muted">${fmtPct(activeRate)} de la base</span>`;
+
+      // ---- KPI 6: taux d'ouverture e-mail ----
+      const openRate = email.delivered>0 ? email.opens/email.delivered*100 : null;
+      const valEl=document.getElementById('kpi-email-val'); valEl.classList.remove('skel');
+      const deltaEl=document.getElementById('kpi-email-delta');
+      if(email.campaigns.length===0){
+        valEl.textContent='—';
+        deltaEl.innerHTML='<span class="delta flat">Aucune campagne envoyée sur la période</span>';
+      } else {
+        valEl.textContent=fmtPct(openRate);
+        document.getElementById('kpi-email-tip').textContent=`${fmtN(email.opens)} ouvertures uniques ÷ ${fmtN(email.delivered)} e-mails délivrés.`;
+        deltaEl.innerHTML=`<span class="muted">${fmtN(email.delivered)} e-mails délivrés</span>`;
+      }
+
+      renderTrend(curr,days);
+      renderFunnel(curr);
+      renderProducts(f,days,compare);
+      renderAudience(f);
+      renderLoyalty(loyCurr,loyPrev,compare);
+      renderEmail(email);
+      renderRecommendations({curr,prev,convRate,loyCurr,email,f,days});
+
+      document.getElementById('dashUpdated').textContent = new Date().toLocaleString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      renderActiveFilters();
+    }
+
+    function renderTrend(curr,days){
+      const weeks = days===7?1:days===30?4:12;
+      const label = days===7 ? 'Répartition quotidienne (7 jours)' : `Nouveaux vs. contacts connus, granularité hebdomadaire (${weeks} semaines)`;
+      document.getElementById('trendSub').textContent = label;
+      const perStepNew=curr.signups/weeks;
+      const returning=Math.max(0,curr.unique-curr.signups);
+      const perStepReturning=returning/weeks;
+      const maxVal=Math.max(perStepNew,perStepReturning,1)*1.15;
+      const cols=[];
+      for(let i=0;i<weeks;i++){
+        const jitter=0.75+((i*37)%23)/23*0.5; // deterministic wobble, no Math.random on re-render
+        const nv=Math.max(2,Math.round(perStepNew*jitter));
+        const rv=Math.max(1,Math.round(perStepReturning*(1.3-jitter*0.3)));
+        const total=nv+rv;
+        const hNew=Math.round(nv/maxVal*100);
+        const hRet=Math.round(rv/maxVal*100);
+        const lbl = days===7 ? ['L','M','M','J','V','S','D'][i] : days===30 ? `S-${weeks-i}` : `S-${(weeks-i)*1}`;
+        cols.push(`<div class="stacked-col" title="${lbl} — total ${fmtN(total)} (nouveaux ${fmtN(nv)}, connus ${fmtN(rv)})"><span class="seg new" style="height:${hNew}%"></span><span class="seg returning" style="height:${hRet}%"></span><span class="lbl">${lbl}</span></div>`);
+      }
+      document.getElementById('trendChart').innerHTML=cols.join('');
+    }
+
+    function renderFunnel(curr){
+      const steps=[
+        {label:'Scans totaux',small:'Tous les scans enregistrés, y compris répétés',val:curr.scans},
+        {label:'Scanners uniques',small:'Visiteurs ou appareils distincts',val:curr.unique},
+        {label:'Inscriptions attribuées',small:'Inscription au Club suite à un scan',val:curr.signups},
+      ];
+      const max=Math.max(curr.scans,1);
+      document.getElementById('scanFunnel').innerHTML = steps.map(s=>`
+        <div class="funnel-step">
+          <div class="funnel-label">${s.label}<small>${s.small}</small></div>
+          <div class="funnel-track"><span class="funnel-fill" style="width:${Math.max(3,Math.round(s.val/max*100))}%"></span></div>
+          <div class="funnel-val">${fmtN(s.val)}</div>
+        </div>`).join('')
+        + `<div class="funnel-step"><div class="funnel-label">Taux de conversion<small>Inscriptions ÷ scanners uniques</small></div><div></div><div class="funnel-val">${curr.unique>0?fmtPct(curr.signups/curr.unique*100):'—'}</div></div>`;
+    }
+
+    function productMetrics(product,f,days,previous){
+      const f2=Object.assign({},f,{product});
+      return aggregate(days,f2,previous);
+    }
+    function renderProducts(f,days,compare){
+      const list=DASH_PRODUCTS
+        .filter(p=>!f.product||f.product===p)
+        .map(p=>{
+          const m=productMetrics(p,f,days,false);
+          const pm=compare?productMetrics(p,f,days,true):null;
+          const conv=m.unique>0?m.signups/m.unique*100:null;
+          return {product:p,...m,conv,deltaUnique:compare?pctDelta(m.unique,pm.unique):null};
+        });
+      const sortKey=state.sort;
+      list.sort((a,b)=> sortKey==='total'?b.scans-a.scans : sortKey==='conv'?(b.conv||0)-(a.conv||0) : b.unique-a.unique);
+      const top=list.slice(0,5);
+      const maxUnique=Math.max(...top.map(t=>t.unique),1);
+      document.getElementById('topProducts').innerHTML = top.map(t=>`
+        <div class="hbar-row">
+          <div class="hbar-label">${t.product}<small>${fmtN(t.unique)} uniques · ${fmtN(t.scans)} scans</small></div>
+          <div class="hbar-track"><span class="hbar-fill" style="width:${Math.max(4,Math.round(t.unique/maxUnique*100))}%"></span></div>
+          <div class="hbar-val"><b>${t.conv==null?'—':fmtPct(t.conv)}</b> conv.${t.deltaUnique!=null?`<br>${t.deltaUnique>=0?'+':''}${t.deltaUnique.toLocaleString('fr-FR',{maximumFractionDigits:0})}% uniques`:''}</div>
+        </div>`).join('') || '<p class="muted" style="font-size:12.5px">Aucun produit ne correspond aux filtres actifs.</p>';
+    }
+    window.dashRenderProducts=function(){ state.sort=document.getElementById('productSort').value; renderProducts(state.filters,state.period,state.compare); };
+
+    function groupBy(dim,f){
+      const cells=filterCells(dim==='segment'?Object.assign({},f,{segment:''}):f);
+      const totals={};
+      let grandTotal=0;
+      if(dim==='segment'){
+        DASH_SEGMENTS.forEach(s=>totals[s]={contacts:0,newContacts:0});
+        cells.filter(c=>!f.segment||c.segment===f.segment).forEach(c=>{
+          const pf=personaFactor(c,f);
+          const key=c.segment;
+          if(!totals[key]) totals[key]={contacts:0,newContacts:0};
+          totals[key].contacts+=c.stock*pf;
+          totals[key].newContacts+=c.monthlyScans*(state.period/30)*pf*c.scanToUnique*c.uniqueToSignup;
+        });
+      } else {
+        DASH_PERSONAS.forEach(p=>totals[p]={contacts:0,newContacts:0});
+        filterCells(f).forEach(c=>{
+          DASH_PERSONAS.forEach(persona=>{
+            if(f.persona&&f.persona!==persona) return;
+            const share=c.personaShare[persona]||0;
+            totals[persona].contacts+=c.stock*share;
+            totals[persona].newContacts+=c.monthlyScans*(state.period/30)*share*c.scanToUnique*c.uniqueToSignup;
+          });
+        });
+      }
+      Object.values(totals).forEach(t=>grandTotal+=t.contacts);
+      // "Non renseigné" bucket (skipped if the corresponding filter is active)
+      if(!f[dim]){
+        const unspecContacts=grandTotal*UNSPEC_SHARE/(1-UNSPEC_SHARE);
+        totals[UNSPECIFIED]={contacts:unspecContacts,newContacts:unspecContacts*0.05};
+        grandTotal+=unspecContacts;
+      }
+      return {totals,grandTotal};
+    }
+
+    function renderGroupPanel(elId,dim,f){
+      const {totals,grandTotal}=groupBy(dim,f);
+      let rows=Object.entries(totals).map(([name,v])=>({name,...v}));
+      rows.sort((a,b)=>b.contacts-a.contacts);
+      // group very small slices under "Autres" (keep "Non renseigné" separate/explicit)
+      const THRESHOLD=0.035;
+      const kept=[],others=[];
+      rows.forEach(r=>{ if(r.name!==UNSPECIFIED && grandTotal>0 && r.contacts/grandTotal<THRESHOLD && rows.length>4) others.push(r); else kept.push(r); });
+      if(others.length){
+        kept.push({name:'Autres',contacts:others.reduce((s,r)=>s+r.contacts,0),newContacts:others.reduce((s,r)=>s+r.newContacts,0)});
+        kept.sort((a,b)=>b.contacts-a.contacts);
+      }
+      const max=Math.max(...kept.map(r=>r.contacts),1);
+      document.getElementById(elId).innerHTML = kept.map(r=>`
+        <div class="hbar-row">
+          <div class="hbar-label">${r.name}</div>
+          <div class="hbar-track"><span class="hbar-fill" style="width:${Math.max(3,Math.round(r.contacts/max*100))}%"></span></div>
+          <div class="hbar-val"><b>${fmtN(r.contacts)}</b> · ${grandTotal>0?fmtPct(r.contacts/grandTotal*100):'—'}<br>+${fmtN(r.newContacts)} nouveaux</div>
+        </div>`).join('');
+    }
+    function renderAudience(f){
+      renderGroupPanel('segmentsPanel','segment',f);
+      renderGroupPanel('personasPanel','persona',f);
+    }
+
+    function renderLoyalty(curr,prev,compare){
+      const stats=[
+        {label:'Nouvelles inscriptions',val:curr.newMembers,prev:prev&&prev.newMembers},
+        {label:'Points distribués',val:curr.pointsIssued,prev:prev&&prev.pointsIssued},
+        {label:'Points utilisés',val:curr.pointsRedeemed,prev:prev&&prev.pointsRedeemed},
+        {label:'Récompenses consommées',val:curr.rewardsConsumed,prev:prev&&prev.rewardsConsumed},
+      ];
+      document.getElementById('loyaltyStats').innerHTML = stats.map(s=>`
+        <div class="card kpi" style="box-shadow:none; padding:14px">
+          <div class="label">${s.label}</div>
+          <div class="val" style="font-size:22px">${fmtN(s.val)}</div>
+          <div class="delta" style="font-size:11px">${compare&&s.prev!=null?deltaHtml(pctDelta(s.val,s.prev)):'<span class="delta flat">—</span>'}</div>
+        </div>`).join('');
+      const redemptionRate=curr.pointsIssued>0?curr.pointsRedeemed/curr.pointsIssued*100:null;
+      document.getElementById('loyaltyRedemption').textContent = redemptionRate==null?'—':fmtPct(redemptionRate);
+      document.getElementById('loyaltyRedemptionBar').style.width=(redemptionRate||0)+'%';
+      document.getElementById('loyaltyNearReward').textContent = curr.membersNearReward+' membre'+(curr.membersNearReward>1?'s':'')+' →';
+    }
+    window.dashGoNearReward=function(){ go('clients'); toast('Filtrez la base sur les membres proches d\'une récompense (fonctionnalité à cabler côté fiche fidélité).'); };
+
+    function renderEmail(email){
+      if(!email.campaigns.length){
+        document.getElementById('emailList').innerHTML='<p class="muted" style="font-size:12.5px; margin-top:10px">Aucune campagne envoyée sur cette période.</p>';
+        return;
+      }
+      document.getElementById('emailList').innerHTML = email.campaigns.map(c=>`
+        <div class="email-row">
+          <div><div class="nm">${c.name}</div><div class="meta">${c.audience} · ${fmtN(c.recipients)} destinataires · ${c.date} · <span class="tag green">${c.status}</span></div></div>
+          <div class="rate">${fmtPct(c.openRate*100,0)}<div class="meta" style="text-align:right">ouverture</div></div>
+        </div>`).join('');
+    }
+
+    const RECICONS={
+      megaphone:'<path d="M3 11v2a1 1 0 0 0 1 1h2l4 4v-9l-4-3H4a1 1 0 0 0-1 1v4z"/><path d="M13 8a4 4 0 0 1 0 8"/><path d="M18 5a9 9 0 0 1 0 14"/>',
+      trend:'<path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/>',
+      users:'<circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 8.2a3 3 0 0 1 0 5.6"/><path d="M18 20a5 5 0 0 0-3-4.6"/>',
+      gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><rect x="5" y="12" width="14" height="8" rx="1"/><path d="M12 8v12M12 8c-1.6-3.2-5.2-3-5.2-1s2 1 5.2 1M12 8c1.6-3.2 5.2-3 5.2-1s-2 1-5.2 1"/>',
+      alert:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+    };
+    function recCard(icon,title,text,actionLabel,onClick){
+      return `<div class="rec-card"><div class="rec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${RECICONS[icon]}</svg></div><div class="rec-body"><b>${title}</b><p>${text}</p><a onclick="${onClick}">${actionLabel} →</a></div></div>`;
+    }
+    function renderRecommendations({curr,prev,convRate,loyCurr,email,f,days}){
+      const recs=[];
+      if(email.campaigns.length===0){
+        recs.push({impact:3,html:recCard('megaphone','Aucune campagne envoyée récemment','Aucun e-mail n\'a été envoyé sur les 7 derniers jours. Une campagne régulière maintient l\'engagement de la base.','Créer une campagne',"go('campaigns')")});
+      }
+      if(prev){
+        const scanDelta=pctDelta(curr.scans,prev.scans);
+        if(scanDelta!=null && scanDelta<=-15){
+          recs.push({impact:3,html:recCard('trend',`Baisse des scans de ${Math.abs(scanDelta).toLocaleString('fr-FR',{maximumFractionDigits:0})} %`,'Les scans reculent nettement par rapport à la période précédente. Vérifiez les produits concernés et la visibilité des QR codes.','Voir les produits',"go('products')")});
+        }
+      }
+      const dormantEstimate=Math.round(curr.stock*0.14);
+      if(dormantEstimate>0){
+        recs.push({impact:2,html:recCard('users',`${fmtN(dormantEstimate)} contacts en sommeil`,'Ces contacts n\'ont pas interagi depuis longtemps. Une campagne de réactivation ciblée peut les relancer.','Créer une campagne de réactivation',"go('campaigns')")});
+      }
+      if(loyCurr.membersNearReward>0){
+        recs.push({impact:2,html:recCard('gift',`${loyCurr.membersNearReward} membres proches d'une récompense`,'Ces membres sont à moins de 50 points du prochain palier — une campagne ciblée peut accélérer la conversion.','Cibler cette liste',"go('campaigns')")});
+      }
+      if(convRate!=null && convRate<20){
+        recs.push({impact:3,html:recCard('alert',`Conversion scan → inscription faible (${fmtPct(convRate)})`,'Moins d\'un scanner sur cinq s\'inscrit au Club. Vérifiez la landing page et le parcours d\'inscription.','Vérifier la landing',"go('editor')")});
+      }
+      // product with many scans but comparatively few signups
+      const prodList=DASH_PRODUCTS.map(p=>{ const m=productMetrics(p,f,days,false); return {p,...m,conv:m.unique>0?m.signups/m.unique*100:0}; });
+      const avgConv=prodList.reduce((s,x)=>s+x.conv,0)/prodList.length;
+      const flagged=prodList.filter(x=>x.unique>0).sort((a,b)=>b.unique-a.unique)[0];
+      if(flagged && flagged.conv < avgConv*0.7 && flagged.unique>50){
+        recs.push({impact:2,html:recCard('alert',`« ${flagged.p} » scanne beaucoup mais convertit peu`,`${fmtN(flagged.unique)} scanners uniques pour seulement ${fmtPct(flagged.conv)} de conversion, contre ${fmtPct(avgConv)} en moyenne.`,'Analyser ce produit',"go('products')")});
+      }
+      recs.sort((a,b)=>b.impact-a.impact);
+      const top=recs.slice(0,3);
+      document.getElementById('recActions').innerHTML = top.length ? top.map(r=>r.html).join('') : '<p class="muted" style="font-size:12.5px">Rien à signaler pour le moment : tous les indicateurs sont dans les clous.</p>';
+    }
+
+    // ---- wiring ----
+    window.dashOnFilterChange=function(){
+      state.filters.product=document.getElementById('filterProduct').value;
+      state.filters.segment=document.getElementById('filterSegment').value;
+      state.filters.persona=document.getElementById('filterPersona').value;
+      state.filters.source=document.getElementById('filterSource').value;
+      render();
+    };
+    window.dashRemoveFilter=function(key){
+      state.filters[key]='';
+      document.getElementById('filter'+key.charAt(0).toUpperCase()+key.slice(1)).value='';
+      render();
+    };
+    window.dashResetFilters=function(){
+      ['Product','Segment','Persona','Source'].forEach(k=>document.getElementById('filter'+k).value='');
+      state.filters={product:'',segment:'',persona:'',source:''};
+      render();
+    };
+
+    document.getElementById('periodTabs').addEventListener('click',e=>{
+      const b=e.target.closest('button'); if(!b) return;
+      state.period=parseInt(b.dataset.period,10);
+      document.querySelectorAll('#periodTabs button').forEach(x=>{ x.classList.toggle('active',x===b); x.setAttribute('aria-pressed',x===b?'true':'false'); });
+      skeletonKpis(); setTimeout(render,180);
+    });
+    document.getElementById('audienceTabs').addEventListener('click',e=>{
+      const b=e.target.closest('button'); if(!b) return;
+      const tab=b.dataset.tab; state.audienceTab=tab;
+      document.querySelectorAll('#audienceTabs button').forEach(x=>{ x.classList.toggle('active',x.dataset.tab===tab); x.setAttribute('aria-pressed',x.dataset.tab===tab?'true':'false'); });
+      document.getElementById('segmentsPanel').classList.toggle('active',tab==='segments');
+      document.getElementById('personasPanel').classList.toggle('active',tab==='personas');
+    });
+    document.getElementById('compareToggle').addEventListener('change',e=>{ state.compare=e.target.checked; render(); });
+    document.getElementById('dashRefreshBtn').addEventListener('click',function(){
+      this.classList.add('spin'); skeletonKpis();
+      setTimeout(()=>{ render(); this.classList.remove('spin'); toast('Tableau de bord actualisé'); },420);
+    });
+
+    populateFilterOptions();
+    render();
+  })();
 
   // clients data
   const clients=[
