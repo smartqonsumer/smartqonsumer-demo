@@ -1684,12 +1684,130 @@
         <div id="campWizardBody"></div>
       </div>
     </section>
-    <section class="screen" id="analytics-overview"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Vue d'ensemble</h2></div></div><div class="card" id="ph-analytics-overview"></div></section>
-    <section class="screen" id="analytics-contacts"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Contacts et acquisition</h2></div></div><div class="card" id="ph-analytics-contacts"></div></section>
-    <section class="screen" id="analytics-products"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Produits et scans</h2></div></div><div class="card" id="ph-analytics-products"></div></section>
-    <section class="screen" id="analytics-loyalty"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Fidélité</h2></div></div><div class="card" id="ph-analytics-loyalty"></div></section>
-    <section class="screen" id="analytics-email"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Campagnes e-mail</h2></div></div><div class="card" id="ph-analytics-email"></div></section>
-    <section class="screen" id="settings"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Paramètres</h2></div></div><div class="card" id="ph-settings"></div></section>
+    <section class="screen" id="analytics-overview">
+      <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Vue d'ensemble</h2><p>Point d'entrée vers les analyses détaillées de votre activité.</p></div></div>
+      <div class="grid cards-4" id="ovKpis"></div>
+      <div class="grid cards-2" style="margin-top:16px">
+        <div class="card" style="cursor:pointer" onclick="go('analytics.contacts')"><h3>Contacts et acquisition</h3><div class="sub">Nouveaux contacts, sources, segments, personas</div><a style="font-size:12.5px;font-weight:700;color:var(--accent)">Voir le détail →</a></div>
+        <div class="card" style="cursor:pointer" onclick="go('analytics.products')"><h3>Produits et scans</h3><div class="sub">Scans, conversion, classement des produits</div><a style="font-size:12.5px;font-weight:700;color:var(--accent)">Voir le détail →</a></div>
+        <div class="card" style="cursor:pointer" onclick="go('analytics.loyalty')"><h3>Fidélité</h3><div class="sub">Membres, points, récompenses</div><a style="font-size:12.5px;font-weight:700;color:var(--accent)">Voir le détail →</a></div>
+        <div class="card" style="cursor:pointer" onclick="go('analytics.email')"><h3>Campagnes e-mail</h3><div class="sub">Envois, ouvertures, comparaison des campagnes</div><a style="font-size:12.5px;font-weight:700;color:var(--accent)">Voir le détail →</a></div>
+      </div>
+    </section>
+
+    <section class="screen" id="analytics-contacts">
+      <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Contacts et acquisition</h2></div></div>
+      <div class="filters-bar">
+        <div class="seg-tabs" id="acPeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="7">7 jours</button><button type="button" data-period="30" class="active" aria-pressed="true">30 jours</button><button type="button" data-period="90">90 jours</button></div>
+        <select id="acSource" onchange="renderAnalyticsContacts()"><option value="">Toutes provenances</option></select>
+        <select id="acSegment" onchange="renderAnalyticsContacts()"><option value="">Tous segments</option></select>
+        <select id="acPersona" onchange="renderAnalyticsContacts()"><option value="">Tous personas</option></select>
+      </div>
+      <div class="grid cards-4" id="acKpis"></div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Évolution des contacts</h3><div class="sub" id="acTrendSub">Nouveaux vs. connus</div><div id="acTrendChart"></div></div>
+        <div class="card"><h3>Sources d'acquisition</h3><div class="sub">Nombre de contacts par provenance</div><div id="acSourceBars"></div></div>
+      </div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Répartition par segment</h3><div id="acSegBars"></div></div>
+        <div class="card"><h3>Répartition par persona</h3><div id="acPersonaBars"></div></div>
+      </div>
+      <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Segment</th><th class="right">Contacts</th><th class="right">Nouveaux (période)</th><th class="right">Actifs</th><th class="right">En sommeil</th></tr></thead><tbody id="acDetailTable"></tbody></table></div>
+    </section>
+
+    <section class="screen" id="analytics-products">
+      <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Produits et scans</h2></div></div>
+      <div class="filters-bar">
+        <div class="seg-tabs" id="apPeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="7">7 jours</button><button type="button" data-period="30" class="active" aria-pressed="true">30 jours</button><button type="button" data-period="90">90 jours</button></div>
+      </div>
+      <div class="grid cards-4" id="apKpis"></div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Évolution des scans</h3><div id="apTrendChart"></div></div>
+        <div class="card"><h3>Produits les plus scannés</h3><div id="apTopProducts"></div></div>
+      </div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Performance par destination</h3><div class="sub">QR ayant cette destination comme principale</div><div id="apDestBars"></div></div>
+        <div class="card"><h3>QR Codes sans activité récente</h3><div id="apInactiveQr"></div></div>
+      </div>
+      <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Produit</th><th class="right">Scans</th><th class="right">Scans uniques</th><th class="right">Conversion</th></tr></thead><tbody id="apDetailTable"></tbody></table></div>
+    </section>
+
+    <section class="screen" id="analytics-loyalty">
+      <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Fidélité</h2></div></div>
+      <div class="filters-bar">
+        <div class="seg-tabs" id="alPeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="7">7 jours</button><button type="button" data-period="30" class="active" aria-pressed="true">30 jours</button><button type="button" data-period="90">90 jours</button></div>
+      </div>
+      <div class="grid cards-4" id="alKpis"></div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Évolution des membres</h3><div class="sub">Nouvelles inscriptions par période</div><div id="alTrendChart"></div></div>
+        <div class="card"><h3>Distribution des niveaux</h3><div id="alTierBars"></div></div>
+      </div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Utilisation des points</h3><div class="kv"><span>Distribués</span><b id="alPointsIssued">—</b></div><div class="kv"><span>Utilisés</span><b id="alPointsUsed">—</b></div><div class="hbar-track" style="margin-top:10px"><span class="hbar-fill" id="alRedemptionBar" style="width:0%"></span></div><div class="muted" style="font-size:12px;margin-top:8px" id="alRedemptionLabel"></div></div>
+        <div class="card"><h3>Classement des récompenses</h3><div id="alRewardBars"></div></div>
+      </div>
+    </section>
+
+    <section class="screen" id="analytics-email">
+      <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Campagnes e-mail</h2></div></div>
+      <div class="filters-bar">
+        <div class="seg-tabs" id="aePeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="30">30 jours</button><button type="button" data-period="90" class="active" aria-pressed="true">90 jours</button><button type="button" data-period="365">Toutes</button></div>
+      </div>
+      <div class="grid cards-4" id="aeKpis"></div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Comparaison des campagnes</h3><div class="sub">Taux d'ouverture</div><div id="aeCampBars"></div></div>
+        <div class="card"><h3>Performance par liste</h3><div id="aeListBars"></div></div>
+      </div>
+      <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Campagne</th><th>Statut</th><th class="right">Destinataires</th><th class="right">Ouvertures</th><th class="right">Taux d'ouverture</th></tr></thead><tbody id="aeDetailTable"></tbody></table></div>
+    </section>
+    <section class="screen" id="settings">
+      <div class="screen-head"><div><div class="eyebrow">Tenant</div><h2 style="margin:2px 0 0;color:var(--ink)">Paramètres</h2><p>Informations de votre compte SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div></div>
+      <div class="grid cards-2">
+        <div class="card">
+          <h3>Informations de l'entreprise</h3>
+          <div class="field"><label>Logo</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Logo (démo)</div></div>
+          <div class="field"><label>Raison sociale</label><input type="text" id="stCompany" value="SmartQonsumer Demo SAS"></div>
+          <div class="field"><label>Adresse</label><input type="text" id="stAddress" value="12 rue de l'Innovation, 75011 Paris"></div>
+          <div class="field"><label>E-mail de contact</label><input type="email" id="stContactEmail" value="contact@smartqonsumer.com"></div>
+        </div>
+        <div class="card">
+          <h3>Utilisateurs et rôles</h3><div class="sub">Membres de votre équipe ayant accès au compte</div>
+          <div class="kv"><span>Nicolas Wicke</span><b>Administrateur</b></div>
+          <div class="kv"><span>Camille Rousseau</span><b>Éditeur</b></div>
+          <div class="kv" style="border-bottom:0"><span>Thomas Girard</span><b>Lecture seule</b></div>
+          <button class="btn ghost" style="margin-top:12px;font-size:12.5px;padding:8px 12px" onclick="toast('Invitation envoyée (démo)')">+ Inviter un utilisateur</button>
+        </div>
+      </div>
+      <div class="grid cards-2" style="margin-top:16px">
+        <div class="card">
+          <h3>Abonnement actuel</h3><div class="sub">Fonctionnalités Premium (Landing Pages et Club Fidélité)</div>
+          <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div><b style="font-size:14px;color:var(--ink)" id="stPlanLabel">Essentiel</b><div class="muted" style="font-size:12px">Modèles Premium verrouillés</div></div>
+            <label class="switch"><input type="checkbox" id="stPlanToggle" onchange="togglePlanTier(this.checked)"><span class="slider"></span></label>
+          </div>
+          <p class="muted" style="font-size:11.5px;margin-top:10px">Bascule de démonstration — active/désactive l'offre Premium pour voir les deux états ailleurs dans l'application (Landing Pages, Club Fidélité).</p>
+        </div>
+        <div class="card">
+          <h3>Configuration e-mails</h3><div class="sub">Expéditeur utilisé pour vos campagnes</div>
+          <div class="field"><label>Nom d'expéditeur</label><input type="text" id="stSenderName" value="SmartQonsumer"></div>
+          <div class="field"><label>E-mail d'expédition</label><input type="email" id="stSenderEmail" value="news@smartqonsumer.com"></div>
+          <div class="kv" style="border-bottom:0"><span>Domaine public du Club</span><b id="stPublicDomain"></b></div>
+        </div>
+      </div>
+      <div class="grid cards-2" style="margin-top:16px">
+        <div class="card">
+          <h3>Préférences</h3>
+          <div class="opt"><div><b>Langue</b></div><select style="width:auto;padding:6px 10px"><option>Français</option></select></div>
+          <div class="opt"><div><b>Fuseau horaire</b></div><select style="width:auto;padding:6px 10px"><option>Europe/Paris</option></select></div>
+          <div class="opt" style="border-bottom:0"><div><b>Notifications par e-mail</b></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+        </div>
+        <div class="card">
+          <h3>Sécurité</h3>
+          <div class="opt"><div><b>Authentification à deux facteurs</b></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+          <div class="opt" style="border-bottom:0"><div><b>Journal des connexions</b></div><a onclick="toast('Journal des connexions — démo statique')" style="color:var(--accent);font-weight:700;font-size:12.5px;cursor:pointer">Consulter →</a></div>
+        </div>
+      </div>
+    </section>
 
   </div>
 </div>
@@ -1721,12 +1839,12 @@
     'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns', onEnter:()=>renderCampaigns()},
     'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns', onEnter:()=>enterCampaignsNew()},
     'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns', onEnter:()=>renderContactLists()},
-    'analytics.overview':{screenId:'analytics-overview', title:"Vue d'ensemble", group:'analytics'},
-    'analytics.contacts':{screenId:'analytics-contacts', title:'Contacts et acquisition', group:'analytics'},
-    'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics'},
-    'analytics.loyalty':{screenId:'analytics-loyalty', title:'Fidélité', group:'analytics'},
-    'analytics.email':{screenId:'analytics-email', title:'Campagnes e-mail', group:'analytics'},
-    'settings':{screenId:'settings', title:'Paramètres'},
+    'analytics.overview':{screenId:'analytics-overview', title:"Vue d'ensemble", group:'analytics', onEnter:()=>renderAnalyticsOverview()},
+    'analytics.contacts':{screenId:'analytics-contacts', title:'Contacts et acquisition', group:'analytics', onEnter:()=>renderAnalyticsContacts()},
+    'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics', onEnter:()=>renderAnalyticsProducts()},
+    'analytics.loyalty':{screenId:'analytics-loyalty', title:'Fidélité', group:'analytics', onEnter:()=>renderAnalyticsLoyalty()},
+    'analytics.email':{screenId:'analytics-email', title:'Campagnes e-mail', group:'analytics', onEnter:()=>renderAnalyticsEmail()},
+    'settings':{screenId:'settings', title:'Paramètres', onEnter:()=>renderSettings()},
   };
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
@@ -1782,6 +1900,8 @@
   function fmtDateFR(d){ if(!d) return '—'; const dt=(d instanceof Date)?d:new Date(d); return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}); }
   function fmtDateTimeFR(d){ if(!d) return '—'; const dt=(d instanceof Date)?d:new Date(d); return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+' · '+dt.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
   function daysSince(d){ if(!d) return Infinity; const dt=(d instanceof Date)?d:new Date(d); return Math.floor((Date.now()-dt.getTime())/86400000); }
+  function fmtN(n){ return Math.round(n||0).toLocaleString('fr-FR'); }
+  function fmtPct(n,d){ return n==null?'—':n.toLocaleString('fr-FR',{maximumFractionDigits:d==null?1:d})+' %'; }
 
   function paginateArr(arr,page,pageSize){
     const totalPages=Math.max(1,Math.ceil(arr.length/pageSize));
@@ -3162,6 +3282,202 @@
     renderWizardSteps(); renderWizardStepBody();
   }
   renderContactLists(); renderCampaigns();
+
+  // ============================================================
+  // ANALYSES — shared chart/KPI helpers
+  // ============================================================
+  function renderLineChart(containerId,series,opts){
+    opts=opts||{};
+    const w=opts.width||600, h=opts.height||170, pad=10;
+    const allY=series.flatMap(s=>s.points.map(p=>p.y));
+    const maxY=Math.max(...allY,1)*1.15;
+    const n=(series[0]&&series[0].points.length)||1;
+    const stepX=n>1?(w-pad*2)/(n-1):0;
+    function pathFor(points){ return points.map((p,i)=>`${i===0?'M':'L'}${(pad+i*stepX).toFixed(1)},${(h-pad-(p.y/maxY)*(h-pad*2)).toFixed(1)}`).join(' '); }
+    let svg=`<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:${h}px;display:block" preserveAspectRatio="none">`;
+    [0,.5,1].forEach(f=>{ const y=(h-pad-f*(h-pad*2)).toFixed(1); svg+=`<line x1="${pad}" y1="${y}" x2="${w-pad}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`; });
+    series.forEach(s=>{ svg+=`<path d="${pathFor(s.points)}" fill="none" stroke="${s.color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`; });
+    svg+='</svg>';
+    const el=document.getElementById(containerId); if(el) el.innerHTML=svg;
+  }
+  function kpiCardHtml(label,value,sub){
+    return `<div class="card kpi"><div class="label">${label}</div><div class="val">${value}</div>${sub?`<div class="delta flat">${sub}</div>`:''}</div>`;
+  }
+  function hbarListHtml(rows,maxOverride){
+    const max=maxOverride||Math.max(...rows.map(r=>r.value),1);
+    return rows.map(r=>`<div class="hbar-row"><div class="hbar-label">${r.label}</div><div class="hbar-track"><span class="hbar-fill" style="width:${Math.max(3,Math.round(r.value/max*100))}%"></span></div><div class="hbar-val"><b>${r.display!=null?r.display:r.value}</b></div></div>`).join('') || '<p class="muted" style="font-size:12.5px">Aucune donnée pour le moment.</p>';
+  }
+  function wirePeriodTabs(tabsId,stateObj,onChange){
+    const el=document.getElementById(tabsId); if(!el||el.dataset.wired) return;
+    el.addEventListener('click',e=>{
+      const b=e.target.closest('button'); if(!b) return;
+      stateObj.period=parseInt(b.dataset.period,10);
+      el.querySelectorAll('button').forEach(x=>{ x.classList.toggle('active',x===b); x.setAttribute('aria-pressed',x===b?'true':'false'); });
+      onChange();
+    });
+    el.dataset.wired='1';
+  }
+  function dayRange(dayOffset){
+    const start=new Date(); start.setHours(0,0,0,0); start.setDate(start.getDate()-dayOffset);
+    const end=new Date(start); end.setDate(end.getDate()+1);
+    return [start,end];
+  }
+
+  // ============================================================
+  // ANALYSES — Vue d'ensemble
+  // ============================================================
+  function renderAnalyticsOverview(){
+    const el=document.getElementById('ovKpis'); if(!el) return;
+    const s30=DERIVE.scanTotals(30);
+    const sent=DB.CAMPAIGNS.filter(c=>c.status==='sent');
+    const del=sent.reduce((s,c)=>s+c.stats.delivered,0), op=sent.reduce((s,c)=>s+c.stats.opened,0);
+    el.innerHTML=[
+      kpiCardHtml('Nouveaux contacts', fmtN(DERIVE.newContactsCount(30)), '30 derniers jours'),
+      kpiCardHtml('Scans uniques', fmtN(s30.unique), '30 derniers jours'),
+      kpiCardHtml('Membres actifs', fmtN(DERIVE.activeMembersCount())),
+      kpiCardHtml("Taux d'ouverture moyen", del>0?fmtPct(Math.round(op/del*100)):'—'),
+    ].join('');
+  }
+
+  // ============================================================
+  // ANALYSES — Contacts et acquisition
+  // ============================================================
+  const acState={period:30};
+  function populateAnalyticsContactsFilters(){
+    const srcSel=document.getElementById('acSource');
+    if(srcSel && !srcSel.dataset.filled){ DB.SOURCES.forEach(s=>srcSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); srcSel.dataset.filled='1'; }
+    const segSel=document.getElementById('acSegment');
+    if(segSel && !segSel.dataset.filled){ DB.SEGMENT_NAMES.forEach(s=>segSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); segSel.dataset.filled='1'; }
+    const perSel=document.getElementById('acPersona');
+    if(perSel && !perSel.dataset.filled){ DB.PERSONAS.forEach(p=>perSel.insertAdjacentHTML('beforeend',`<option>${p}</option>`)); perSel.dataset.filled='1'; }
+  }
+  function acFilteredContacts(){
+    const source=document.getElementById('acSource').value, segment=document.getElementById('acSegment').value, persona=document.getElementById('acPersona').value;
+    return DB.CONTACTS.filter(c=>(!source||c.source===source)&&(!segment||c.segment===segment)&&(!persona||c.persona===persona));
+  }
+  function renderAnalyticsContacts(){
+    populateAnalyticsContactsFilters();
+    wirePeriodTabs('acPeriodTabs',acState,renderAnalyticsContacts);
+    const days=acState.period;
+    const contacts=acFilteredContacts();
+    document.getElementById('acKpis').innerHTML=[
+      kpiCardHtml('Contacts (filtrés)', fmtN(contacts.length)),
+      kpiCardHtml('Nouveaux contacts', fmtN(contacts.filter(c=>daysSince(c.createdAt)<=days).length), days+' derniers jours'),
+      kpiCardHtml('Contacts actifs', fmtN(contacts.filter(c=>c.status==='active').length)),
+      kpiCardHtml('Contacts en sommeil', fmtN(contacts.filter(c=>c.status==='dormant').length)),
+    ].join('');
+    document.getElementById('acTrendSub').textContent='Nouveaux vs. connus, '+days+' derniers jours';
+    const points=[],retPoints=[];
+    for(let d=days-1; d>=0; d--){
+      const [s,e]=dayRange(d);
+      points.push({x:d,y:contacts.filter(c=>c.createdAt>=s&&c.createdAt<e).length});
+      retPoints.push({x:d,y:contacts.filter(c=>c.lastScanAt&&c.lastScanAt>=s&&c.lastScanAt<e&&c.createdAt<s).length});
+    }
+    renderLineChart('acTrendChart',[{label:'Nouveaux',color:'var(--accent)',points},{label:'Connus',color:'var(--color-neutral-400)',points:retPoints}]);
+    document.getElementById('acSourceBars').innerHTML=hbarListHtml(DB.SOURCES.map(s=>({label:s,value:contacts.filter(c=>c.source===s).length})).sort((a,b)=>b.value-a.value));
+    document.getElementById('acSegBars').innerHTML=hbarListHtml(DB.SEGMENT_NAMES.map(s=>({label:s,value:contacts.filter(c=>c.segment===s).length})).sort((a,b)=>b.value-a.value));
+    document.getElementById('acPersonaBars').innerHTML=hbarListHtml(DB.PERSONAS.map(p=>({label:p,value:contacts.filter(c=>c.persona===p).length})).sort((a,b)=>b.value-a.value));
+    document.getElementById('acDetailTable').innerHTML=DB.SEGMENT_NAMES.map(s=>{
+      const sc=contacts.filter(c=>c.segment===s);
+      return `<tr><td>${s}</td><td class="right">${sc.length}</td><td class="right">${sc.filter(c=>daysSince(c.createdAt)<=days).length}</td><td class="right">${sc.filter(c=>c.status==='active').length}</td><td class="right">${sc.filter(c=>c.status==='dormant').length}</td></tr>`;
+    }).join('');
+  }
+
+  // ============================================================
+  // ANALYSES — Produits et scans
+  // ============================================================
+  const apState={period:30};
+  function renderAnalyticsProducts(){
+    wirePeriodTabs('apPeriodTabs',apState,renderAnalyticsProducts);
+    const days=apState.period;
+    const totals=DERIVE.scanTotals(days);
+    document.getElementById('apKpis').innerHTML=[
+      kpiCardHtml('Scans totaux', fmtN(totals.scans)),
+      kpiCardHtml('Scans uniques', fmtN(totals.unique)),
+      kpiCardHtml('Conversion scan → inscription', totals.conv==null?'—':fmtPct(totals.conv)),
+      kpiCardHtml('Produits actifs', fmtN(DB.PRODUCTS.filter(p=>p.status==='active').length)),
+    ].join('');
+    const points=[];
+    for(let d=days-1; d>=0; d--){ const [s,e]=dayRange(d); points.push({x:d,y:DB.SCAN_EVENTS.filter(ev=>ev.timestamp>=s&&ev.timestamp<e).length}); }
+    renderLineChart('apTrendChart',[{label:'Scans',color:'var(--accent)',points}]);
+    const prodRows=DB.PRODUCTS.map(p=>Object.assign({product:p},DERIVE.productMetrics(p.id,days))).sort((a,b)=>b.scans-a.scans);
+    document.getElementById('apTopProducts').innerHTML=hbarListHtml(prodRows.slice(0,5).map(r=>({label:r.product.name,value:r.unique})));
+    const destCounts={landing:0,club:0,external:0};
+    DB.QR_CODES.forEach(q=>{ const p=q.destinations.find(d=>d.isPrimary); if(p) destCounts[p.type]=(destCounts[p.type]||0)+1; });
+    const destLabels={landing:'Landing Page',club:'Club Fidélité',external:'URL externe'};
+    document.getElementById('apDestBars').innerHTML=hbarListHtml(Object.entries(destCounts).map(([k,v])=>({label:destLabels[k],value:v})));
+    const inactiveQr=DB.QR_CODES.filter(q=>DERIVE.productMetrics(q.productId,days).scans===0);
+    document.getElementById('apInactiveQr').innerHTML = inactiveQr.length ? inactiveQr.map(q=>`<div class="kv"><span>${DB.productById(q.productId).name}</span><b class="muted">0 scan</b></div>`).join('') : `<p class="muted" style="font-size:12.5px">Tous les QR Codes ont eu de l'activité sur la période.</p>`;
+    document.getElementById('apDetailTable').innerHTML=prodRows.map(r=>`<tr><td>${r.product.name}</td><td class="right">${fmtN(r.scans)}</td><td class="right">${fmtN(r.unique)}</td><td class="right">${r.conv==null?'—':fmtPct(r.conv)}</td></tr>`).join('');
+  }
+
+  // ============================================================
+  // ANALYSES — Fidélité
+  // ============================================================
+  const alState={period:30};
+  function renderAnalyticsLoyalty(){
+    wirePeriodTabs('alPeriodTabs',alState,renderAnalyticsLoyalty);
+    const days=alState.period;
+    const total=DB.LOYALTY_MEMBERS.length, active=DERIVE.activeMembersCount();
+    document.getElementById('alKpis').innerHTML=[
+      kpiCardHtml('Membres inscrits', fmtN(total)),
+      kpiCardHtml('Membres actifs', fmtN(active), total>0?fmtPct(Math.round(active/total*100))+' de la base':''),
+      kpiCardHtml('Nouvelles inscriptions', fmtN(DB.LOYALTY_MEMBERS.filter(m=>daysSince(m.joinedAt)<=days).length), days+' derniers jours'),
+      kpiCardHtml("Proches d'une récompense", fmtN(DERIVE.membersNearRewardCount())),
+    ].join('');
+    const points=[];
+    for(let d=days-1; d>=0; d--){ const [s,e]=dayRange(d); points.push({x:d,y:DB.LOYALTY_MEMBERS.filter(m=>m.joinedAt>=s&&m.joinedAt<e).length}); }
+    renderLineChart('alTrendChart',[{label:'Inscriptions',color:'var(--accent)',points}]);
+    document.getElementById('alTierBars').innerHTML=hbarListHtml(['Club','Membre','Prospect'].map(t=>({label:t,value:DB.LOYALTY_MEMBERS.filter(m=>m.tier===t).length})));
+    const pointsIssued=DB.LOYALTY_MEMBERS.reduce((s,m)=>s+m.pointsEarned,0), pointsUsed=DB.LOYALTY_MEMBERS.reduce((s,m)=>s+m.pointsUsed,0);
+    document.getElementById('alPointsIssued').textContent=fmtN(pointsIssued);
+    document.getElementById('alPointsUsed').textContent=fmtN(pointsUsed);
+    const rate=pointsIssued>0?Math.round(pointsUsed/pointsIssued*100):0;
+    document.getElementById('alRedemptionBar').style.width=rate+'%';
+    document.getElementById('alRedemptionLabel').textContent=rate+' % des points distribués ont été utilisés';
+    document.getElementById('alRewardBars').innerHTML=hbarListHtml(DB.REWARDS.map(r=>({label:r.name,value:r.obtainedCount,display:r.obtainedCount+' obt. · '+r.redeemedCount+' conso.'})).sort((a,b)=>b.value-a.value));
+  }
+
+  // ============================================================
+  // ANALYSES — Campagnes e-mail
+  // ============================================================
+  const aeState={period:90};
+  function renderAnalyticsEmail(){
+    wirePeriodTabs('aePeriodTabs',aeState,renderAnalyticsEmail);
+    const days=aeState.period;
+    const sent=DB.CAMPAIGNS.filter(c=>c.status==='sent' && (days>=365 || daysSince(c.sentAt)<=days));
+    const delivered=sent.reduce((s,c)=>s+c.stats.delivered,0), opened=sent.reduce((s,c)=>s+c.stats.opened,0);
+    const openRate=delivered>0?Math.round(opened/delivered*100):null;
+    document.getElementById('aeKpis').innerHTML=[
+      kpiCardHtml('Campagnes envoyées', fmtN(sent.length)),
+      kpiCardHtml('Destinataires', fmtN(delivered)),
+      kpiCardHtml('Ouvertures uniques', fmtN(opened)),
+      kpiCardHtml("Taux d'ouverture moyen", openRate==null?'—':fmtPct(openRate)),
+    ].join('');
+    const campRows=sent.map(c=>{ const r=c.stats.delivered>0?Math.round(c.stats.opened/c.stats.delivered*100):0; return {label:c.name,value:r,display:r+' %'}; }).sort((a,b)=>b.value-a.value);
+    document.getElementById('aeCampBars').innerHTML=hbarListHtml(campRows,100);
+    const byList={};
+    sent.forEach(c=>{ const l=DB.listById(c.listId); const key=l?l.name:'—'; byList[key]=byList[key]||{delivered:0,opened:0}; byList[key].delivered+=c.stats.delivered; byList[key].opened+=c.stats.opened; });
+    const listRows=Object.entries(byList).map(([name,v])=>{ const r=v.delivered>0?Math.round(v.opened/v.delivered*100):0; return {label:name,value:r,display:r+' %'}; });
+    document.getElementById('aeListBars').innerHTML=hbarListHtml(listRows,100);
+    document.getElementById('aeDetailTable').innerHTML=sent.map(c=>`<tr><td>${c.name}</td><td>${campStatusTag(c.status)}</td><td class="right">${fmtN(c.stats.delivered)}</td><td class="right">${fmtN(c.stats.opened)}</td><td class="right">${c.stats.delivered>0?fmtPct(Math.round(c.stats.opened/c.stats.delivered*100)):'—'}</td></tr>`).join('') || `<tr><td colspan="5">${emptyStateHtml({title:'Aucune campagne envoyée sur cette période'})}</td></tr>`;
+  }
+
+  // ============================================================
+  // PARAMÈTRES
+  // ============================================================
+  function togglePlanTier(isPremiumChecked){
+    DB.setPlanTier(isPremiumChecked?'premium':'essentiel');
+    renderSettings();
+    toast(isPremiumChecked?'Offre Premium activée (démo)':'Retour à l\'offre Essentiel');
+  }
+  function renderSettings(){
+    const toggle=document.getElementById('stPlanToggle'); if(!toggle) return;
+    const premium=isPremium();
+    toggle.checked=premium;
+    document.getElementById('stPlanLabel').textContent=premium?'Premium':'Essentiel';
+    document.getElementById('stPublicDomain').textContent='club.smartqonsumer.com/'+slugifyClubName();
+  }
 
   // landing
   function joinClub(){
