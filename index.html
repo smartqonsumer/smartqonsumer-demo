@@ -1361,17 +1361,25 @@
     <!-- CLIENTS -->
     <section class="screen" id="contacts-all">
       <div class="screen-head">
-        <div><div class="eyebrow">CRM 360</div><h2 style="margin:2px 0 0;color:var(--ink)">Clients</h2><p>Chaque scan et chaque inscription enrichit une fiche unique. Cliquez une ligne pour l'ouvrir.</p></div>
-        <div class="row">
-          <select id="segFilter" style="width:200px" onchange="renderClients()">
-            <option value="">Tous les segments</option>
-            <option>Adeptes des bons plans</option><option>Ambassadeurs de la marque</option><option>Premium engagés</option>
-          </select>
-        </div>
+        <div><div class="eyebrow">CRM 360</div><h2 style="margin:2px 0 0;color:var(--ink)"><span id="contactsTotal">0</span> contacts</h2><p>Chaque scan et chaque inscription enrichit une fiche unique. Cliquez une ligne pour l'ouvrir.</p></div>
+        <button class="btn primary" onclick="openContactPanel(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Ajouter un contact</button>
+      </div>
+      <div class="filters-bar">
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="contactsSearch" placeholder="Nom ou e-mail" oninput="renderContacts()"></div>
+        <select id="fOrigin" onchange="renderContacts()"><option value="">Toutes origines</option></select>
+        <select id="fSegment" onchange="renderContacts()"><option value="">Tous segments</option></select>
+        <select id="fPersona" onchange="renderContacts()"><option value="">Tous personas</option></select>
+        <select id="fClub" onchange="renderContacts()"><option value="">Club (tous)</option><option value="member">Membre du Club</option><option value="non-member">Non membre</option></select>
+        <select id="fConsent" onchange="renderContacts()"><option value="">Consentement (tous)</option><option value="yes">Consentement donné</option><option value="no">Sans consentement</option></select>
+        <select id="fStatus" onchange="renderContacts()"><option value="">Activité (toutes)</option><option value="active">Actif</option><option value="dormant">En sommeil</option></select>
+        <div class="filters-active" id="contactsFiltersActive"></div>
       </div>
       <div class="card" style="padding:4px 4px 0">
-        <table><thead><tr><th>Client</th><th>Dernier produit</th><th>Segment</th><th class="right">Scans</th><th>Fidélité</th></tr></thead>
+        <table><thead><tr>
+          <th data-sort-key="name">Contact</th><th data-sort-key="email">E-mail</th><th>Provenance</th><th>Segments</th><th>Statut Club</th><th data-sort-key="lastScan">Dernier scan</th><th>Consentement</th><th></th>
+        </tr></thead>
         <tbody id="clientRows"></tbody></table>
+        <div class="pagination" id="contactsPagination"></div>
       </div>
     </section>
 
@@ -1586,7 +1594,24 @@
       </div>
     </section>
 
-    <section class="screen" id="contacts-segments"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Segments</h2></div></div><div class="card" id="ph-contacts-segments"></div></section>
+    <section class="screen" id="contacts-segments">
+      <div class="screen-head">
+        <div><div class="eyebrow">CRM 360</div><h2 style="margin:2px 0 0;color:var(--ink)">Segments</h2><p>Groupes de contacts déterministes, système ou personnalisés. La population d'un segment personnalisé évolue automatiquement.</p></div>
+        <button class="btn primary" onclick="openSegmentBuilder(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer un segment</button>
+      </div>
+      <div class="filters-bar">
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="segSearch" placeholder="Rechercher un segment" oninput="renderSegments()"></div>
+        <div class="seg-tabs" id="segTypeTabs">
+          <button type="button" data-type="" class="active" aria-pressed="true">Tous</button>
+          <button type="button" data-type="system" aria-pressed="false">Système</button>
+          <button type="button" data-type="custom" aria-pressed="false">Personnalisés</button>
+        </div>
+      </div>
+      <div class="card" style="padding:4px 4px 0">
+        <table><thead><tr><th>Segment</th><th>Type</th><th class="right">Contacts</th><th>Dernière actualisation</th><th>Campagnes</th><th>Statut</th><th></th></tr></thead>
+        <tbody id="segRows"></tbody></table>
+      </div>
+    </section>
     <section class="screen" id="products-landing"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Landing Pages</h2></div></div><div class="card" id="ph-products-landing"></div></section>
     <section class="screen" id="loyalty-members"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Membres</h2></div></div><div class="card" id="ph-loyalty-members"></div></section>
     <section class="screen" id="loyalty-rewards"><div class="screen-head"><div><h2 style="margin:0;color:var(--ink)">Récompenses</h2></div></div><div class="card" id="ph-loyalty-rewards"></div></section>
@@ -1609,13 +1634,6 @@
   <div class="dh"><div><div style="font-size:11px;color:#BCBAEB;letter-spacing:.6px;text-transform:uppercase" id="panelEyebrow"></div><b id="panelTitle">—</b></div><button class="x" onclick="closePanel()">✕</button></div>
   <div class="db" id="panelBody"></div>
   <div class="df" id="panelFooter" style="display:none"></div>
-</aside>
-
-<!-- Drawer client 360 -->
-<div class="drawer-back" id="drawerBack" onclick="closeDrawer()"></div>
-<aside class="drawer" id="drawer">
-  <div class="dh"><div><div style="font-size:11px;color:#BCBAEB;letter-spacing:.6px;text-transform:uppercase">Fiche client 360</div><b id="dName">—</b></div><button class="x" onclick="closeDrawer()">✕</button></div>
-  <div class="db" id="dBody"></div>
 </aside>
 
 <div class="drawer-back" id="prodBack" onclick="closeProd()"></div>
@@ -1967,13 +1985,21 @@
         case 'daysSinceScan': return c.lastScanAt!=null && daysSinceD(c.lastScanAt) <= Number(v||0);
         case 'scannedProduct': return (c.scannedProductIds||[]).includes(v);
         case 'pointsBalance': { const m=c.isLoyaltyMember?memberById(c.loyaltyMemberId):null; return !!m && m.pointsBalance>=Number(v||0); }
+        case 'loyaltyTier': { const m=c.isLoyaltyMember?memberById(c.loyaltyMemberId):null; return !!m && m.tier===v; }
+        case 'hasReward': { const m=c.isLoyaltyMember?memberById(c.loyaltyMemberId):null; return !!m && m.rewardIds.length>0; }
+        case 'campaignReceived': return (c.campaignsReceivedIds||[]).includes(v);
         default: return true;
       }
     }
+    function evaluateGroup(group,c){
+      if(!group || !group.conditions || !group.conditions.length) return true;
+      const results=group.conditions.map(cond=>evaluateCondition(cond,c));
+      return group.op==='OR' ? results.some(Boolean) : results.every(Boolean);
+    }
     function evaluateRuleTree(tree,c){
-      if(!tree || !tree.conditions || !tree.conditions.length) return true;
-      const results=tree.conditions.map(cond=>evaluateCondition(cond,c));
-      return tree.op==='OR' ? results.some(Boolean) : results.every(Boolean);
+      if(!tree) return true;
+      if(tree.groups) return tree.groups.length ? tree.groups.every(g=>evaluateGroup(g,c)) : true;
+      return evaluateGroup(tree,c); // legacy single-group shape {op,conditions}
     }
     function allSegments(){ return SYSTEM_SEGMENTS.concat(CUSTOM_SEGMENTS); }
     function computeSegmentMembers(segment){
@@ -2124,38 +2150,262 @@
     return { scansForProduct, productMetrics, allScans, scanTotals, newContactsCount, dormantCount, activeMembersCount, membersNearRewardCount, topProduct, lastCampaign };
   })();
 
-  function renderClients(){
-    const rows=document.getElementById('clientRows'); if(!rows) return;
-    const f=document.getElementById('segFilter')?document.getElementById('segFilter').value:'';
-    const filtered=DB.CONTACTS.filter(c=>!f||c.segment===f);
-    rows.innerHTML=filtered.slice(0,50).map(c=>`
-      <tr onclick="openClient('${c.id}')">
-        <td><b style="color:var(--ink)">${c.name}</b><br><span class="muted" style="font-size:11.5px">${c.email}</span></td>
-        <td>${c.scannedProductIds.length?DB.productById(c.scannedProductIds[c.scannedProductIds.length-1]).name:'—'}</td>
-        <td><span class="tag">${c.segment}</span></td><td class="right">${c.scannedProductIds.length}</td>
-        <td><span class="tag ${c.isLoyaltyMember?'green':'grey'}">${c.isLoyaltyMember?'Membre':'Non membre'}</span></td></tr>`).join('');
+  const contactsState={page:1, pageSize:15, sort:{key:'name',dir:'asc'}};
+  function populateContactFilterSelects(){
+    const segSel=document.getElementById('fSegment'), perSel=document.getElementById('fPersona'), oriSel=document.getElementById('fOrigin');
+    if(segSel && !segSel.dataset.filled){ DB.SEGMENT_NAMES.forEach(s=>segSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); segSel.dataset.filled='1'; }
+    if(perSel && !perSel.dataset.filled){ DB.PERSONAS.forEach(p=>perSel.insertAdjacentHTML('beforeend',`<option>${p}</option>`)); perSel.dataset.filled='1'; }
+    if(oriSel && !oriSel.dataset.filled){ DB.SOURCES.forEach(s=>oriSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); oriSel.dataset.filled='1'; }
   }
+  function contactFiltersActive(){
+    return {
+      origin:document.getElementById('fOrigin').value, segment:document.getElementById('fSegment').value,
+      persona:document.getElementById('fPersona').value, club:document.getElementById('fClub').value,
+      consent:document.getElementById('fConsent').value, status:document.getElementById('fStatus').value,
+    };
+  }
+  function filteredContacts(){
+    const q=document.getElementById('contactsSearch').value;
+    const f=contactFiltersActive();
+    let list=DB.CONTACTS.filter(c=>
+      matchesSearch(c.name+' '+c.email,q) &&
+      (!f.origin||c.source===f.origin) && (!f.segment||c.segment===f.segment) && (!f.persona||c.persona===f.persona) &&
+      (!f.club||(f.club==='member'?c.isLoyaltyMember:!c.isLoyaltyMember)) &&
+      (!f.consent||(f.consent==='yes'?c.consentMarketing:!c.consentMarketing)) &&
+      (!f.status||c.status===f.status));
+    const {key,dir}=contactsState.sort;
+    list.sort((a,b)=>{
+      let av,bv;
+      if(key==='lastScan'){ av=a.lastScanAt?a.lastScanAt.getTime():0; bv=b.lastScanAt?b.lastScanAt.getTime():0; }
+      else { av=a[key]; bv=b[key]; }
+      if(av<bv) return dir==='asc'?-1:1; if(av>bv) return dir==='asc'?1:-1; return 0;
+    });
+    return list;
+  }
+  function renderContactsFilterChips(){
+    const f=contactFiltersActive();
+    const labels={origin:'Origine',segment:'Segment',persona:'Persona',club:'Club',consent:'Consentement',status:'Activité'};
+    const valueLabels={club:{member:'Membre du Club','non-member':'Non membre'},consent:{yes:'Consentement donné',no:'Sans consentement'},status:{active:'Actif',dormant:'En sommeil'}};
+    const entries=Object.entries(f).filter(([,v])=>v);
+    const el=document.getElementById('contactsFiltersActive');
+    if(!entries.length){ el.innerHTML=''; return; }
+    el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${(valueLabels[k]&&valueLabels[k][v])||v}<button type="button" onclick="resetContactFilter('${k}')">✕</button></span>`).join('')+'<button type="button" class="filter-reset" onclick="resetAllContactFilters()">Réinitialiser</button>';
+  }
+  function resetContactFilter(key){
+    const map={origin:'fOrigin',segment:'fSegment',persona:'fPersona',club:'fClub',consent:'fConsent',status:'fStatus'};
+    document.getElementById(map[key]).value=''; renderContacts();
+  }
+  function resetAllContactFilters(){
+    ['fOrigin','fSegment','fPersona','fClub','fConsent','fStatus'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('contactsSearch').value=''; renderContacts();
+  }
+  function renderContacts(keepPage){
+    populateContactFilterSelects();
+    if(!keepPage) contactsState.page=1;
+    const list=filteredContacts();
+    document.getElementById('contactsTotal').textContent=list.length;
+    const {items,page,total}=paginateArr(list,contactsState.page,contactsState.pageSize);
+    contactsState.page=page;
+    const rows=document.getElementById('clientRows');
+    rows.innerHTML = items.length ? items.map(c=>{
+      const m=c.isLoyaltyMember?DB.memberById(c.loyaltyMemberId):null;
+      return `<tr onclick="openClient('${c.id}')">
+        <td><b style="color:var(--ink)">${c.name}</b></td>
+        <td class="muted">${c.email}</td>
+        <td>${c.source}</td>
+        <td><span class="tag">${c.segment}</span></td>
+        <td>${c.isLoyaltyMember?`<span class="tag green">${m.tier}</span>`:'<span class="tag grey">Non membre</span>'}</td>
+        <td>${c.lastScanAt?fmtDateFR(c.lastScanAt):'—'}</td>
+        <td>${c.consentMarketing?'<span class="tag green">Oui</span>':'<span class="tag grey">Non</span>'}</td>
+        <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
+    }).join('') : `<tr><td colspan="8">${emptyStateHtml({icon:'search',title:'Aucun contact trouvé',text:'Essayez de modifier votre recherche ou vos filtres actifs.'})}</td></tr>`;
+    renderPagination('contactsPagination', total, page, contactsState.pageSize, p=>{ contactsState.page=p; renderContacts(true); });
+    renderContactsFilterChips();
+    const thead=document.querySelector('#contacts-all thead');
+    if(thead) wireSortable(thead, contactsState.sort, ()=>renderContacts(true));
+  }
+  function renderClients(){ renderContacts(); } // legacy alias, kept for any leftover callers
+
   function openClient(cid){
     const c=DB.contactById(cid); if(!c) return;
     const m=c.isLoyaltyMember?DB.memberById(c.loyaltyMemberId):null;
-    document.getElementById('dName').textContent=c.name;
-    document.getElementById('dBody').innerHTML=`
+    const campaigns=(c.campaignsReceivedIds||[]).map(cid2=>DB.campaignById(cid2)).filter(Boolean);
+    const bodyHtml=`
       <div class="kv"><span>E-mail</span><b>${c.email}</b></div>
+      <div class="kv"><span>Provenance</span><b>${c.source}</b></div>
       <div class="kv"><span>Segment</span><b>${c.segment}</b></div>
       <div class="kv"><span>Persona</span><b>${c.persona}</b></div>
-      <div class="kv"><span>Statut Club</span><b>${c.isLoyaltyMember?('Membre · '+m.tier):'Non membre'}</b></div>
       <div class="kv"><span>Premier contact</span><b>${fmtDateFR(c.createdAt)}</b></div>
-      <div class="kv"><span>Origine</span><b>${c.source}</b></div>
-      <div class="kv"><span>Produits scannés</span><b>${c.scannedProductIds.length}</b></div>
       <div class="kv"><span>Consentement marketing</span><b>${c.consentMarketing?'Oui':'Non'}</b></div>
+      <div class="kv"><span>Statut Club</span><b>${c.isLoyaltyMember?('Membre · '+m.tier):'Non membre'}</b></div>
       ${m?`<div class="kv"><span>Solde de points</span><b>${m.pointsBalance}</b></div>`:''}
-      <h4 style="color:var(--ink);margin:18px 0 8px">Produits consultés</h4>
-      <div class="timeline">${c.scannedProductIds.map(pid=>`<div class="t"><b>A scanné ${DB.productById(pid).name}</b></div>`).join('')||'<div class="t"><b>Aucun scan enregistré</b></div>'}</div>`;
-    document.getElementById('drawer').classList.add('open');
-    document.getElementById('drawerBack').classList.add('open');
+      <h4 style="color:var(--ink);margin:18px 0 8px">Produits scannés (${c.scannedProductIds.length})</h4>
+      <div class="timeline">${c.scannedProductIds.map(pid=>`<div class="t"><b>${DB.productById(pid).name}</b></div>`).join('')||'<div class="t"><b>Aucun scan enregistré</b></div>'}</div>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Campagnes reçues (${campaigns.length})</h4>
+      <div class="timeline">${campaigns.map(cp=>`<div class="t"><b>${cp.name}</b><br><small>${fmtDateFR(cp.sentAt)}</small></div>`).join('')||'<div class="t"><b>Aucune campagne reçue</b></div>'}</div>`;
+    openPanel({eyebrow:'Fiche contact', title:c.name, bodyHtml,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn primary" onclick="openContactPanel('${c.id}')">Modifier</button>`});
   }
-  function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawerBack').classList.remove('open');}
-  renderClients();
+  function openContactPanel(cid){
+    const c=cid?DB.contactById(cid):null;
+    const bodyHtml=`
+      <div class="field"><label>Nom</label><input type="text" id="cfName" value="${c?c.name:''}" placeholder="Ex. Camille Rousseau"></div>
+      <div class="field"><label>E-mail</label><input type="email" id="cfEmail" value="${c?c.email:''}" placeholder="prenom.nom@email.com"></div>
+      <div class="field"><label>Provenance</label><select id="cfSource">${DB.SOURCES.map(s=>`<option ${c&&c.source===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="field"><label>Segment</label><select id="cfSegment">${DB.SEGMENT_NAMES.map(s=>`<option ${c&&c.segment===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="field"><label>Persona</label><select id="cfPersona">${DB.PERSONAS.map(s=>`<option ${c&&c.persona===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="opt"><div><b>Consentement marketing</b></div><label class="switch"><input type="checkbox" id="cfConsent" ${!c||c.consentMarketing?'checked':''}><span class="slider"></span></label></div>`;
+    openPanel({eyebrow:'Contact', title:c?'Modifier le contact':'Ajouter un contact', bodyHtml,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveContact(${c?`'${c.id}'`:'null'})">Enregistrer</button>`});
+  }
+  function saveContact(cid){
+    const name=document.getElementById('cfName').value.trim()||'Nouveau contact';
+    const email=document.getElementById('cfEmail').value.trim()||'contact@email.com';
+    const source=document.getElementById('cfSource').value, segment=document.getElementById('cfSegment').value, persona=document.getElementById('cfPersona').value;
+    const consentMarketing=document.getElementById('cfConsent').checked;
+    if(cid){
+      const c=DB.contactById(cid);
+      Object.assign(c,{name,email,source,segment,persona,consentMarketing});
+      toast('Contact mis à jour');
+    } else {
+      DB.addContact({id:'c'+(DB.CONTACTS.length+1), name, email, createdAt:new Date(), source, persona, segment,
+        consentMarketing, consentDate:new Date(), lastScanAt:null, scannedProductIds:[], isLoyaltyMember:false, loyaltyMemberId:null, campaignsReceivedIds:[], status:'active'});
+      toast('Contact ajouté');
+    }
+    closePanel(); renderContacts(true);
+  }
+  renderContacts();
+
+  // ============================================================
+  // SEGMENTS (list + rule-builder)
+  // ============================================================
+  const RULE_FIELDS=[
+    {key:'source', label:'Provenance', type:'select', options:()=>DB.SOURCES},
+    {key:'segment', label:'Segment marketing', type:'select', options:()=>DB.SEGMENT_NAMES},
+    {key:'persona', label:'Persona', type:'select', options:()=>DB.PERSONAS},
+    {key:'status', label:'Statut (actif/dormant)', type:'select', options:()=>['active','dormant'], optionLabels:{active:'Actif',dormant:'En sommeil'}},
+    {key:'consent', label:'Consentement marketing', type:'select', options:()=>['oui','non'], optionLabels:{oui:'Oui',non:'Non'}},
+    {key:'isMember', label:'Membre du Club', type:'select', options:()=>['oui','non'], optionLabels:{oui:'Oui',non:'Non'}},
+    {key:'loyaltyTier', label:'Statut de fidélité', type:'select', options:()=>['Prospect','Membre','Club']},
+    {key:'pointsBalance', label:'Solde de points (minimum)', type:'number'},
+    {key:'hasReward', label:'A obtenu une récompense', type:'select', valueless:true, options:()=>['oui'], optionLabels:{oui:'Oui'}},
+    {key:'scanCount', label:'Nombre de scans (minimum)', type:'number'},
+    {key:'daysSinceScan', label:'Dernier scan (jours, au maximum)', type:'number'},
+    {key:'daysSinceCreated', label:'Ancienneté du contact (jours, au maximum)', type:'number'},
+    {key:'scannedProduct', label:'Produit scanné', type:'select', options:()=>DB.PRODUCTS.map(p=>({v:p.id,l:p.name}))},
+    {key:'campaignReceived', label:'Campagne reçue', type:'select', options:()=>DB.CAMPAIGNS.map(c=>({v:c.id,l:c.name}))},
+  ];
+  function ruleFieldDef(key){ return RULE_FIELDS.find(f=>f.key===key)||RULE_FIELDS[0]; }
+  function ruleValueInputHtml(field,selectedValue){
+    const f=ruleFieldDef(field);
+    if(f.type==='number') return `<input type="number" class="rv" value="${selectedValue||''}" placeholder="Valeur" min="0">`;
+    const opts=f.options();
+    return `<select class="rv">${opts.map(o=>{
+      const v=typeof o==='object'?o.v:o; const l=typeof o==='object'?o.l:((f.optionLabels&&f.optionLabels[o])||o);
+      return `<option value="${v}" ${selectedValue===v?'selected':''}>${l}</option>`;
+    }).join('')}</select>`;
+  }
+  function ruleRowHtml(cond){
+    cond=cond||{field:RULE_FIELDS[0].key,value:''};
+    return `<div class="rule-row">
+      <select class="rf" onchange="const w=this.closest('.rule-row').querySelector('.rv-wrap'); w.innerHTML=ruleValueInputHtml(this.value,''); updateSegmentPreview();">
+        ${RULE_FIELDS.map(f=>`<option value="${f.key}" ${cond.field===f.key?'selected':''}>${f.label}</option>`).join('')}
+      </select>
+      <span class="rv-wrap">${ruleValueInputHtml(cond.field,cond.value)}</span>
+      <button type="button" class="rm" onclick="this.closest('.rule-row').remove(); updateSegmentPreview();" aria-label="Retirer la condition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>`;
+  }
+  function ruleGroupHtml(group){
+    group=group||{op:'AND',conditions:[null]};
+    return `<div class="rule-group" data-op="${group.op||'AND'}">
+      <div class="rule-op-toggle"><button type="button" class="${group.op!=='OR'?'active':''}" onclick="setGroupOp(this,'AND')">ET (toutes les conditions)</button><button type="button" class="${group.op==='OR'?'active':''}" onclick="setGroupOp(this,'OR')">OU (au moins une)</button></div>
+      <div class="rule-rows">${(group.conditions&&group.conditions.length?group.conditions:[null]).map(c=>ruleRowHtml(c)).join('')}</div>
+      <button type="button" class="rule-add" onclick="addRuleRow(this)">+ Ajouter une condition</button>
+    </div>`;
+  }
+  function setGroupOp(btn,op){
+    const group=btn.closest('.rule-group');
+    group.querySelectorAll('.rule-op-toggle button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); group.dataset.op=op; updateSegmentPreview();
+  }
+  function addRuleRow(btn){ btn.closest('.rule-group').querySelector('.rule-rows').insertAdjacentHTML('beforeend', ruleRowHtml()); updateSegmentPreview(); }
+  function addRuleGroup(){ document.getElementById('ruleGroups').insertAdjacentHTML('beforeend', ruleGroupHtml()); updateSegmentPreview(); }
+  function readRuleTreeFromForm(){
+    const groupEls=document.querySelectorAll('#ruleGroups .rule-group');
+    const groups=Array.from(groupEls).map(gEl=>({
+      op: gEl.dataset.op||'AND',
+      conditions: Array.from(gEl.querySelectorAll('.rule-row')).map(rowEl=>({
+        field: rowEl.querySelector('.rf').value,
+        value: (rowEl.querySelector('.rv')||{}).value||'',
+      })),
+    }));
+    return {groups};
+  }
+  function updateSegmentPreview(){
+    const el=document.getElementById('segPreview'); if(!el) return;
+    if(!document.getElementById('ruleGroups')){ el.innerHTML=''; return; }
+    const tree=readRuleTreeFromForm();
+    const matches=DB.CONTACTS.filter(c=>DB.evaluateRuleTree(tree,c));
+    el.innerHTML=`<div class="count">${matches.length} contact${matches.length>1?'s':''} correspondent</div>
+      <div class="sample">${matches.slice(0,5).map(c=>`<div>${c.name} — ${c.email}</div>`).join('')||'<div>Aucun contact ne correspond à ces règles pour le moment.</div>'}</div>`;
+  }
+  function openSegmentBuilder(segId){
+    const seg=segId?DB.allSegments().find(s=>s.id===segId):null;
+    const isSystem=!!(seg&&seg.system);
+    const groups=(seg&&!isSystem&&seg.rules&&seg.rules.groups&&seg.rules.groups.length) ? seg.rules.groups : [{op:'AND',conditions:[null]}];
+    const bodyHtml=`
+      <div class="field"><label>Nom du segment</label><input type="text" id="sgName" value="${seg?seg.name:''}" placeholder="Ex. Clients grands comptes" ${isSystem?'disabled':''}></div>
+      <div class="field"><label>Description</label><input type="text" id="sgDesc" value="${seg?seg.description:''}" placeholder="À quoi sert ce segment ?" ${isSystem?'disabled':''}></div>
+      ${isSystem
+        ? `<p class="muted" style="font-size:12.5px">Ce segment système est calculé automatiquement à partir de vos données et ne peut pas être modifié.</p>`
+        : `<div id="ruleGroups">${groups.map(g=>ruleGroupHtml(g)).join('')}</div><button type="button" class="rule-add" onclick="addRuleGroup()" style="margin-top:6px">+ Ajouter un groupe de règles</button>`}
+      <div class="segment-preview" id="segPreview"></div>`;
+    openPanel({eyebrow:'Segment', title: seg?(isSystem?seg.name:'Modifier le segment'):'Créer un segment', bodyHtml, wide:true,
+      footerHtml: isSystem ? `<button class="btn ghost" onclick="closePanel()">Fermer</button>`
+        : `<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveSegment(${seg?`'${seg.id}'`:'null'})">Enregistrer</button>`});
+    if(!isSystem) document.getElementById('panelBody').addEventListener('input',updateSegmentPreview);
+    updateSegmentPreview();
+  }
+  function saveSegment(segId){
+    const name=document.getElementById('sgName').value.trim()||'Nouveau segment';
+    const description=document.getElementById('sgDesc').value.trim();
+    const rules=readRuleTreeFromForm();
+    if(segId){
+      const seg=DB.CUSTOM_SEGMENTS.find(s=>s.id===segId);
+      if(seg){ Object.assign(seg,{name,description,rules,lastUpdated:new Date()}); toast('Segment mis à jour'); }
+    } else {
+      DB.addCustomSegment({id:'cus-'+String(DB.CUSTOM_SEGMENTS.length+1).padStart(3,'0'), name, description, system:false, rules, createdAt:new Date(), lastUpdated:new Date()});
+      toast('Segment créé');
+    }
+    closePanel(); renderSegments();
+  }
+  const segState={type:''};
+  function renderSegments(){
+    const searchEl=document.getElementById('segSearch'); if(!searchEl) return;
+    const q=searchEl.value;
+    const list=DB.allSegments().filter(s=>matchesSearch(s.name+' '+s.description,q) && (!segState.type || (segState.type==='system'?s.system:!s.system)));
+    document.getElementById('segRows').innerHTML = list.length ? list.map(s=>{
+      const members=DB.computeSegmentMembers(s);
+      const campaigns=DB.CONTACT_LISTS.filter(l=>l.sourceType==='segments' && (l.sourceSegmentIds||[]).includes(s.id)).reduce((n,l)=>n+l.campaignIds.length,0);
+      return `<tr onclick="openSegmentBuilder('${s.id}')">
+        <td><b style="color:var(--ink)">${s.name}</b><br><span class="muted" style="font-size:11.5px">${s.description}</span></td>
+        <td><span class="tag ${s.system?'grey':'teal'}">${s.system?'Système':'Personnalisé'}</span></td>
+        <td class="right">${members.length}</td>
+        <td>${s.system?'—':fmtDateFR(s.lastUpdated)}</td>
+        <td class="right">${campaigns}</td>
+        <td><span class="tag green">Actif</span></td>
+        <td class="right muted" style="font-size:12px">${s.system?'Voir →':'Modifier →'}</td></tr>`;
+    }).join('') : `<tr><td colspan="7">${emptyStateHtml({icon:'search',title:'Aucun segment trouvé',text:'Essayez un autre terme de recherche.'})}</td></tr>`;
+  }
+  const segTabsEl=document.getElementById('segTypeTabs');
+  if(segTabsEl) segTabsEl.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    segState.type=b.dataset.type;
+    segTabsEl.querySelectorAll('button').forEach(x=>{ x.classList.toggle('active',x===b); x.setAttribute('aria-pressed',x===b?'true':'false'); });
+    renderSegments();
+  });
+  renderSegments();
+
   document.querySelectorAll('[id^="ph-"]').forEach(el=>{ el.innerHTML=emptyStateHtml({title:'Bientôt disponible', text:"Cet écran est en cours de construction dans la démo."}); });
 
 
