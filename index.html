@@ -172,6 +172,9 @@
   .dropdown-menu button{display:flex; align-items:center; gap:10px; width:100%; border:0; background:transparent; text-align:left; padding:9px 10px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:13px; color:var(--ink)}
   .dropdown-menu button:hover{background:var(--lav)}
   .dropdown-menu button svg{width:16px;height:16px;color:var(--accent);flex:none}
+  .row-actions-btn{border:1px solid var(--line); background:#fff; border-radius:8px; width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); padding:0}
+  .row-actions-btn:hover{background:var(--lav); color:var(--ink)}
+  .dropdown-menu button.danger-item{color:var(--color-error)}
   .device-tabs{display:inline-flex; background:var(--lav2); border-radius:10px; padding:3px; gap:2px}
   .device-tabs button{border:0; background:transparent; color:var(--muted); padding:6px 10px; border-radius:7px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:5px; font-size:12px; font-weight:600}
   .device-tabs button.active{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(18,22,26,.14)}
@@ -1978,6 +1981,13 @@
   }
   function closeDropdowns(){ document.querySelectorAll('.dropdown-menu.open').forEach(m=>m.classList.remove('open')); }
   document.addEventListener('click',e=>{ if(!e.target.closest('.dropdown-wrap')) document.querySelectorAll('.dropdown-menu.open').forEach(m=>m.classList.remove('open')); });
+  const ICO_KEBAB='<circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/>';
+  function rowActionsMenuHtml(items){
+    return `<div class="dropdown-wrap" onclick="event.stopPropagation()">
+      <button type="button" class="row-actions-btn" onclick="toggleDropdown(this)" aria-label="Actions" aria-haspopup="true"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">${ICO_KEBAB}</svg></button>
+      <div class="dropdown-menu">${items.map(it=>`<button type="button" class="${it.danger?'danger-item':''}" onclick="closeDropdowns();${it.onclick}">${it.label}</button>`).join('')}</div>
+    </div>`;
+  }
 
   // ============================================================
   // UNIFIED MOCK DATA LAYER (client-side demo only, no backend).
@@ -4137,12 +4147,14 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         <td>${qr?'Oui':'Non'}</td>
         <td>${primaryDest?primaryDest.label:'—'}</td>
         <td>${fmtDateFR(lp.lastModified)}</td>
-        <td class="right" style="white-space:nowrap">
-          <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="openLandingEditor('${p.id}')">Modifier</button>
-          <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="previewLandingPage('${lp.id}')">Aperçu</button>
-          ${lp.status!=='publiee'?`<button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="setLandingStatus('${lp.id}','publiee')">Publier</button>`:`<button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="setLandingStatus('${lp.id}','desactivee')">Désactiver</button>`}
-          <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="deleteLandingPage('${lp.id}')">Supprimer</button>
-        </td></tr>`;
+        <td class="right">${rowActionsMenuHtml([
+          {label:'Modifier', onclick:`openLandingEditor('${p.id}')`},
+          {label:'Aperçu', onclick:`previewLandingPage('${lp.id}')`},
+          lp.status!=='publiee'
+            ? {label:'Publier', onclick:`setLandingStatus('${lp.id}','publiee')`}
+            : {label:'Désactiver', onclick:`setLandingStatus('${lp.id}','desactivee')`},
+          {label:'Supprimer', onclick:`deleteLandingPage('${lp.id}')`, danger:true},
+        ])}</td></tr>`;
     }).join('');
   }
   function setLandingStatus(lpId,status){
