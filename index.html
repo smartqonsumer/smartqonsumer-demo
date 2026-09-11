@@ -2133,9 +2133,9 @@
       {id:'r01', name:'-15% sur la prochaine commande', type:'promo-generic', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0, redeemedCount:0},
       {id:'r02', name:'Produit offert (édition découverte)', type:'promo-unique', pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0, redeemedCount:0},
       {id:'r03', name:'Accès prévente collection limitée', type:'custom', pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0, redeemedCount:0},
-      {id:'r04', name:'Dégustation en boutique', type:'qr-onsite', pointsCost:300, validity:'120 jours', status:'active', obtainedCount:0, redeemedCount:0},
+      {id:'r04', name:'Dégustation en boutique', type:'custom', pointsCost:300, validity:'120 jours', status:'active', obtainedCount:0, redeemedCount:0},
       {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0, redeemedCount:0},
-      {id:'r06', name:'Invitation événement privé', type:'qr-onsite', pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0, redeemedCount:0},
+      {id:'r06', name:'Invitation événement privé', type:'custom', pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0, redeemedCount:0},
     ];
     LOYALTY_MEMBERS.forEach(m=>{
       const nb=Math.floor(m.pointsUsed/150);
@@ -2880,7 +2880,7 @@
   // ============================================================
   // CLUB FIDÉLITÉ — Récompenses
   // ============================================================
-  function rewardTypeLabel(t){ return {'promo-generic':'Code promo générique','promo-unique':'Code unique','qr-onsite':'QR à présenter sur place','custom':'Récompense personnalisée'}[t]||t; }
+  function rewardTypeLabel(t){ return {'promo-generic':'Code promo générique','promo-unique':'Code unique','custom':'Récompense personnalisée'}[t]||t; }
   function renderRewards(){
     const grid=document.getElementById('rewardsGrid'); if(!grid) return;
     grid.innerHTML=DB.REWARDS.map(r=>`
@@ -2894,7 +2894,7 @@
       </div>`).join('');
   }
   function rewardFormBodyHtml(r){
-    const types=[['promo-generic','Code promo générique'],['promo-unique','Code unique'],['qr-onsite','QR à présenter sur place'],['custom','Récompense personnalisée']];
+    const types=[['promo-generic','Code promo générique'],['promo-unique','Code unique'],['custom','Récompense personnalisée']];
     return `
       <div class="field"><label>Nom</label><input type="text" id="rwName" value="${r?r.name:''}" placeholder="Ex. -15% sur la prochaine commande"></div>
       <div class="field"><label>Type</label><select id="rwType">${types.map(([v,l])=>`<option value="${v}" ${r&&r.type===v?'selected':''}>${l}</option>`).join('')}</select></div>
@@ -3898,11 +3898,6 @@
     toast(status==='publiee'?'Landing Page publiée':'Landing Page désactivée');
     renderLandingPages();
   }
-  const LP_DEMO_REVIEWS=[
-    {name:'Clémentine D.', rating:5, quote:'Produit excellent, le packaging est vraiment soigné.'},
-    {name:'Marc L.', rating:4, quote:'Très bon produit, le scan pour rejoindre le Club était hyper simple.'},
-  ];
-  function lpStarIcon(filled){ return `<svg viewBox="0 0 24 24" width="12" height="12" fill="${filled?'var(--color-warning)':'none'}" stroke="var(--color-warning)" stroke-width="1.5" style="flex:none"><path d="M12 3.2l2.7 5.6 6.1.7-4.5 4.2 1.2 6-5.5-3-5.5 3 1.2-6-4.5-4.2 6.1-.7z"/></svg>`; }
   function landingPreviewBodyHtml(o){
     const {title,subtitle,description,cta,features,moreInfo,template,productId}=o;
     const premium=template==='premium';
@@ -3910,12 +3905,6 @@
     const sectionLabel=t=>`<div style="font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:8px">${t}</div>`;
     const featuresBlock=(features&&features.length) ? `<div style="margin-bottom:16px">${sectionLabel('Caractéristiques')}${features.map(f=>`<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink);padding:5px 0">${checkIco}<span>${f}</span></div>`).join('')}</div>` : '';
     const galleryBlock=premium ? `<div style="margin-bottom:16px">${sectionLabel('Galerie')}<div style="display:flex;gap:6px">${[1,2,3,4].map(n=>`<div style="flex:1;aspect-ratio:1;background:var(--lav2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:9px">Photo ${n}</div>`).join('')}</div></div>` : '';
-    const reviewsBlock=premium ? `<div style="margin-bottom:16px">${sectionLabel('Avis clients')}
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px"><span style="display:flex;gap:1px">${[1,1,1,1,0].map(f=>lpStarIcon(f)).join('')}</span><b style="font-size:12.5px;color:var(--ink)">4,8/5</b><span style="font-size:11px;color:var(--muted)">· 128 avis</span></div>
-      ${LP_DEMO_REVIEWS.map(rv=>`<div style="padding:8px 0;border-top:1px solid var(--line)">
-          <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:12px;color:var(--ink)">${rv.name}</b><span style="display:flex;gap:1px">${Array.from({length:5}).map((_,i)=>lpStarIcon(i<rv.rating)).join('')}</span></div>
-          <div style="font-size:11.5px;color:var(--muted);margin-top:2px">${rv.quote}</div>
-        </div>`).join('')}</div>` : '';
     const related=premium ? DB.PRODUCTS.filter(pp=>pp.id!==productId).slice(0,2) : [];
     const relatedBlock=related.length ? `<div style="margin-bottom:16px">${sectionLabel('Produits associés')}<div style="display:flex;gap:8px">${related.map(pp=>`
         <div style="flex:1;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center">
@@ -3930,7 +3919,6 @@
       ${galleryBlock}
       <div style="font-size:12px;color:var(--ink);line-height:1.55;margin-bottom:14px">${description}</div>
       ${featuresBlock}
-      ${reviewsBlock}
       ${relatedBlock}
       ${moreInfoBlock}
       <div style="background:var(--accent);color:#fff;text-align:center;padding:11px;border-radius:9px;font-size:12.5px;font-weight:700">${cta}</div>`;
@@ -3955,7 +3943,7 @@
           <h3>Modèle</h3>
           <div class="row" style="gap:10px;margin-bottom:16px;flex-wrap:nowrap">
             <div class="lp-template-card ${template==='essentiel'?'selected':''}" data-template="essentiel" onclick="selectLpTemplate('essentiel')"><b>Essentiel</b><small>Inclus dans votre offre</small></div>
-            <div class="lp-template-card ${template==='premium'?'selected':''}" data-template="premium" onclick="selectLpTemplate('premium')"><b>Premium ${premiumLocked?premiumLockBadge():''}</b><small>Galerie photo, avis clients, produits associés</small></div>
+            <div class="lp-template-card ${template==='premium'?'selected':''}" data-template="premium" onclick="selectLpTemplate('premium')"><b>Premium ${premiumLocked?premiumLockBadge():''}</b><small>Galerie photo, produits associés</small></div>
           </div>
           <h3>Contenu</h3>
           <div class="field"><label>Titre</label><input type="text" id="lpTitle" value="${lp?lp.title:('Découvrez '+p.name)}"></div>
