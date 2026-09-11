@@ -3142,11 +3142,22 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   // CLUB FIDÉLITÉ — Paramétrage > Personnalisation du Club
   // ============================================================
   function slugifyClubName(){ return (DB.CLUB.name||'club').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-'); }
-  let clubPvConnected=true, clubPvDrawerOpen=false;
-  function clubPvMenuRow(label,sub){
+  let clubPvConnected=true, clubPvDrawerOpen=false, clubPvScreen='home';
+  const CLUB_PV_SCREENS=[
+    {id:'home', label:'Accueil'},
+    {id:'points', label:'Mes points'},
+    {id:'rewards', label:'Transformer mes points en r\u00e9compenses'},
+    {id:'history', label:'Mes r\u00e9compenses pass\u00e9es'},
+    {id:'profile', label:'Mon profil'},
+  ];
+  function clubPvNavRow(screen,label,sub){
     const chevIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="flex:none;color:var(--muted)"><path d="m9 18 6-6-6-6"/></svg>';
-    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)"><div><div style="font-size:12.5px;font-weight:600;color:var(--ink)">${label}</div>${sub?`<div style="font-size:11px;color:var(--muted);margin-top:1px">${sub}</div>`:''}</div>${chevIco}</div>`;
+    const current=clubPvScreen===screen;
+    return `<div onclick="navigateClubPv('${screen}')" style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer">
+      <div><div style="font-size:12.5px;font-weight:${current?'700':'600'};color:${current?'var(--accent)':'var(--ink)'}">${label}</div>${sub?`<div style="font-size:11px;color:var(--muted);margin-top:1px">${sub}</div>`:''}</div>${chevIco}
+    </div>`;
   }
+  function clubPvSectionLabel(t){ return `<div style="font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:10px">${t}</div>`; }
   function clubPreviewBodyHtml(){
     const name=(document.getElementById('clubName')||{}).value||DB.CLUB.name;
     const primary=(document.getElementById('clubColorPrimary')||{}).value||DB.CLUB.colors.primary;
@@ -3156,8 +3167,10 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const member=DB.LOYALTY_MEMBERS[0];
     const contact=DB.contactById(member.contactId);
     const expiry=DB.pointsExpiryDate(member.id);
+    const initials=(contact.name||'').split(' ').map(p=>p[0]).join('').slice(0,2);
     const burgerIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
     const closeIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+    const backIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="m15 18-6-6 6-6"/></svg>';
 
     const topBar=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <button onclick="toggleClubPreviewMenu()" style="border:0;background:transparent;padding:2px;cursor:pointer;color:var(--ink);line-height:0">${burgerIco}</button>
@@ -3167,12 +3180,64 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
 
     const logoBlock=`<div style="border:1px dashed var(--line);border-radius:10px;height:52px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;margin-bottom:16px">Logo du Club</div>`;
 
-    const connectedBody=`
-      <div style="background:${primary};color:#fff;padding:14px;border-radius:12px;margin-bottom:10px">
+    const backLink = clubPvScreen!=='home' ? `<div onclick="navigateClubPv('home')" style="display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:${primary};cursor:pointer;margin-bottom:12px">${backIco}Accueil</div>` : '';
+
+    const homeScreen=`
+      <div onclick="navigateClubPv('points')" style="background:${primary};color:#fff;padding:14px;border-radius:12px;margin-bottom:10px;cursor:pointer">
         <div style="font-size:11px;opacity:.85">Vos points</div><div style="font-size:24px;font-weight:800">${member.pointsBalance}</div>
         <div style="font-size:10.5px;opacity:.8;margin-top:4px">Valables jusqu'au ${fmtDateFR(expiry)}</div>
       </div>
-      <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center">${DB.CLUB.welcomeMessage}</div>`;
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center;margin-bottom:14px">${DB.CLUB.welcomeMessage}</div>
+      <div onclick="navigateClubPv('rewards')" style="border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+        <div style="font-size:12.5px;font-weight:600;color:var(--ink)">Transformer mes points en r\u00e9compenses</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="flex:none;color:var(--muted)"><path d="m9 18 6-6-6-6"/></svg>
+      </div>`;
+
+    const nextReward=DB.pointsToNextReward(member.id);
+    const progressPct=Math.max(3,Math.min(100,100-nextReward));
+    const activeRules=DB.CLUB.pointsRules.filter(r=>r.active);
+    const pointsScreen=`
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:11px;color:var(--muted)">Solde actuel</div>
+        <div style="font-size:30px;font-weight:800;color:var(--ink)">${member.pointsBalance} pts</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Valables jusqu'au ${fmtDateFR(expiry)}</div>
+      </div>
+      <div class="hbar-track" style="margin-bottom:4px"><span class="hbar-fill" style="width:${progressPct}%;background:${primary}"></span></div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:20px">Encore ${nextReward} pts avant votre prochaine r\u00e9compense</div>
+      ${clubPvSectionLabel('Comment gagner des points')}
+      ${activeRules.length?activeRules.map(r=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px"><span style="color:var(--ink)">${r.label}</span><b style="color:${primary}">+${r.points} pts</b></div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e8gle active.</p>`}`;
+
+    const availableRewards=DB.REWARDS.filter(r=>r.status==='active');
+    const rewardsScreen=`
+      ${clubPvSectionLabel('R\u00e9compenses disponibles')}
+      ${availableRewards.length?availableRewards.map(r=>{
+        const afford=member.pointsBalance>=r.pointsCost;
+        return `<div style="border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div style="font-size:12.5px;font-weight:700;color:var(--ink)">${r.name}</div>
+            <div style="font-size:11.5px;font-weight:700;color:${primary};white-space:nowrap;flex:none">${r.pointsCost} pts</div>
+          </div>
+          <div style="margin-top:8px;text-align:center;padding:8px;border-radius:8px;font-size:11.5px;font-weight:700;${afford?`background:${primary};color:#fff`:`background:var(--lav2);color:var(--muted)`}">${afford?'Obtenir':'Il manque '+(r.pointsCost-member.pointsBalance)+' pts'}</div>
+        </div>`;
+      }).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense disponible pour le moment.</p>`}`;
+
+    const obtainedRewards=member.rewardIds.map(rid=>DB.REWARDS.find(r=>r.id===rid)).filter(Boolean);
+    const historyScreen=`
+      ${clubPvSectionLabel('R\u00e9compenses obtenues')}
+      ${obtainedRewards.length?obtainedRewards.map(r=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span style="font-size:12.5px;color:var(--ink)">${r.name}</span><span style="font-size:11px;color:var(--muted)">${r.pointsCost} pts</span></div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense obtenue pour le moment.</p>`}`;
+
+    const profileScreen=`
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="width:56px;height:56px;border-radius:50%;background:${primary};color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;margin:0 auto 10px">${initials}</div>
+        <div style="font-size:14px;font-weight:700;color:var(--ink)">${contact.name}</div>
+        <div style="font-size:11.5px;color:var(--muted)">${contact.email}</div>
+      </div>
+      <div class="kv"><span>Membre depuis</span><b>${fmtDateFR(member.joinedAt)}</b></div>
+      <div class="kv" style="border-bottom:0"><span>Niveau</span><b>${member.tier}</b></div>
+      <div onclick="setClubPvState('disconnected')" style="margin-top:20px;text-align:center;font-size:12.5px;font-weight:700;color:var(--color-error);cursor:pointer">Se d\u00e9connecter</div>`;
+
+    const screenMap={home:homeScreen, points:pointsScreen, rewards:rewardsScreen, history:historyScreen, profile:profileScreen};
+    const connectedBody=`${backLink}${screenMap[clubPvScreen]||homeScreen}`;
 
     const disconnectedBody=`
       <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center;margin-bottom:16px">${DB.CLUB.welcomeMessage}</div>
@@ -3187,16 +3252,14 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     </div>`;
 
     const drawerConnected=`
-      <div style="display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:2px">
-        <div style="width:38px;height:38px;border-radius:50%;background:${primary};color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none">${(contact.name||'').split(' ').map(p=>p[0]).join('').slice(0,2)}</div>
+      <div onclick="navigateClubPv('profile')" style="display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:2px;cursor:pointer">
+        <div style="width:38px;height:38px;border-radius:50%;background:${primary};color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none">${initials}</div>
         <div><div style="font-size:13px;font-weight:700;color:var(--ink)">${contact.name}</div><div style="font-size:11px;color:var(--muted)">${contact.email}</div></div>
       </div>
-      ${clubPvMenuRow('Mes points', `${member.pointsBalance} pts \u00b7 valables jusqu'au ${fmtDateFR(expiry)}`)}
-      ${clubPvMenuRow('Transformer mes points en r\u00e9compenses')}
-      ${clubPvMenuRow('Mes r\u00e9compenses pass\u00e9es', member.rewardIds.length+' obtenue(s)')}
+      ${CLUB_PV_SCREENS.map(s=>clubPvNavRow(s.id,s.label)).join('')}
       <div onclick="setClubPvState('disconnected')" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);text-align:center;font-size:12.5px;font-weight:700;color:var(--color-error);cursor:pointer">Se d\u00e9connecter</div>`;
 
-    const drawerDisconnected = activeLinks.length ? activeLinks.map(l=>clubPvMenuRow(l.label)).join('') : `<p class="muted" style="font-size:12px">Aucun lien configur\u00e9.</p>`;
+    const drawerDisconnected = activeLinks.length ? activeLinks.map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)"><div style="font-size:12.5px;font-weight:600;color:var(--ink)">${l.label}</div></div>`).join('') : `<p class="muted" style="font-size:12px">Aucun lien configur\u00e9.</p>`;
 
     return `<div style="position:relative;min-height:100%">
       ${topBar}
@@ -3220,11 +3283,13 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   function setClubPvState(state){
     clubPvConnected = state==='connected';
     clubPvDrawerOpen=false;
+    clubPvScreen='home';
     const tabs=document.getElementById('clubPvStateTabs');
     if(tabs) tabs.querySelectorAll('button').forEach(b=>{ const on=b.dataset.state===state; b.classList.toggle('active',on); b.setAttribute('aria-pressed',on?'true':'false'); });
     updateClubPreview();
   }
   function toggleClubPreviewMenu(){ clubPvDrawerOpen=!clubPvDrawerOpen; updateClubPreview(); }
+  function navigateClubPv(screen){ clubPvScreen=screen; clubPvDrawerOpen=false; updateClubPreview(); }
   function selectClubTemplateVisual(t){
     document.getElementById('clubTplEssentiel').classList.toggle('selected',t==='essentiel');
     document.getElementById('clubTplPremium').classList.toggle('selected',t==='premium');
