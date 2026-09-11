@@ -1410,6 +1410,7 @@
         <div class="card">
           <h3>Règles de points</h3><div class="sub">Comment vos consommateurs gagnent des points</div>
           <div id="pointsRulesList"></div>
+          <div class="field" style="max-width:220px;margin-top:14px"><label>Validité des points (mois)</label><input type="number" id="clubPointsValidity" min="1"></div>
         </div>
       </div>
       <div class="card" style="margin-top:16px">
@@ -1609,9 +1610,15 @@
           <div class="field"><label>Contenu du pied de page</label><textarea id="clubFooter" rows="2"></textarea></div>
         </div>
         <div style="flex:1;min-width:300px">
-          <div class="device-tabs" id="clubDeviceTabs" style="margin-bottom:14px">
-            <button type="button" class="active" data-device="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Mobile</button>
-            <button type="button" data-device="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>Ordinateur</button>
+          <div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+            <div class="device-tabs" id="clubDeviceTabs">
+              <button type="button" class="active" data-device="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Mobile</button>
+              <button type="button" data-device="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>Ordinateur</button>
+            </div>
+            <div class="seg-tabs" id="clubPvStateTabs" role="tablist" aria-label="État de connexion">
+              <button type="button" data-state="connected" class="active" aria-pressed="true">Connecté</button>
+              <button type="button" data-state="disconnected" aria-pressed="false">Non connecté</button>
+            </div>
           </div>
           <div id="clubPreviewMobile" class="phone"><div class="screen2"><div class="ph-body" id="clubPreviewMobileBody"></div></div></div>
           <div id="clubPreviewDesktop" style="display:none; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); max-width:480px">
@@ -2110,6 +2117,11 @@
     function daysSinceD(d){ if(!d) return Infinity; return Math.floor((Date.now()-d.getTime())/86400000); }
     function memberIsActive(memberId){ const m=memberById(memberId); return m ? daysSinceD(m.lastActivityAt)<=30 : false; }
     function pointsToNextReward(memberId){ const m=memberById(memberId); if(!m) return Infinity; const next=Math.ceil((m.pointsBalance+1)/100)*100; return next-m.pointsBalance; }
+    function pointsExpiryDate(memberId){
+      const m=memberById(memberId); if(!m) return null;
+      const d=new Date(m.lastActivityAt); d.setMonth(d.getMonth()+(CLUB.pointsValidityMonths||12));
+      return d;
+    }
 
     // ---- POINTS_DE_VENTE (10, réseau de distribution indirect — 4 régions) ----
     const POINTS_DE_VENTE=[
@@ -2315,6 +2327,7 @@
       active:true, template:'essentiel',
       logo:null, colors:{primary:'#2FA55C', secondary:'#12161A'}, headerImg:null,
       footerContent:'© 2026 — Programme de fidélité SmartQonsumer',
+      pointsValidityMonths:12,
       pointsRules:[
         {id:'pr1', label:"Inscription au Club", points:20, active:true},
         {id:'pr2', label:'Profil complété', points:10, active:true},
@@ -2411,7 +2424,7 @@
       get AUTOMATIONS(){ return AUTOMATIONS; }, automationById, triggerAudienceCount,
       addAutomation(a){ AUTOMATIONS.push(a); }, removeAutomation,
       POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); }, removePointOfVente,
-      LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward, removeMember,
+      LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward, pointsExpiryDate, removeMember,
       REWARDS, addReward(r){ REWARDS.push(r); }, removeReward,
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
       QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
@@ -3098,12 +3111,14 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     document.getElementById('clubWelcome').value=DB.CLUB.welcomeMessage;
     document.getElementById('clubActive').checked=DB.CLUB.active;
     document.getElementById('pointsRulesList').innerHTML=DB.CLUB.pointsRules.map(pointsRuleRowHtml).join('');
+    document.getElementById('clubPointsValidity').value=DB.CLUB.pointsValidityMonths;
     document.getElementById('clubLinksList').innerHTML=DB.CLUB.links.map(clubLinkRowHtml).join('');
   }
   function saveClubGeneral(){
     DB.CLUB.name=document.getElementById('clubName').value.trim()||DB.CLUB.name;
     DB.CLUB.welcomeMessage=document.getElementById('clubWelcome').value.trim();
     DB.CLUB.active=document.getElementById('clubActive').checked;
+    DB.CLUB.pointsValidityMonths=parseInt(document.getElementById('clubPointsValidity').value,10)||12;
     document.querySelectorAll('#pointsRulesList [data-rule-id]').forEach(el=>{
       const rule=DB.CLUB.pointsRules.find(r=>r.id===el.dataset.ruleId);
       if(rule){ rule.label=el.querySelector('.prLabel').value.trim()||rule.label; rule.points=parseInt(el.querySelector('.prPoints').value,10)||0; rule.active=el.querySelector('.prActive').checked; }
@@ -3119,25 +3134,89 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   // CLUB FIDÉLITÉ — Paramétrage > Personnalisation du Club
   // ============================================================
   function slugifyClubName(){ return (DB.CLUB.name||'club').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-'); }
+  let clubPvConnected=true, clubPvDrawerOpen=false;
+  function clubPvMenuRow(label,sub){
+    const chevIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="flex:none;color:var(--muted)"><path d="m9 18 6-6-6-6"/></svg>';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)"><div><div style="font-size:12.5px;font-weight:600;color:var(--ink)">${label}</div>${sub?`<div style="font-size:11px;color:var(--muted);margin-top:1px">${sub}</div>`:''}</div>${chevIco}</div>`;
+  }
   function clubPreviewBodyHtml(){
     const name=(document.getElementById('clubName')||{}).value||DB.CLUB.name;
     const primary=(document.getElementById('clubColorPrimary')||{}).value||DB.CLUB.colors.primary;
     const footer=(document.getElementById('clubFooter')||{}).value||DB.CLUB.footerContent;
-    return `<div style="text-align:center">
-      <div style="font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)">Club</div>
-      <div style="font-weight:800;font-size:16px;color:var(--ink);margin:4px 0 14px">${name}</div>
-      <div style="background:${primary};color:#fff;padding:14px;border-radius:12px;margin-bottom:14px">
-        <div style="font-size:11px;opacity:.85">Vos points</div><div style="font-size:24px;font-weight:800">320</div>
+    const activeLinks=DB.CLUB.links.filter(l=>l.active);
+    const footerLinks=activeLinks.filter(l=>l.position==='footer');
+    const member=DB.LOYALTY_MEMBERS[0];
+    const contact=DB.contactById(member.contactId);
+    const expiry=DB.pointsExpiryDate(member.id);
+    const burgerIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+    const closeIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+
+    const topBar=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <button onclick="toggleClubPreviewMenu()" style="border:0;background:transparent;padding:2px;cursor:pointer;color:var(--ink);line-height:0">${burgerIco}</button>
+      <div style="font-weight:800;font-size:13px;color:var(--ink)">${name}</div>
+      <div style="width:20px"></div>
+    </div>`;
+
+    const logoBlock=`<div style="border:1px dashed var(--line);border-radius:10px;height:52px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;margin-bottom:16px">Logo du Club</div>`;
+
+    const connectedBody=`
+      <div style="background:${primary};color:#fff;padding:14px;border-radius:12px;margin-bottom:10px">
+        <div style="font-size:11px;opacity:.85">Vos points</div><div style="font-size:24px;font-weight:800">${member.pointsBalance}</div>
+        <div style="font-size:10.5px;opacity:.8;margin-top:4px">Valables jusqu'au ${fmtDateFR(expiry)}</div>
       </div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.5">${DB.CLUB.welcomeMessage}</div>
-    </div>
-    <div style="margin-top:24px;text-align:center;font-size:10.5px;color:var(--muted)">${footer}</div>`;
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center">${DB.CLUB.welcomeMessage}</div>`;
+
+    const disconnectedBody=`
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center;margin-bottom:16px">${DB.CLUB.welcomeMessage}</div>
+      <div style="border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12px;color:var(--muted);margin-bottom:8px">vous@email.com</div>
+      <div style="border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12px;color:var(--muted);margin-bottom:14px">\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022</div>
+      <div onclick="setClubPvState('connected')" style="background:${primary};color:#fff;text-align:center;padding:11px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer">Se connecter</div>
+      <div style="text-align:center;margin-top:12px;font-size:11.5px;color:var(--muted)">Pas encore membre ? <span onclick="setClubPvState('connected')" style="color:${primary};font-weight:700;cursor:pointer">Rejoindre le Club</span></div>`;
+
+    const footerBlock=`<div style="margin-top:22px;padding-top:14px;border-top:1px solid var(--line);text-align:center">
+      ${footerLinks.length?`<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:8px">${footerLinks.map(l=>`<span style="font-size:10.5px;color:var(--muted);text-decoration:underline">${l.label}</span>`).join('')}</div>`:''}
+      <div style="font-size:10px;color:var(--muted)">${footer}</div>
+    </div>`;
+
+    const drawerConnected=`
+      <div style="display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:2px">
+        <div style="width:38px;height:38px;border-radius:50%;background:${primary};color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none">${(contact.name||'').split(' ').map(p=>p[0]).join('').slice(0,2)}</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--ink)">${contact.name}</div><div style="font-size:11px;color:var(--muted)">${contact.email}</div></div>
+      </div>
+      ${clubPvMenuRow('Mes points', `${member.pointsBalance} pts \u00b7 valables jusqu'au ${fmtDateFR(expiry)}`)}
+      ${clubPvMenuRow('Transformer mes points en r\u00e9compenses')}
+      ${clubPvMenuRow('Mes r\u00e9compenses pass\u00e9es', member.rewardIds.length+' obtenue(s)')}
+      <div onclick="setClubPvState('disconnected')" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);text-align:center;font-size:12.5px;font-weight:700;color:var(--color-error);cursor:pointer">Se d\u00e9connecter</div>`;
+
+    const drawerDisconnected = activeLinks.length ? activeLinks.map(l=>clubPvMenuRow(l.label)).join('') : `<p class="muted" style="font-size:12px">Aucun lien configur\u00e9.</p>`;
+
+    return `<div style="position:relative;min-height:100%">
+      ${topBar}
+      ${logoBlock}
+      ${clubPvConnected ? connectedBody : disconnectedBody}
+      ${footerBlock}
+      <div style="position:absolute;inset:0;background:#fff;transform:translateX(${clubPvDrawerOpen?'0':'-104%'});transition:transform .25s cubic-bezier(.4,.14,.2,1);overflow:auto;padding:2px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <b style="font-size:13px;color:var(--ink)">Menu</b>
+          <button onclick="toggleClubPreviewMenu()" style="border:0;background:transparent;cursor:pointer;color:var(--ink);line-height:0">${closeIco}</button>
+        </div>
+        ${clubPvConnected ? drawerConnected : drawerDisconnected}
+      </div>
+    </div>`;
   }
   function updateClubPreview(){
     const html=clubPreviewBodyHtml();
     const m=document.getElementById('clubPreviewMobileBody'); if(m) m.innerHTML=html;
     const d=document.getElementById('clubPreviewDesktopBody'); if(d) d.innerHTML=html;
   }
+  function setClubPvState(state){
+    clubPvConnected = state==='connected';
+    clubPvDrawerOpen=false;
+    const tabs=document.getElementById('clubPvStateTabs');
+    if(tabs) tabs.querySelectorAll('button').forEach(b=>{ const on=b.dataset.state===state; b.classList.toggle('active',on); b.setAttribute('aria-pressed',on?'true':'false'); });
+    updateClubPreview();
+  }
+  function toggleClubPreviewMenu(){ clubPvDrawerOpen=!clubPvDrawerOpen; updateClubPreview(); }
   function selectClubTemplateVisual(t){
     document.getElementById('clubTplEssentiel').classList.toggle('selected',t==='essentiel');
     document.getElementById('clubTplPremium').classList.toggle('selected',t==='premium');
@@ -3167,6 +3246,14 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         document.getElementById('clubPreviewDesktop').style.display=dev==='desktop'?'block':'none';
       });
       tabs.dataset.wired='1';
+    }
+    const stateTabs=document.getElementById('clubPvStateTabs');
+    if(stateTabs && !stateTabs.dataset.wired){
+      stateTabs.addEventListener('click',e=>{
+        const b=e.target.closest('button'); if(!b) return;
+        setClubPvState(b.dataset.state);
+      });
+      stateTabs.dataset.wired='1';
     }
     const section=document.getElementById('loyalty-settings-appearance');
     if(!section.dataset.inputWired){ section.addEventListener('input',updateClubPreview); section.dataset.inputWired='1'; }
