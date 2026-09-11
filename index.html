@@ -2331,6 +2331,73 @@
       ],
     };
 
+    // ---- Suppression / désactivation — une donnée doit toujours pouvoir être retirée ----
+    function removeContact(cid){
+      const idx=CONTACTS.findIndex(c=>c.id===cid);
+      if(idx===-1) return;
+      const c=CONTACTS[idx];
+      if(c.isLoyaltyMember && c.loyaltyMemberId){
+        const midx=LOYALTY_MEMBERS.findIndex(m=>m.id===c.loyaltyMemberId);
+        if(midx!==-1) LOYALTY_MEMBERS.splice(midx,1);
+      }
+      CONTACT_LISTS.forEach(l=>{ l.manualContactIds=(l.manualContactIds||[]).filter(id=>id!==cid); });
+      CONTACTS.splice(idx,1);
+    }
+    function removeProduct(pid){
+      const idx=PRODUCTS.findIndex(p=>p.id===pid);
+      if(idx!==-1) PRODUCTS.splice(idx,1);
+    }
+    function removeLandingPage(lpId){
+      const idx=LANDING_PAGES.findIndex(l=>l.id===lpId);
+      if(idx===-1) return;
+      const lp=LANDING_PAGES[idx];
+      const p=productById(lp.productId);
+      if(p) p.landingPageId=null;
+      LANDING_PAGES.splice(idx,1);
+    }
+    function removeQrCode(qrId){
+      const idx=QR_CODES.findIndex(q=>q.id===qrId);
+      if(idx===-1) return;
+      const qr=QR_CODES[idx];
+      const p=productById(qr.productId);
+      if(p) p.qrCodeId=null;
+      QR_CODES.splice(idx,1);
+    }
+    function removeMember(mid){
+      const idx=LOYALTY_MEMBERS.findIndex(m=>m.id===mid);
+      if(idx===-1) return;
+      const m=LOYALTY_MEMBERS[idx];
+      const c=contactById(m.contactId);
+      if(c){ c.isLoyaltyMember=false; c.loyaltyMemberId=null; }
+      LOYALTY_MEMBERS.splice(idx,1);
+    }
+    function removeReward(rid){
+      const idx=REWARDS.findIndex(r=>r.id===rid);
+      if(idx!==-1) REWARDS.splice(idx,1);
+    }
+    function removeCampaign(cid){
+      const idx=CAMPAIGNS.findIndex(c=>c.id===cid);
+      if(idx===-1) return;
+      const cmp=CAMPAIGNS[idx];
+      const list=listById(cmp.listId);
+      if(list) list.campaignIds=(list.campaignIds||[]).filter(id=>id!==cid);
+      CAMPAIGNS.splice(idx,1);
+    }
+    function removeContactList(lid){
+      const idx=CONTACT_LISTS.findIndex(l=>l.id===lid);
+      if(idx!==-1) CONTACT_LISTS.splice(idx,1);
+    }
+    function removeAutomation(id){
+      const idx=AUTOMATIONS.findIndex(a=>a.id===id);
+      if(idx!==-1) AUTOMATIONS.splice(idx,1);
+    }
+    function removePointOfVente(id){
+      const idx=POINTS_DE_VENTE.findIndex(p=>p.id===id);
+      if(idx===-1) return;
+      SCAN_EVENTS.forEach(e=>{ if(e.pointOfVenteId===id) e.pointOfVenteId=null; });
+      POINTS_DE_VENTE.splice(idx,1);
+    }
+
     // ---- PLAN (singleton, persisted, drives premium locks) ----
     let PLAN={tier:(function(){ try{ return localStorage.getItem('sq_plan_tier')||'essentiel'; }catch(e){ return 'essentiel'; } })()};
     function setPlanTier(tier){ PLAN.tier=tier; try{ localStorage.setItem('sq_plan_tier',tier); }catch(e){} }
@@ -2341,18 +2408,19 @@
       allSegments, computeSegmentMembers, evaluateRuleTree,
       addCustomSegment(seg){ CUSTOM_SEGMENTS.push(seg); },
       removeCustomSegment(segId){ CUSTOM_SEGMENTS=CUSTOM_SEGMENTS.filter(s=>s.id!==segId); },
-      CONTACT_LISTS, listById, deriveListContacts, addContactList(l){ CONTACT_LISTS.push(l); },
-      CAMPAIGNS, campaignById, addCampaign(c){ CAMPAIGNS.push(c); },
+      CONTACT_LISTS, listById, deriveListContacts, addContactList(l){ CONTACT_LISTS.push(l); }, removeContactList,
+      CAMPAIGNS, campaignById, addCampaign(c){ CAMPAIGNS.push(c); }, removeCampaign,
       get AUTOMATIONS(){ return AUTOMATIONS; }, automationById, triggerAudienceCount,
-      addAutomation(a){ AUTOMATIONS.push(a); },
-      POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); },
-      LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward,
-      REWARDS, addReward(r){ REWARDS.push(r); },
-      LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; },
-      QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; },
+      addAutomation(a){ AUTOMATIONS.push(a); }, removeAutomation,
+      POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); }, removePointOfVente,
+      LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward, removeMember,
+      REWARDS, addReward(r){ REWARDS.push(r); }, removeReward,
+      LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
+      QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
       CLUB, PLAN, setPlanTier,
       SOURCES, PERSONAS, SEGMENT_NAMES,
       productById, contactById, addProduct(p){ PRODUCTS.push(p); }, addContact(c){ CONTACTS.push(c); },
+      removeProduct, removeContact,
       pick, pickN, randInt, daysAgo,
     };
   })();
@@ -2521,7 +2589,14 @@
       <h4 style="color:var(--ink);margin:18px 0 8px">Campagnes reçues (${campaigns.length})</h4>
       <div class="timeline">${campaigns.map(cp=>`<div class="t"><b>${cp.name}</b><br><small>${fmtDateFR(cp.sentAt)}</small></div>`).join('')||'<div class="t"><b>Aucune campagne reçue</b></div>'}</div>`;
     openPanel({eyebrow:'Fiche contact', title:c.name, bodyHtml,
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn primary" onclick="openContactPanel('${c.id}')">Modifier</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deleteContact('${c.id}')">Supprimer</button><button class="btn primary" onclick="openContactPanel('${c.id}')">Modifier</button>`});
+  }
+  function deleteContact(cid){
+    if(!confirm('Supprimer définitivement ce contact ? Cette action est irréversible.')) return;
+    DB.removeContact(cid);
+    closePanel();
+    toast('Contact supprimé');
+    renderContacts();
   }
   function openContactPanel(cid){
     const c=cid?DB.contactById(cid):null;
@@ -2642,9 +2717,16 @@
     const scenTrigger=isSystem?TRIGGER_DEFS.find(t=>t.segmentId===seg.id):null;
     openPanel({eyebrow:'Segment', title: seg?(isSystem?seg.name:'Modifier le segment'):'Créer un segment', bodyHtml, wide:true,
       footerHtml: isSystem ? `<button class="btn ghost" onclick="closePanel()">Fermer</button>${scenTrigger?`<button class="btn primary" onclick="closePanel();startScenCreationFromSegment('${seg.id}')">Créer une relance</button>`:''}`
-        : `<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveSegment(${seg?`'${seg.id}'`:'null'})">Enregistrer</button>`});
+        : `<button class="btn ghost" onclick="closePanel()">Annuler</button>${seg?`<button class="btn ghost" onclick="deleteSegment('${seg.id}')">Supprimer</button>`:''}<button class="btn primary" onclick="saveSegment(${seg?`'${seg.id}'`:'null'})">Enregistrer</button>`});
     if(!isSystem) document.getElementById('panelBody').addEventListener('input',updateSegmentPreview);
     updateSegmentPreview();
+  }
+  function deleteSegment(segId){
+    if(!confirm('Supprimer ce segment personnalisé ?')) return;
+    DB.removeCustomSegment(segId);
+    closePanel();
+    toast('Segment supprimé');
+    renderSegments();
   }
   function saveSegment(segId){
     const name=document.getElementById('sgName').value.trim()||'Nouveau segment';
@@ -2727,7 +2809,7 @@
         <td>${primaryDest?primaryDest.label:'—'}</td>
         <td class="right">${m30.scans}</td>
         <td>${qr.lastActivityAt?fmtDateFR(qr.lastActivityAt):'—'}</td>
-        <td><span class="tag green">Actif</span></td>
+        <td>${qr.status==='active'?'<span class="tag green">Actif</span>':'<span class="tag grey">Inactif</span>'}</td>
         <td class="right muted" style="font-size:12px">Configurer →</td></tr>`;
     }).join('');
   }
@@ -2777,8 +2859,22 @@
   }
   function openQrConfig(qrId){
     const qr=DB.qrById(qrId); if(!qr) return;
+    const toggleLabel=qr.status==='active'?'Désactiver':'Activer';
     openPanel({eyebrow:'QR Code', title:DB.productById(qr.productId).name, bodyHtml:qrConfigBodyHtml(qr), wide:true,
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="toggleQrStatus('${qr.id}')">${toggleLabel}</button><button class="btn ghost" onclick="deleteQrCode('${qr.id}')">Supprimer</button>`});
+  }
+  function toggleQrStatus(qrId){
+    const qr=DB.qrById(qrId); if(!qr) return;
+    qr.status = qr.status==='active' ? 'inactive' : 'active';
+    toast(qr.status==='active'?'QR Code activé':'QR Code désactivé');
+    closePanel(); renderQrCodes();
+  }
+  function deleteQrCode(qrId){
+    if(!confirm('Supprimer définitivement ce QR Code ? Les impressions existantes cesseront de fonctionner.')) return;
+    DB.removeQrCode(qrId);
+    closePanel();
+    toast('QR Code supprimé');
+    renderQrCodes();
   }
   function setQrPrimary(qrId,destType){
     DB.setPrimaryDestination(qrId,destType);
@@ -2874,7 +2970,14 @@
       <div class="timeline">${c.scannedProductIds.map(pid=>`<div class="t"><b>${DB.productById(pid).name}</b></div>`).join('')||'<div class="t"><b>Aucun scan</b></div>'}</div>
       <h4 style="color:var(--ink);margin:18px 0 8px">Campagnes reçues (${campaigns.length})</h4>
       <div class="timeline">${campaigns.map(cp=>`<div class="t"><b>${cp.name}</b></div>`).join('')||'<div class="t"><b>Aucune campagne reçue</b></div>'}</div>`;
-    openPanel({eyebrow:'Fiche membre', title:c.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+    openPanel({eyebrow:'Fiche membre', title:c.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="removeMember('${m.id}')">Retirer du Club</button>`});
+  }
+  function removeMember(mid){
+    if(!confirm('Retirer ce membre du Club Fidélité ? Le contact reste dans la base, mais perd son statut et ses points.')) return;
+    DB.removeMember(mid);
+    closePanel();
+    toast('Membre retiré du Club');
+    renderMembers();
   }
 
   // ============================================================
@@ -2907,7 +3010,14 @@
   function openRewardPanel(rid){
     const r=rid?DB.REWARDS.find(x=>x.id===rid):null;
     openPanel({eyebrow:'Récompense', title:r?'Modifier la récompense':'Créer une récompense', bodyHtml:rewardFormBodyHtml(r),
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveReward(${r?`'${r.id}'`:'null'})">Enregistrer</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button>${r?`<button class="btn ghost" onclick="deleteReward('${r.id}')">Supprimer</button>`:''}<button class="btn primary" onclick="saveReward(${r?`'${r.id}'`:'null'})">Enregistrer</button>`});
+  }
+  function deleteReward(rid){
+    if(!confirm('Supprimer définitivement cette récompense ?')) return;
+    DB.removeReward(rid);
+    closePanel();
+    toast('Récompense supprimée');
+    renderRewards();
   }
   function saveReward(rid){
     const name=document.getElementById('rwName').value.trim()||'Nouvelle récompense';
@@ -2928,12 +3038,20 @@
       <div style="flex:1;min-width:0"><input type="text" class="prLabel" value="${rule.label}" style="border:0;background:transparent;font-weight:600;padding:0;font-size:13px;color:var(--ink);width:100%"></div>
       <input type="number" class="prPoints" value="${rule.points}" style="width:70px;margin-right:10px" min="0">
       <label class="switch"><input type="checkbox" class="prActive" ${rule.active?'checked':''}><span class="slider"></span></label>
+      <button type="button" class="rm" onclick="removePointsRule('${rule.id}')" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>`;
   }
   function addPointsRule(){
     const rule={id:'pr'+(DB.CLUB.pointsRules.length+1), label:'Nouvelle règle', points:5, active:true};
     DB.CLUB.pointsRules.push(rule);
     document.getElementById('pointsRulesList').insertAdjacentHTML('beforeend',pointsRuleRowHtml(rule));
+  }
+  function removePointsRule(ruleId){
+    const idx=DB.CLUB.pointsRules.findIndex(r=>r.id===ruleId);
+    if(idx!==-1) DB.CLUB.pointsRules.splice(idx,1);
+    const el=document.querySelector(`#pointsRulesList [data-rule-id="${ruleId}"]`);
+    if(el) el.remove();
+    toast('Règle supprimée');
   }
   function clubLinkRowHtml(link){
     return `<div class="opt" data-link-id="${link.id}">
@@ -2943,13 +3061,20 @@
       </div>
       <select class="clPosition" style="width:auto;padding:6px 8px;font-size:12px;margin-right:8px"><option value="header" ${link.position==='header'?'selected':''}>En-tête</option><option value="footer" ${link.position==='footer'?'selected':''}>Pied de page</option></select>
       <label class="switch"><input type="checkbox" class="clActive" ${link.active?'checked':''}><span class="slider"></span></label>
-      ${link.type==='custom'?`<button type="button" class="rm" onclick="this.closest('[data-link-id]').remove()" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:'<span class="tag grey" style="margin-left:8px;flex:none">Auto</span>'}
+      ${link.type==='custom'?`<button type="button" class="rm" onclick="removeClubLink('${link.id}')" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:'<span class="tag grey" style="margin-left:8px;flex:none">Auto</span>'}
     </div>`;
   }
   function addClubLink(){
     const link={id:'lk'+(DB.CLUB.links.length+1), label:'Nouveau lien', type:'custom', url:'#', position:'footer', order:DB.CLUB.links.length+1, active:true};
     DB.CLUB.links.push(link);
     document.getElementById('clubLinksList').insertAdjacentHTML('beforeend',clubLinkRowHtml(link));
+  }
+  function removeClubLink(linkId){
+    const idx=DB.CLUB.links.findIndex(l=>l.id===linkId);
+    if(idx!==-1) DB.CLUB.links.splice(idx,1);
+    const el=document.querySelector(`#clubLinksList [data-link-id="${linkId}"]`);
+    if(el) el.remove();
+    toast('Lien supprimé');
   }
   function renderClubGeneral(){
     const nameEl=document.getElementById('clubName'); if(!nameEl) return;
@@ -3126,7 +3251,14 @@
       <p class="muted" style="font-size:11.5px;margin-top:10px">Une liste dynamique (base/Club/segments) est recalculée à chaque consultation. La liste de destinataires réellement envoyée à une campagne, elle, est figée au moment de l'envoi.</p>
       <h4 style="color:var(--ink);margin:18px 0 8px">Aperçu (5 premiers)</h4>
       <div class="timeline">${contacts.slice(0,5).map(c=>`<div class="t"><b>${c.name}</b><br><small>${c.email}</small></div>`).join('')||'<div class="t"><b>Aucun contact</b></div>'}</div>`;
-    openPanel({eyebrow:'Liste de contacts', title:l.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+    openPanel({eyebrow:'Liste de contacts', title:l.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deleteContactList('${l.id}')">Supprimer</button>`});
+  }
+  function deleteContactList(lid){
+    if(!confirm('Supprimer cette liste de contacts ? Les campagnes déjà envoyées gardent leur liste de destinataires figée.')) return;
+    DB.removeContactList(lid);
+    closePanel();
+    toast('Liste supprimée');
+    renderContactLists();
   }
 
   // ============================================================
@@ -3200,7 +3332,17 @@
       <div class="kv"><span>Destinataires</span><b>${c.stats.delivered||'—'}</b></div>
       <div class="kv"><span>Taux d'ouverture</span><b>${openRate==null?'—':openRate+' %'}</b></div>
       <div class="kv" style="border-bottom:0"><span>Date d'envoi</span><b>${c.sentAt?fmtDateFR(c.sentAt):(c.scheduledAt?fmtDateFR(c.scheduledAt):'—')}</b></div>`;
-    openPanel({eyebrow:'Campagne', title:c.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+    const canDelete = c.status==='brouillon' || c.status==='planifiee';
+    openPanel({eyebrow:'Campagne', title:c.name, bodyHtml, footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>${canDelete?`<button class="btn ghost" onclick="deleteCampaign('${c.id}')">Supprimer</button>`:''}`});
+  }
+  function deleteCampaign(cid){
+    const c=DB.campaignById(cid); if(!c) return;
+    if(c.status!=='brouillon' && c.status!=='planifiee'){ toast('Une campagne envoyée ne peut pas être supprimée.'); return; }
+    if(!confirm('Supprimer cette campagne ?')) return;
+    DB.removeCampaign(cid);
+    closePanel();
+    toast('Campagne supprimée');
+    renderCampaigns();
   }
 
   // ============================================================
@@ -3822,7 +3964,16 @@
     }
     const p=DB.productById(pid); if(!p) return;
     openPanel({eyebrow:'Produit', title:p.name, bodyHtml:productDetailBodyHtml(p),
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn primary" onclick="openProductEditForm('${p.id}')">Modifier</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deleteProduct('${p.id}')">Supprimer</button><button class="btn primary" onclick="openProductEditForm('${p.id}')">Modifier</button>`});
+  }
+  function deleteProduct(pid){
+    const p=DB.productById(pid); if(!p) return;
+    if(p.landingPageId || p.qrCodeId){ toast("Supprimez d'abord son QR Code et sa Landing Page."); return; }
+    if(!confirm('Supprimer définitivement ce produit ?')) return;
+    DB.removeProduct(pid);
+    closePanel();
+    toast('Produit supprimé');
+    renderProductsTable();
   }
   function openProductEditForm(pid){
     const p=DB.productById(pid); if(!p) return;
@@ -3889,6 +4040,7 @@
           <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="openLandingEditor('${p.id}')">Modifier</button>
           <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="previewLandingPage('${lp.id}')">Aperçu</button>
           ${lp.status!=='publiee'?`<button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="setLandingStatus('${lp.id}','publiee')">Publier</button>`:`<button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="setLandingStatus('${lp.id}','desactivee')">Désactiver</button>`}
+          <button class="btn ghost" style="padding:6px 10px;font-size:11.5px" onclick="deleteLandingPage('${lp.id}')">Supprimer</button>
         </td></tr>`;
     }).join('');
   }
@@ -3896,6 +4048,15 @@
     const lp=DB.LANDING_PAGES.find(l=>l.id===lpId); if(!lp) return;
     lp.status=status; lp.lastModified=new Date();
     toast(status==='publiee'?'Landing Page publiée':'Landing Page désactivée');
+    renderLandingPages();
+  }
+  function deleteLandingPage(lpId){
+    const lp=DB.landingPageById(lpId); if(!lp) return;
+    const p=DB.productById(lp.productId);
+    if(p && p.qrCodeId){ toast("Retirez d'abord le QR Code de ce produit."); return; }
+    if(!confirm('Supprimer définitivement cette Landing Page ?')) return;
+    DB.removeLandingPage(lpId);
+    toast('Landing Page supprimée');
     renderLandingPages();
   }
   function landingPreviewBodyHtml(o){
@@ -4135,7 +4296,14 @@
   function openPosDetail(id){
     const p=DB.posById(id); if(!p) return;
     openPanel({eyebrow:'Point de vente', title:p.name, bodyHtml:posDetailBodyHtml(p),
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn primary" onclick="openPosEditForm('${p.id}')">Modifier</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deletePos('${p.id}')">Supprimer</button><button class="btn primary" onclick="openPosEditForm('${p.id}')">Modifier</button>`});
+  }
+  function deletePos(id){
+    if(!confirm('Supprimer définitivement ce point de vente ? Son historique de scans sera conservé, mais ne lui sera plus rattaché.')) return;
+    DB.removePointOfVente(id);
+    closePanel();
+    toast('Point de vente supprimé');
+    renderPointsDeVente();
   }
   function posFormBodyHtml(p){
     return `
@@ -4275,7 +4443,14 @@
       <div class="kv" style="border-bottom:0"><span>Dernière modification</span><b>${fmtDateFR(a.lastModified)}</b></div>`;
     const toggleLabel = a.status==='active' ? 'Mettre en pause' : 'Activer';
     openPanel({eyebrow:'Scénario automatisé', title:a.name, bodyHtml, wide:true,
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="toggleScenarioStatus('${a.id}')">${toggleLabel}</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deleteScenario('${a.id}')">Supprimer</button><button class="btn ghost" onclick="toggleScenarioStatus('${a.id}')">${toggleLabel}</button>`});
+  }
+  function deleteScenario(id){
+    if(!confirm('Supprimer définitivement ce scénario automatisé ?')) return;
+    DB.removeAutomation(id);
+    closePanel();
+    toast('Scénario supprimé');
+    renderScenarios();
   }
   function toggleScenarioStatus(id){
     const a=DB.automationById(id); if(!a) return;
