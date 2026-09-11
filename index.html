@@ -2512,7 +2512,7 @@
       if(!qr){
         const canCreate=!!lp;
         return `<tr><td><b style="color:var(--ink)">${p.name}</b></td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td class="right muted">—</td><td class="muted">—</td><td><span class="tag grey">Aucun</span></td>
-          <td class="right">${canCreate?`<button class="btn ghost" style="padding:6px 11px;font-size:12px" onclick="createQrCode('${p.id}')">Créer</button>`:`<span class="muted" style="font-size:11.5px">Landing Page requise</span>`}</td></tr>`;
+          <td class="right">${canCreate?`<button class="btn ghost" style="padding:6px 11px;font-size:12px" onclick="createQrCode('${p.id}')">Créer</button>`:`<a href="#" onclick="event.stopPropagation();pendingLandingProductId='${p.id}';go('products.landing');return false;" style="font-size:11.5px;font-weight:700;color:var(--accent)">Landing Page requise — configurer →</a>`}</td></tr>`;
       }
       const primaryDest=qr.destinations.find(d=>d.isPrimary);
       const m30=DERIVE.productMetrics(p.id,30);
