@@ -187,6 +187,23 @@
   @media (max-width:640px){ .wizard-steps .ws span{display:none} .wizard-steps .wl{margin:0 4px} }
   .wizard-step{display:none}
   .wizard-step.active{display:block}
+  .flow{display:flex; align-items:stretch; flex-wrap:wrap; gap:0; margin:6px 0}
+  .flow-block{flex:1 1 190px; min-width:170px; max-width:230px; border:1.5px solid var(--line); border-radius:12px; padding:13px 15px; background:#fff}
+  .flow-block.trigger{border-color:var(--accent); background:var(--lav3)}
+  .flow-block .k{font-size:10px; letter-spacing:.4px; text-transform:uppercase; font-weight:800; color:var(--muted); margin-bottom:5px}
+  .flow-block.trigger .k{color:var(--accentd)}
+  .flow-block .t{font-size:13px; font-weight:700; color:var(--ink); line-height:1.3}
+  .flow-block .d{font-size:11.5px; color:var(--muted); margin-top:3px; line-height:1.4}
+  .flow-arrow{flex:0 0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:64px; padding:0 4px}
+  .flow-arrow .lbl{font-size:10.5px; font-weight:700; color:var(--muted); background:#fff; padding:1px 7px; border-radius:999px; border:1px solid var(--line); margin-bottom:4px; white-space:nowrap}
+  .flow-arrow svg{width:34px; height:14px; color:var(--muted)}
+  @media (max-width:760px){
+    .flow{flex-direction:column}
+    .flow-block{max-width:none}
+    .flow-arrow{flex-direction:row; min-width:0; padding:6px 0}
+    .flow-arrow .lbl{margin-bottom:0; margin-right:8px}
+    .flow-arrow svg{transform:rotate(90deg)}
+  }
   .rule-group{border:1px solid var(--line); border-radius:12px; padding:14px; background:var(--lav3)}
   .rule-group + .rule-group{margin-top:12px}
   .rule-op-toggle{display:inline-flex; background:#fff; border:1px solid var(--line); border-radius:8px; padding:2px; gap:2px; margin-bottom:10px}
@@ -1188,6 +1205,14 @@
         </div>
       </div>
 
+      <div class="nav-group" data-group="network">
+        <button class="nav-group-head" data-group-toggle="network" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="5" cy="6" r="2.4"/><circle cx="19" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M6.9 7.6 11 16M17.1 7.6 13 16M7.4 6h9.2"/></svg><span>Réseau de distribution</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="nav-sub">
+          <button class="nav-sub-item" data-route="network.pos">Points de vente</button>
+          <button class="nav-sub-item" data-route="network.performance">Performance du réseau</button>
+        </div>
+      </div>
+
       <div class="nav-group" data-group="loyalty">
         <button class="nav-group-head" data-group-toggle="loyalty" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg><span>Club Fidélité</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
         <div class="nav-sub">
@@ -1210,6 +1235,8 @@
           <button class="nav-sub-item" data-route="campaigns.lists">Listes de contacts</button>
         </div>
       </div>
+
+      <button data-route="scenarios.all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Scénarios automatisés</button>
 
       <div class="nav-group" data-group="analytics">
         <button class="nav-group-head" data-group-toggle="analytics" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg><span>Analyses</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
@@ -1328,6 +1355,43 @@
       <div class="card" style="padding:4px 4px 0">
         <table><thead><tr><th>Produit</th><th>Identifiant</th><th>Type</th><th>URL permanente</th><th>Destination active</th><th class="right">Scans</th><th>Dernière activité</th><th>Statut</th><th></th></tr></thead>
         <tbody id="qrRows"></tbody></table>
+      </div>
+    </section>
+
+    <!-- RÉSEAU DE DISTRIBUTION -->
+    <section class="screen" id="network-pos">
+      <div class="screen-head">
+        <div><div class="eyebrow">Réseau de distribution</div><h2 style="margin:2px 0 0;color:var(--ink)"><span id="posTotal">0</span> points de vente</h2><p>Distributeurs, revendeurs et boutiques partenaires qui diffusent vos QR Codes.</p></div>
+        <button class="btn primary" onclick="openPosPanel(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Ajouter un point de vente</button>
+      </div>
+      <div class="filters-bar">
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="posSearch" placeholder="Nom ou ville" oninput="renderPointsDeVente()"></div>
+        <select id="pfRegion" onchange="renderPointsDeVente()"><option value="">Toutes régions</option></select>
+        <select id="pfPosType" onchange="renderPointsDeVente()"><option value="">Tous types</option></select>
+        <select id="pfPosStatus" onchange="renderPointsDeVente()"><option value="">Statut (tous)</option><option value="actif">Actif</option><option value="inactif">Inactif</option></select>
+        <div class="filters-active" id="posFiltersActive"></div>
+      </div>
+      <div class="card" style="padding:4px 4px 0">
+        <table><thead><tr>
+          <th data-sort-key="name">Point de vente</th><th>Ville</th><th>Région</th><th>Type</th><th>Statut</th><th class="right" data-sort-key="scans30">Scans 30j</th><th class="right">Nouveaux contacts</th><th></th>
+        </tr></thead>
+        <tbody id="posRows"></tbody></table>
+      </div>
+    </section>
+
+    <section class="screen" id="network-performance">
+      <div class="screen-head"><div><div class="eyebrow">Réseau de distribution</div><h2 style="margin:2px 0 0;color:var(--ink)">Performance du réseau</h2><p>Comparez les points de vente qui génèrent le plus de scans et de nouveaux contacts.</p></div></div>
+      <div class="filters-bar">
+        <div class="seg-tabs" id="npPeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="7">7 jours</button><button type="button" data-period="30" class="active" aria-pressed="true">30 jours</button><button type="button" data-period="90">90 jours</button></div>
+      </div>
+      <div class="grid cards-4" id="npKpis"></div>
+      <div class="grid cards-2" style="margin-top:16px;align-items:start">
+        <div class="card"><h3>Points de vente les plus actifs</h3><div class="sub">Classement par scans uniques</div><div id="npTopPos"></div></div>
+        <div class="card"><h3>Répartition par région</h3><div id="npRegionBars"></div></div>
+      </div>
+      <div class="card" style="margin-top:16px;padding:4px 4px 0">
+        <table><thead><tr><th>Point de vente</th><th>Région</th><th>Type</th><th class="right">Scans</th><th class="right">Nouveaux contacts</th><th class="right">Conversion</th><th>Dernière activité</th></tr></thead>
+        <tbody id="npDetailTable"></tbody></table>
       </div>
     </section>
 
@@ -1588,6 +1652,43 @@
         <div id="campWizardBody"></div>
       </div>
     </section>
+
+    <!-- SCÉNARIOS AUTOMATISÉS -->
+    <section class="screen" id="scenarios-all">
+      <div class="screen-head">
+        <div><div class="eyebrow">Animation de la relation</div><h2 style="margin:2px 0 0;color:var(--ink)">Scénarios automatisés</h2><p>Relances et notifications déclenchées automatiquement — anniversaires, réactivation, et plus.</p></div>
+        <button class="btn primary" onclick="startScenCreation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer un scénario</button>
+      </div>
+      <div class="filters-bar">
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="scenSearch" placeholder="Nom du scénario" oninput="renderScenarios()"></div>
+        <select id="scenFilterStatus" onchange="renderScenarios()"><option value="">Statut (tous)</option><option value="active">Actif</option><option value="draft">Brouillon</option><option value="paused">En pause</option></select>
+      </div>
+      <div class="card" style="padding:4px 4px 0">
+        <table><thead><tr><th>Nom</th><th>Déclencheur</th><th class="right">Messages</th><th>Statut</th><th class="right">Entrés</th><th class="right">Taux d'ouverture</th><th>Dernière modification</th><th></th></tr></thead>
+        <tbody id="scenRows"></tbody></table>
+      </div>
+    </section>
+
+    <section class="screen" id="scenarios-new">
+      <div id="scenGateView" style="display:none">
+        <div class="screen-head"><div><div class="eyebrow">Scénarios automatisés</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer un scénario</h2></div></div>
+        <div class="premium-gate">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
+          <h4>Le Club Fidélité doit être configuré</h4>
+          <p>Les scénarios s'appuient sur le Club Fidélité (statut, règles de points). Activez-le avant de créer un scénario.</p>
+          <button class="btn primary" onclick="go('loyalty.settings.general')">Configurer le Club Fidélité</button>
+        </div>
+      </div>
+      <div id="scenWizardView" style="display:none">
+        <div class="screen-head">
+          <div><div class="eyebrow">Scénarios automatisés</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer un scénario</h2></div>
+          <button class="btn ghost" onclick="cancelScenWizard()">Annuler</button>
+        </div>
+        <div class="wizard-steps" id="scenWizardSteps"></div>
+        <div id="scenWizardBody"></div>
+      </div>
+    </section>
+
     <section class="screen" id="analytics-overview">
       <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Vue d'ensemble</h2><p>Point d'entrée vers les analyses détaillées de votre activité.</p></div></div>
       <div class="grid cards-4" id="ovKpis"></div>
@@ -1736,6 +1837,8 @@
     'products.all':{screenId:'products-all', title:'Tous les produits', group:'products', onEnter:()=>renderProductsTable()},
     'products.landing':{screenId:'products-landing', title:'Landing Pages', group:'products', onEnter:()=>enterProductsLanding()},
     'products.qr':{screenId:'products-qr', title:'QR Codes', group:'products', onEnter:()=>enterProductsQr()},
+    'network.pos':{screenId:'network-pos', title:'Points de vente', group:'network', onEnter:()=>renderPointsDeVente()},
+    'network.performance':{screenId:'network-performance', title:'Performance du réseau', group:'network', onEnter:()=>renderNetworkPerformance()},
     'loyalty.members':{screenId:'loyalty-members', title:'Membres', group:'loyalty', onEnter:()=>renderMembers()},
     'loyalty.rewards':{screenId:'loyalty-rewards', title:'Récompenses', group:'loyalty', onEnter:()=>renderRewards()},
     'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', subgroup:'loyalty-settings', onEnter:()=>renderClubAppearance()},
@@ -1743,6 +1846,8 @@
     'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns', onEnter:()=>renderCampaigns()},
     'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns', onEnter:()=>enterCampaignsNew()},
     'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns', onEnter:()=>renderContactLists()},
+    'scenarios.all':{screenId:'scenarios-all', title:'Scénarios automatisés', onEnter:()=>renderScenarios()},
+    'scenarios.new':{screenId:'scenarios-new', title:'Créer un scénario', onEnter:()=>enterScenariosNew()},
     'analytics.overview':{screenId:'analytics-overview', title:"Vue d'ensemble", group:'analytics', onEnter:()=>renderAnalyticsOverview()},
     'analytics.contacts':{screenId:'analytics-contacts', title:'Contacts et acquisition', group:'analytics', onEnter:()=>renderAnalyticsContacts()},
     'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics', onEnter:()=>renderAnalyticsProducts()},
@@ -1973,10 +2078,11 @@
       const isLoyaltyMember = i<50;
       const source=pick(SOURCES);
       const type = source==='Fichier client' ? 'client' : (isLoyaltyMember ? 'client' : (rnd()<0.35 ? 'client' : 'prospect'));
+      const birthDate = rnd()<0.75 ? (function(){ const d=new Date(); d.setFullYear(d.getFullYear()-randInt(22,68)); d.setMonth(randInt(0,11)); d.setDate(randInt(1,28)); return d; })() : null;
       CONTACTS.push({
         id:'c'+String(i+1).padStart(3,'0'), name:first+' '+last,
         email:slug(first)+'.'+slug(last)+i+'@email.com',
-        createdAt, source, type, persona:pick(PERSONAS), segment:pick(SEGMENT_NAMES),
+        createdAt, source, type, birthDate, persona:pick(PERSONAS), segment:pick(SEGMENT_NAMES),
         consentMarketing: rnd()<0.82, consentDate:createdAt,
         lastScanAt: scannedCount>0 ? daysAgo(randInt(0,85)) : null,
         scannedProductIds,
@@ -2007,6 +2113,21 @@
     function memberIsActive(memberId){ const m=memberById(memberId); return m ? daysSinceD(m.lastActivityAt)<=30 : false; }
     function pointsToNextReward(memberId){ const m=memberById(memberId); if(!m) return Infinity; const next=Math.ceil((m.pointsBalance+1)/100)*100; return next-m.pointsBalance; }
 
+    // ---- POINTS_DE_VENTE (10, réseau de distribution indirect — 4 régions) ----
+    const POINTS_DE_VENTE=[
+      {id:'pv01', name:'Distributeur Nord Boissons', type:'Distributeur', city:'Lille', region:'Nord', contactEmail:'contact@nordboissons.fr', status:'actif', createdAt:daysAgo(310)},
+      {id:'pv02', name:'Cave Roubaisienne', type:'Revendeur', city:'Roubaix', region:'Nord', contactEmail:'contact@caveroubaisienne.fr', status:'actif', createdAt:daysAgo(280)},
+      {id:'pv03', name:'Épicerie du Littoral', type:'Boutique partenaire', city:'Dunkerque', region:'Nord', contactEmail:'contact@epiceriedulittoral.fr', status:'actif', createdAt:daysAgo(200)},
+      {id:'pv04', name:'Carrefour Rouen Saint-Sever', type:'Grande distribution', city:'Rouen', region:'Normandie', contactEmail:'contact@carrefour-rouen.fr', status:'actif', createdAt:daysAgo(260)},
+      {id:'pv05', name:'Distributeur Normandie Ouest', type:'Distributeur', city:'Caen', region:'Normandie', contactEmail:'contact@normandieouest.fr', status:'inactif', createdAt:daysAgo(150)},
+      {id:'pv06', name:'Cave de Rennes', type:'Revendeur', city:'Rennes', region:'Bretagne', contactEmail:'contact@cavederennes.fr', status:'actif', createdAt:daysAgo(190)},
+      {id:'pv07', name:'Épicerie Fine du Ponant', type:'Boutique partenaire', city:'Brest', region:'Bretagne', contactEmail:'contact@epicerieponant.fr', status:'actif', createdAt:daysAgo(95)},
+      {id:'pv08', name:'Distributeur Paris Est', type:'Distributeur', city:'Paris', region:'Île-de-France', contactEmail:'contact@parisest-distrib.fr', status:'actif', createdAt:daysAgo(340)},
+      {id:'pv09', name:'Cave Bastille', type:'Revendeur', city:'Paris', region:'Île-de-France', contactEmail:'contact@cavebastille.fr', status:'actif', createdAt:daysAgo(220)},
+      {id:'pv10', name:'Carrefour Boulogne', type:'Grande distribution', city:'Boulogne-Billancourt', region:'Île-de-France', contactEmail:'contact@carrefour-boulogne.fr', status:'actif', createdAt:daysAgo(300)},
+    ];
+    function posById(id){ return POINTS_DE_VENTE.find(p=>p.id===id)||null; }
+
     // ---- REWARDS (6) ----
     const REWARDS=[
       {id:'r01', name:'-15% sur la prochaine commande', type:'promo-generic', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0, redeemedCount:0},
@@ -2024,6 +2145,7 @@
     // ---- SCAN_EVENTS (90-day log — single ledger every scan count derives from) ----
     const SCAN_EVENTS=[];
     let scanSeq=1;
+    const activePOS=POINTS_DE_VENTE.filter(p=>p.status==='actif');
     for(let day=0;day<90;day++){
       const dayDate=daysAgo(day);
       const scansToday=randInt(8,28);
@@ -2032,9 +2154,10 @@
         const qr=qrByProduct(product.id);
         const anon = rnd()<0.25;
         const contact = anon?null:pick(CONTACTS);
+        const pointOfVenteId = rnd()<0.6 ? pick(activePOS).id : null;
         SCAN_EVENTS.push({
           id:'sc'+(scanSeq++), contactId:contact?contact.id:null, productId:product.id,
-          qrCodeId: qr?qr.id:null, timestamp:dayDate,
+          qrCodeId: qr?qr.id:null, timestamp:dayDate, pointOfVenteId,
           source:pick(SOURCES), resultedInSignup: !anon && rnd()<0.22,
         });
       }
@@ -2146,6 +2269,47 @@
     CAMPAIGNS.forEach(cmp=>{ const list=listById(cmp.listId); if(list) list.campaignIds.push(cmp.id); });
     function campaignById(id){ return CAMPAIGNS.find(c=>c.id===id); }
 
+    // ---- AUTOMATIONS (3 seeded — trigger-based email scenarios) ----
+    function triggerAudienceCount(trigger){
+      if(!trigger || !trigger.type) return 0;
+      if(trigger.type==='birthday') return CONTACTS.filter(c=>c.birthDate).length;
+      if(trigger.type==='segment_enter'){ const seg=allSegments().find(s=>s.id===trigger.segmentId); return seg?computeSegmentMembers(seg).length:0; }
+      const days=trigger.offsetDays||0;
+      if(trigger.type==='days_after_signup') return CONTACTS.filter(c=>{ const d=daysSinceD(c.createdAt); return d>=days && d<days+7; }).length;
+      if(trigger.type==='scan_no_signup') return CONTACTS.filter(c=>{ if(c.isLoyaltyMember||!c.lastScanAt) return false; const d=daysSinceD(c.lastScanAt); return d>=days && d<days+7; }).length;
+      return 0;
+    }
+    const dormantCount0=CONTACTS.filter(c=>c.status==='dormant').length;
+    const nearRewardCount0=CONTACTS.filter(c=>c.isLoyaltyMember && pointsToNextReward(c.loyaltyMemberId)<=50).length;
+    const birthdayCount0=CONTACTS.filter(c=>c.birthDate).length;
+    let AUTOMATIONS=[
+      {
+        id:'auto01', name:"Souhait d'anniversaire", status:'active',
+        trigger:{type:'birthday'},
+        steps:[{delayDays:0, subject:'Joyeux anniversaire de la part de SmartQonsumer !', preheader:'Un petit cadeau vous attend dans votre espace Club.', ctaLabel:'Découvrir mon cadeau'}],
+        stats:{entered:Math.round(birthdayCount0*0.9), sent:Math.round(birthdayCount0*0.9), opened:Math.round(birthdayCount0*0.9*0.52), clicked:Math.round(birthdayCount0*0.9*0.18)},
+        createdAt:daysAgo(120), lastModified:daysAgo(4),
+      },
+      {
+        id:'auto02', name:'Réactivation contacts en sommeil', status:'active',
+        trigger:{type:'segment_enter', segmentId:'sys-dormant'},
+        steps:[
+          {delayDays:0, subject:'On ne vous a pas vu depuis un moment', preheader:'Redécouvrez vos produits préférés', ctaLabel:'Je reviens'},
+          {delayDays:7, subject:'Toujours là pour vous', preheader:'Une offre spéciale retour', ctaLabel:"Voir l'offre"},
+        ],
+        stats:{entered:dormantCount0, sent:dormantCount0, opened:Math.round(dormantCount0*0.34), clicked:Math.round(dormantCount0*0.09)},
+        createdAt:daysAgo(75), lastModified:daysAgo(20),
+      },
+      {
+        id:'auto03', name:'Relance avant récompense', status:'draft',
+        trigger:{type:'segment_enter', segmentId:'sys-near-reward'},
+        steps:[{delayDays:0, subject:'Plus que quelques points avant votre récompense !', preheader:'Ne la laissez pas filer', ctaLabel:'Voir ma récompense'}],
+        stats:{entered:0, sent:0, opened:0, clicked:0},
+        createdAt:daysAgo(6), lastModified:daysAgo(6),
+      },
+    ];
+    function automationById(id){ return AUTOMATIONS.find(a=>a.id===id)||null; }
+
     // ---- CLUB (singleton config) ----
     let CLUB={
       name:'Club SmartQonsumer',
@@ -2179,6 +2343,9 @@
       removeCustomSegment(segId){ CUSTOM_SEGMENTS=CUSTOM_SEGMENTS.filter(s=>s.id!==segId); },
       CONTACT_LISTS, listById, deriveListContacts, addContactList(l){ CONTACT_LISTS.push(l); },
       CAMPAIGNS, campaignById, addCampaign(c){ CAMPAIGNS.push(c); },
+      get AUTOMATIONS(){ return AUTOMATIONS; }, automationById, triggerAudienceCount,
+      addAutomation(a){ AUTOMATIONS.push(a); },
+      POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); },
       LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward,
       REWARDS, addReward(r){ REWARDS.push(r); },
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; },
@@ -2229,7 +2396,32 @@
       const sent=DB.CAMPAIGNS.filter(c=>c.status==='sent').sort((a,b)=>b.sentAt-a.sentAt);
       return sent[0]||null;
     }
-    return { scansForProduct, productMetrics, allScans, scanTotals, newContactsCount, dormantCount, activeMembersCount, membersNearRewardCount, topProduct, lastCampaign };
+    function scansForPos(posId,days){
+      const since=Date.now()-days*86400000;
+      return DB.SCAN_EVENTS.filter(e=>e.pointOfVenteId===posId && e.timestamp.getTime()>=since);
+    }
+    function posMetrics(posId,days){
+      const evs=scansForPos(posId,days);
+      const uniqueContacts=new Set(evs.filter(e=>e.contactId).map(e=>e.contactId));
+      const anonCount=evs.filter(e=>!e.contactId).length;
+      const signups=evs.filter(e=>e.resultedInSignup).length;
+      const unique=uniqueContacts.size+anonCount;
+      return {scans:evs.length, unique, signups, conv: unique>0 ? signups/unique*100 : null};
+    }
+    function networkTotals(days){
+      const evs=allScans(days).filter(e=>e.pointOfVenteId);
+      const uniqueSet=new Set(evs.filter(e=>e.contactId).map(e=>e.contactId));
+      const anon=evs.filter(e=>!e.contactId).length;
+      const signups=evs.filter(e=>e.resultedInSignup).length;
+      const unique=uniqueSet.size+anon;
+      return {scans:evs.length, unique, signups, conv: unique>0 ? signups/unique*100 : null};
+    }
+    function topPos(days){
+      let best=null,bestScans=-1;
+      DB.POINTS_DE_VENTE.forEach(p=>{ const m=posMetrics(p.id,days); if(m.scans>bestScans){ bestScans=m.scans; best=Object.assign({pos:p},m); } });
+      return best;
+    }
+    return { scansForProduct, productMetrics, allScans, scanTotals, newContactsCount, dormantCount, activeMembersCount, membersNearRewardCount, topProduct, lastCampaign, scansForPos, posMetrics, networkTotals, topPos };
   })();
 
   const contactsState={page:1, pageSize:15, sort:{key:'name',dir:'asc'}};
@@ -2447,8 +2639,9 @@
         ? `<p class="muted" style="font-size:12.5px">Ce segment système est calculé automatiquement à partir de vos données et ne peut pas être modifié.</p>`
         : `<div id="ruleGroups">${groups.map(g=>ruleGroupHtml(g)).join('')}</div><button type="button" class="rule-add" onclick="addRuleGroup()" style="margin-top:6px">+ Ajouter un groupe de règles</button>`}
       <div class="segment-preview" id="segPreview"></div>`;
+    const scenTrigger=isSystem?TRIGGER_DEFS.find(t=>t.segmentId===seg.id):null;
     openPanel({eyebrow:'Segment', title: seg?(isSystem?seg.name:'Modifier le segment'):'Créer un segment', bodyHtml, wide:true,
-      footerHtml: isSystem ? `<button class="btn ghost" onclick="closePanel()">Fermer</button>`
+      footerHtml: isSystem ? `<button class="btn ghost" onclick="closePanel()">Fermer</button>${scenTrigger?`<button class="btn primary" onclick="closePanel();startScenCreationFromSegment('${seg.id}')">Créer une relance</button>`:''}`
         : `<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveSegment(${seg?`'${seg.id}'`:'null'})">Enregistrer</button>`});
     if(!isSystem) document.getElementById('panelBody').addEventListener('input',updateSegmentPreview);
     updateSegmentPreview();
@@ -3880,6 +4073,387 @@
   function updateQuota(){var q=document.getElementById("edQuota"),btn=document.getElementById("edGenBtn");if(edGenLeft<=0){q.innerHTML="<b style=\"color:#b45309\">Limite mensuelle atteinte (5/5)</b>";btn.disabled=true;btn.style.opacity="0.5";btn.style.cursor="not-allowed";}else{q.textContent=edGenLeft+" génération"+(edGenLeft>1?"s":"")+" restante"+(edGenLeft>1?"s":"")+" ce mois · offre Brasserie (5 / mois)";}}
   function genEditorImage(){var p=document.getElementById("edPrompt").value.trim();if(!p){document.getElementById("edPrompt").focus();return;}if(edGenLeft<=0){toast("Limite mensuelle atteinte");return;}var b=document.getElementById("edBanner"),btn=document.getElementById("edGenBtn");btn.disabled=true;btn.textContent="Génération…";b.style.transition="opacity .3s";b.style.opacity="0.2";setTimeout(function(){b.style.opacity="1";btn.disabled=false;btn.innerHTML="<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linejoin=\"round\" style=\"vertical-align:-3px;margin-right:6px\"><path d=\"M12 3l1.7 4.6L18 9l-4.3 1.4L12 15l-1.7-4.6L6 9l4.3-1.4L12 3z\"/><path d=\"M18.5 14l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z\"/></svg>Générer l'image";edGenLeft--;updateQuota();toast("Image générée à partir de votre description");},1100);}
   (function(){var lb=document.querySelector("#landing .beach-hero"),eb=document.getElementById("edBanner");if(lb&&eb)eb.src=lb.src;updateQuota();applyEditor();})();
+
+  // ============================================================
+  // RÉSEAU DE DISTRIBUTION — Points de vente
+  // ============================================================
+  const POS_TYPES=['Distributeur','Revendeur','Grande distribution','Boutique partenaire'];
+  const POS_REGIONS=['Nord','Normandie','Bretagne','Île-de-France'];
+  const posState={sort:{key:'name',dir:'asc'}};
+  function populatePosFilterSelects(){
+    const regSel=document.getElementById('pfRegion'), typeSel=document.getElementById('pfPosType');
+    if(regSel && !regSel.dataset.filled){ POS_REGIONS.forEach(r=>regSel.insertAdjacentHTML('beforeend',`<option>${r}</option>`)); regSel.dataset.filled='1'; }
+    if(typeSel && !typeSel.dataset.filled){ POS_TYPES.forEach(t=>typeSel.insertAdjacentHTML('beforeend',`<option>${t}</option>`)); typeSel.dataset.filled='1'; }
+  }
+  function posFiltersActive(){
+    return {region:document.getElementById('pfRegion').value, type:document.getElementById('pfPosType').value, status:document.getElementById('pfPosStatus').value};
+  }
+  function filteredPos(){
+    const q=document.getElementById('posSearch').value;
+    const f=posFiltersActive();
+    let list=DB.POINTS_DE_VENTE.filter(p=>matchesSearch(p.name+' '+p.city,q) && (!f.region||p.region===f.region) && (!f.type||p.type===f.type) && (!f.status||p.status===f.status));
+    const {key,dir}=posState.sort;
+    list.sort((a,b)=>{
+      let av,bv;
+      if(key==='scans30'){ av=DERIVE.posMetrics(a.id,30).scans; bv=DERIVE.posMetrics(b.id,30).scans; }
+      else if(key==='name'){ av=a.name; bv=b.name; }
+      else { av=a[key]; bv=b[key]; }
+      if(av<bv) return dir==='asc'?-1:1; if(av>bv) return dir==='asc'?1:-1; return 0;
+    });
+    return list;
+  }
+  function renderPosFilterChips(){
+    const f=posFiltersActive();
+    const labels={region:'Région',type:'Type',status:'Statut'};
+    const valueLabels={status:{actif:'Actif',inactif:'Inactif'}};
+    const entries=Object.entries(f).filter(([,v])=>v);
+    const el=document.getElementById('posFiltersActive');
+    if(!entries.length){ el.innerHTML=''; return; }
+    el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${(valueLabels[k]&&valueLabels[k][v])||v}<button type="button" onclick="resetPosFilter('${k}')">✕</button></span>`).join('')+'<button type="button" class="filter-reset" onclick="resetAllPosFilters()">Réinitialiser</button>';
+  }
+  function resetPosFilter(key){ const map={region:'pfRegion',type:'pfPosType',status:'pfPosStatus'}; document.getElementById(map[key]).value=''; renderPointsDeVente(); }
+  function resetAllPosFilters(){ ['pfRegion','pfPosType','pfPosStatus'].forEach(id=>document.getElementById(id).value=''); document.getElementById('posSearch').value=''; renderPointsDeVente(); }
+  function renderPointsDeVente(){
+    populatePosFilterSelects();
+    const list=filteredPos();
+    document.getElementById('posTotal').textContent=list.length;
+    document.getElementById('posRows').innerHTML = list.length ? list.map(p=>{
+      const m30=DERIVE.posMetrics(p.id,30);
+      return `<tr onclick="openPosDetail('${p.id}')">
+        <td><b style="color:var(--ink)">${p.name}</b></td>
+        <td>${p.city}</td><td>${p.region}</td><td>${p.type}</td>
+        <td>${p.status==='actif'?'<span class="tag green">Actif</span>':'<span class="tag grey">Inactif</span>'}</td>
+        <td class="right">${m30.scans}</td>
+        <td class="right">${m30.signups}</td>
+        <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
+    }).join('') : `<tr><td colspan="8">${emptyStateHtml({icon:'search',title:'Aucun point de vente trouvé',text:'Essayez de modifier votre recherche ou vos filtres actifs.'})}</td></tr>`;
+    renderPosFilterChips();
+    const thead=document.querySelector('#network-pos thead');
+    if(thead) wireSortable(thead, posState.sort, renderPointsDeVente);
+  }
+  function posDetailBodyHtml(p){
+    const m30=DERIVE.posMetrics(p.id,30);
+    const recentScans=DERIVE.scansForPos(p.id,90).slice(-5).reverse();
+    return `
+      <div class="kv"><span>Type</span><b>${p.type}</b></div>
+      <div class="kv"><span>Ville</span><b>${p.city}</b></div>
+      <div class="kv"><span>Région</span><b>${p.region}</b></div>
+      <div class="kv"><span>Contact</span><b>${p.contactEmail}</b></div>
+      <div class="kv"><span>Statut</span><b>${p.status==='actif'?'Actif':'Inactif'}</b></div>
+      <div class="kv" style="border-bottom:0"><span>Scans (30 derniers jours)</span><b>${m30.scans}</b></div>
+      <h4 style="color:var(--ink);margin:18px 0 8px">Derniers scans</h4>
+      <div class="timeline">${recentScans.map(e=>`<div class="t"><b>${DB.productById(e.productId).name}</b><br><small>${fmtDateFR(e.timestamp)}</small></div>`).join('')||'<div class="t"><b>Aucun scan enregistré</b></div>'}</div>`;
+  }
+  function openPosDetail(id){
+    const p=DB.posById(id); if(!p) return;
+    openPanel({eyebrow:'Point de vente', title:p.name, bodyHtml:posDetailBodyHtml(p),
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn primary" onclick="openPosEditForm('${p.id}')">Modifier</button>`});
+  }
+  function posFormBodyHtml(p){
+    return `
+      <div class="field"><label>Nom</label><input type="text" id="posName" value="${p?p.name:''}" placeholder="Ex. Cave Bastille"></div>
+      <div class="row" style="gap:12px">
+        <div class="field" style="flex:1"><label>Type</label><select id="posType">${POS_TYPES.map(t=>`<option ${p&&p.type===t?'selected':''}>${t}</option>`).join('')}</select></div>
+        <div class="field" style="flex:1"><label>Région</label><select id="posRegion">${POS_REGIONS.map(r=>`<option ${p&&p.region===r?'selected':''}>${r}</option>`).join('')}</select></div>
+      </div>
+      <div class="field"><label>Ville</label><input type="text" id="posCity" value="${p?p.city:''}" placeholder="Ex. Paris"></div>
+      <div class="field"><label>E-mail de contact</label><input type="email" id="posEmail" value="${p?p.contactEmail:''}" placeholder="contact@exemple.fr"></div>
+      <div class="opt"><div><b>Statut actif</b></div><label class="switch"><input type="checkbox" id="posStatus" ${!p||p.status==='actif'?'checked':''}><span class="slider"></span></label></div>`;
+  }
+  function openPosPanel(pid){
+    if(!pid){
+      openPanel({eyebrow:'Réseau de distribution', title:'Ajouter un point de vente', bodyHtml:posFormBodyHtml(null),
+        footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="savePos(null)">Ajouter</button>`});
+    }
+  }
+  function openPosEditForm(pid){
+    const p=DB.posById(pid); if(!p) return;
+    openPanel({eyebrow:'Point de vente', title:'Modifier le point de vente', bodyHtml:posFormBodyHtml(p),
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="savePos('${p.id}')">Enregistrer</button>`});
+  }
+  function savePos(pid){
+    const name=document.getElementById('posName').value.trim()||'Nouveau point de vente';
+    const type=document.getElementById('posType').value, region=document.getElementById('posRegion').value;
+    const city=document.getElementById('posCity').value.trim();
+    const contactEmail=document.getElementById('posEmail').value.trim();
+    const status=document.getElementById('posStatus').checked?'actif':'inactif';
+    if(pid){
+      const p=DB.posById(pid);
+      Object.assign(p,{name,type,region,city,contactEmail,status});
+      toast('Point de vente mis à jour');
+    } else {
+      DB.addPointOfVente({id:'pv'+String(DB.POINTS_DE_VENTE.length+1).padStart(2,'0'), name,type,region,city,contactEmail,status,createdAt:new Date()});
+      toast('Point de vente ajouté');
+    }
+    closePanel(); renderPointsDeVente();
+  }
+  renderPointsDeVente();
+
+  // ============================================================
+  // RÉSEAU DE DISTRIBUTION — Performance du réseau
+  // ============================================================
+  const npState={period:30};
+  function renderNetworkPerformance(){
+    wirePeriodTabs('npPeriodTabs',npState,renderNetworkPerformance);
+    const days=npState.period;
+    const totals=DERIVE.networkTotals(days);
+    const activePosCount=DB.POINTS_DE_VENTE.filter(p=>p.status==='actif').length;
+    const top=DERIVE.topPos(days);
+    document.getElementById('npKpis').innerHTML=[
+      kpiCardHtml('Points de vente actifs', fmtN(activePosCount)),
+      kpiCardHtml('Scans réseau', fmtN(totals.scans), days+' derniers jours'),
+      kpiCardHtml('Nouveaux contacts', fmtN(totals.signups)),
+      kpiCardHtml('Point de vente le plus performant', top&&top.scans>0?top.pos.name:'—'),
+    ].join('');
+    const rows=DB.POINTS_DE_VENTE.map(p=>Object.assign({pos:p},DERIVE.posMetrics(p.id,days))).sort((a,b)=>b.scans-a.scans);
+    document.getElementById('npTopPos').innerHTML=hbarListHtml(rows.slice(0,6).map(r=>({label:r.pos.name,value:r.unique})));
+    document.getElementById('npRegionBars').innerHTML=hbarListHtml(POS_REGIONS.map(r=>({label:r,value:DB.POINTS_DE_VENTE.filter(p=>p.region===r).reduce((n,p)=>n+DERIVE.posMetrics(p.id,days).scans,0)})).sort((a,b)=>b.value-a.value));
+    document.getElementById('npDetailTable').innerHTML=rows.map(r=>{
+      const lastScan=DERIVE.scansForPos(r.pos.id,365).slice(-1)[0];
+      return `<tr><td><b style="color:var(--ink)">${r.pos.name}</b></td><td>${r.pos.region}</td><td>${r.pos.type}</td><td class="right">${r.scans}</td><td class="right">${r.signups}</td><td class="right">${r.conv==null?'—':fmtPct(r.conv)}</td><td>${lastScan?fmtDateFR(lastScan.timestamp):'—'}</td></tr>`;
+    }).join('');
+  }
+  renderNetworkPerformance();
+
+  // ============================================================
+  // SCÉNARIOS AUTOMATISÉS — bibliothèque de déclencheurs + diagramme
+  // ============================================================
+  const TRIGGER_DEFS=[
+    {key:'birthday', type:'birthday', label:'Anniversaire du contact', desc:"Se déclenche le jour de l'anniversaire du contact."},
+    {key:'dormant', type:'segment_enter', segmentId:'sys-dormant', label:'Entrée en sommeil', desc:'Se déclenche quand le contact devient inactif (plus de 60 jours).'},
+    {key:'near_reward', type:'segment_enter', segmentId:'sys-near-reward', label:"Proche d'une récompense", desc:'Se déclenche quand le membre passe à moins de 50 points de sa prochaine récompense.'},
+    {key:'after_signup', type:'days_after_signup', label:"X jours après l'inscription", desc:"Se déclenche X jours après la création du contact.", needsDays:true},
+    {key:'scan_no_signup', type:'scan_no_signup', label:'Scan sans inscription', desc:"Se déclenche X jours après un scan, si le contact n'a toujours pas rejoint le Club.", needsDays:true},
+  ];
+  function triggerDefFor(trigger){
+    if(!trigger) return null;
+    return TRIGGER_DEFS.find(t=>t.type===trigger.type && (t.segmentId||null)===(trigger.segmentId||null)) || TRIGGER_DEFS.find(t=>t.type===trigger.type) || null;
+  }
+  function triggerBlockLabel(trigger){
+    const def=triggerDefFor(trigger);
+    if(!def) return {title:'Déclencheur', desc:''};
+    return {title:def.label, desc: def.needsDays ? `${(trigger&&trigger.offsetDays)||7} jours` : def.desc};
+  }
+  function flowDiagramHtml(trigger, steps, opts){
+    opts=opts||{};
+    const trg=triggerBlockLabel(trigger||{});
+    const arrowSvg='<svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg>';
+    let html=`<div class="flow"><div class="flow-block trigger"><div class="k">Déclencheur</div><div class="t">${trg.title}</div>${trg.desc&&!opts.compact?`<div class="d">${trg.desc}</div>`:''}</div>`;
+    (steps||[]).forEach((s,i)=>{
+      const delayLabel = i===0 ? 'Immédiat' : ('J+'+(s.delayDays||1));
+      html+=`<div class="flow-arrow"><span class="lbl">${delayLabel}</span>${arrowSvg}</div><div class="flow-block"><div class="k">Message ${i+1}</div><div class="t">${s.subject||'(sans objet)'}</div>${!opts.compact?`<div class="d">${s.ctaLabel||''}</div>`:''}</div>`;
+    });
+    html+='</div>';
+    return html;
+  }
+
+  // ============================================================
+  // SCÉNARIOS AUTOMATISÉS — Liste
+  // ============================================================
+  function scenStatusTag(s){ const cls={active:'green',draft:'grey',paused:'teal'}[s]||'grey'; const labels={active:'Actif',draft:'Brouillon',paused:'En pause'}; return `<span class="tag ${cls}">${labels[s]||s}</span>`; }
+  function renderScenarios(){
+    const searchEl=document.getElementById('scenSearch'); if(!searchEl) return;
+    const q=searchEl.value;
+    const statusF=document.getElementById('scenFilterStatus').value;
+    const list=DB.AUTOMATIONS.filter(a=>matchesSearch(a.name,q) && (!statusF||a.status===statusF));
+    document.getElementById('scenRows').innerHTML = list.length ? list.map(a=>{
+      const trg=triggerBlockLabel(a.trigger);
+      const openRate=a.stats.sent>0?Math.round(a.stats.opened/a.stats.sent*100):0;
+      return `<tr onclick="openScenarioDetail('${a.id}')">
+        <td><b style="color:var(--ink)">${a.name}</b></td>
+        <td>${trg.title}</td>
+        <td class="right">${a.steps.length}</td>
+        <td>${scenStatusTag(a.status)}</td>
+        <td class="right">${fmtN(a.stats.entered)}</td>
+        <td class="right">${a.stats.sent>0?openRate+' %':'—'}</td>
+        <td>${fmtDateFR(a.lastModified)}</td>
+        <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
+    }).join('') : `<tr><td colspan="8">${emptyStateHtml({icon:'search',title:'Aucun scénario trouvé',text:'Essayez un autre terme de recherche.'})}</td></tr>`;
+  }
+  function openScenarioDetail(id){
+    const a=DB.automationById(id); if(!a) return;
+    const openRate=a.stats.sent>0?Math.round(a.stats.opened/a.stats.sent*100):0;
+    const clickRate=a.stats.sent>0?Math.round(a.stats.clicked/a.stats.sent*100):0;
+    const bodyHtml=`
+      ${flowDiagramHtml(a.trigger, a.steps)}
+      <div class="grid cards-4" style="margin-top:18px">
+        ${kpiCardHtml('Contacts entrés', fmtN(a.stats.entered))}
+        ${kpiCardHtml('Envoyés', fmtN(a.stats.sent))}
+        ${kpiCardHtml("Taux d'ouverture", a.stats.sent>0?openRate+' %':'—')}
+        ${kpiCardHtml('Taux de clic', a.stats.sent>0?clickRate+' %':'—')}
+      </div>
+      <div class="kv" style="margin-top:18px"><span>Statut</span><b>${scenStatusTag(a.status)}</b></div>
+      <div class="kv"><span>Créé le</span><b>${fmtDateFR(a.createdAt)}</b></div>
+      <div class="kv" style="border-bottom:0"><span>Dernière modification</span><b>${fmtDateFR(a.lastModified)}</b></div>`;
+    const toggleLabel = a.status==='active' ? 'Mettre en pause' : 'Activer';
+    openPanel({eyebrow:'Scénario automatisé', title:a.name, bodyHtml, wide:true,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="toggleScenarioStatus('${a.id}')">${toggleLabel}</button>`});
+  }
+  function toggleScenarioStatus(id){
+    const a=DB.automationById(id); if(!a) return;
+    a.status = a.status==='active' ? 'paused' : 'active';
+    a.lastModified=new Date();
+    toast(a.status==='active'?'Scénario activé':'Scénario mis en pause');
+    closePanel(); renderScenarios();
+  }
+  renderScenarios();
+
+  // ============================================================
+  // SCÉNARIOS AUTOMATISÉS — Assistant de création (3 étapes)
+  // ============================================================
+  let scenDraft=null, scenStep=1;
+  const SCEN_STEP_LABELS=['Déclencheur','Message','Vérification'];
+  function renderScenWizardSteps(){
+    document.getElementById('scenWizardSteps').innerHTML=SCEN_STEP_LABELS.map((label,i)=>{
+      const n=i+1, cls=n<scenStep?'done':(n===scenStep?'current':'');
+      return `<div class="ws ${cls}"><div class="dot">${n<scenStep?'✓':n}</div><span>${label}</span></div>${i<SCEN_STEP_LABELS.length-1?'<div class="wl"></div>':''}`;
+    }).join('');
+  }
+  function selectScenTrigger(key){
+    scenDraft.triggerKey=key;
+    const def=TRIGGER_DEFS.find(t=>t.key===key);
+    if(def && def.needsDays && !scenDraft.triggerOffsetDays) scenDraft.triggerOffsetDays=7;
+    renderScenWizardStepBody();
+  }
+  function scTriggerToDraft(){
+    const def=TRIGGER_DEFS.find(t=>t.key===scenDraft.triggerKey);
+    if(!def) return null;
+    const trigger={type:def.type};
+    if(def.segmentId) trigger.segmentId=def.segmentId;
+    if(def.needsDays) trigger.offsetDays=scenDraft.triggerOffsetDays||7;
+    return trigger;
+  }
+  function updateScenAudiencePreview(){
+    const el=document.getElementById('scAudiencePreview'); if(!el) return;
+    const daysInput=document.getElementById('scDays');
+    if(daysInput) scenDraft.triggerOffsetDays=parseInt(daysInput.value,10)||7;
+    const trigger=scTriggerToDraft();
+    if(!trigger){ el.innerHTML=''; return; }
+    const count=DB.triggerAudienceCount(trigger);
+    el.innerHTML=`<div class="count">${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement</div>`;
+  }
+  function scStep1Html(){
+    const sel=scenDraft.triggerKey;
+    const cards=TRIGGER_DEFS.map(td=>`<div class="lp-template-card ${sel===td.key?'selected':''}" data-trigger="${td.key}" onclick="selectScenTrigger('${td.key}')" style="flex:1 1 220px;max-width:none"><b>${td.label}</b><small>${td.desc}</small></div>`).join('');
+    const def=TRIGGER_DEFS.find(t=>t.key===sel);
+    const daysField = def&&def.needsDays ? `<div class="field" style="max-width:200px"><label>Nombre de jours</label><input type="number" id="scDays" min="1" value="${scenDraft.triggerOffsetDays||7}" oninput="updateScenAudiencePreview()"></div>` : '';
+    return `<div class="card" style="max-width:720px">
+      <h3>Déclencheur</h3><div class="sub">Choisissez l'événement qui déclenche l'envoi.</div>
+      <div class="row" style="gap:10px;flex-wrap:wrap;margin:14px 0">${cards}</div>
+      ${daysField}
+      <div class="segment-preview" id="scAudiencePreview"></div>
+      <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="wizardNextScen()">Suivant</button></div>
+    </div>`;
+  }
+  function scStepRowHtml(step, idx){
+    return `<div class="card" data-step-idx="${idx}" style="margin-bottom:14px">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h3 style="margin:0">${idx===0?'Premier message':'Message de relance '+(idx+1)}</h3>
+        ${idx>0?`<button type="button" class="rm" onclick="removeScenStep(${idx})" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:''}
+      </div>
+      ${idx>0?`<div class="field" style="max-width:200px"><label>Délai après le message précédent (jours)</label><input type="number" class="scStepDelay" min="1" value="${step.delayDays||1}"></div>`:''}
+      <div class="field"><label>Objet de l'e-mail</label><input type="text" class="scStepSubject" value="${step.subject||''}"></div>
+      <div class="field"><label>Préheader</label><input type="text" class="scStepPreheader" value="${step.preheader||''}"></div>
+      <div class="field"><label>Bouton d'action</label><input type="text" class="scStepCta" value="${step.ctaLabel||'Découvrir'}"></div>
+    </div>`;
+  }
+  function scStep2Html(){
+    return `<div class="phone-wrap">
+      <div style="flex:1;min-width:340px;max-width:520px">
+        <div id="scStepsList">${scenDraft.steps.map((s,i)=>scStepRowHtml(s,i)).join('')}</div>
+        <button type="button" class="rule-add" onclick="addScenStep()">+ Ajouter un message de relance</button>
+        <div class="row" style="justify-content:space-between;margin-top:16px"><button class="btn ghost" onclick="wizardBackScen()">Précédent</button><button class="btn primary" onclick="wizardNextScen()">Suivant</button></div>
+      </div>
+      <div style="flex:1;min-width:300px">
+        <div class="sub" style="margin-bottom:10px">Aperçu — premier message</div>
+        <div class="phone"><div class="screen2"><div class="ph-body" id="scPreviewBody"></div></div></div>
+      </div>
+    </div>`;
+  }
+  function addScenStep(){ readScenStepsFromForm(); scenDraft.steps.push({delayDays:7, subject:'', preheader:'', ctaLabel:'Découvrir'}); renderScenWizardStepBody(); }
+  function removeScenStep(idx){ readScenStepsFromForm(); scenDraft.steps.splice(idx,1); renderScenWizardStepBody(); }
+  function readScenStepsFromForm(){
+    document.querySelectorAll('#scStepsList [data-step-idx]').forEach((row,i)=>{
+      if(!scenDraft.steps[i]) return;
+      const delay=row.querySelector('.scStepDelay'); if(delay) scenDraft.steps[i].delayDays=parseInt(delay.value,10)||1;
+      scenDraft.steps[i].subject=row.querySelector('.scStepSubject').value;
+      scenDraft.steps[i].preheader=row.querySelector('.scStepPreheader').value;
+      scenDraft.steps[i].ctaLabel=row.querySelector('.scStepCta').value||'Découvrir';
+    });
+  }
+  function updateScenMsgPreview(){
+    const subj=(document.querySelector('#scStepsList .scStepSubject')||{}).value||'';
+    const pre=(document.querySelector('#scStepsList .scStepPreheader')||{}).value||'';
+    const cta=(document.querySelector('#scStepsList .scStepCta')||{}).value||'Découvrir';
+    const html=`<div style="font-weight:800;font-size:15px;color:var(--ink)">${subj}</div>
+      <div style="font-size:12px;color:var(--muted);margin:6px 0 10px">${pre}</div>
+      <div style="background:var(--accent);color:#fff;text-align:center;padding:10px;border-radius:9px;font-size:12.5px;font-weight:700;margin-top:14px">${cta}</div>`;
+    const el=document.getElementById('scPreviewBody'); if(el) el.innerHTML=html;
+  }
+  function scStep3Html(){
+    const trigger=scTriggerToDraft();
+    return `<div class="card" style="max-width:760px">
+      <h3>Vérification</h3>
+      <div class="field" style="max-width:360px"><label>Nom du scénario</label><input type="text" id="scName" value="${scenDraft.name||''}" placeholder="Ex. Relance anniversaire"></div>
+      ${flowDiagramHtml(trigger, scenDraft.steps)}
+      <div class="row" style="justify-content:space-between;margin-top:16px">
+        <button class="btn ghost" onclick="wizardBackScen()">Précédent</button>
+        <div class="row" style="gap:10px">
+          <button class="btn ghost" onclick="finishScenWizard('draft')">Enregistrer en brouillon</button>
+          <button class="btn primary" onclick="finishScenWizard('active')">Activer le scénario</button>
+        </div>
+      </div>
+    </div>`;
+  }
+  function renderScenWizardStepBody(){
+    const body=document.getElementById('scenWizardBody');
+    body.innerHTML = scenStep===1?scStep1Html() : scenStep===2?scStep2Html() : scStep3Html();
+    if(scenStep===1) updateScenAudiencePreview();
+    if(scenStep===2){ body.addEventListener('input', updateScenMsgPreview); updateScenMsgPreview(); }
+  }
+  function wizardNextScen(){
+    if(scenStep===1 && !scenDraft.triggerKey){ toast('Choisissez un déclencheur.'); return; }
+    if(scenStep===2) readScenStepsFromForm();
+    scenStep=Math.min(3,scenStep+1);
+    renderScenWizardSteps(); renderScenWizardStepBody();
+  }
+  function wizardBackScen(){
+    if(scenStep===2) readScenStepsFromForm();
+    scenStep=Math.max(1,scenStep-1);
+    renderScenWizardSteps(); renderScenWizardStepBody();
+  }
+  function cancelScenWizard(){ scenDraft=null; go('scenarios.all'); }
+  function finishScenWizard(status){
+    readScenStepsFromForm();
+    const name=(document.getElementById('scName')||{}).value.trim()||'Nouveau scénario';
+    const trigger=scTriggerToDraft();
+    const newAuto={
+      id:'auto'+String(DB.AUTOMATIONS.length+1).padStart(2,'0'),
+      name, status,
+      trigger,
+      steps: scenDraft.steps.map(s=>({delayDays:s.delayDays||0, subject:s.subject, preheader:s.preheader, ctaLabel:s.ctaLabel||'Découvrir'})),
+      stats:{entered:0, sent:0, opened:0, clicked:0},
+      createdAt:new Date(), lastModified:new Date(),
+    };
+    DB.addAutomation(newAuto);
+    scenDraft=null;
+    toast(status==='active' ? 'Scénario activé' : 'Scénario enregistré en brouillon');
+    go('scenarios.all');
+  }
+  function startScenCreation(){ scenDraft=null; go('scenarios.new'); }
+  function startScenCreationFromSegment(segId){
+    const def=TRIGGER_DEFS.find(t=>t.segmentId===segId);
+    scenDraft={name:'', triggerKey:def?def.key:'', triggerOffsetDays:7, steps:[{delayDays:0, subject:'', preheader:'', ctaLabel:'Découvrir'}]};
+    scenStep=1;
+    go('scenarios.new');
+  }
+  function enterScenariosNew(){
+    const gate=document.getElementById('scenGateView'), wiz=document.getElementById('scenWizardView');
+    if(!DB.CLUB.active){ gate.style.display='block'; wiz.style.display='none'; return; }
+    gate.style.display='none'; wiz.style.display='block';
+    if(!scenDraft){ scenDraft={name:'', triggerKey:'', triggerOffsetDays:7, steps:[{delayDays:0, subject:'', preheader:'', ctaLabel:'Découvrir'}]}; scenStep=1; }
+    renderScenWizardSteps(); renderScenWizardStepBody();
+  }
 
   // toast
   let tT;
