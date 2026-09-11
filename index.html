@@ -1281,7 +1281,8 @@
       </div>
       <div class="filters-bar">
         <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="contactsSearch" placeholder="Nom ou e-mail" oninput="renderContacts()"></div>
-        <select id="fOrigin" onchange="renderContacts()"><option value="">Toutes origines</option></select>
+        <select id="fType" onchange="renderContacts()"><option value="">Type (tous)</option><option value="client">Client</option><option value="prospect">Prospect</option></select>
+        <select id="fOrigin" onchange="renderContacts()"><option value="">Tous les canaux</option></select>
         <select id="fSegment" onchange="renderContacts()"><option value="">Tous segments</option></select>
         <select id="fPersona" onchange="renderContacts()"><option value="">Tous personas</option></select>
         <select id="fClub" onchange="renderContacts()"><option value="">Club (tous)</option><option value="member">Membre du Club</option><option value="non-member">Non membre</option></select>
@@ -1291,7 +1292,7 @@
       </div>
       <div class="card" style="padding:4px 4px 0">
         <table><thead><tr>
-          <th data-sort-key="name">Contact</th><th data-sort-key="email">E-mail</th><th>Provenance</th><th>Segments</th><th>Statut Club</th><th data-sort-key="lastScan">Dernier scan</th><th>Consentement</th><th></th>
+          <th data-sort-key="name">Contact</th><th>Type</th><th data-sort-key="email">E-mail</th><th>Canal</th><th>Segments</th><th>Statut Club</th><th data-sort-key="lastScan">Dernier scan</th><th>Consentement</th><th></th>
         </tr></thead>
         <tbody id="clientRows"></tbody></table>
         <div class="pagination" id="contactsPagination"></div>
@@ -1602,14 +1603,14 @@
       <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Contacts et acquisition</h2></div></div>
       <div class="filters-bar">
         <div class="seg-tabs" id="acPeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="7">7 jours</button><button type="button" data-period="30" class="active" aria-pressed="true">30 jours</button><button type="button" data-period="90">90 jours</button></div>
-        <select id="acSource" onchange="renderAnalyticsContacts()"><option value="">Toutes provenances</option></select>
+        <select id="acSource" onchange="renderAnalyticsContacts()"><option value="">Tous les canaux</option></select>
         <select id="acSegment" onchange="renderAnalyticsContacts()"><option value="">Tous segments</option></select>
         <select id="acPersona" onchange="renderAnalyticsContacts()"><option value="">Tous personas</option></select>
       </div>
       <div class="grid cards-4" id="acKpis"></div>
       <div class="grid cards-2" style="margin-top:16px;align-items:start">
         <div class="card"><h3>Évolution des contacts</h3><div class="sub" id="acTrendSub">Nouveaux vs. connus</div><div id="acTrendChart"></div></div>
-        <div class="card"><h3>Sources d'acquisition</h3><div class="sub">Nombre de contacts par provenance</div><div id="acSourceBars"></div></div>
+        <div class="card"><h3>Canaux d'acquisition</h3><div class="sub">Nombre de contacts par canal</div><div id="acSourceBars"></div></div>
       </div>
       <div class="grid cards-2" style="margin-top:16px;align-items:start">
         <div class="card"><h3>Répartition par segment</h3><div id="acSegBars"></div></div>
@@ -1887,7 +1888,7 @@
     function randInt(min,max){ return Math.floor(min+rnd()*(max-min+1)); }
     function daysAgo(n){ return new Date(Date.now()-n*86400000); }
 
-    const SOURCES=['Scan','Boutique de la marque'];
+    const SOURCES=['Scan','Fichier client'];
     const PERSONAS=['Découvreur','Habitué','Ambassadeur','Dormant'];
     const SEGMENT_NAMES=['Adeptes des bons plans','Ambassadeurs de la marque','Premium engagés'];
 
@@ -1970,10 +1971,12 @@
       const scannedCount=randInt(0,6);
       const scannedProductIds=pickN(PRODUCTS.map(p=>p.id), Math.min(scannedCount,PRODUCTS.length));
       const isLoyaltyMember = i<50;
+      const source=pick(SOURCES);
+      const type = source==='Fichier client' ? 'client' : (isLoyaltyMember ? 'client' : (rnd()<0.35 ? 'client' : 'prospect'));
       CONTACTS.push({
         id:'c'+String(i+1).padStart(3,'0'), name:first+' '+last,
         email:slug(first)+'.'+slug(last)+i+'@email.com',
-        createdAt, source:pick(SOURCES), persona:pick(PERSONAS), segment:pick(SEGMENT_NAMES),
+        createdAt, source, type, persona:pick(PERSONAS), segment:pick(SEGMENT_NAMES),
         consentMarketing: rnd()<0.82, consentDate:createdAt,
         lastScanAt: scannedCount>0 ? daysAgo(randInt(0,85)) : null,
         scannedProductIds,
@@ -2056,6 +2059,7 @@
         case 'segment': return c.segment===v;
         case 'persona': return c.persona===v;
         case 'source': return c.source===v;
+        case 'type': return c.type===v;
         case 'status': return c.status===v;
         case 'isMember': return (v==='oui')===!!c.isLoyaltyMember;
         case 'scanCount': return (c.scannedProductIds||[]).length >= Number(v||0);
@@ -2237,7 +2241,7 @@
   }
   function contactFiltersActive(){
     return {
-      origin:document.getElementById('fOrigin').value, segment:document.getElementById('fSegment').value,
+      type:document.getElementById('fType').value, origin:document.getElementById('fOrigin').value, segment:document.getElementById('fSegment').value,
       persona:document.getElementById('fPersona').value, club:document.getElementById('fClub').value,
       consent:document.getElementById('fConsent').value, status:document.getElementById('fStatus').value,
     };
@@ -2247,6 +2251,7 @@
     const f=contactFiltersActive();
     let list=DB.CONTACTS.filter(c=>
       matchesSearch(c.name+' '+c.email,q) &&
+      (!f.type||c.type===f.type) &&
       (!f.origin||c.source===f.origin) && (!f.segment||c.segment===f.segment) && (!f.persona||c.persona===f.persona) &&
       (!f.club||(f.club==='member'?c.isLoyaltyMember:!c.isLoyaltyMember)) &&
       (!f.consent||(f.consent==='yes'?c.consentMarketing:!c.consentMarketing)) &&
@@ -2262,19 +2267,19 @@
   }
   function renderContactsFilterChips(){
     const f=contactFiltersActive();
-    const labels={origin:'Origine',segment:'Segment',persona:'Persona',club:'Club',consent:'Consentement',status:'Activité'};
-    const valueLabels={club:{member:'Membre du Club','non-member':'Non membre'},consent:{yes:'Consentement donné',no:'Sans consentement'},status:{active:'Actif',dormant:'En sommeil'}};
+    const labels={type:'Type',origin:"Canal",segment:'Segment',persona:'Persona',club:'Club',consent:'Consentement',status:'Activité'};
+    const valueLabels={type:{client:'Client',prospect:'Prospect'},club:{member:'Membre du Club','non-member':'Non membre'},consent:{yes:'Consentement donné',no:'Sans consentement'},status:{active:'Actif',dormant:'En sommeil'}};
     const entries=Object.entries(f).filter(([,v])=>v);
     const el=document.getElementById('contactsFiltersActive');
     if(!entries.length){ el.innerHTML=''; return; }
     el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${(valueLabels[k]&&valueLabels[k][v])||v}<button type="button" onclick="resetContactFilter('${k}')">✕</button></span>`).join('')+'<button type="button" class="filter-reset" onclick="resetAllContactFilters()">Réinitialiser</button>';
   }
   function resetContactFilter(key){
-    const map={origin:'fOrigin',segment:'fSegment',persona:'fPersona',club:'fClub',consent:'fConsent',status:'fStatus'};
+    const map={type:'fType',origin:'fOrigin',segment:'fSegment',persona:'fPersona',club:'fClub',consent:'fConsent',status:'fStatus'};
     document.getElementById(map[key]).value=''; renderContacts();
   }
   function resetAllContactFilters(){
-    ['fOrigin','fSegment','fPersona','fClub','fConsent','fStatus'].forEach(id=>document.getElementById(id).value='');
+    ['fType','fOrigin','fSegment','fPersona','fClub','fConsent','fStatus'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('contactsSearch').value=''; renderContacts();
   }
   function renderContacts(keepPage){
@@ -2289,6 +2294,7 @@
       const m=c.isLoyaltyMember?DB.memberById(c.loyaltyMemberId):null;
       return `<tr onclick="openClient('${c.id}')">
         <td><b style="color:var(--ink)">${c.name}</b></td>
+        <td><span class="tag ${c.type==='client'?'green':'teal'}">${c.type==='client'?'Client':'Prospect'}</span></td>
         <td class="muted">${c.email}</td>
         <td>${c.source}</td>
         <td><span class="tag">${c.segment}</span></td>
@@ -2296,7 +2302,7 @@
         <td>${c.lastScanAt?fmtDateFR(c.lastScanAt):'—'}</td>
         <td>${c.consentMarketing?'<span class="tag green">Oui</span>':'<span class="tag grey">Non</span>'}</td>
         <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
-    }).join('') : `<tr><td colspan="8">${emptyStateHtml({icon:'search',title:'Aucun contact trouvé',text:'Essayez de modifier votre recherche ou vos filtres actifs.'})}</td></tr>`;
+    }).join('') : `<tr><td colspan="9">${emptyStateHtml({icon:'search',title:'Aucun contact trouvé',text:'Essayez de modifier votre recherche ou vos filtres actifs.'})}</td></tr>`;
     renderPagination('contactsPagination', total, page, contactsState.pageSize, p=>{ contactsState.page=p; renderContacts(true); });
     renderContactsFilterChips();
     const thead=document.querySelector('#contacts-all thead');
@@ -2309,8 +2315,9 @@
     const m=c.isLoyaltyMember?DB.memberById(c.loyaltyMemberId):null;
     const campaigns=(c.campaignsReceivedIds||[]).map(cid2=>DB.campaignById(cid2)).filter(Boolean);
     const bodyHtml=`
+      <div class="kv"><span>Type</span><b><span class="tag ${c.type==='client'?'green':'teal'}">${c.type==='client'?'Client':'Prospect'}</span></b></div>
       <div class="kv"><span>E-mail</span><b>${c.email}</b></div>
-      <div class="kv"><span>Provenance</span><b>${c.source}</b></div>
+      <div class="kv"><span>Canal d'acquisition</span><b>${c.source}</b></div>
       <div class="kv"><span>Segment</span><b>${c.segment}</b></div>
       <div class="kv"><span>Persona</span><b>${c.persona}</b></div>
       <div class="kv"><span>Premier contact</span><b>${fmtDateFR(c.createdAt)}</b></div>
@@ -2329,7 +2336,8 @@
     const bodyHtml=`
       <div class="field"><label>Nom</label><input type="text" id="cfName" value="${c?c.name:''}" placeholder="Ex. Camille Rousseau"></div>
       <div class="field"><label>E-mail</label><input type="email" id="cfEmail" value="${c?c.email:''}" placeholder="prenom.nom@email.com"></div>
-      <div class="field"><label>Provenance</label><select id="cfSource">${DB.SOURCES.map(s=>`<option ${c&&c.source===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="field"><label>Type de contact</label><select id="cfType"><option value="client" ${!c||c.type==='client'?'selected':''}>Client</option><option value="prospect" ${c&&c.type==='prospect'?'selected':''}>Prospect</option></select></div>
+      <div class="field"><label>Canal d'acquisition</label><select id="cfSource">${DB.SOURCES.map(s=>`<option ${c&&c.source===s?'selected':''}>${s}</option>`).join('')}</select></div>
       <div class="field"><label>Segment</label><select id="cfSegment">${DB.SEGMENT_NAMES.map(s=>`<option ${c&&c.segment===s?'selected':''}>${s}</option>`).join('')}</select></div>
       <div class="field"><label>Persona</label><select id="cfPersona">${DB.PERSONAS.map(s=>`<option ${c&&c.persona===s?'selected':''}>${s}</option>`).join('')}</select></div>
       <div class="opt"><div><b>Consentement marketing</b></div><label class="switch"><input type="checkbox" id="cfConsent" ${!c||c.consentMarketing?'checked':''}><span class="slider"></span></label></div>`;
@@ -2339,14 +2347,15 @@
   function saveContact(cid){
     const name=document.getElementById('cfName').value.trim()||'Nouveau contact';
     const email=document.getElementById('cfEmail').value.trim()||'contact@email.com';
+    const type=document.getElementById('cfType').value;
     const source=document.getElementById('cfSource').value, segment=document.getElementById('cfSegment').value, persona=document.getElementById('cfPersona').value;
     const consentMarketing=document.getElementById('cfConsent').checked;
     if(cid){
       const c=DB.contactById(cid);
-      Object.assign(c,{name,email,source,segment,persona,consentMarketing});
+      Object.assign(c,{name,email,type,source,segment,persona,consentMarketing});
       toast('Contact mis à jour');
     } else {
-      DB.addContact({id:'c'+(DB.CONTACTS.length+1), name, email, createdAt:new Date(), source, persona, segment,
+      DB.addContact({id:'c'+(DB.CONTACTS.length+1), name, email, createdAt:new Date(), type, source, persona, segment,
         consentMarketing, consentDate:new Date(), lastScanAt:null, scannedProductIds:[], isLoyaltyMember:false, loyaltyMemberId:null, campaignsReceivedIds:[], status:'active'});
       toast('Contact ajouté');
     }
@@ -2358,7 +2367,8 @@
   // SEGMENTS (list + rule-builder)
   // ============================================================
   const RULE_FIELDS=[
-    {key:'source', label:'Provenance', type:'select', options:()=>DB.SOURCES},
+    {key:'type', label:'Type de contact', type:'select', options:()=>['client','prospect'], optionLabels:{client:'Client',prospect:'Prospect'}},
+    {key:'source', label:"Canal d'acquisition", type:'select', options:()=>DB.SOURCES},
     {key:'segment', label:'Segment marketing', type:'select', options:()=>DB.SEGMENT_NAMES},
     {key:'persona', label:'Persona', type:'select', options:()=>DB.PERSONAS},
     {key:'status', label:'Statut (actif/dormant)', type:'select', options:()=>['active','dormant'], optionLabels:{active:'Actif',dormant:'En sommeil'}},
