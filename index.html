@@ -1308,7 +1308,7 @@
       <div class="filters-bar">
         <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="prodSearch" placeholder="Nom du produit" oninput="renderProductsTable()"></div>
         <select id="pfGtin" onchange="renderProductsTable()"><option value="">GTIN (tous)</option><option value="with">Avec GTIN</option><option value="without">Sans GTIN</option></select>
-        <select id="pfCategory" onchange="renderProductsTable()"><option value="">Toutes catégories</option></select>
+        <select id="pfTag" onchange="renderProductsTable()"><option value="">Tous les tags</option></select>
         <select id="pfStatus" onchange="renderProductsTable()"><option value="">Statut (tous)</option><option value="active">Actif</option><option value="draft">Brouillon</option></select>
         <select id="pfLanding" onchange="renderProductsTable()"><option value="">Landing Page (toutes)</option><option value="with">Avec Landing Page</option><option value="without">Sans Landing Page</option></select>
         <select id="pfQr" onchange="renderProductsTable()"><option value="">QR (tous)</option><option value="with">Avec QR</option><option value="without">Sans QR</option></select>
@@ -1316,7 +1316,7 @@
       </div>
       <div class="card" style="padding:4px 4px 0">
         <table><thead><tr>
-          <th data-sort-key="name">Produit</th><th>Catégorie</th><th>GTIN</th><th>Landing Page</th><th>QR Code</th><th>Destination active</th><th class="right" data-sort-key="scans30">Scans 30j</th><th>Statut</th><th></th>
+          <th data-sort-key="name">Produit</th><th>Tags</th><th>GTIN</th><th>Landing Page</th><th>QR Code</th><th>Destination active</th><th class="right" data-sort-key="scans30">Scans 30j</th><th>Statut</th><th></th>
         </tr></thead>
         <tbody id="prodRows"></tbody></table>
       </div>
@@ -1888,7 +1888,7 @@
     function randInt(min,max){ return Math.floor(min+rnd()*(max-min+1)); }
     function daysAgo(n){ return new Date(Date.now()-n*86400000); }
 
-    const SOURCES=['Scan en magasin','Scan chez un revendeur','Boutique de la marque','Événement'];
+    const SOURCES=['Scan','Boutique de la marque'];
     const PERSONAS=['Découvreur','Habitué','Ambassadeur','Dormant'];
     const SEGMENT_NAMES=['Adeptes des bons plans','Ambassadeurs de la marque','Premium engagés'];
 
@@ -1910,7 +1910,7 @@
     const PRODUCTS=PRODUCT_DEFS.map((d,i)=>{
       const noGtin=(i===3||i===11);
       return {
-        id:'p'+String(i+1).padStart(2,'0'), name:d[0], brand:'SmartQonsumer', category:d[1], format:d[2],
+        id:'p'+String(i+1).padStart(2,'0'), name:d[0], brand:'SmartQonsumer', tags:[d[1]], format:d[2],
         sku:'SKU-'+(1000+i), gtin: noGtin?null:('37012345'+String(1000+i)),
         gtinState: noGtin?'none':'verified',
         status: i===11?'draft':'active',
@@ -2058,7 +2058,6 @@
         case 'persona': return c.persona===v;
         case 'source': return c.source===v;
         case 'status': return c.status===v;
-        case 'consent': return (v==='oui')===!!c.consentMarketing;
         case 'isMember': return (v==='oui')===!!c.isLoyaltyMember;
         case 'scanCount': return (c.scannedProductIds||[]).length >= Number(v||0);
         case 'daysSinceCreated': return daysSinceD(c.createdAt) <= Number(v||0);
@@ -2364,7 +2363,6 @@
     {key:'segment', label:'Segment marketing', type:'select', options:()=>DB.SEGMENT_NAMES},
     {key:'persona', label:'Persona', type:'select', options:()=>DB.PERSONAS},
     {key:'status', label:'Statut (actif/dormant)', type:'select', options:()=>['active','dormant'], optionLabels:{active:'Actif',dormant:'En sommeil'}},
-    {key:'consent', label:'Consentement marketing', type:'select', options:()=>['oui','non'], optionLabels:{oui:'Oui',non:'Non'}},
     {key:'isMember', label:'Membre du Club', type:'select', options:()=>['oui','non'], optionLabels:{oui:'Oui',non:'Non'}},
     {key:'loyaltyTier', label:'Statut de fidélité', type:'select', options:()=>['Prospect','Membre','Club']},
     {key:'pointsBalance', label:'Solde de points (minimum)', type:'number'},
@@ -3467,15 +3465,15 @@
   // ============================================================
   const prodState={sort:{key:'name',dir:'asc'}};
   function populateProductFilterSelects(){
-    const catSel=document.getElementById('pfCategory');
-    if(catSel && !catSel.dataset.filled){
-      const cats=Array.from(new Set(DB.PRODUCTS.map(p=>p.category)));
-      cats.forEach(c=>catSel.insertAdjacentHTML('beforeend',`<option>${c}</option>`));
-      catSel.dataset.filled='1';
+    const tagSel=document.getElementById('pfTag');
+    if(tagSel && !tagSel.dataset.filled){
+      const tags=Array.from(new Set(DB.PRODUCTS.flatMap(p=>p.tags||[]))).sort();
+      tags.forEach(t=>tagSel.insertAdjacentHTML('beforeend',`<option>${t}</option>`));
+      tagSel.dataset.filled='1';
     }
   }
   function productFiltersActive(){
-    return {gtin:document.getElementById('pfGtin').value, category:document.getElementById('pfCategory').value,
+    return {gtin:document.getElementById('pfGtin').value, tag:document.getElementById('pfTag').value,
       status:document.getElementById('pfStatus').value, landing:document.getElementById('pfLanding').value, qr:document.getElementById('pfQr').value};
   }
   function filteredProducts(){
@@ -3484,7 +3482,7 @@
     let list=DB.PRODUCTS.filter(p=>
       matchesSearch(p.name,q) &&
       (!f.gtin||(f.gtin==='with'?!!p.gtin:!p.gtin)) &&
-      (!f.category||p.category===f.category) &&
+      (!f.tag||(p.tags||[]).includes(f.tag)) &&
       (!f.status||p.status===f.status) &&
       (!f.landing||(f.landing==='with'?!!p.landingPageId:!p.landingPageId)) &&
       (!f.qr||(f.qr==='with'?!!p.qrCodeId:!p.qrCodeId)));
@@ -3500,7 +3498,7 @@
   }
   function renderProductFilterChips(){
     const f=productFiltersActive();
-    const labels={gtin:'GTIN',category:'Catégorie',status:'Statut',landing:'Landing Page',qr:'QR'};
+    const labels={gtin:'GTIN',tag:'Tag',status:'Statut',landing:'Landing Page',qr:'QR'};
     const valueLabels={gtin:{with:'Avec GTIN',without:'Sans GTIN'},status:{active:'Actif',draft:'Brouillon'},landing:{with:'Avec Landing Page',without:'Sans Landing Page'},qr:{with:'Avec QR',without:'Sans QR'}};
     const entries=Object.entries(f).filter(([,v])=>v);
     const el=document.getElementById('prodFiltersActive');
@@ -3508,11 +3506,11 @@
     el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${(valueLabels[k]&&valueLabels[k][v])||v}<button type="button" onclick="resetProductFilter('${k}')">✕</button></span>`).join('')+'<button type="button" class="filter-reset" onclick="resetAllProductFilters()">Réinitialiser</button>';
   }
   function resetProductFilter(key){
-    const map={gtin:'pfGtin',category:'pfCategory',status:'pfStatus',landing:'pfLanding',qr:'pfQr'};
+    const map={gtin:'pfGtin',tag:'pfTag',status:'pfStatus',landing:'pfLanding',qr:'pfQr'};
     document.getElementById(map[key]).value=''; renderProductsTable();
   }
   function resetAllProductFilters(){
-    ['pfGtin','pfCategory','pfStatus','pfLanding','pfQr'].forEach(id=>document.getElementById(id).value='');
+    ['pfGtin','pfTag','pfStatus','pfLanding','pfQr'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('prodSearch').value=''; renderProductsTable();
   }
   function renderProductsTable(){
@@ -3527,7 +3525,7 @@
       const lpTag = lp ? `<span class="tag ${lp.status==='publiee'?'green':(lp.status==='brouillon'?'grey':'teal')}">${lp.status==='publiee'?'Publiée':(lp.status==='brouillon'?'Brouillon':'Désactivée')}</span>` : '<span class="tag grey">Aucune</span>';
       return `<tr onclick="openProductPanel('${p.id}')">
         <td><b style="color:var(--ink)">${p.name}</b></td>
-        <td>${p.category}</td>
+        <td>${(p.tags&&p.tags.length)?p.tags.map(t=>`<span class="tag grey" style="margin-right:4px">${t}</span>`).join(''):'<span class="muted">—</span>'}</td>
         <td>${p.gtin?p.gtin:'<span class="muted">— (SKU interne)</span>'}</td>
         <td>${lpTag}</td>
         <td>${qr?'<span class="tag green">Actif</span>':'<span class="tag grey">Aucun</span>'}</td>
@@ -3541,13 +3539,12 @@
     if(thead) wireSortable(thead, prodState.sort, renderProductsTable);
   }
 
-  const PRODUCT_CATEGORIES=['Édition standard','Édition premium','Collection limitée','Découverte'];
   function productDetailBodyHtml(p){
     const lp=DB.landingPageByProduct(p.id), qr=DB.qrByProduct(p.id);
     const m30=DERIVE.productMetrics(p.id,30);
     return `
       <div class="kv"><span>Marque</span><b>${p.brand}</b></div>
-      <div class="kv"><span>Catégorie</span><b>${p.category}</b></div>
+      <div class="kv"><span>Tags</span><b>${(p.tags&&p.tags.length)?p.tags.join(', '):'—'}</b></div>
       <div class="kv"><span>Format</span><b>${p.format}</b></div>
       <div class="kv"><span>Référence (SKU)</span><b>${p.sku}</b></div>
       <div class="kv"><span>GTIN</span><b>${p.gtin||'— (SKU interne)'}</b></div>
@@ -3561,14 +3558,33 @@
       ${qr?`<div class="kv"><span>Statut</span><b>Actif</b></div><a onclick="closePanel();go('products.qr')" style="font-size:12.5px;font-weight:700;color:var(--accent);cursor:pointer">Voir les QR Codes →</a>`
         :`<p class="muted" style="font-size:12.5px">${lp?`<a onclick="closePanel();pendingQrProductId='${p.id}';go('products.qr')" style="color:var(--accent);font-weight:700;cursor:pointer">Créer le QR Code →</a>`:'La Landing Page doit exister avant de créer un QR Code.'}</p>`}`;
   }
+  let npTagsDraft=[];
+  function tagChipHtml(t,i){ return `<span class="chip" style="cursor:default;display:inline-flex;align-items:center;gap:6px">${t}<button type="button" onclick="removeProductTag(${i})" aria-label="Retirer le tag" style="border:0;background:transparent;color:inherit;cursor:pointer;font-size:14px;line-height:1;padding:0">×</button></span>`; }
+  function renderNpTagsChips(){
+    const el=document.getElementById('npTagsChips'); if(!el) return;
+    el.innerHTML=npTagsDraft.map((t,i)=>tagChipHtml(t,i)).join('') || '<span class="muted" style="font-size:12px">Aucun tag pour le moment.</span>';
+  }
+  function addProductTag(){
+    const input=document.getElementById('npTagInput');
+    const val=input.value.trim();
+    if(!val) return;
+    if(!npTagsDraft.some(t=>t.toLowerCase()===val.toLowerCase())) npTagsDraft.push(val);
+    input.value=''; renderNpTagsChips(); input.focus();
+  }
+  function removeProductTag(i){ npTagsDraft.splice(i,1); renderNpTagsChips(); }
   function productFormBodyHtml(p){
+    npTagsDraft=p?[...(p.tags||[])]:[];
     return `
       <div class="field"><label>Nom du produit</label><input type="text" id="npName" value="${p?p.name:''}" placeholder="Ex. Édition Limitée n°5"></div>
       <div class="field"><label>Marque</label><input type="text" id="npBrand" value="${p?p.brand:'SmartQonsumer'}"></div>
-      <div class="row" style="gap:12px">
-        <div class="field" style="flex:1"><label>Catégorie</label><select id="npCategory">${PRODUCT_CATEGORIES.map(c=>`<option ${p&&p.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
-        <div class="field" style="flex:1"><label>Format / variante</label><input type="text" id="npFormat" value="${p?p.format:''}" placeholder="Ex. 33 cl"></div>
+      <div class="field"><label>Tags</label>
+        <div class="chips" id="npTagsChips">${npTagsDraft.map((t,i)=>tagChipHtml(t,i)).join('') || '<span class="muted" style="font-size:12px">Aucun tag pour le moment.</span>'}</div>
+        <div class="row" style="gap:8px;margin-top:8px">
+          <input type="text" id="npTagInput" placeholder="Ex. Édition limitée" style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addProductTag();}">
+          <button type="button" class="btn ghost" style="padding:8px 14px;font-size:12.5px;flex:none" onclick="addProductTag()">Ajouter</button>
+        </div>
       </div>
+      <div class="field"><label>Format / variante</label><input type="text" id="npFormat" value="${p?p.format:''}" placeholder="Ex. Couleur beige"></div>
       <div class="field"><label>Référence interne (SKU)</label><input type="text" id="npSku" value="${p?p.sku:''}" placeholder="SKU-1000"></div>
       <div class="field"><label>Description</label><textarea id="npDesc" rows="2" placeholder="Description courte du produit"></textarea></div>
       <div class="field"><label>Image</label><div style="border:1px dashed var(--line); border-radius:10px; padding:16px; text-align:center; color:var(--muted); font-size:12px">Glissez une image ici (démo — aucun fichier n'est réellement envoyé)</div></div>
@@ -3615,7 +3631,7 @@
   function saveProduct(pid){
     const name=document.getElementById('npName').value.trim()||'Nouveau produit';
     const brand=document.getElementById('npBrand').value.trim()||'SmartQonsumer';
-    const category=document.getElementById('npCategory').value;
+    const tags=[...npTagsDraft];
     const format=document.getElementById('npFormat').value.trim();
     const sku=document.getElementById('npSku').value.trim()||('SKU-'+Math.floor(1000+Math.random()*9000));
     const gtin=document.getElementById('npGtin').value.trim()||null;
@@ -3623,11 +3639,11 @@
     const gtinState=!gtin?'none':((document.getElementById('gtinStatus').dataset.state)||'checking');
     if(pid){
       const p=DB.productById(pid);
-      Object.assign(p,{name,brand,category,format,sku,gtin,gtinState,status});
+      Object.assign(p,{name,brand,tags,format,sku,gtin,gtinState,status});
       closePanel(); renderProductsTable();
       toast('Produit mis à jour');
     } else {
-      const newP={id:'p'+(DB.PRODUCTS.length+1)+'x'+Math.floor(rndSuffix()), name, brand, category, format, sku, gtin, gtinState, status, createdAt:new Date(), landingPageId:null, qrCodeId:null};
+      const newP={id:'p'+(DB.PRODUCTS.length+1)+'x'+Math.floor(rndSuffix()), name, brand, tags, format, sku, gtin, gtinState, status, createdAt:new Date(), landingPageId:null, qrCodeId:null};
       DB.addProduct(newP);
       closePanel(); renderProductsTable();
       toast('« '+name+' » ajouté au catalogue');
