@@ -2275,7 +2275,7 @@
       return {
         id:cid, name, status,
         productId: i%3===0 ? PRODUCTS[i%PRODUCTS.length].id : null,
-        listId, subject:name, preheader:'Découvrez les nouveautés SmartQonsumer',
+        listId, subject:name,
         shortDesc:'Une sélection pensée pour vous.', longDesc:"Merci de faire partie de notre communauté — voici ce qui vous attend.",
         headerImg:null, contentImg:null, ctaType:'club', ctaUrl:'',
         scheduledAt: status==='planifiee' ? daysAgo(daysOffset) : null,
@@ -2304,7 +2304,7 @@
       {
         id:'auto01', name:"Souhait d'anniversaire", status:'active',
         trigger:{type:'birthday'},
-        steps:[{delayDays:0, subject:'Joyeux anniversaire de la part de SmartQonsumer !', preheader:'Un petit cadeau vous attend dans votre espace Club.', ctaLabel:'Découvrir mon cadeau'}],
+        steps:[{delayDays:0, title:'Joyeux anniversaire !', subject:'Joyeux anniversaire de la part de SmartQonsumer !', shortDesc:'Un cadeau vous attend dans votre espace Club.', longDesc:'Pour célébrer votre anniversaire, nous vous offrons un bonus de points valable 30 jours dans votre espace Club Fidélité.', ctaLabel:'Découvrir mon cadeau', ctaType:'club', ctaTarget:''}],
         stats:{entered:Math.round(birthdayCount0*0.9), sent:Math.round(birthdayCount0*0.9), opened:Math.round(birthdayCount0*0.9*0.52), clicked:Math.round(birthdayCount0*0.9*0.18)},
         createdAt:daysAgo(120), lastModified:daysAgo(4),
       },
@@ -2312,8 +2312,8 @@
         id:'auto02', name:'Réactivation contacts en sommeil', status:'active',
         trigger:{type:'segment_enter', segmentId:'sys-dormant'},
         steps:[
-          {delayDays:0, subject:'On ne vous a pas vu depuis un moment', preheader:'Redécouvrez vos produits préférés', ctaLabel:'Je reviens'},
-          {delayDays:7, subject:'Toujours là pour vous', preheader:'Une offre spéciale retour', ctaLabel:"Voir l'offre"},
+          {delayDays:0, title:'On ne vous a pas vu depuis un moment', subject:'On ne vous a pas vu depuis un moment', shortDesc:'Redécouvrez vos produits préférés.', longDesc:"Cela fait un moment que nous n'avons pas eu de vos nouvelles. Reprenez où vous en étiez et retrouvez vos produits favoris.", ctaLabel:'Je reviens', ctaType:'club', ctaTarget:''},
+          {delayDays:7, title:'Toujours là pour vous', subject:'Toujours là pour vous', shortDesc:'Une offre spéciale retour.', longDesc:'Une offre spéciale vous attend pour votre retour parmi nous.', ctaLabel:"Voir l'offre", ctaType:'club', ctaTarget:''},
         ],
         stats:{entered:dormantCount0, sent:dormantCount0, opened:Math.round(dormantCount0*0.34), clicked:Math.round(dormantCount0*0.09)},
         createdAt:daysAgo(75), lastModified:daysAgo(20),
@@ -2321,7 +2321,7 @@
       {
         id:'auto03', name:'Relance avant récompense', status:'draft',
         trigger:{type:'segment_enter', segmentId:'sys-near-reward'},
-        steps:[{delayDays:0, subject:'Plus que quelques points avant votre récompense !', preheader:'Ne la laissez pas filer', ctaLabel:'Voir ma récompense'}],
+        steps:[{delayDays:0, title:'Plus que quelques points !', subject:'Plus que quelques points avant votre récompense !', shortDesc:'Ne la laissez pas filer.', longDesc:'Vous êtes tout proche de débloquer votre prochaine récompense. Complétez vos actions pour ne pas la manquer.', ctaLabel:'Voir ma récompense', ctaType:'club', ctaTarget:''}],
         stats:{entered:0, sent:0, opened:0, clicked:0},
         createdAt:daysAgo(6), lastModified:daysAgo(6),
       },
@@ -2884,6 +2884,7 @@
   }
   function toggleQrStatus(qrId){
     const qr=DB.qrById(qrId); if(!qr) return;
+    if(qr.status==='active' && !confirm('Désactiver ce QR Code ? Les impressions existantes ne redirigeront plus les visiteurs.')) return;
     qr.status = qr.status==='active' ? 'inactive' : 'active';
     toast(qr.status==='active'?'QR Code activé':'QR Code désactivé');
     closePanel(); renderQrCodes();
@@ -3089,6 +3090,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     </div>`;
   }
   function removePointsRule(ruleId){
+    if(!confirm('Supprimer cette règle de points ?')) return;
     const idx=DB.CLUB.pointsRules.findIndex(r=>r.id===ruleId);
     if(idx!==-1) DB.CLUB.pointsRules.splice(idx,1);
     const el=document.querySelector(`#pointsRulesList [data-rule-id="${ruleId}"]`);
@@ -3107,6 +3109,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     </div>`;
   }
   function removeClubLink(linkId){
+    if(!confirm('Supprimer ce lien ?')) return;
     const idx=DB.CLUB.links.findIndex(l=>l.id===linkId);
     if(idx!==-1) DB.CLUB.links.splice(idx,1);
     const el=document.querySelector(`#clubLinksList [data-link-id="${linkId}"]`);
@@ -3123,9 +3126,15 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     document.getElementById('clubLinksList').innerHTML=DB.CLUB.links.map(clubLinkRowHtml).join('');
   }
   function saveClubGeneral(){
+    const wasActive=DB.CLUB.active;
+    let willBeActive=document.getElementById('clubActive').checked;
+    if(wasActive && !willBeActive && !confirm('Désactiver le Club Fidélité ? Les inscriptions, points et campagnes liées au Club seront suspendus.')){
+      willBeActive=true;
+      document.getElementById('clubActive').checked=true;
+    }
     DB.CLUB.name=document.getElementById('clubName').value.trim()||DB.CLUB.name;
     DB.CLUB.welcomeMessage=document.getElementById('clubWelcome').value.trim();
-    DB.CLUB.active=document.getElementById('clubActive').checked;
+    DB.CLUB.active=willBeActive;
     DB.CLUB.pointsValidityMonths=parseInt(document.getElementById('clubPointsValidity').value,10)||12;
     document.querySelectorAll('#pointsRulesList [data-rule-id]').forEach(el=>{
       const rule=DB.CLUB.pointsRules.find(r=>r.id===el.dataset.ruleId);
@@ -3537,7 +3546,6 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     else if(campStep===2){ campDraft.listId=(document.getElementById('cwList')||{}).value||''; }
     else if(campStep===3){
       campDraft.subject=(document.getElementById('cwSubject')||{}).value||'';
-      campDraft.preheader=(document.getElementById('cwPreheader')||{}).value||'';
       campDraft.shortDesc=(document.getElementById('cwShortDesc')||{}).value||'';
       campDraft.longDesc=(document.getElementById('cwLongDesc')||{}).value||'';
       campDraft.ctaLabel=(document.getElementById('cwCtaLabel')||{}).value||'Découvrir';
@@ -3578,7 +3586,6 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         <h3>Contenu</h3>
         <div class="field"><label>Titre</label><input type="text" id="cwTitle" value="${campDraft.name||''}"></div>
         <div class="field"><label>Objet de l'e-mail</label><input type="text" id="cwSubject" value="${campDraft.subject}"></div>
-        <div class="field"><label>Préheader</label><input type="text" id="cwPreheader" value="${campDraft.preheader}"></div>
         <div class="field"><label>Description courte</label><input type="text" id="cwShortDesc" value="${campDraft.shortDesc}"></div>
         <div class="field"><label>Description longue</label><textarea id="cwLongDesc" rows="3">${campDraft.longDesc}</textarea></div>
         <div class="field"><label>Image d'en-tête</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image d'en-tête (démo)</div></div>
@@ -3678,22 +3685,35 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     readCurrentStepIntoDraft();
     const list=DB.listById(campDraft.listId);
     const recipientIds=DB.deriveListContacts(list).map(c=>c.id);
-    const status=campDraft.sendMode==='now'?'sent':'planifiee';
+    const sendingNow=campDraft.sendMode==='now';
+    const status=sendingNow?'en-cours':'planifiee';
     const newCamp={
       id:'cmp'+String(DB.CAMPAIGNS.length+1).padStart(2,'0'), name:campDraft.name, status,
       productId:campDraft.productId||null, listId:campDraft.listId,
-      subject:campDraft.subject||campDraft.name, preheader:campDraft.preheader, shortDesc:campDraft.shortDesc, longDesc:campDraft.longDesc,
+      subject:campDraft.subject||campDraft.name, shortDesc:campDraft.shortDesc, longDesc:campDraft.longDesc,
       headerImg:null, contentImg:null, ctaType:campDraft.ctaType, ctaUrl:campDraft.ctaTarget,
       scheduledAt: status==='planifiee' ? new Date(campDraft.scheduledAt||Date.now()) : null,
-      sentAt: status==='sent' ? new Date() : null,
-      recipientSnapshotIds: status==='sent' ? recipientIds : [],
-      stats: status==='sent' ? {delivered:recipientIds.length, opened:0, clicked:0} : {delivered:0,opened:0,clicked:0},
+      sentAt: null,
+      recipientSnapshotIds: [],
+      stats: {delivered:0, opened:0, clicked:0},
     };
     DB.addCampaign(newCamp);
-    if(status==='sent') recipientIds.forEach(cid=>{ const c=DB.contactById(cid); if(c) c.campaignsReceivedIds.push(newCamp.id); });
     list.campaignIds.push(newCamp.id);
     campDraft=null;
-    toast(status==='sent'?'Campagne envoyée':'Campagne planifiée');
+    if(sendingNow){
+      toast('Envoi de la campagne en cours…');
+      setTimeout(()=>{
+        newCamp.status='sent';
+        newCamp.sentAt=new Date();
+        newCamp.recipientSnapshotIds=recipientIds;
+        newCamp.stats={delivered:recipientIds.length, opened:0, clicked:0};
+        recipientIds.forEach(cid=>{ const c=DB.contactById(cid); if(c) c.campaignsReceivedIds.push(newCamp.id); });
+        toast('Campagne envoyée');
+        renderCampaigns();
+      },2200);
+    } else {
+      toast('Campagne planifiée');
+    }
     go('campaigns.all');
   }
   function startCampaignCreation(){ campDraft=null; go('campaigns.new'); }
@@ -3701,7 +3721,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const gate=document.getElementById('campGateView'), wiz=document.getElementById('campWizardView');
     if(!DB.CLUB.active){ gate.style.display='block'; wiz.style.display='none'; return; }
     gate.style.display='none'; wiz.style.display='block';
-    if(!campDraft){ campDraft={name:'',productId:'',listId:'',subject:'',preheader:'',shortDesc:'',longDesc:'',ctaLabel:'Découvrir',ctaType:'club',ctaTarget:'',sendMode:'now',scheduledAt:''}; campStep=1; }
+    if(!campDraft){ campDraft={name:'',productId:'',listId:'',subject:'',shortDesc:'',longDesc:'',ctaLabel:'Découvrir',ctaType:'club',ctaTarget:'',sendMode:'now',scheduledAt:''}; campStep=1; }
     renderWizardSteps(); renderWizardStepBody();
   }
   renderContactLists(); renderCampaigns();
@@ -4224,6 +4244,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   }
   function setLandingStatus(lpId,status){
     const lp=DB.LANDING_PAGES.find(l=>l.id===lpId); if(!lp) return;
+    if(status==='desactivee' && !confirm('Désactiver cette Landing Page ? Elle ne sera plus accessible publiquement.')) return;
     lp.status=status; lp.lastModified=new Date();
     toast(status==='publiee'?'Landing Page publiée':'Landing Page désactivée');
     renderLandingPages();
@@ -4620,8 +4641,9 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       <div class="kv"><span>Créé le</span><b>${fmtDateFR(a.createdAt)}</b></div>
       <div class="kv" style="border-bottom:0"><span>Dernière modification</span><b>${fmtDateFR(a.lastModified)}</b></div>`;
     const toggleLabel = a.status==='active' ? 'Mettre en pause' : 'Activer';
+    const canEdit = a.status!=='active';
     openPanel({eyebrow:'Scénario automatisé', title:a.name, bodyHtml, wide:true,
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deleteScenario('${a.id}')">Supprimer</button><button class="btn ghost" onclick="toggleScenarioStatus('${a.id}')">${toggleLabel}</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deleteScenario('${a.id}')">Supprimer</button>${canEdit?`<button class="btn ghost" onclick="editScenario('${a.id}')">Modifier</button>`:''}<button class="btn ghost" onclick="toggleScenarioStatus('${a.id}')">${toggleLabel}</button>`});
   }
   function deleteScenario(id){
     if(!confirm('Supprimer définitivement ce scénario automatisé ?')) return;
@@ -4632,6 +4654,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   }
   function toggleScenarioStatus(id){
     const a=DB.automationById(id); if(!a) return;
+    if(a.status==='active' && !confirm('Mettre ce scénario en pause ? Il cessera de se déclencher pour les nouveaux contacts concernés.')) return;
     a.status = a.status==='active' ? 'paused' : 'active';
     a.lastModified=new Date();
     toast(a.status==='active'?'Scénario activé':'Scénario mis en pause');
@@ -4669,20 +4692,24 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const daysInput=document.getElementById('scDays');
     if(daysInput) scenDraft.triggerOffsetDays=parseInt(daysInput.value,10)||7;
     const trigger=scTriggerToDraft();
-    if(!trigger){ el.innerHTML=''; return; }
+    if(!trigger){ el.textContent=''; return; }
     const count=DB.triggerAudienceCount(trigger);
-    el.innerHTML=`<div class="count">${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement</div>`;
+    el.textContent=`${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement`;
   }
+  const SCEN_DAY_PRESETS=[3,7,14,30,60,90];
   function scStep1Html(){
     const sel=scenDraft.triggerKey;
     const cards=TRIGGER_DEFS.map(td=>`<div class="lp-template-card ${sel===td.key?'selected':''}" data-trigger="${td.key}" onclick="selectScenTrigger('${td.key}')" style="flex:1 1 220px;max-width:none"><b>${td.label}</b><small>${td.desc}</small></div>`).join('');
     const def=TRIGGER_DEFS.find(t=>t.key===sel);
-    const daysField = def&&def.needsDays ? `<div class="field" style="max-width:200px"><label>Nombre de jours</label><input type="number" id="scDays" min="1" value="${scenDraft.triggerOffsetDays||7}" oninput="updateScenAudiencePreview()"></div>` : '';
+    const curDays=scenDraft.triggerOffsetDays||7;
+    const daysField = def&&def.needsDays ? `<div class="field" style="max-width:220px"><label>Délai</label><select id="scDays" onchange="updateScenAudiencePreview()">${SCEN_DAY_PRESETS.map(d=>`<option value="${d}" ${curDays===d?'selected':''}>${d} jours</option>`).join('')}</select></div>` : '';
+    const trigger=sel?scTriggerToDraft():null;
+    const count=trigger?DB.triggerAudienceCount(trigger):0;
     return `<div class="card" style="max-width:720px">
       <h3>Déclencheur</h3><div class="sub">Choisissez l'événement qui déclenche l'envoi.</div>
       <div class="row" style="gap:10px;flex-wrap:wrap;margin:14px 0">${cards}</div>
       ${daysField}
-      <div class="segment-preview" id="scAudiencePreview"></div>
+      <p class="muted" style="font-size:11.5px;margin-top:10px" id="scAudiencePreview">${sel?`${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement`:''}</p>
       <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="wizardNextScen()">Suivant</button></div>
     </div>`;
   }
@@ -4693,9 +4720,22 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         ${idx>0?`<button type="button" class="rm" onclick="removeScenStep(${idx})" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:''}
       </div>
       ${idx>0?`<div class="field" style="max-width:200px"><label>Délai après le message précédent (jours)</label><input type="number" class="scStepDelay" min="1" value="${step.delayDays||1}"></div>`:''}
+      <div class="field"><label>Titre</label><input type="text" class="scStepTitle" value="${step.title||''}"></div>
       <div class="field"><label>Objet de l'e-mail</label><input type="text" class="scStepSubject" value="${step.subject||''}"></div>
-      <div class="field"><label>Préheader</label><input type="text" class="scStepPreheader" value="${step.preheader||''}"></div>
-      <div class="field"><label>Bouton d'action</label><input type="text" class="scStepCta" value="${step.ctaLabel||'Découvrir'}"></div>
+      <div class="field"><label>Description courte</label><input type="text" class="scStepShortDesc" value="${step.shortDesc||''}"></div>
+      <div class="field"><label>Description longue</label><textarea class="scStepLongDesc" rows="3">${step.longDesc||''}</textarea></div>
+      <div class="field"><label>Image d'en-tête</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image d'en-tête (démo)</div></div>
+      <div class="field"><label>Image de contenu</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image de contenu (démo)</div></div>
+      <div class="row" style="gap:12px">
+        <div class="field" style="flex:1"><label>Bouton d'action</label><input type="text" class="scStepCta" value="${step.ctaLabel||'Découvrir'}"></div>
+        <div class="field" style="flex:1"><label>Destination</label><select class="scStepCtaType" onchange="this.closest('[data-step-idx]').querySelector('.scStepCtaTargetField').style.display=this.value==='external'?'flex':'none'">
+          <option value="landing" ${step.ctaType==='landing'?'selected':''}>Landing Page</option>
+          <option value="product" ${step.ctaType==='product'?'selected':''}>Produit</option>
+          <option value="club" ${!step.ctaType||step.ctaType==='club'?'selected':''}>Club Fidélité</option>
+          <option value="external" ${step.ctaType==='external'?'selected':''}>URL externe</option>
+        </select></div>
+      </div>
+      <div class="field scStepCtaTargetField" style="${step.ctaType==='external'?'':'display:none'}"><label>URL <small>(si destination externe)</small></label><input type="text" class="scStepCtaTarget" value="${step.ctaTarget||''}" placeholder="https://…"></div>
     </div>`;
   }
   function scStep2Html(){
@@ -4707,29 +4747,56 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       </div>
       <div style="flex:1;min-width:300px">
         <div class="sub" style="margin-bottom:10px">Aperçu — premier message</div>
-        <div class="phone"><div class="screen2"><div class="ph-body" id="scPreviewBody"></div></div></div>
+        <div class="device-tabs" id="scDeviceTabs" style="margin-bottom:14px">
+          <button type="button" class="active" data-device="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Mobile</button>
+          <button type="button" data-device="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8"/></svg>Ordinateur</button>
+        </div>
+        <div id="scPreviewMobile" class="phone"><div class="screen2"><div class="ph-body" id="scPreviewMobileBody"></div></div></div>
+        <div id="scPreviewDesktop" style="display:none; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); max-width:480px">
+          <div class="device-bar"><div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div><div></div></div>
+          <div style="padding:28px" id="scPreviewDesktopBody"></div>
+        </div>
       </div>
     </div>`;
   }
-  function addScenStep(){ readScenStepsFromForm(); scenDraft.steps.push({delayDays:7, subject:'', preheader:'', ctaLabel:'Découvrir'}); renderScenWizardStepBody(); }
+  function addScenStep(){ readScenStepsFromForm(); scenDraft.steps.push({delayDays:7, title:'', subject:'', shortDesc:'', longDesc:'', ctaLabel:'Découvrir', ctaType:'club', ctaTarget:''}); renderScenWizardStepBody(); }
   function removeScenStep(idx){ readScenStepsFromForm(); scenDraft.steps.splice(idx,1); renderScenWizardStepBody(); }
   function readScenStepsFromForm(){
     document.querySelectorAll('#scStepsList [data-step-idx]').forEach((row,i)=>{
       if(!scenDraft.steps[i]) return;
       const delay=row.querySelector('.scStepDelay'); if(delay) scenDraft.steps[i].delayDays=parseInt(delay.value,10)||1;
+      scenDraft.steps[i].title=row.querySelector('.scStepTitle').value;
       scenDraft.steps[i].subject=row.querySelector('.scStepSubject').value;
-      scenDraft.steps[i].preheader=row.querySelector('.scStepPreheader').value;
+      scenDraft.steps[i].shortDesc=row.querySelector('.scStepShortDesc').value;
+      scenDraft.steps[i].longDesc=row.querySelector('.scStepLongDesc').value;
       scenDraft.steps[i].ctaLabel=row.querySelector('.scStepCta').value||'Découvrir';
+      scenDraft.steps[i].ctaType=row.querySelector('.scStepCtaType').value;
+      scenDraft.steps[i].ctaTarget=row.querySelector('.scStepCtaTarget').value;
     });
   }
   function updateScenMsgPreview(){
-    const subj=(document.querySelector('#scStepsList .scStepSubject')||{}).value||'';
-    const pre=(document.querySelector('#scStepsList .scStepPreheader')||{}).value||'';
-    const cta=(document.querySelector('#scStepsList .scStepCta')||{}).value||'Découvrir';
-    const html=`<div style="font-weight:800;font-size:15px;color:var(--ink)">${subj}</div>
-      <div style="font-size:12px;color:var(--muted);margin:6px 0 10px">${pre}</div>
-      <div style="background:var(--accent);color:#fff;text-align:center;padding:10px;border-radius:9px;font-size:12.5px;font-weight:700;margin-top:14px">${cta}</div>`;
-    const el=document.getElementById('scPreviewBody'); if(el) el.innerHTML=html;
+    const row=document.querySelector('#scStepsList [data-step-idx="0"]'); if(!row) return;
+    const title=(row.querySelector('.scStepTitle')||{}).value||'';
+    const shortDesc=(row.querySelector('.scStepShortDesc')||{}).value||'';
+    const longDesc=(row.querySelector('.scStepLongDesc')||{}).value||'';
+    const cta=(row.querySelector('.scStepCta')||{}).value||'Découvrir';
+    const html=`<div style="font-weight:800;font-size:15px;color:var(--ink)">${title}</div>
+      <div style="font-size:12px;color:var(--muted);margin:6px 0 10px">${shortDesc}</div>
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;margin-bottom:14px">${longDesc}</div>
+      <div style="background:var(--accent);color:#fff;text-align:center;padding:10px;border-radius:9px;font-size:12.5px;font-weight:700">${cta}</div>`;
+    const m=document.getElementById('scPreviewMobileBody'); if(m) m.innerHTML=html;
+    const d=document.getElementById('scPreviewDesktopBody'); if(d) d.innerHTML=html;
+  }
+  function wireScenPreview(){
+    const tabs=document.getElementById('scDeviceTabs');
+    if(tabs) tabs.addEventListener('click',e=>{
+      const b=e.target.closest('button'); if(!b) return;
+      tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+      const dev=b.dataset.device;
+      document.getElementById('scPreviewMobile').style.display=dev==='mobile'?'block':'none';
+      document.getElementById('scPreviewDesktop').style.display=dev==='desktop'?'block':'none';
+    });
+    updateScenMsgPreview();
   }
   function scStep3Html(){
     const trigger=scTriggerToDraft();
@@ -4749,8 +4816,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   function renderScenWizardStepBody(){
     const body=document.getElementById('scenWizardBody');
     body.innerHTML = scenStep===1?scStep1Html() : scenStep===2?scStep2Html() : scStep3Html();
-    if(scenStep===1) updateScenAudiencePreview();
-    if(scenStep===2){ body.addEventListener('input', updateScenMsgPreview); updateScenMsgPreview(); }
+    if(scenStep===2){ body.addEventListener('input', updateScenMsgPreview); wireScenPreview(); }
   }
   function wizardNextScen(){
     if(scenStep===1 && !scenDraft.triggerKey){ toast('Choisissez un déclencheur.'); return; }
@@ -4768,31 +4834,43 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     readScenStepsFromForm();
     const name=(document.getElementById('scName')||{}).value.trim()||'Nouveau scénario';
     const trigger=scTriggerToDraft();
-    const newAuto={
-      id:'auto'+String(DB.AUTOMATIONS.length+1).padStart(2,'0'),
-      name, status,
-      trigger,
-      steps: scenDraft.steps.map(s=>({delayDays:s.delayDays||0, subject:s.subject, preheader:s.preheader, ctaLabel:s.ctaLabel||'Découvrir'})),
-      stats:{entered:0, sent:0, opened:0, clicked:0},
-      createdAt:new Date(), lastModified:new Date(),
-    };
-    DB.addAutomation(newAuto);
+    const steps=scenDraft.steps.map(s=>({delayDays:s.delayDays||0, title:s.title, subject:s.subject, shortDesc:s.shortDesc, longDesc:s.longDesc, ctaLabel:s.ctaLabel||'Découvrir', ctaType:s.ctaType||'club', ctaTarget:s.ctaTarget||''}));
+    if(scenDraft.id){
+      const a=DB.automationById(scenDraft.id);
+      Object.assign(a,{name,status,trigger,steps,lastModified:new Date()});
+      toast('Scénario mis à jour');
+    } else {
+      DB.addAutomation({
+        id:'auto'+String(DB.AUTOMATIONS.length+1).padStart(2,'0'),
+        name, status, trigger, steps,
+        stats:{entered:0, sent:0, opened:0, clicked:0},
+        createdAt:new Date(), lastModified:new Date(),
+      });
+      toast(status==='active' ? 'Scénario activé' : 'Scénario enregistré en brouillon');
+    }
     scenDraft=null;
-    toast(status==='active' ? 'Scénario activé' : 'Scénario enregistré en brouillon');
     go('scenarios.all');
   }
   function startScenCreation(){ scenDraft=null; go('scenarios.new'); }
   function startScenCreationFromSegment(segId){
     const def=TRIGGER_DEFS.find(t=>t.segmentId===segId);
-    scenDraft={name:'', triggerKey:def?def.key:'', triggerOffsetDays:7, steps:[{delayDays:0, subject:'', preheader:'', ctaLabel:'Découvrir'}]};
+    scenDraft={name:'', triggerKey:def?def.key:'', triggerOffsetDays:7, steps:[{delayDays:0, title:'', subject:'', shortDesc:'', longDesc:'', ctaLabel:'Découvrir', ctaType:'club', ctaTarget:''}]};
     scenStep=1;
+    go('scenarios.new');
+  }
+  function editScenario(id){
+    const a=DB.automationById(id); if(!a) return;
+    const def=TRIGGER_DEFS.find(t=>t.type===a.trigger.type && (t.segmentId||null)===(a.trigger.segmentId||null));
+    scenDraft={id:a.id, name:a.name, triggerKey:def?def.key:'', triggerOffsetDays:a.trigger.offsetDays||7, steps:a.steps.map(s=>({...s}))};
+    scenStep=1;
+    closePanel();
     go('scenarios.new');
   }
   function enterScenariosNew(){
     const gate=document.getElementById('scenGateView'), wiz=document.getElementById('scenWizardView');
     if(!DB.CLUB.active){ gate.style.display='block'; wiz.style.display='none'; return; }
     gate.style.display='none'; wiz.style.display='block';
-    if(!scenDraft){ scenDraft={name:'', triggerKey:'', triggerOffsetDays:7, steps:[{delayDays:0, subject:'', preheader:'', ctaLabel:'Découvrir'}]}; scenStep=1; }
+    if(!scenDraft){ scenDraft={name:'', triggerKey:'', triggerOffsetDays:7, steps:[{delayDays:0, title:'', subject:'', shortDesc:'', longDesc:'', ctaLabel:'Découvrir', ctaType:'club', ctaTarget:''}]}; scenStep=1; }
     renderScenWizardSteps(); renderScenWizardStepBody();
   }
 
