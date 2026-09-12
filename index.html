@@ -1454,7 +1454,7 @@
         </div>
       </div>
       <div class="card" style="margin-top:16px">
-        <h3>Liens</h3><div class="sub">Liens automatiques de la plateforme, pages légales de l'espace de travail et liens libres — position et ordre configurables</div>
+        <h3>Liens</h3><div class="sub">Pages légales affichées en pied de page du Club</div>
         <div id="clubLinksList"></div>
       </div>
     </section>
@@ -1817,11 +1817,15 @@
       <div class="screen-head"><div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Informations générales</h2><p>Informations de votre espace de travail SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div></div>
       <div class="card" style="max-width:560px">
         <div class="field"><label>Logo</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Logo (démo)</div></div>
-        <div class="field"><label>Nom de l'espace de travail</label><input type="text" id="stCompany" value="SmartQonsumer Demo"></div>
-        <div class="field"><label>Adresse</label><input type="text" id="stAddress" value="12 rue de l'Innovation, 75011 Paris"></div>
-        <div class="field"><label>E-mail de contact</label><input type="email" id="stContactEmail" value="contact@smartqonsumer.com"></div>
-        <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="saveSettingsWorkspace()">Enregistrer</button></div>
+        <div class="field"><label>Nom de l'espace de travail</label><input type="text" id="stWorkspaceName" value="SmartQonsumer Demo"></div>
+        <div class="field"><label>Nom de la société</label><input type="text" id="stCompanyName" value="SmartQonsumer SAS"></div>
+        <div class="field"><label>Rue</label><input type="text" id="stAddressStreet" value="12 rue de l'Innovation"></div>
+        <div class="row" style="gap:12px">
+          <div class="field" style="flex:1"><label>Ville</label><input type="text" id="stAddressCity" value="75011 Paris"></div>
+          <div class="field" style="flex:1"><label>Pays</label><input type="text" id="stAddressCountry" value="France"></div>
+        </div>
       </div>
+      <div class="row" style="justify-content:flex-end;margin-top:14px;max-width:560px"><button class="btn ghost" onclick="saveSettingsWorkspace()">Enregistrer</button></div>
     </section>
 
     <section class="screen" id="settings-billing">
@@ -2375,10 +2379,9 @@
         {id:'pr4', label:'Action personnalisée', points:15, active:false},
       ],
       links:[
-        {id:'lk1', label:'CGV', type:'legal', url:'#', position:'footer', order:1, active:true},
-        {id:'lk2', label:'Mentions légales', type:'legal', url:'#', position:'footer', order:2, active:true},
-        {id:'lk3', label:'Politique de confidentialité', type:'legal', url:'#', position:'footer', order:3, active:true},
-        {id:'lk4', label:'Notre site', type:'custom', url:'https://smartqonsumer.com', position:'header', order:1, active:true},
+        {id:'lk1', label:'CGV', type:'legal', url:'#', order:1, active:true},
+        {id:'lk2', label:'Mentions légales', type:'legal', url:'#', order:2, active:true},
+        {id:'lk3', label:'Politique de confidentialité', type:'legal', url:'#', order:3, active:true},
       ],
     };
 
@@ -2453,7 +2456,7 @@
     let CURRENT_USER={name:'Nicolas Wicke', email:'nicolas.wicke@smartqonsumer.com', role:'Administrateur', language:'Français', timezone:'Europe/Paris', twoFactorEnabled:true};
 
     // ---- WORKSPACE (singleton — the account/tenant identity; drives the Club's public URL) ----
-    let WORKSPACE={name:'SmartQonsumer Demo', address:"12 rue de l'Innovation, 75011 Paris", contactEmail:'contact@smartqonsumer.com', senderName:'SmartQonsumer', senderEmail:'news@smartqonsumer.com'};
+    let WORKSPACE={name:'SmartQonsumer Demo', companyName:'SmartQonsumer SAS', addressStreet:"12 rue de l'Innovation", addressCity:'75011 Paris', addressCountry:'France', senderName:'SmartQonsumer', senderEmail:'news@smartqonsumer.com'};
 
     return {
       PRODUCTS, CONTACTS, SCAN_EVENTS, SYSTEM_SEGMENTS,
@@ -2467,6 +2470,7 @@
       addAutomation(a){ AUTOMATIONS.push(a); }, removeAutomation,
       POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); }, removePointOfVente,
       LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward, pointsExpiryDate, removeMember,
+      addLoyaltyMember(m){ LOYALTY_MEMBERS.push(m); },
       SYSTEM_REWARDS, get CUSTOM_REWARDS(){ return CUSTOM_REWARDS; }, allRewards, rewardById, addCustomReward, removeCustomReward,
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
       QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
@@ -3143,14 +3147,13 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     toast('Règle supprimée');
   }
   function clubLinkRowHtml(link){
-    return `<div class="opt" data-link-id="${link.id}">
-      <div style="flex:1;min-width:0">
-        <input type="text" class="clLabel" value="${link.label}" placeholder="Libellé" style="border:0;background:transparent;font-weight:600;padding:0;font-size:13px;color:var(--ink);width:100%">
-        <input type="text" class="clUrl" value="${link.url}" placeholder="URL" style="border:0;background:transparent;padding:0;font-size:11.5px;color:var(--muted);width:100%;margin-top:2px">
+    return `<div class="opt" data-link-id="${link.id}" style="align-items:flex-start;gap:10px">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;padding:2px 0">
+        <input type="text" class="clLabel" value="${link.label}" placeholder="Libellé">
+        <input type="text" class="clUrl" value="${link.url}" placeholder="URL">
       </div>
-      <select class="clPosition" style="width:auto;padding:6px 8px;font-size:12px;margin-right:8px"><option value="header" ${link.position==='header'?'selected':''}>En-tête</option><option value="footer" ${link.position==='footer'?'selected':''}>Pied de page</option></select>
-      <label class="switch"><input type="checkbox" class="clActive" ${link.active?'checked':''}><span class="slider"></span></label>
-      ${link.type==='custom'?`<button type="button" class="rm" onclick="removeClubLink('${link.id}')" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:'<span class="tag grey" style="margin-left:8px;flex:none">Auto</span>'}
+      <label class="switch" style="flex:none;margin-top:10px"><input type="checkbox" class="clActive" ${link.active?'checked':''}><span class="slider"></span></label>
+      ${link.type==='custom'?`<button type="button" class="rm" onclick="removeClubLink('${link.id}')" aria-label="Retirer" style="margin-top:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:''}
     </div>`;
   }
   function removeClubLink(linkId){
@@ -3191,7 +3194,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     });
     document.querySelectorAll('#clubLinksList [data-link-id]').forEach(el=>{
       const link=DB.CLUB.links.find(l=>l.id===el.dataset.linkId);
-      if(link){ link.label=el.querySelector('.clLabel').value.trim()||link.label; link.url=el.querySelector('.clUrl').value.trim(); link.position=el.querySelector('.clPosition').value; link.active=el.querySelector('.clActive').checked; }
+      if(link){ link.label=el.querySelector('.clLabel').value.trim()||link.label; link.url=el.querySelector('.clUrl').value.trim(); link.active=el.querySelector('.clActive').checked; }
     });
     const customDomainInput=document.getElementById('clubCustomDomain').value.trim();
     if(customDomainInput && !isPremium()){
@@ -3208,6 +3211,8 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   // ============================================================
   function slugifyWorkspaceName(){ return (DB.WORKSPACE.name||'club').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-'); }
   let clubPvConnected=true, clubPvDrawerOpen=false, clubPvScreen='home';
+  let clubPvActiveMemberId=DB.LOYALTY_MEMBERS[0].id;
+  let clubPvLoginStep='email', clubPvLoginEmail='';
   const CLUB_PV_SCREENS=[
     {id:'home', label:'Accueil'},
     {id:'points', label:'Mes points'},
@@ -3228,8 +3233,8 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const primary=(document.getElementById('clubColorPrimary')||{}).value||DB.CLUB.colors.primary;
     const footer=(document.getElementById('clubFooter')||{}).value||DB.CLUB.footerContent;
     const activeLinks=DB.CLUB.links.filter(l=>l.active);
-    const footerLinks=activeLinks.filter(l=>l.position==='footer');
-    const member=DB.LOYALTY_MEMBERS[0];
+    const footerLinks=activeLinks;
+    const member=DB.memberById(clubPvActiveMemberId)||DB.LOYALTY_MEMBERS[0];
     const contact=DB.contactById(member.contactId);
     const expiry=DB.pointsExpiryDate(member.id);
     const initials=(contact.name||'').split(' ').map(p=>p[0]).join('').slice(0,2);
@@ -3304,12 +3309,24 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const screenMap={home:homeScreen, points:pointsScreen, rewards:rewardsScreen, history:historyScreen, profile:profileScreen};
     const connectedBody=`${backLink}${screenMap[clubPvScreen]||homeScreen}`;
 
-    const disconnectedBody=`
+    const emailFieldSmall=`<div style="display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12px;color:var(--ink);margin-bottom:14px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${clubPvLoginEmail}</span><span onclick="clubPvBackToEmail()" style="color:${primary};font-weight:700;cursor:pointer;flex:none;margin-left:8px">Modifier</span></div>`;
+    const disconnectedBody = clubPvLoginStep==='signup' ? `
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center;margin-bottom:14px">Aucun compte trouv\u00e9 pour cette adresse \u2014 cr\u00e9ez-le en quelques secondes pour rejoindre le Club.</div>
+      ${emailFieldSmall}
+      <input type="text" id="clubPvSignupFirst" placeholder="Pr\u00e9nom" style="margin-bottom:8px">
+      <input type="text" id="clubPvSignupLast" placeholder="Nom" style="margin-bottom:14px">
+      <div onclick="clubPvSubmitSignup()" style="background:${primary};color:#fff;text-align:center;padding:11px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer">Cr\u00e9er mon compte</div>
+      <div style="text-align:center;margin-top:12px;font-size:11.5px;color:var(--muted)">D\u00e9j\u00e0 membre ? <span onclick="clubPvBackToEmail()" style="color:${primary};font-weight:700;cursor:pointer">Utiliser une autre adresse</span></div>`
+      : clubPvLoginStep==='password' ? `
+      <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center;margin-bottom:14px">Contente de vous revoir !</div>
+      ${emailFieldSmall}
+      <input type="password" id="clubPvPasswordInput" placeholder="Mot de passe" style="margin-bottom:14px">
+      <div onclick="clubPvSubmitPassword()" style="background:${primary};color:#fff;text-align:center;padding:11px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer">Se connecter</div>`
+      : `
       <div style="font-size:12px;color:var(--ink);line-height:1.5;text-align:center;margin-bottom:16px">${DB.CLUB.welcomeMessage}</div>
-      <div style="border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12px;color:var(--muted);margin-bottom:8px">vous@email.com</div>
-      <div style="border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12px;color:var(--muted);margin-bottom:14px">\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022</div>
-      <div onclick="setClubPvState('connected')" style="background:${primary};color:#fff;text-align:center;padding:11px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer">Se connecter</div>
-      <div style="text-align:center;margin-top:12px;font-size:11.5px;color:var(--muted)">Pas encore membre ? <span onclick="setClubPvState('connected')" style="color:${primary};font-weight:700;cursor:pointer">Rejoindre le Club</span></div>`;
+      <input type="email" id="clubPvEmailInput" placeholder="vous@email.com" value="${clubPvLoginEmail}" style="margin-bottom:14px">
+      <div onclick="clubPvSubmitEmail()" style="background:${primary};color:#fff;text-align:center;padding:11px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer">Continuer</div>
+      <div style="text-align:center;margin-top:12px;font-size:11.5px;color:var(--muted)">Pas encore membre ? Entrez votre e-mail, on s'occupe du reste.</div>`;
 
     const footerBlock=`<div style="margin-top:22px;padding-top:14px;border-top:1px solid var(--line);text-align:center">
       ${footerLinks.length?`<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:8px">${footerLinks.map(l=>`<span style="font-size:10.5px;color:var(--muted);text-decoration:underline">${l.label}</span>`).join('')}</div>`:''}
@@ -3349,9 +3366,41 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     clubPvConnected = state==='connected';
     clubPvDrawerOpen=false;
     clubPvScreen='home';
+    if(state!=='connected'){ clubPvLoginStep='email'; clubPvLoginEmail=''; }
     const tabs=document.getElementById('clubPvStateTabs');
     if(tabs) tabs.querySelectorAll('button').forEach(b=>{ const on=b.dataset.state===state; b.classList.toggle('active',on); b.setAttribute('aria-pressed',on?'true':'false'); });
     updateClubPreview();
+  }
+  function clubPvBackToEmail(){ clubPvLoginStep='email'; updateClubPreview(); }
+  function clubPvSubmitEmail(){
+    const input=document.getElementById('clubPvEmailInput');
+    const email=(input?input.value:'').trim();
+    if(!email){ toast('Renseignez votre e-mail'); return; }
+    clubPvLoginEmail=email;
+    const contact=DB.CONTACTS.find(c=>c.email.toLowerCase()===email.toLowerCase());
+    clubPvLoginStep = (contact && contact.isLoyaltyMember) ? 'password' : 'signup';
+    updateClubPreview();
+  }
+  function clubPvSubmitPassword(){
+    const contact=DB.CONTACTS.find(c=>c.email.toLowerCase()===clubPvLoginEmail.toLowerCase());
+    if(contact && contact.loyaltyMemberId) clubPvActiveMemberId=contact.loyaltyMemberId;
+    clubPvLoginStep='email'; clubPvLoginEmail='';
+    setClubPvState('connected');
+  }
+  function clubPvSubmitSignup(){
+    const first=(document.getElementById('clubPvSignupFirst')||{}).value.trim();
+    const last=(document.getElementById('clubPvSignupLast')||{}).value.trim();
+    const name=(first+' '+last).trim()||'Nouveau membre';
+    const now=new Date();
+    const cid='c-new-'+Date.now();
+    DB.addContact({ id:cid, name, email:clubPvLoginEmail, createdAt:now, source:'Club Fidélité', type:'client', birthDate:null, persona:'', segment:'', consentMarketing:true, consentDate:now, lastScanAt:null, scannedProductIds:[], isLoyaltyMember:true, loyaltyMemberId:null, campaignsReceivedIds:[], status:'active' });
+    const mid='m-new-'+Date.now();
+    DB.addLoyaltyMember({ id:mid, contactId:cid, joinedAt:now, tier:'Prospect', pointsEarned:0, pointsUsed:0, pointsBalance:0, lastActivityAt:now, rewardIds:[] });
+    DB.contactById(cid).loyaltyMemberId=mid;
+    clubPvActiveMemberId=mid;
+    clubPvLoginStep='email'; clubPvLoginEmail='';
+    toast('Compte créé — bienvenue dans le Club !');
+    setClubPvState('connected');
   }
   function toggleClubPreviewMenu(){ clubPvDrawerOpen=!clubPvDrawerOpen; updateClubPreview(); }
   function navigateClubPv(screen){ clubPvScreen=screen; clubPvDrawerOpen=false; updateClubPreview(); }
@@ -4048,15 +4097,19 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     renderTopbarUser();
   }
   function renderSettingsWorkspace(){
-    const nameEl=document.getElementById('stCompany'); if(!nameEl) return;
+    const nameEl=document.getElementById('stWorkspaceName'); if(!nameEl) return;
     nameEl.value=DB.WORKSPACE.name;
-    document.getElementById('stAddress').value=DB.WORKSPACE.address;
-    document.getElementById('stContactEmail').value=DB.WORKSPACE.contactEmail;
+    document.getElementById('stCompanyName').value=DB.WORKSPACE.companyName;
+    document.getElementById('stAddressStreet').value=DB.WORKSPACE.addressStreet;
+    document.getElementById('stAddressCity').value=DB.WORKSPACE.addressCity;
+    document.getElementById('stAddressCountry').value=DB.WORKSPACE.addressCountry;
   }
   function saveSettingsWorkspace(){
-    DB.WORKSPACE.name=document.getElementById('stCompany').value.trim()||DB.WORKSPACE.name;
-    DB.WORKSPACE.address=document.getElementById('stAddress').value.trim();
-    DB.WORKSPACE.contactEmail=document.getElementById('stContactEmail').value.trim();
+    DB.WORKSPACE.name=document.getElementById('stWorkspaceName').value.trim()||DB.WORKSPACE.name;
+    DB.WORKSPACE.companyName=document.getElementById('stCompanyName').value.trim();
+    DB.WORKSPACE.addressStreet=document.getElementById('stAddressStreet').value.trim();
+    DB.WORKSPACE.addressCity=document.getElementById('stAddressCity').value.trim();
+    DB.WORKSPACE.addressCountry=document.getElementById('stAddressCountry').value.trim();
     toast('Espace de travail mis à jour');
     renderClubGeneral();
   }
