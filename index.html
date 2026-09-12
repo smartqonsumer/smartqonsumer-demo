@@ -1283,6 +1283,7 @@
           <button type="button" onclick="closeDropdowns();openUserProfilePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.2"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>Mon profil</button>
           <button type="button" onclick="closeDropdowns();openUserPreferencesPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M4 12h16M4 18h10"/><circle cx="17" cy="6" r="2"/><circle cx="8" cy="18" r="2"/></svg>Préférences</button>
           <button type="button" onclick="closeDropdowns();openUserSecurityPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></svg>Sécurité</button>
+          <button type="button" onclick="closeDropdowns();openUserPasswordPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="15" r="4"/><path d="M10 12l9-9m0 0h-4m4 0v4m-7 3 3 3"/></svg>Gérer mon mot de passe</button>
           <div style="height:1px;background:var(--line);margin:6px 4px"></div>
           <button type="button" onclick="closeDropdowns();go('settings.workspace')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres de l'espace de travail</button>
           <button type="button" onclick="closeDropdowns();showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Se déconnecter</button>
@@ -1424,7 +1425,7 @@
     <!-- LOYALTY -->
     <section class="screen" id="loyalty-settings-general">
       <div class="screen-head"><div><div class="eyebrow">Club Fidélité · Paramétrage</div><h2 style="margin:2px 0 0;color:var(--ink)">Paramétrages généraux</h2><p>Identité, statut, règles de points et liens du Club.</p></div>
-        <button class="btn primary" onclick="saveClubGeneral()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
+        <button class="btn primary" onclick="saveClubGeneral()">Enregistrer</button>
       </div>
       <div class="grid cards-2">
         <div class="card">
@@ -1624,7 +1625,7 @@
     <section class="screen" id="loyalty-settings-appearance">
       <div class="screen-head">
         <div><div class="eyebrow">Club Fidélité · Paramétrage</div><h2 style="margin:2px 0 0;color:var(--ink)">Personnalisation du Club</h2><p>Apparence de la page publique du Club et choix du modèle.</p></div>
-        <button class="btn primary" onclick="saveClubAppearance()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
+        <button class="btn primary" onclick="saveClubAppearance()">Enregistrer</button>
       </div>
       <div class="card" style="margin-bottom:16px">
         <h3>Modèle</h3><div class="sub">Choisissez la mise en page de la page publique du Club</div>
@@ -4096,6 +4097,24 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       <div class="opt"><div><b>Authentification à deux facteurs</b></div><label class="switch"><input type="checkbox" id="uSecTwoFactor" ${u.twoFactorEnabled?'checked':''} onchange="toggleUserTwoFactor(this.checked)"><span class="slider"></span></label></div>
       <div class="opt" style="border-bottom:0"><div><b>Journal des connexions</b></div><a onclick="toast('Journal des connexions — démo statique')" style="color:var(--accent);font-weight:700;font-size:12.5px;cursor:pointer">Consulter →</a></div>`,
       footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+  }
+  function openUserPasswordPanel(){
+    openPanel({eyebrow:'Mon compte', title:'Mot de passe', bodyHtml:`
+      <div class="field"><label>Mot de passe actuel</label><input type="password" id="uPwdCurrent" placeholder="••••••••"></div>
+      <div class="field"><label>Nouveau mot de passe</label><input type="password" id="uPwdNew" placeholder="••••••••"></div>
+      <div class="field"><label>Confirmer le nouveau mot de passe</label><input type="password" id="uPwdConfirm" placeholder="••••••••"></div>
+      <p class="muted" style="font-size:11.5px;margin-top:-4px">Démo statique — aucun mot de passe n'est réellement modifié.</p>`,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveUserPassword()">Enregistrer</button>`});
+  }
+  function saveUserPassword(){
+    const current=document.getElementById('uPwdCurrent').value;
+    const next=document.getElementById('uPwdNew').value;
+    const confirmVal=document.getElementById('uPwdConfirm').value;
+    if(!current){ toast('Renseignez votre mot de passe actuel.'); return; }
+    if(!next || next.length<8){ toast('Le nouveau mot de passe doit contenir au moins 8 caractères.'); return; }
+    if(next!==confirmVal){ toast('Les deux mots de passe ne correspondent pas.'); return; }
+    closePanel();
+    toast('Mot de passe mis à jour');
   }
   renderTopbarUser();
 
