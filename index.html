@@ -780,7 +780,7 @@
     .hamburger{display:inline-flex}
     .topbar{padding:0 14px; gap:10px}
     .topbar h1{font-size:15px}
-    .avatar{display:none}
+    .demo-badge{display:none}
     .screen{padding:16px}
     .phone-wrap{gap:20px}
   }
@@ -1264,15 +1264,31 @@
       <h1 id="pageTitle">Tableau de bord</h1>
       <div class="spacer"></div>
       <div class="demo-badge">DÉMO · données fictives</div>
-      <div class="avatar">NW</div>
+      <div class="dropdown-wrap">
+        <button type="button" onclick="toggleDropdown(this)" aria-haspopup="true" aria-expanded="false" style="border:0;background:transparent;padding:0;cursor:pointer;border-radius:50%">
+          <div class="avatar" id="topbarAvatar">NW</div>
+        </button>
+        <div class="dropdown-menu" style="min-width:230px">
+          <div style="padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px">
+            <div style="font-size:13px;font-weight:700;color:var(--ink)" id="userMenuName">Nicolas Wicke</div>
+            <div style="font-size:11.5px;color:var(--muted)" id="userMenuRole">Administrateur</div>
+          </div>
+          <button type="button" onclick="closeDropdowns();openUserProfilePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.2"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>Mon profil</button>
+          <button type="button" onclick="closeDropdowns();openUserPreferencesPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M4 12h16M4 18h10"/><circle cx="17" cy="6" r="2"/><circle cx="8" cy="18" r="2"/></svg>Préférences</button>
+          <button type="button" onclick="closeDropdowns();openUserSecurityPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></svg>Sécurité</button>
+          <div style="height:1px;background:var(--line);margin:6px 4px"></div>
+          <button type="button" onclick="closeDropdowns();go('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres de l'entreprise</button>
+          <button type="button" onclick="closeDropdowns();showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Se déconnecter</button>
+        </div>
+      </div>
     </header>
 
     <!-- DASHBOARD -->
     <section class="screen active" id="dash">
       <div class="screen-head">
         <div>
-          <div class="eyebrow">Vue d'ensemble</div>
-          <h2 style="margin:2px 0 0;color:var(--ink)">Tableau de bord</h2>
+          <div class="eyebrow">Tableau de bord</div>
+          <h2 style="margin:2px 0 0;color:var(--ink)" id="dashGreeting">Bonjour</h2>
           <p style="margin:4px 0 0;color:var(--muted);font-size:13px">Suivez l'acquisition, l'engagement et la fidélisation de vos consommateurs.</p>
         </div>
         <div class="dropdown-wrap">
@@ -1785,7 +1801,7 @@
         </div>
         <div class="card">
           <h3>Utilisateurs et rôles</h3><div class="sub">Membres de votre équipe ayant accès au compte</div>
-          <div class="kv"><span>Nicolas Wicke</span><b>Administrateur</b></div>
+          <div class="kv"><span id="settingsUserName">Nicolas Wicke</span><b id="settingsUserRole">Administrateur</b></div>
           <div class="kv"><span>Camille Rousseau</span><b>Éditeur</b></div>
           <div class="kv" style="border-bottom:0"><span>Thomas Girard</span><b>Lecture seule</b></div>
         </div>
@@ -1804,18 +1820,6 @@
           <div class="field"><label>Nom d'expéditeur</label><input type="text" id="stSenderName" value="SmartQonsumer"></div>
           <div class="field"><label>E-mail d'expédition</label><input type="email" id="stSenderEmail" value="news@smartqonsumer.com"></div>
           <div class="kv" style="border-bottom:0"><span>Domaine public du Club</span><b id="stPublicDomain"></b></div>
-        </div>
-      </div>
-      <div class="grid cards-2" style="margin-top:16px">
-        <div class="card">
-          <h3>Préférences</h3>
-          <div class="opt"><div><b>Langue</b></div><select style="width:auto;padding:6px 10px"><option>Français</option></select></div>
-          <div class="opt" style="border-bottom:0"><div><b>Fuseau horaire</b></div><select style="width:auto;padding:6px 10px"><option>Europe/Paris</option></select></div>
-        </div>
-        <div class="card">
-          <h3>Sécurité</h3>
-          <div class="opt"><div><b>Authentification à deux facteurs</b></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-          <div class="opt" style="border-bottom:0"><div><b>Journal des connexions</b></div><a onclick="toast('Journal des connexions — démo statique')" style="color:var(--accent);font-weight:700;font-size:12.5px;cursor:pointer">Consulter →</a></div>
         </div>
       </div>
     </section>
@@ -2421,6 +2425,9 @@
     let PLAN={tier:(function(){ try{ return localStorage.getItem('sq_plan_tier')||'essentiel'; }catch(e){ return 'essentiel'; } })()};
     function setPlanTier(tier){ PLAN.tier=tier; try{ localStorage.setItem('sq_plan_tier',tier); }catch(e){} }
 
+    // ---- CURRENT_USER (singleton — the logged-in team member for this demo session) ----
+    let CURRENT_USER={name:'Nicolas Wicke', email:'nicolas.wicke@smartqonsumer.com', role:'Administrateur', language:'Français', timezone:'Europe/Paris', twoFactorEnabled:true};
+
     return {
       PRODUCTS, CONTACTS, SCAN_EVENTS, SYSTEM_SEGMENTS,
       get CUSTOM_SEGMENTS(){ return CUSTOM_SEGMENTS; },
@@ -2436,7 +2443,7 @@
       REWARDS, addReward(r){ REWARDS.push(r); }, removeReward,
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
       QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
-      CLUB, PLAN, setPlanTier,
+      CLUB, PLAN, setPlanTier, CURRENT_USER,
       SOURCES, PERSONAS, SEGMENT_NAMES,
       productById, contactById, addProduct(p){ PRODUCTS.push(p); }, addContact(c){ CONTACTS.push(c); },
       removeProduct, removeContact,
@@ -3770,6 +3777,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   // TABLEAU DE BORD
   // ============================================================
   function renderDashboard(){
+    const greetEl=document.getElementById('dashGreeting'); if(greetEl) greetEl.textContent='Bonjour '+DB.CURRENT_USER.name;
     const s30=DERIVE.scanTotals(30);
     document.getElementById('dashKpis').innerHTML=[
       kpiCardHtml('Nouveaux contacts', fmtN(DERIVE.newContactsCount(30)), '30 derniers jours'),
@@ -3984,7 +3992,66 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     toggle.checked=premium;
     document.getElementById('stPlanLabel').textContent=premium?'Premium':'Essentiel';
     document.getElementById('stPublicDomain').textContent='club.smartqonsumer.com/'+slugifyClubName();
+    renderTopbarUser();
   }
+
+  // ============================================================
+  // MON COMPTE — menu utilisateur (profil, préférences, sécurité)
+  // ============================================================
+  function renderTopbarUser(){
+    const u=DB.CURRENT_USER;
+    const initials=(u.name||'').split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase();
+    const avatarEl=document.getElementById('topbarAvatar'); if(avatarEl) avatarEl.textContent=initials;
+    const menuName=document.getElementById('userMenuName'); if(menuName) menuName.textContent=u.name;
+    const menuRole=document.getElementById('userMenuRole'); if(menuRole) menuRole.textContent=u.role;
+    const settingsName=document.getElementById('settingsUserName'); if(settingsName) settingsName.textContent=u.name;
+    const settingsRole=document.getElementById('settingsUserRole'); if(settingsRole) settingsRole.textContent=u.role;
+  }
+  function openUserProfilePanel(){
+    const u=DB.CURRENT_USER;
+    openPanel({eyebrow:'Mon compte', title:'Mon profil', bodyHtml:`
+      <div class="field"><label>Nom</label><input type="text" id="uProfileName" value="${u.name}"></div>
+      <div class="field"><label>E-mail</label><input type="email" id="uProfileEmail" value="${u.email}"></div>
+      <div class="field"><label>Rôle</label><input type="text" value="${u.role}" disabled></div>`,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveUserProfile()">Enregistrer</button>`});
+  }
+  function saveUserProfile(){
+    DB.CURRENT_USER.name=document.getElementById('uProfileName').value.trim()||DB.CURRENT_USER.name;
+    DB.CURRENT_USER.email=document.getElementById('uProfileEmail').value.trim()||DB.CURRENT_USER.email;
+    closePanel();
+    toast('Profil mis à jour');
+    renderTopbarUser();
+    renderDashboard();
+  }
+  function openUserPreferencesPanel(){
+    const u=DB.CURRENT_USER;
+    openPanel({eyebrow:'Mon compte', title:'Préférences', bodyHtml:`
+      <div class="opt"><div><b>Langue</b></div><select id="uPrefLanguage" style="width:auto;padding:6px 10px"><option ${u.language==='Français'?'selected':''}>Français</option></select></div>
+      <div class="opt" style="border-bottom:0"><div><b>Fuseau horaire</b></div><select id="uPrefTimezone" style="width:auto;padding:6px 10px"><option ${u.timezone==='Europe/Paris'?'selected':''}>Europe/Paris</option></select></div>`,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button><button class="btn primary" onclick="saveUserPreferences()">Enregistrer</button>`});
+  }
+  function saveUserPreferences(){
+    DB.CURRENT_USER.language=document.getElementById('uPrefLanguage').value;
+    DB.CURRENT_USER.timezone=document.getElementById('uPrefTimezone').value;
+    closePanel();
+    toast('Préférences enregistrées');
+  }
+  function toggleUserTwoFactor(checked){
+    if(!checked && !confirm("Désactiver l'authentification à deux facteurs ? Cela réduit la sécurité de votre compte.")){
+      document.getElementById('uSecTwoFactor').checked=true;
+      return;
+    }
+    DB.CURRENT_USER.twoFactorEnabled=checked;
+    toast(checked?'Authentification à deux facteurs activée':'Authentification à deux facteurs désactivée');
+  }
+  function openUserSecurityPanel(){
+    const u=DB.CURRENT_USER;
+    openPanel({eyebrow:'Mon compte', title:'Sécurité', bodyHtml:`
+      <div class="opt"><div><b>Authentification à deux facteurs</b></div><label class="switch"><input type="checkbox" id="uSecTwoFactor" ${u.twoFactorEnabled?'checked':''} onchange="toggleUserTwoFactor(this.checked)"><span class="slider"></span></label></div>
+      <div class="opt" style="border-bottom:0"><div><b>Journal des connexions</b></div><a onclick="toast('Journal des connexions — démo statique')" style="color:var(--accent);font-weight:700;font-size:12.5px;cursor:pointer">Consulter →</a></div>`,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>`});
+  }
+  renderTopbarUser();
 
   // landing
   function joinClub(){
