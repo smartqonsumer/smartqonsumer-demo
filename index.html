@@ -1252,7 +1252,14 @@
         </div>
       </div>
 
-      <button data-route="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres</button>
+      <div class="nav-group" data-group="settings">
+        <button class="nav-group-head" data-group-toggle="settings" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Paramètres</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="nav-sub">
+          <button class="nav-sub-item" data-route="settings.workspace">Espace de travail</button>
+          <button class="nav-sub-item" data-route="settings.billing">Abonnement</button>
+          <button class="nav-sub-item" data-route="settings.email">Configuration e-mails</button>
+        </div>
+      </div>
     </nav>
     <div class="side-foot"><button onclick="showHome()" style="width:100%;background:var(--color-surface-muted);color:var(--color-text-secondary);border:1px solid var(--color-border);padding:8px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:12.5px;margin-bottom:10px">← Se déconnecter</button>Prototype de démonstration · V0.1 · données fictives</div>
   </aside>
@@ -1277,7 +1284,7 @@
           <button type="button" onclick="closeDropdowns();openUserPreferencesPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M4 12h16M4 18h10"/><circle cx="17" cy="6" r="2"/><circle cx="8" cy="18" r="2"/></svg>Préférences</button>
           <button type="button" onclick="closeDropdowns();openUserSecurityPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></svg>Sécurité</button>
           <div style="height:1px;background:var(--line);margin:6px 4px"></div>
-          <button type="button" onclick="closeDropdowns();go('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres de l'entreprise</button>
+          <button type="button" onclick="closeDropdowns();go('settings.workspace')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres de l'espace de travail</button>
           <button type="button" onclick="closeDropdowns();showHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Se déconnecter</button>
         </div>
       </div>
@@ -1433,7 +1440,7 @@
         </div>
       </div>
       <div class="card" style="margin-top:16px">
-        <h3>Liens</h3><div class="sub">Liens automatiques de la plateforme, pages légales du tenant et liens libres — position et ordre configurables</div>
+        <h3>Liens</h3><div class="sub">Liens automatiques de la plateforme, pages légales de l'espace de travail et liens libres — position et ordre configurables</div>
         <div id="clubLinksList"></div>
       </div>
     </section>
@@ -1789,38 +1796,33 @@
       </div>
       <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Campagne</th><th>Statut</th><th class="right">Destinataires</th><th class="right">Ouvertures</th><th class="right">Taux d'ouverture</th></tr></thead><tbody id="aeDetailTable"></tbody></table></div>
     </section>
-    <section class="screen" id="settings">
-      <div class="screen-head"><div><div class="eyebrow">Tenant</div><h2 style="margin:2px 0 0;color:var(--ink)">Paramètres</h2><p>Informations de votre compte SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div></div>
-      <div class="grid cards-2">
-        <div class="card">
-          <h3>Informations de l'entreprise</h3>
-          <div class="field"><label>Logo</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Logo (démo)</div></div>
-          <div class="field"><label>Raison sociale</label><input type="text" id="stCompany" value="SmartQonsumer Demo SAS"></div>
-          <div class="field"><label>Adresse</label><input type="text" id="stAddress" value="12 rue de l'Innovation, 75011 Paris"></div>
-          <div class="field"><label>E-mail de contact</label><input type="email" id="stContactEmail" value="contact@smartqonsumer.com"></div>
-        </div>
-        <div class="card">
-          <h3>Utilisateurs et rôles</h3><div class="sub">Membres de votre équipe ayant accès au compte</div>
-          <div class="kv"><span id="settingsUserName">Nicolas Wicke</span><b id="settingsUserRole">Administrateur</b></div>
-          <div class="kv"><span>Camille Rousseau</span><b>Éditeur</b></div>
-          <div class="kv" style="border-bottom:0"><span>Thomas Girard</span><b>Lecture seule</b></div>
-        </div>
+    <section class="screen" id="settings-workspace">
+      <div class="screen-head"><div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Informations générales</h2><p>Informations de votre espace de travail SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div></div>
+      <div class="card" style="max-width:560px">
+        <div class="field"><label>Logo</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Logo (démo)</div></div>
+        <div class="field"><label>Nom de l'espace de travail</label><input type="text" id="stCompany" value="SmartQonsumer Demo"></div>
+        <div class="field"><label>Adresse</label><input type="text" id="stAddress" value="12 rue de l'Innovation, 75011 Paris"></div>
+        <div class="field"><label>E-mail de contact</label><input type="email" id="stContactEmail" value="contact@smartqonsumer.com"></div>
       </div>
-      <div class="grid cards-2" style="margin-top:16px">
-        <div class="card">
-          <h3>Abonnement actuel</h3><div class="sub">Fonctionnalités Premium (Landing Pages et Club Fidélité)</div>
-          <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
-            <div><b style="font-size:14px;color:var(--ink)" id="stPlanLabel">Essentiel</b><div class="muted" style="font-size:12px">Modèles Premium verrouillés</div></div>
-            <label class="switch"><input type="checkbox" id="stPlanToggle" onchange="togglePlanTier(this.checked)"><span class="slider"></span></label>
-          </div>
-          <p class="muted" style="font-size:11.5px;margin-top:10px">Bascule de démonstration — active/désactive l'offre Premium pour voir les deux états ailleurs dans l'application (Landing Pages, Club Fidélité).</p>
+    </section>
+
+    <section class="screen" id="settings-billing">
+      <div class="screen-head"><div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Abonnement</h2><p>Fonctionnalités Premium (Landing Pages et Club Fidélité).</p></div></div>
+      <div class="card" style="max-width:480px">
+        <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div><b style="font-size:14px;color:var(--ink)" id="stPlanLabel">Essentiel</b><div class="muted" style="font-size:12px">Modèles Premium verrouillés</div></div>
+          <label class="switch"><input type="checkbox" id="stPlanToggle" onchange="togglePlanTier(this.checked)"><span class="slider"></span></label>
         </div>
-        <div class="card">
-          <h3>Configuration e-mails</h3><div class="sub">Expéditeur utilisé pour vos campagnes</div>
-          <div class="field"><label>Nom d'expéditeur</label><input type="text" id="stSenderName" value="SmartQonsumer"></div>
-          <div class="field"><label>E-mail d'expédition</label><input type="email" id="stSenderEmail" value="news@smartqonsumer.com"></div>
-          <div class="kv" style="border-bottom:0"><span>Domaine public du Club</span><b id="stPublicDomain"></b></div>
-        </div>
+        <p class="muted" style="font-size:11.5px;margin-top:10px">Bascule de démonstration — active/désactive l'offre Premium pour voir les deux états ailleurs dans l'application (Landing Pages, Club Fidélité).</p>
+      </div>
+    </section>
+
+    <section class="screen" id="settings-email">
+      <div class="screen-head"><div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Configuration e-mails</h2><p>Expéditeur utilisé pour vos campagnes.</p></div></div>
+      <div class="card" style="max-width:480px">
+        <div class="field"><label>Nom d'expéditeur</label><input type="text" id="stSenderName" value="SmartQonsumer"></div>
+        <div class="field"><label>E-mail d'expédition</label><input type="email" id="stSenderEmail" value="news@smartqonsumer.com"></div>
+        <div class="kv" style="border-bottom:0"><span>Domaine public du Club</span><b id="stPublicDomain"></b></div>
       </div>
     </section>
 
@@ -1863,7 +1865,9 @@
     'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics', onEnter:()=>renderAnalyticsProducts()},
     'analytics.loyalty':{screenId:'analytics-loyalty', title:'Fidélité', group:'analytics', onEnter:()=>renderAnalyticsLoyalty()},
     'analytics.email':{screenId:'analytics-email', title:'Campagnes e-mail', group:'analytics', onEnter:()=>renderAnalyticsEmail()},
-    'settings':{screenId:'settings', title:'Paramètres', onEnter:()=>renderSettings()},
+    'settings.workspace':{screenId:'settings-workspace', title:'Espace de travail', group:'settings', onEnter:()=>renderSettings()},
+    'settings.billing':{screenId:'settings-billing', title:'Abonnement', group:'settings', onEnter:()=>renderSettings()},
+    'settings.email':{screenId:'settings-email', title:'Configuration e-mails', group:'settings', onEnter:()=>renderSettings()},
   };
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
@@ -1957,7 +1961,7 @@
   const ICO_LOCK='<path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/>';
   function premiumLockBadge(){ return `<span class="premium-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ICO_LOCK}</svg>Premium</span>`; }
   function premiumGateHtml(featureLabel){
-    return `<div class="premium-gate"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO_LOCK}</svg></div><h4>${featureLabel} — fonctionnalité Premium</h4><p>Cette fonctionnalité est réservée à l'offre Premium. Passez à Premium pour la débloquer.</p><button class="btn primary" onclick="go('settings')">Voir les offres</button></div>`;
+    return `<div class="premium-gate"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO_LOCK}</svg></div><h4>${featureLabel} — fonctionnalité Premium</h4><p>Cette fonctionnalité est réservée à l'offre Premium. Passez à Premium pour la débloquer.</p><button class="btn primary" onclick="go('settings.billing')">Voir les offres</button></div>`;
   }
 
   // Generic side panel: one drawer instance, re-rendered per call (see #panel/#panelBack near end of body).
@@ -4004,8 +4008,6 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const avatarEl=document.getElementById('topbarAvatar'); if(avatarEl) avatarEl.textContent=initials;
     const menuName=document.getElementById('userMenuName'); if(menuName) menuName.textContent=u.name;
     const menuRole=document.getElementById('userMenuRole'); if(menuRole) menuRole.textContent=u.role;
-    const settingsName=document.getElementById('settingsUserName'); if(settingsName) settingsName.textContent=u.name;
-    const settingsRole=document.getElementById('settingsUserRole'); if(settingsRole) settingsRole.textContent=u.role;
   }
   function openUserProfilePanel(){
     const u=DB.CURRENT_USER;
