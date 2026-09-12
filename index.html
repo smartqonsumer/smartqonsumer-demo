@@ -2179,8 +2179,11 @@
     // ---- REWARDS: système (paramétrable, non supprimable) + personnalisées (libres), comme les segments ----
     const SYSTEM_REWARDS=[
       {id:'sys-promo', name:'Réduction fidélité', type:'promo-generic', system:true, promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'sys-shipping', name:'Livraison gratuite', type:'promo-generic', system:true, promoCode:'FREESHIP', pointsCost:60, validity:'60 jours', status:'active', obtainedCount:0},
       {id:'sys-gift', name:'Produit offert', type:'promo-unique', system:true, codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0},
+      {id:'sys-early-access', name:'Accès prioritaire aux nouveautés', type:'promo-unique', system:true, codesPool:['EARLY-001','EARLY-002','EARLY-003','EARLY-004'], pointsCost:180, validity:'45 jours', status:'active', obtainedCount:0},
       {id:'sys-experience', name:'Expérience personnalisée', type:'custom', system:true, fulfillmentInstructions:"Envoyer un e-mail au membre avec les modalités de sa récompense.", pointsCost:300, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'sys-donation', name:'Don caritatif en votre nom', type:'custom', system:true, fulfillmentInstructions:"Un don est versé à l'association partenaire au nom du membre ; confirmation envoyée par e-mail.", pointsCost:150, validity:'90 jours', status:'active', obtainedCount:0},
     ];
     let CUSTOM_REWARDS=[
       {id:'r03', name:'Accès prévente collection limitée', type:'custom', system:false, fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0},
@@ -3056,13 +3059,23 @@
   // CLUB FIDÉLITÉ — Récompenses
   // ============================================================
   function rewardTypeLabel(t){ return {'promo-generic':'Code promo générique','promo-unique':'Code unique','custom':'Récompense personnalisée'}[t]||t; }
+  function toggleRewardStatus(rid){
+    const r=DB.rewardById(rid); if(!r) return;
+    if(r.status==='active' && !confirm('Désactiver cette récompense ? Elle ne sera plus proposée aux membres.')){ renderRewards(); return; }
+    r.status = r.status==='active' ? 'archivee' : 'active';
+    toast(r.status==='active'?'Récompense activée':'Récompense désactivée');
+    renderRewards();
+  }
   const rewardState={type:''};
   function renderRewards(){
     const grid=document.getElementById('rewardsGrid'); if(!grid) return;
     const list=DB.allRewards().filter(r=>!rewardState.type || (rewardState.type==='system'?r.system:!r.system));
     grid.innerHTML=list.map(r=>`
       <div class="card" onclick="openRewardPanel('${r.id}')" style="cursor:pointer">
-        <div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap"><h3 style="margin:0">${r.name}</h3><span class="tag ${r.status==='active'?'green':'grey'}">${r.status==='active'?'Active':'Archivée'}</span></div>
+        <div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap">
+          <h3 style="margin:0">${r.name}</h3>
+          <label class="switch" style="flex:none" onclick="event.stopPropagation()"><input type="checkbox" ${r.status==='active'?'checked':''} onclick="event.stopPropagation();toggleRewardStatus('${r.id}')"><span class="slider"></span></label>
+        </div>
         <div class="row" style="gap:6px;margin-bottom:12px"><span class="tag ${r.system?'grey':'teal'}">${r.system?'Système':'Personnalisé'}</span><span class="sub" style="margin:0">${rewardTypeLabel(r.type)}</span></div>
         <div class="kv"><span>Coût</span><b>${r.pointsCost} pts</b></div>
         <div class="kv"><span>Validité</span><b>${r.validity}</b></div>
@@ -3227,6 +3240,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   let clubPvConnected=true, clubPvDrawerOpen=false, clubPvScreen='home';
   let clubPvActiveMemberId=DB.LOYALTY_MEMBERS[0].id;
   let clubPvLoginStep='email', clubPvLoginEmail='';
+  let clubPvRedeemMessage=null;
   const CLUB_PV_SCREENS=[
     {id:'home', label:'Accueil'},
     {id:'points', label:'Mes points'},
@@ -3292,7 +3306,9 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       ${activeRules.length?activeRules.map(r=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px"><span style="color:var(--ink)">${r.label}</span><b style="color:${primary}">+${r.points} pts</b></div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e8gle active.</p>`}`;
 
     const availableRewards=DB.allRewards().filter(r=>r.status==='active');
+    const redeemBanner = clubPvRedeemMessage ? `<div style="background:#EAF7EE;border:1px solid #BEE6C9;color:#1F7A3F;border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;line-height:1.5"><b>R\u00e9compense obtenue : ${clubPvRedeemMessage.name}</b><br>${clubPvRedeemMessage.detail}</div>` : '';
     const rewardsScreen=`
+      ${redeemBanner}
       ${clubPvSectionLabel('R\u00e9compenses disponibles')}
       ${availableRewards.length?availableRewards.map(r=>{
         const afford=member.pointsBalance>=r.pointsCost;
@@ -3301,7 +3317,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
             <div style="font-size:12.5px;font-weight:700;color:var(--ink)">${r.name}</div>
             <div style="font-size:11.5px;font-weight:700;color:${primary};white-space:nowrap;flex:none">${r.pointsCost} pts</div>
           </div>
-          <div style="margin-top:8px;text-align:center;padding:8px;border-radius:8px;font-size:11.5px;font-weight:700;${afford?`background:${primary};color:#fff`:`background:var(--lav2);color:var(--muted)`}">${afford?'Obtenir':'Il manque '+(r.pointsCost-member.pointsBalance)+' pts'}</div>
+          <div ${afford?`onclick="clubPvRedeemReward('${r.id}')"`:''} style="margin-top:8px;text-align:center;padding:8px;border-radius:8px;font-size:11.5px;font-weight:700;cursor:${afford?'pointer':'default'};${afford?`background:${primary};color:#fff`:`background:var(--lav2);color:var(--muted)`}">${afford?'Obtenir':'Il manque '+(r.pointsCost-member.pointsBalance)+' pts'}</div>
         </div>`;
       }).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense disponible pour le moment.</p>`}`;
 
@@ -3380,6 +3396,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     clubPvConnected = state==='connected';
     clubPvDrawerOpen=false;
     clubPvScreen='home';
+    clubPvRedeemMessage=null;
     if(state!=='connected'){ clubPvLoginStep='email'; clubPvLoginEmail=''; }
     const tabs=document.getElementById('clubPvStateTabs');
     if(tabs) tabs.querySelectorAll('button').forEach(b=>{ const on=b.dataset.state===state; b.classList.toggle('active',on); b.setAttribute('aria-pressed',on?'true':'false'); });
@@ -3417,7 +3434,23 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     setClubPvState('connected');
   }
   function toggleClubPreviewMenu(){ clubPvDrawerOpen=!clubPvDrawerOpen; updateClubPreview(); }
-  function navigateClubPv(screen){ clubPvScreen=screen; clubPvDrawerOpen=false; updateClubPreview(); }
+  function navigateClubPv(screen){ clubPvScreen=screen; clubPvDrawerOpen=false; clubPvRedeemMessage=null; updateClubPreview(); }
+  function clubPvRedeemReward(rid){
+    const member=DB.memberById(clubPvActiveMemberId)||DB.LOYALTY_MEMBERS[0];
+    const r=DB.rewardById(rid); if(!r || member.pointsBalance<r.pointsCost) return;
+    member.pointsBalance-=r.pointsCost;
+    member.pointsUsed=(member.pointsUsed||0)+r.pointsCost;
+    member.rewardIds.push(rid);
+    r.obtainedCount=(r.obtainedCount||0)+1;
+    let detail;
+    if(r.type==='promo-generic'){ detail=`Votre code : <b>${r.promoCode||'—'}</b>`; }
+    else if(r.type==='promo-unique'){
+      const code=(r.codesPool&&r.codesPool.length)?r.codesPool.shift():null;
+      detail = code ? `Votre code : <b>${code}</b>` : "Stock épuisé — l'équipe vous contactera pour un remplacement.";
+    } else { detail = r.fulfillmentInstructions || 'Vous recevrez les instructions par e-mail.'; }
+    clubPvRedeemMessage={name:r.name, detail};
+    updateClubPreview();
+  }
   function selectClubTemplateVisual(t){
     document.getElementById('clubTplEssentiel').classList.toggle('selected',t==='essentiel');
     document.getElementById('clubTplPremium').classList.toggle('selected',t==='premium');
