@@ -1432,6 +1432,19 @@
           <div class="field"><label>Nom du Club</label><input type="text" id="clubName"></div>
           <div class="field"><label>Message de bienvenue</label><textarea id="clubWelcome" rows="3"></textarea></div>
           <div class="opt"><div><b>Statut du Club</b><br><small>Active les inscriptions, points et campagnes liées au Club</small></div><label class="switch"><input type="checkbox" id="clubActive"><span class="slider"></span></label></div>
+          <div class="field" style="margin-top:14px">
+            <label>URL publique</label>
+            <div class="row" style="justify-content:space-between;align-items:center;gap:10px">
+              <span style="font-size:12px;color:var(--ink)" id="clubPublicUrl"></span>
+              <b id="clubStatusBadge"></b>
+            </div>
+            <p class="muted" style="font-size:11px;margin-top:6px">Générée automatiquement à partir du nom de l'espace de travail.</p>
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Nom de domaine personnalisé <span id="clubDomainLock"></span></label>
+            <input type="text" id="clubCustomDomain" placeholder="club.votremarque.com">
+            <p class="muted" style="font-size:11px;margin-top:6px">Remplace l'URL publique par défaut par votre propre domaine.</p>
+          </div>
         </div>
         <div class="card">
           <h3>Règles de points</h3><div class="sub">Comment vos consommateurs gagnent des points</div>
@@ -1614,10 +1627,6 @@
         <button class="btn primary" onclick="saveClubAppearance()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
       </div>
       <div class="card" style="margin-bottom:16px">
-        <div class="kv"><span>URL publique</span><b id="clubPublicUrl" style="font-size:12px"></b></div>
-        <div class="kv" style="border-bottom:0"><span>Statut</span><b id="clubStatusBadge"></b></div>
-      </div>
-      <div class="card" style="margin-bottom:16px">
         <h3>Modèle</h3><div class="sub">Choisissez la mise en page de la page publique du Club</div>
         <div class="row" style="gap:10px;flex-wrap:nowrap">
           <div class="lp-template-card" data-template="essentiel" id="clubTplEssentiel" onclick="selectClubTemplate('essentiel')"><b>Essentiel</b><small>Inclus dans votre offre</small></div>
@@ -1797,7 +1806,10 @@
       <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Campagne</th><th>Statut</th><th class="right">Destinataires</th><th class="right">Ouvertures</th><th class="right">Taux d'ouverture</th></tr></thead><tbody id="aeDetailTable"></tbody></table></div>
     </section>
     <section class="screen" id="settings-workspace">
-      <div class="screen-head"><div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Informations générales</h2><p>Informations de votre espace de travail SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div></div>
+      <div class="screen-head">
+        <div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Informations générales</h2><p>Informations de votre espace de travail SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div>
+        <button class="btn primary" onclick="saveSettingsWorkspace()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
+      </div>
       <div class="card" style="max-width:560px">
         <div class="field"><label>Logo</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Logo (démo)</div></div>
         <div class="field"><label>Nom de l'espace de travail</label><input type="text" id="stCompany" value="SmartQonsumer Demo"></div>
@@ -1822,7 +1834,6 @@
       <div class="card" style="max-width:480px">
         <div class="field"><label>Nom d'expéditeur</label><input type="text" id="stSenderName" value="SmartQonsumer"></div>
         <div class="field"><label>E-mail d'expédition</label><input type="email" id="stSenderEmail" value="news@smartqonsumer.com"></div>
-        <div class="kv" style="border-bottom:0"><span>Domaine public du Club</span><b id="stPublicDomain"></b></div>
       </div>
     </section>
 
@@ -1865,9 +1876,9 @@
     'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics', onEnter:()=>renderAnalyticsProducts()},
     'analytics.loyalty':{screenId:'analytics-loyalty', title:'Fidélité', group:'analytics', onEnter:()=>renderAnalyticsLoyalty()},
     'analytics.email':{screenId:'analytics-email', title:'Campagnes e-mail', group:'analytics', onEnter:()=>renderAnalyticsEmail()},
-    'settings.workspace':{screenId:'settings-workspace', title:'Espace de travail', group:'settings', onEnter:()=>renderSettings()},
+    'settings.workspace':{screenId:'settings-workspace', title:'Espace de travail', group:'settings', onEnter:()=>renderSettingsWorkspace()},
     'settings.billing':{screenId:'settings-billing', title:'Abonnement', group:'settings', onEnter:()=>renderSettings()},
-    'settings.email':{screenId:'settings-email', title:'Configuration e-mails', group:'settings', onEnter:()=>renderSettings()},
+    'settings.email':{screenId:'settings-email', title:'Configuration e-mails', group:'settings'},
   };
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
@@ -2343,7 +2354,7 @@
       active:true, template:'essentiel',
       logo:null, colors:{primary:'#2FA55C', secondary:'#12161A'}, headerImg:null,
       footerContent:'© 2026 — Programme de fidélité SmartQonsumer',
-      pointsValidityMonths:12,
+      pointsValidityMonths:12, customDomain:'',
       pointsRules:[
         {id:'pr1', label:"Inscription au Club", points:20, active:true},
         {id:'pr2', label:'Profil complété', points:10, active:true},
@@ -2432,6 +2443,9 @@
     // ---- CURRENT_USER (singleton — the logged-in team member for this demo session) ----
     let CURRENT_USER={name:'Nicolas Wicke', email:'nicolas.wicke@smartqonsumer.com', role:'Administrateur', language:'Français', timezone:'Europe/Paris', twoFactorEnabled:true};
 
+    // ---- WORKSPACE (singleton — the account/tenant identity; drives the Club's public URL) ----
+    let WORKSPACE={name:'SmartQonsumer Demo', address:"12 rue de l'Innovation, 75011 Paris", contactEmail:'contact@smartqonsumer.com'};
+
     return {
       PRODUCTS, CONTACTS, SCAN_EVENTS, SYSTEM_SEGMENTS,
       get CUSTOM_SEGMENTS(){ return CUSTOM_SEGMENTS; },
@@ -2447,7 +2461,7 @@
       REWARDS, addReward(r){ REWARDS.push(r); }, removeReward,
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
       QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
-      CLUB, PLAN, setPlanTier, CURRENT_USER,
+      CLUB, PLAN, setPlanTier, CURRENT_USER, WORKSPACE,
       SOURCES, PERSONAS, SEGMENT_NAMES,
       productById, contactById, addProduct(p){ PRODUCTS.push(p); }, addContact(c){ CONTACTS.push(c); },
       removeProduct, removeContact,
@@ -3135,6 +3149,10 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     document.getElementById('pointsRulesList').innerHTML=DB.CLUB.pointsRules.map(pointsRuleRowHtml).join('');
     document.getElementById('clubPointsValidity').value=DB.CLUB.pointsValidityMonths;
     document.getElementById('clubLinksList').innerHTML=DB.CLUB.links.map(clubLinkRowHtml).join('');
+    document.getElementById('clubStatusBadge').innerHTML=DB.CLUB.active?'<span class="tag green">Actif</span>':'<span class="tag grey">Inactif</span>';
+    document.getElementById('clubPublicUrl').textContent=(DB.CLUB.customDomain && isPremium()) ? 'https://'+DB.CLUB.customDomain : 'https://club.smartqonsumer.com/'+slugifyWorkspaceName();
+    document.getElementById('clubDomainLock').innerHTML=isPremium()?'':premiumLockBadge();
+    document.getElementById('clubCustomDomain').value=DB.CLUB.customDomain||'';
   }
   function saveClubGeneral(){
     const wasActive=DB.CLUB.active;
@@ -3155,13 +3173,20 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       const link=DB.CLUB.links.find(l=>l.id===el.dataset.linkId);
       if(link){ link.label=el.querySelector('.clLabel').value.trim()||link.label; link.url=el.querySelector('.clUrl').value.trim(); link.position=el.querySelector('.clPosition').value; link.active=el.querySelector('.clActive').checked; }
     });
-    toast('Paramétrages du Club enregistrés');
+    const customDomainInput=document.getElementById('clubCustomDomain').value.trim();
+    if(customDomainInput && !isPremium()){
+      toast("Le nom de domaine personnalisé nécessite l'offre Premium — reste enregistré, sans effet tant que l'offre n'est pas active.");
+    } else {
+      toast('Paramétrages du Club enregistrés');
+    }
+    DB.CLUB.customDomain=customDomainInput;
+    renderClubGeneral();
   }
 
   // ============================================================
   // CLUB FIDÉLITÉ — Paramétrage > Personnalisation du Club
   // ============================================================
-  function slugifyClubName(){ return (DB.CLUB.name||'club').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-'); }
+  function slugifyWorkspaceName(){ return (DB.WORKSPACE.name||'club').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-'); }
   let clubPvConnected=true, clubPvDrawerOpen=false, clubPvScreen='home';
   const CLUB_PV_SCREENS=[
     {id:'home', label:'Accueil'},
@@ -3320,9 +3345,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     document.getElementById('loyalty-settings-appearance').dataset.template=t;
   }
   function renderClubAppearance(){
-    const urlEl=document.getElementById('clubPublicUrl'); if(!urlEl) return;
-    urlEl.textContent='https://club.smartqonsumer.com/'+slugifyClubName();
-    document.getElementById('clubStatusBadge').innerHTML=DB.CLUB.active?'<span class="tag green">Actif</span>':'<span class="tag grey">Inactif</span>';
+    const colorEl=document.getElementById('clubColorPrimary'); if(!colorEl) return;
     document.getElementById('clubColorPrimary').value=DB.CLUB.colors.primary;
     document.getElementById('clubColorSecondary').value=DB.CLUB.colors.secondary;
     document.getElementById('clubFooter').value=DB.CLUB.footerContent;
@@ -3995,8 +4018,20 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const premium=isPremium();
     toggle.checked=premium;
     document.getElementById('stPlanLabel').textContent=premium?'Premium':'Essentiel';
-    document.getElementById('stPublicDomain').textContent='club.smartqonsumer.com/'+slugifyClubName();
     renderTopbarUser();
+  }
+  function renderSettingsWorkspace(){
+    const nameEl=document.getElementById('stCompany'); if(!nameEl) return;
+    nameEl.value=DB.WORKSPACE.name;
+    document.getElementById('stAddress').value=DB.WORKSPACE.address;
+    document.getElementById('stContactEmail').value=DB.WORKSPACE.contactEmail;
+  }
+  function saveSettingsWorkspace(){
+    DB.WORKSPACE.name=document.getElementById('stCompany').value.trim()||DB.WORKSPACE.name;
+    DB.WORKSPACE.address=document.getElementById('stAddress').value.trim();
+    DB.WORKSPACE.contactEmail=document.getElementById('stContactEmail').value.trim();
+    toast('Espace de travail mis à jour');
+    renderClubGeneral();
   }
 
   // ============================================================
