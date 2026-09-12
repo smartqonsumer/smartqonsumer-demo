@@ -1220,14 +1220,10 @@
         <button class="nav-group-head" data-group-toggle="loyalty" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg><span>Club Fidélité</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
         <div class="nav-sub">
           <button class="nav-sub-item" data-route="loyalty.members">Membres</button>
+          <button class="nav-sub-item" data-route="loyalty.points">Points</button>
           <button class="nav-sub-item" data-route="loyalty.rewards">Récompenses</button>
-          <div class="nav-group" data-group="loyalty-settings">
-            <button class="nav-group-head" data-group-toggle="loyalty-settings" aria-expanded="false"><span>Paramétrage</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
-            <div class="nav-sub">
-              <button class="nav-sub-item" data-route="loyalty.settings.appearance">Personnalisation du Club</button>
-              <button class="nav-sub-item" data-route="loyalty.settings.general">Paramétrages généraux</button>
-            </div>
-          </div>
+          <button class="nav-sub-item" data-route="loyalty.settings.appearance">Personnalisation du Club</button>
+          <button class="nav-sub-item" data-route="loyalty.settings.general">Paramétrages généraux</button>
         </div>
       </div>
 
@@ -1424,39 +1420,46 @@
 
     <!-- LOYALTY -->
     <section class="screen" id="loyalty-settings-general">
-      <div class="screen-head"><div><div class="eyebrow">Club Fidélité · Paramétrage</div><h2 style="margin:2px 0 0;color:var(--ink)">Paramétrages généraux</h2><p>Identité, statut, règles de points et liens du Club.</p></div>
-        <button class="btn primary" onclick="saveClubGeneral()">Enregistrer</button>
+      <div class="screen-head"><div><div class="eyebrow">Club Fidélité</div><h2 style="margin:2px 0 0;color:var(--ink)">Paramétrages généraux</h2><p>Identité, statut et liens du Club.</p></div>
       </div>
-      <div class="grid cards-2">
-        <div class="card">
-          <h3>Configuration</h3><div class="sub">Identité et message du Club</div>
-          <div class="field"><label>Nom du Club</label><input type="text" id="clubName"></div>
-          <div class="field"><label>Message de bienvenue</label><textarea id="clubWelcome" rows="3"></textarea></div>
-          <div class="opt"><div><b>Statut du Club</b><br><small>Active les inscriptions, points et campagnes liées au Club</small></div><label class="switch"><input type="checkbox" id="clubActive"><span class="slider"></span></label></div>
-          <div class="field" style="margin-top:14px">
-            <label>URL publique</label>
-            <div class="row" style="justify-content:space-between;align-items:center;gap:10px">
-              <span style="font-size:12px;color:var(--ink)" id="clubPublicUrl"></span>
-              <b id="clubStatusBadge"></b>
-            </div>
-            <p class="muted" style="font-size:11px;margin-top:6px">Générée automatiquement à partir du nom de l'espace de travail.</p>
+      <div class="card" style="max-width:640px">
+        <h3>Configuration</h3><div class="sub">Identité et message du Club</div>
+        <div class="field"><label>Nom du Club</label><input type="text" id="clubName"></div>
+        <div class="field"><label>Message de bienvenue</label><textarea id="clubWelcome" rows="3"></textarea></div>
+        <div class="opt"><div><b>Statut du Club</b><br><small>Active les inscriptions, points et campagnes liées au Club</small></div><label class="switch"><input type="checkbox" id="clubActive"><span class="slider"></span></label></div>
+        <div class="field" style="margin-top:14px">
+          <label>URL publique</label>
+          <div class="row" style="justify-content:space-between;align-items:center;gap:10px">
+            <span style="font-size:12px;color:var(--ink)" id="clubPublicUrl"></span>
+            <b id="clubStatusBadge"></b>
           </div>
-          <div class="field" style="margin-top:10px">
-            <label>Nom de domaine personnalisé <span id="clubDomainLock"></span></label>
-            <input type="text" id="clubCustomDomain" placeholder="club.votremarque.com">
-            <p class="muted" style="font-size:11px;margin-top:6px">Remplace l'URL publique par défaut par votre propre domaine.</p>
-          </div>
+          <p class="muted" style="font-size:11px;margin-top:6px">Générée automatiquement à partir du nom de l'espace de travail.</p>
         </div>
-        <div class="card">
-          <h3>Règles de points</h3><div class="sub">Comment vos consommateurs gagnent des points</div>
-          <div id="pointsRulesList"></div>
-          <div class="field" style="max-width:220px;margin-top:14px"><label>Validité des points (mois)</label><input type="number" id="clubPointsValidity" min="1"></div>
+        <div class="field" style="margin-top:10px">
+          <label>Nom de domaine personnalisé <span id="clubDomainLock"></span></label>
+          <input type="text" id="clubCustomDomain" placeholder="club.votremarque.com">
+          <p class="muted" style="font-size:11px;margin-top:6px">Remplace l'URL publique par défaut par votre propre domaine.</p>
         </div>
       </div>
-      <div class="card" style="margin-top:16px">
+      <div class="card" style="margin-top:16px;max-width:640px">
         <h3>Liens</h3><div class="sub">Pages légales affichées en pied de page du Club</div>
         <div id="clubLinksList"></div>
       </div>
+      <div class="row" style="justify-content:flex-end;margin-top:14px;max-width:640px"><button class="btn ghost" onclick="saveClubGeneral()">Enregistrer</button></div>
+    </section>
+
+    <section class="screen" id="loyalty-points">
+      <div class="screen-head"><div><div class="eyebrow">Club Fidélité</div><h2 style="margin:2px 0 0;color:var(--ink)">Points</h2><p>Comment vos consommateurs gagnent des points, et pour combien de temps.</p></div>
+      </div>
+      <div class="card" style="max-width:640px">
+        <h3>Règles de points système</h3><div class="sub">Activez ou désactivez chaque règle</div>
+        <div id="pointsRulesList"></div>
+      </div>
+      <div class="card" style="margin-top:16px;max-width:320px">
+        <h3>Validité</h3><div class="sub">Durée avant expiration des points</div>
+        <div class="field"><label>Validité des points (mois)</label><input type="number" id="clubPointsValidity" min="1"></div>
+      </div>
+      <div class="row" style="justify-content:flex-end;margin-top:14px;max-width:640px"><button class="btn ghost" onclick="savePointsRules()">Enregistrer</button></div>
     </section>
 
     <!-- LANDING EDITOR -->
@@ -1620,18 +1623,11 @@
         <div><div class="eyebrow">Club Fidélité</div><h2 style="margin:2px 0 0;color:var(--ink)">Récompenses</h2><p>Ce que vos membres peuvent obtenir avec leurs points.</p></div>
         <button class="btn primary" onclick="openRewardPanel(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une récompense</button>
       </div>
-      <div class="filters-bar">
-        <div class="seg-tabs" id="rewardTypeTabs">
-          <button type="button" data-type="" class="active" aria-pressed="true">Toutes</button>
-          <button type="button" data-type="system" aria-pressed="false">Système</button>
-          <button type="button" data-type="custom" aria-pressed="false">Personnalisées</button>
-        </div>
-      </div>
       <div class="grid cards-3" id="rewardsGrid"></div>
     </section>
     <section class="screen" id="loyalty-settings-appearance">
       <div class="screen-head">
-        <div><div class="eyebrow">Club Fidélité · Paramétrage</div><h2 style="margin:2px 0 0;color:var(--ink)">Personnalisation du Club</h2><p>Apparence de la page publique du Club et choix du modèle.</p></div>
+        <div><div class="eyebrow">Club Fidélité</div><h2 style="margin:2px 0 0;color:var(--ink)">Personnalisation du Club</h2><p>Apparence de la page publique du Club et choix du modèle.</p></div>
         <button class="btn primary" onclick="saveClubAppearance()">Enregistrer</button>
       </div>
       <div class="card" style="margin-bottom:16px">
@@ -1874,9 +1870,10 @@
     'network.pos':{screenId:'network-pos', title:'Points de vente', group:'network', onEnter:()=>renderPointsDeVente()},
     'network.performance':{screenId:'network-performance', title:'Performance du réseau', group:'network', onEnter:()=>renderNetworkPerformance()},
     'loyalty.members':{screenId:'loyalty-members', title:'Membres', group:'loyalty', onEnter:()=>renderMembers()},
+    'loyalty.points':{screenId:'loyalty-points', title:'Points', group:'loyalty', onEnter:()=>renderPointsRulesScreen()},
     'loyalty.rewards':{screenId:'loyalty-rewards', title:'Récompenses', group:'loyalty', onEnter:()=>renderRewards()},
-    'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', subgroup:'loyalty-settings', onEnter:()=>renderClubAppearance()},
-    'loyalty.settings.general':{screenId:'loyalty-settings-general', title:'Paramétrages généraux', group:'loyalty', subgroup:'loyalty-settings', onEnter:()=>renderClubGeneral()},
+    'loyalty.settings.appearance':{screenId:'loyalty-settings-appearance', title:'Personnalisation du Club', group:'loyalty', onEnter:()=>renderClubAppearance()},
+    'loyalty.settings.general':{screenId:'loyalty-settings-general', title:'Paramétrages généraux', group:'loyalty', onEnter:()=>renderClubGeneral()},
     'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns', onEnter:()=>renderCampaigns()},
     'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns', onEnter:()=>enterCampaignsNew()},
     'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns', onEnter:()=>renderContactLists()},
@@ -2177,23 +2174,21 @@
     function posById(id){ return POINTS_DE_VENTE.find(p=>p.id===id)||null; }
 
     // ---- REWARDS: système (paramétrable, non supprimable) + personnalisées (libres), comme les segments ----
-    const SYSTEM_REWARDS=[
-      {id:'sys-promo', name:'Réduction fidélité', type:'promo-generic', system:true, promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'sys-shipping', name:'Livraison gratuite', type:'promo-generic', system:true, promoCode:'FREESHIP', pointsCost:60, validity:'60 jours', status:'active', obtainedCount:0},
-      {id:'sys-gift', name:'Produit offert', type:'promo-unique', system:true, codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0},
-      {id:'sys-early-access', name:'Accès prioritaire aux nouveautés', type:'promo-unique', system:true, codesPool:['EARLY-001','EARLY-002','EARLY-003','EARLY-004'], pointsCost:180, validity:'45 jours', status:'active', obtainedCount:0},
-      {id:'sys-experience', name:'Expérience personnalisée', type:'custom', system:true, fulfillmentInstructions:"Envoyer un e-mail au membre avec les modalités de sa récompense.", pointsCost:300, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'sys-donation', name:'Don caritatif en votre nom', type:'custom', system:true, fulfillmentInstructions:"Un don est versé à l'association partenaire au nom du membre ; confirmation envoyée par e-mail.", pointsCost:150, validity:'90 jours', status:'active', obtainedCount:0},
+    let REWARDS=[
+      {id:'sys-promo', name:'Réduction fidélité', type:'promo-generic', promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'sys-shipping', name:'Livraison gratuite', type:'promo-generic', promoCode:'FREESHIP', pointsCost:60, validity:'60 jours', status:'active', obtainedCount:0},
+      {id:'sys-gift', name:'Produit offert', type:'promo-unique', codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0},
+      {id:'sys-early-access', name:'Accès prioritaire aux nouveautés', type:'promo-unique', codesPool:['EARLY-001','EARLY-002','EARLY-003','EARLY-004'], pointsCost:180, validity:'45 jours', status:'active', obtainedCount:0},
+      {id:'sys-experience', name:'Expérience personnalisée', type:'custom', fulfillmentInstructions:"Envoyer un e-mail au membre avec les modalités de sa récompense.", pointsCost:300, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'sys-donation', name:'Don caritatif en votre nom', type:'custom', fulfillmentInstructions:"Un don est versé à l'association partenaire au nom du membre ; confirmation envoyée par e-mail.", pointsCost:150, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'r03', name:'Accès prévente collection limitée', type:'custom', fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0},
+      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'r06', name:'Invitation événement privé', type:'custom', fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0},
     ];
-    let CUSTOM_REWARDS=[
-      {id:'r03', name:'Accès prévente collection limitée', type:'custom', system:false, fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0},
-      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', system:false, codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'r06', name:'Invitation événement privé', type:'custom', system:false, fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0},
-    ];
-    function allRewards(){ return SYSTEM_REWARDS.concat(CUSTOM_REWARDS); }
-    function rewardById(id){ return allRewards().find(r=>r.id===id)||null; }
-    function addCustomReward(rw){ CUSTOM_REWARDS.push(rw); }
-    function removeCustomReward(id){ CUSTOM_REWARDS=CUSTOM_REWARDS.filter(r=>r.id!==id); }
+    function allRewards(){ return REWARDS; }
+    function rewardById(id){ return REWARDS.find(r=>r.id===id)||null; }
+    function addCustomReward(rw){ REWARDS.push(rw); }
+    function removeCustomReward(id){ REWARDS=REWARDS.filter(r=>r.id!==id); }
     LOYALTY_MEMBERS.forEach(m=>{
       const nb=Math.floor(m.pointsUsed/150);
       for(let k=0;k<nb && k<3;k++){ const rw=pick(allRewards()); m.rewardIds.push(rw.id); rw.obtainedCount++; }
@@ -2396,9 +2391,9 @@
         {id:'pr4', label:'Action personnalisée', points:15, active:false},
       ],
       links:[
-        {id:'lk1', label:'CGV', type:'legal', url:'#', order:1, active:true},
-        {id:'lk2', label:'Mentions légales', type:'legal', url:'#', order:2, active:true},
-        {id:'lk3', label:'Politique de confidentialité', type:'legal', url:'#', order:3, active:true},
+        {id:'lk1', label:'CGV', type:'legal', url:'https://club.smartqonsumer.com/cgv', order:1, active:true},
+        {id:'lk2', label:'Mentions légales', type:'legal', url:'https://club.smartqonsumer.com/mentions-legales', order:2, active:true},
+        {id:'lk3', label:'Politique de confidentialité', type:'legal', url:'https://club.smartqonsumer.com/confidentialite', order:3, active:true},
       ],
     };
 
@@ -2488,7 +2483,7 @@
       POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); }, removePointOfVente,
       LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward, pointsExpiryDate, removeMember,
       addLoyaltyMember(m){ LOYALTY_MEMBERS.push(m); },
-      SYSTEM_REWARDS, get CUSTOM_REWARDS(){ return CUSTOM_REWARDS; }, allRewards, rewardById, addCustomReward, removeCustomReward,
+      allRewards, rewardById, addCustomReward, removeCustomReward,
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
       QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
       CLUB, PLAN, setPlanTier, CURRENT_USER, WORKSPACE,
@@ -3066,17 +3061,16 @@
     toast(r.status==='active'?'Récompense activée':'Récompense désactivée');
     renderRewards();
   }
-  const rewardState={type:''};
   function renderRewards(){
     const grid=document.getElementById('rewardsGrid'); if(!grid) return;
-    const list=DB.allRewards().filter(r=>!rewardState.type || (rewardState.type==='system'?r.system:!r.system));
+    const list=DB.allRewards();
     grid.innerHTML=list.map(r=>`
       <div class="card" onclick="openRewardPanel('${r.id}')" style="cursor:pointer">
         <div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap">
           <h3 style="margin:0">${r.name}</h3>
           <label class="switch" style="flex:none" onclick="event.stopPropagation()"><input type="checkbox" ${r.status==='active'?'checked':''} onclick="event.stopPropagation();toggleRewardStatus('${r.id}')"><span class="slider"></span></label>
         </div>
-        <div class="row" style="gap:6px;margin-bottom:12px"><span class="tag ${r.system?'grey':'teal'}">${r.system?'Système':'Personnalisé'}</span><span class="sub" style="margin:0">${rewardTypeLabel(r.type)}</span></div>
+        <div class="sub" style="margin-bottom:12px">${rewardTypeLabel(r.type)}</div>
         <div class="kv"><span>Coût</span><b>${r.pointsCost} pts</b></div>
         <div class="kv"><span>Validité</span><b>${r.validity}</b></div>
         <div class="kv" style="border-bottom:0"><span>Obtentions</span><b>${r.obtainedCount}</b></div>
@@ -3092,11 +3086,9 @@
   function rewardFormBodyHtml(r){
     const types=[['promo-generic','Code promo générique'],['promo-unique','Code unique'],['custom','Récompense personnalisée']];
     const t=r?r.type:'promo-generic';
-    const isSystem=!!(r&&r.system);
     return `
-      ${isSystem?'<p class="muted" style="font-size:11.5px;margin:0 0 12px">Récompense système — paramétrable, mais son type ne peut pas être changé.</p>':''}
       <div class="field"><label>Nom</label><input type="text" id="rwName" value="${r?r.name:''}" placeholder="Ex. -15% sur la prochaine commande"></div>
-      <div class="field"><label>Type</label><select id="rwType" onchange="updateRewardTypeFields()" ${isSystem?'disabled':''}>${types.map(([v,l])=>`<option value="${v}" ${t===v?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="field"><label>Type</label><select id="rwType" onchange="updateRewardTypeFields()">${types.map(([v,l])=>`<option value="${v}" ${t===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="row" style="gap:12px">
         <div class="field" style="flex:1"><label>Coût en points</label><input type="number" id="rwCost" value="${r?r.pointsCost:100}" min="0"></div>
         <div class="field" style="flex:1"><label>Validité</label><input type="text" id="rwValidity" value="${r?r.validity:'90 jours'}"></div>
@@ -3125,7 +3117,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   function openRewardPanel(rid){
     const r=rid?DB.rewardById(rid):null;
     openPanel({eyebrow:'Récompense', title:r?'Modifier la récompense':'Créer une récompense', bodyHtml:rewardFormBodyHtml(r),
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button>${r&&!r.system?`<button class="btn ghost" onclick="deleteReward('${r.id}')">Supprimer</button>`:''}<button class="btn primary" onclick="saveReward(${r?`'${r.id}'`:'null'})">Enregistrer</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button>${r?`<button class="btn ghost" onclick="deleteReward('${r.id}')">Supprimer</button>`:''}<button class="btn primary" onclick="saveReward(${r?`'${r.id}'`:'null'})">Enregistrer</button>`});
   }
   function deleteReward(rid){
     if(!confirm('Supprimer définitivement cette récompense ?')) return;
@@ -3145,10 +3137,10 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const fulfillmentInstructions=type==='custom'?document.getElementById('rwInstructions').value.trim():undefined;
     if(rid){
       const r=DB.rewardById(rid);
-      Object.assign(r,{name,type:r.system?r.type:type,pointsCost,validity,status,promoCode,codesPool,fulfillmentInstructions});
+      Object.assign(r,{name,type,pointsCost,validity,status,promoCode,codesPool,fulfillmentInstructions});
       toast('Récompense mise à jour');
     } else {
-      DB.addCustomReward({id:'rw-'+Date.now(), name, type, system:false, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0});
+      DB.addCustomReward({id:'rw-'+Date.now(), name, type, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0});
       toast('Récompense créée');
     }
     closePanel(); renderRewards();
@@ -3196,8 +3188,6 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     nameEl.value=DB.CLUB.name;
     document.getElementById('clubWelcome').value=DB.CLUB.welcomeMessage;
     document.getElementById('clubActive').checked=DB.CLUB.active;
-    document.getElementById('pointsRulesList').innerHTML=DB.CLUB.pointsRules.map(pointsRuleRowHtml).join('');
-    document.getElementById('clubPointsValidity').value=DB.CLUB.pointsValidityMonths;
     document.getElementById('clubLinksList').innerHTML=DB.CLUB.links.map(clubLinkRowHtml).join('');
     document.getElementById('clubStatusBadge').innerHTML=DB.CLUB.active?'<span class="tag green">Actif</span>':'<span class="tag grey">Inactif</span>';
     document.getElementById('clubPublicUrl').textContent=(DB.CLUB.customDomain && isPremium()) ? 'https://'+DB.CLUB.customDomain : 'https://club.smartqonsumer.com/'+slugifyWorkspaceName();
@@ -3214,11 +3204,6 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     DB.CLUB.name=document.getElementById('clubName').value.trim()||DB.CLUB.name;
     DB.CLUB.welcomeMessage=document.getElementById('clubWelcome').value.trim();
     DB.CLUB.active=willBeActive;
-    DB.CLUB.pointsValidityMonths=parseInt(document.getElementById('clubPointsValidity').value,10)||12;
-    document.querySelectorAll('#pointsRulesList [data-rule-id]').forEach(el=>{
-      const rule=DB.CLUB.pointsRules.find(r=>r.id===el.dataset.ruleId);
-      if(rule){ rule.label=el.querySelector('.prLabel').value.trim()||rule.label; rule.points=parseInt(el.querySelector('.prPoints').value,10)||0; rule.active=el.querySelector('.prActive').checked; }
-    });
     document.querySelectorAll('#clubLinksList [data-link-id]').forEach(el=>{
       const link=DB.CLUB.links.find(l=>l.id===el.dataset.linkId);
       if(link){ link.label=el.querySelector('.clLabel').value.trim()||link.label; link.url=el.querySelector('.clUrl').value.trim(); link.active=el.querySelector('.clActive').checked; }
@@ -3231,6 +3216,20 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     }
     DB.CLUB.customDomain=customDomainInput;
     renderClubGeneral();
+  }
+  function renderPointsRulesScreen(){
+    const list=document.getElementById('pointsRulesList'); if(!list) return;
+    list.innerHTML=DB.CLUB.pointsRules.map(pointsRuleRowHtml).join('');
+    document.getElementById('clubPointsValidity').value=DB.CLUB.pointsValidityMonths;
+  }
+  function savePointsRules(){
+    DB.CLUB.pointsValidityMonths=parseInt(document.getElementById('clubPointsValidity').value,10)||12;
+    document.querySelectorAll('#pointsRulesList [data-rule-id]').forEach(el=>{
+      const rule=DB.CLUB.pointsRules.find(r=>r.id===el.dataset.ruleId);
+      if(rule){ rule.label=el.querySelector('.prLabel').value.trim()||rule.label; rule.points=parseInt(el.querySelector('.prPoints').value,10)||0; rule.active=el.querySelector('.prActive').checked; }
+    });
+    toast('Points enregistrés');
+    renderPointsRulesScreen();
   }
 
   // ============================================================
@@ -3498,14 +3497,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     DB.CLUB.template=document.getElementById('loyalty-settings-appearance').dataset.template||'essentiel';
     toast('Apparence du Club enregistrée');
   }
-  const rewardTabsEl=document.getElementById('rewardTypeTabs');
-  if(rewardTabsEl) rewardTabsEl.addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b) return;
-    rewardState.type=b.dataset.type;
-    rewardTabsEl.querySelectorAll('button').forEach(x=>{ x.classList.toggle('active',x===b); x.setAttribute('aria-pressed',x===b?'true':'false'); });
-    renderRewards();
-  });
-  renderMembers(); renderRewards(); renderClubGeneral();
+  renderMembers(); renderRewards(); renderClubGeneral(); renderPointsRulesScreen();
 
   // ============================================================
   // CAMPAGNES E-MAIL — Listes de contacts
