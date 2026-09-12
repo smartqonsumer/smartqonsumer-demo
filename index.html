@@ -1806,15 +1806,13 @@
       <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Campagne</th><th>Statut</th><th class="right">Destinataires</th><th class="right">Ouvertures</th><th class="right">Taux d'ouverture</th></tr></thead><tbody id="aeDetailTable"></tbody></table></div>
     </section>
     <section class="screen" id="settings-workspace">
-      <div class="screen-head">
-        <div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Informations générales</h2><p>Informations de votre espace de travail SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div>
-        <button class="btn primary" onclick="saveSettingsWorkspace()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7"/></svg>Enregistrer</button>
-      </div>
+      <div class="screen-head"><div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Informations générales</h2><p>Informations de votre espace de travail SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div></div>
       <div class="card" style="max-width:560px">
         <div class="field"><label>Logo</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Logo (démo)</div></div>
         <div class="field"><label>Nom de l'espace de travail</label><input type="text" id="stCompany" value="SmartQonsumer Demo"></div>
         <div class="field"><label>Adresse</label><input type="text" id="stAddress" value="12 rue de l'Innovation, 75011 Paris"></div>
         <div class="field"><label>E-mail de contact</label><input type="email" id="stContactEmail" value="contact@smartqonsumer.com"></div>
+        <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="saveSettingsWorkspace()">Enregistrer</button></div>
       </div>
     </section>
 
@@ -1834,6 +1832,7 @@
       <div class="card" style="max-width:480px">
         <div class="field"><label>Nom d'expéditeur</label><input type="text" id="stSenderName" value="SmartQonsumer"></div>
         <div class="field"><label>E-mail d'expédition</label><input type="email" id="stSenderEmail" value="news@smartqonsumer.com"></div>
+        <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="saveSettingsEmail()">Enregistrer</button></div>
       </div>
     </section>
 
@@ -1878,7 +1877,7 @@
     'analytics.email':{screenId:'analytics-email', title:'Campagnes e-mail', group:'analytics', onEnter:()=>renderAnalyticsEmail()},
     'settings.workspace':{screenId:'settings-workspace', title:'Espace de travail', group:'settings', onEnter:()=>renderSettingsWorkspace()},
     'settings.billing':{screenId:'settings-billing', title:'Abonnement', group:'settings', onEnter:()=>renderSettings()},
-    'settings.email':{screenId:'settings-email', title:'Configuration e-mails', group:'settings'},
+    'settings.email':{screenId:'settings-email', title:'Configuration e-mails', group:'settings', onEnter:()=>renderSettingsEmail()},
   };
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
@@ -2444,7 +2443,7 @@
     let CURRENT_USER={name:'Nicolas Wicke', email:'nicolas.wicke@smartqonsumer.com', role:'Administrateur', language:'Français', timezone:'Europe/Paris', twoFactorEnabled:true};
 
     // ---- WORKSPACE (singleton — the account/tenant identity; drives the Club's public URL) ----
-    let WORKSPACE={name:'SmartQonsumer Demo', address:"12 rue de l'Innovation, 75011 Paris", contactEmail:'contact@smartqonsumer.com'};
+    let WORKSPACE={name:'SmartQonsumer Demo', address:"12 rue de l'Innovation, 75011 Paris", contactEmail:'contact@smartqonsumer.com', senderName:'SmartQonsumer', senderEmail:'news@smartqonsumer.com'};
 
     return {
       PRODUCTS, CONTACTS, SCAN_EVENTS, SYSTEM_SEGMENTS,
@@ -4032,6 +4031,16 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     DB.WORKSPACE.contactEmail=document.getElementById('stContactEmail').value.trim();
     toast('Espace de travail mis à jour');
     renderClubGeneral();
+  }
+  function renderSettingsEmail(){
+    const nameEl=document.getElementById('stSenderName'); if(!nameEl) return;
+    nameEl.value=DB.WORKSPACE.senderName;
+    document.getElementById('stSenderEmail').value=DB.WORKSPACE.senderEmail;
+  }
+  function saveSettingsEmail(){
+    DB.WORKSPACE.senderName=document.getElementById('stSenderName').value.trim()||DB.WORKSPACE.senderName;
+    DB.WORKSPACE.senderEmail=document.getElementById('stSenderEmail').value.trim()||DB.WORKSPACE.senderEmail;
+    toast('Configuration e-mails mise à jour');
   }
 
   // ============================================================
