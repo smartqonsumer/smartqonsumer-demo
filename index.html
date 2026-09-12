@@ -1620,6 +1620,13 @@
         <div><div class="eyebrow">Club Fidélité</div><h2 style="margin:2px 0 0;color:var(--ink)">Récompenses</h2><p>Ce que vos membres peuvent obtenir avec leurs points.</p></div>
         <button class="btn primary" onclick="openRewardPanel(null)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une récompense</button>
       </div>
+      <div class="filters-bar">
+        <div class="seg-tabs" id="rewardTypeTabs">
+          <button type="button" data-type="" class="active" aria-pressed="true">Toutes</button>
+          <button type="button" data-type="system" aria-pressed="false">Système</button>
+          <button type="button" data-type="custom" aria-pressed="false">Personnalisées</button>
+        </div>
+      </div>
       <div class="grid cards-3" id="rewardsGrid"></div>
     </section>
     <section class="screen" id="loyalty-settings-appearance">
@@ -2165,18 +2172,24 @@
     ];
     function posById(id){ return POINTS_DE_VENTE.find(p=>p.id===id)||null; }
 
-    // ---- REWARDS (6) ----
-    const REWARDS=[
-      {id:'r01', name:'-15% sur la prochaine commande', type:'promo-generic', promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'r02', name:'Produit offert (édition découverte)', type:'promo-unique', codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0},
-      {id:'r03', name:'Accès prévente collection limitée', type:'custom', fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0},
-      {id:'r04', name:'Dégustation en boutique', type:'custom', fulfillmentInstructions:"Le membre présente son QR Code à l'accueil de la boutique pour la dégustation.", pointsCost:300, validity:'120 jours', status:'active', obtainedCount:0},
-      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'r06', name:'Invitation événement privé', type:'custom', fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0},
+    // ---- REWARDS: système (paramétrable, non supprimable) + personnalisées (libres), comme les segments ----
+    const SYSTEM_REWARDS=[
+      {id:'sys-promo', name:'Réduction fidélité', type:'promo-generic', system:true, promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'sys-gift', name:'Produit offert', type:'promo-unique', system:true, codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0},
+      {id:'sys-experience', name:'Expérience personnalisée', type:'custom', system:true, fulfillmentInstructions:"Envoyer un e-mail au membre avec les modalités de sa récompense.", pointsCost:300, validity:'90 jours', status:'active', obtainedCount:0},
     ];
+    let CUSTOM_REWARDS=[
+      {id:'r03', name:'Accès prévente collection limitée', type:'custom', system:false, fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0},
+      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', system:false, codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'r06', name:'Invitation événement privé', type:'custom', system:false, fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0},
+    ];
+    function allRewards(){ return SYSTEM_REWARDS.concat(CUSTOM_REWARDS); }
+    function rewardById(id){ return allRewards().find(r=>r.id===id)||null; }
+    function addCustomReward(rw){ CUSTOM_REWARDS.push(rw); }
+    function removeCustomReward(id){ CUSTOM_REWARDS=CUSTOM_REWARDS.filter(r=>r.id!==id); }
     LOYALTY_MEMBERS.forEach(m=>{
       const nb=Math.floor(m.pointsUsed/150);
-      for(let k=0;k<nb && k<3;k++){ const rw=pick(REWARDS); m.rewardIds.push(rw.id); rw.obtainedCount++; }
+      for(let k=0;k<nb && k<3;k++){ const rw=pick(allRewards()); m.rewardIds.push(rw.id); rw.obtainedCount++; }
     });
 
     // ---- SCAN_EVENTS (90-day log — single ledger every scan count derives from) ----
@@ -2409,10 +2422,6 @@
       if(c){ c.isLoyaltyMember=false; c.loyaltyMemberId=null; }
       LOYALTY_MEMBERS.splice(idx,1);
     }
-    function removeReward(rid){
-      const idx=REWARDS.findIndex(r=>r.id===rid);
-      if(idx!==-1) REWARDS.splice(idx,1);
-    }
     function removeCampaign(cid){
       const idx=CAMPAIGNS.findIndex(c=>c.id===cid);
       if(idx===-1) return;
@@ -2458,7 +2467,7 @@
       addAutomation(a){ AUTOMATIONS.push(a); }, removeAutomation,
       POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); }, removePointOfVente,
       LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward, pointsExpiryDate, removeMember,
-      REWARDS, addReward(r){ REWARDS.push(r); }, removeReward,
+      SYSTEM_REWARDS, get CUSTOM_REWARDS(){ return CUSTOM_REWARDS; }, allRewards, rewardById, addCustomReward, removeCustomReward,
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
       QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
       CLUB, PLAN, setPlanTier, CURRENT_USER, WORKSPACE,
@@ -3010,7 +3019,7 @@
       <h4 style="color:var(--ink);margin:18px 0 8px">Progression vers la prochaine récompense</h4>
       <div class="hbar-track"><span class="hbar-fill" style="width:${Math.min(100,m.pointsBalance%100)}%"></span></div>
       <h4 style="color:var(--ink);margin:18px 0 8px">Récompenses obtenues (${m.rewardIds.length})</h4>
-      <div class="timeline">${m.rewardIds.map(rid=>{const r=DB.REWARDS.find(x=>x.id===rid); return r?`<div class="t"><b>${r.name}</b></div>`:'';}).join('')||'<div class="t"><b>Aucune récompense obtenue</b></div>'}</div>
+      <div class="timeline">${m.rewardIds.map(rid=>{const r=DB.rewardById(rid); return r?`<div class="t"><b>${r.name}</b></div>`:'';}).join('')||'<div class="t"><b>Aucune récompense obtenue</b></div>'}</div>
       <h4 style="color:var(--ink);margin:18px 0 8px">Scans (${c.scannedProductIds.length})</h4>
       <div class="timeline">${c.scannedProductIds.map(pid=>`<div class="t"><b>${DB.productById(pid).name}</b></div>`).join('')||'<div class="t"><b>Aucun scan</b></div>'}</div>
       <h4 style="color:var(--ink);margin:18px 0 8px">Campagnes reçues (${campaigns.length})</h4>
@@ -3029,17 +3038,19 @@
   // CLUB FIDÉLITÉ — Récompenses
   // ============================================================
   function rewardTypeLabel(t){ return {'promo-generic':'Code promo générique','promo-unique':'Code unique','custom':'Récompense personnalisée'}[t]||t; }
+  const rewardState={type:''};
   function renderRewards(){
     const grid=document.getElementById('rewardsGrid'); if(!grid) return;
-    grid.innerHTML=DB.REWARDS.map(r=>`
+    const list=DB.allRewards().filter(r=>!rewardState.type || (rewardState.type==='system'?r.system:!r.system));
+    grid.innerHTML=list.map(r=>`
       <div class="card" onclick="openRewardPanel('${r.id}')" style="cursor:pointer">
         <div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap"><h3 style="margin:0">${r.name}</h3><span class="tag ${r.status==='active'?'green':'grey'}">${r.status==='active'?'Active':'Archivée'}</span></div>
-        <div class="sub" style="margin-bottom:12px">${rewardTypeLabel(r.type)}</div>
+        <div class="row" style="gap:6px;margin-bottom:12px"><span class="tag ${r.system?'grey':'teal'}">${r.system?'Système':'Personnalisé'}</span><span class="sub" style="margin:0">${rewardTypeLabel(r.type)}</span></div>
         <div class="kv"><span>Coût</span><b>${r.pointsCost} pts</b></div>
         <div class="kv"><span>Validité</span><b>${r.validity}</b></div>
         <div class="kv" style="border-bottom:0"><span>Obtentions</span><b>${r.obtainedCount}</b></div>
         ${rewardConfigSummaryHtml(r)}
-      </div>`).join('');
+      </div>`).join('') || `<div style="grid-column:1/-1">${emptyStateHtml({icon:'search',title:'Aucune récompense',text:'Aucune récompense pour ce filtre.'})}</div>`;
   }
   function rewardConfigSummaryHtml(r){
     if(r.type==='promo-generic' && r.promoCode) return `<div class="kv" style="border-bottom:0"><span>Code</span><b>${r.promoCode}</b></div>`;
@@ -3050,9 +3061,11 @@
   function rewardFormBodyHtml(r){
     const types=[['promo-generic','Code promo générique'],['promo-unique','Code unique'],['custom','Récompense personnalisée']];
     const t=r?r.type:'promo-generic';
+    const isSystem=!!(r&&r.system);
     return `
+      ${isSystem?'<p class="muted" style="font-size:11.5px;margin:0 0 12px">Récompense système — paramétrable, mais son type ne peut pas être changé.</p>':''}
       <div class="field"><label>Nom</label><input type="text" id="rwName" value="${r?r.name:''}" placeholder="Ex. -15% sur la prochaine commande"></div>
-      <div class="field"><label>Type</label><select id="rwType" onchange="updateRewardTypeFields()">${types.map(([v,l])=>`<option value="${v}" ${t===v?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="field"><label>Type</label><select id="rwType" onchange="updateRewardTypeFields()" ${isSystem?'disabled':''}>${types.map(([v,l])=>`<option value="${v}" ${t===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="row" style="gap:12px">
         <div class="field" style="flex:1"><label>Coût en points</label><input type="number" id="rwCost" value="${r?r.pointsCost:100}" min="0"></div>
         <div class="field" style="flex:1"><label>Validité</label><input type="text" id="rwValidity" value="${r?r.validity:'90 jours'}"></div>
@@ -3061,14 +3074,14 @@
       <div class="field" id="rwFieldUnique" ${t!=='promo-unique'?'style="display:none"':''}><label>Codes disponibles <small>(un par ligne)</small></label><textarea id="rwCodesPool" rows="4" placeholder="CODE-0001
 CODE-0002
 CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
-      <div class="field" id="rwFieldCustom" ${t!=='custom'?'style="display:none"':''}><label>Instructions de traitement</label><textarea id="rwInstructions" rows="3" placeholder="Ex. Le membre présente son QR Code à l'accueil de la boutique">${r&&r.fulfillmentInstructions?r.fulfillmentInstructions:''}</textarea></div>
+      <div class="field" id="rwFieldCustom" ${t!=='custom'?'style="display:none"':''}><label>Instructions de traitement</label><textarea id="rwInstructions" rows="3" placeholder="Ex. Envoyer le lien d'accès par e-mail au membre">${r&&r.fulfillmentInstructions?r.fulfillmentInstructions:''}</textarea></div>
       <div class="field"><label>Statut</label><select id="rwStatus"><option value="active" ${!r||r.status==='active'?'selected':''}>Active</option><option value="archivee" ${r&&r.status==='archivee'?'selected':''}>Archivée</option></select></div>
       ${!r ? `<div class="field" style="margin-top:4px">
         <label>Idées de récompenses</label>
         <div style="border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7">
           <b style="color:var(--ink);font-weight:700">Code promo générique</b> — ex. « -10 % sur la prochaine commande », « Livraison offerte »<br>
           <b style="color:var(--ink);font-weight:700">Code unique</b> — ex. « Un produit offert (stock limité) », « Accès prioritaire à une nouveauté »<br>
-          <b style="color:var(--ink);font-weight:700">Récompense personnalisée</b> — ex. « Dégustation en boutique, sur présentation du QR Code à l'accueil », « Invitation à un événement privé, détails envoyés par e-mail »
+          <b style="color:var(--ink);font-weight:700">Récompense personnalisée</b> — ex. « Accès prévente envoyé par e-mail », « Invitation à un événement privé, détails envoyés par e-mail »
         </div>
       </div>` : ''}`;
   }
@@ -3079,13 +3092,13 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     document.getElementById('rwFieldCustom').style.display = t==='custom'?'':'none';
   }
   function openRewardPanel(rid){
-    const r=rid?DB.REWARDS.find(x=>x.id===rid):null;
+    const r=rid?DB.rewardById(rid):null;
     openPanel({eyebrow:'Récompense', title:r?'Modifier la récompense':'Créer une récompense', bodyHtml:rewardFormBodyHtml(r),
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button>${r?`<button class="btn ghost" onclick="deleteReward('${r.id}')">Supprimer</button>`:''}<button class="btn primary" onclick="saveReward(${r?`'${r.id}'`:'null'})">Enregistrer</button>`});
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Annuler</button>${r&&!r.system?`<button class="btn ghost" onclick="deleteReward('${r.id}')">Supprimer</button>`:''}<button class="btn primary" onclick="saveReward(${r?`'${r.id}'`:'null'})">Enregistrer</button>`});
   }
   function deleteReward(rid){
     if(!confirm('Supprimer définitivement cette récompense ?')) return;
-    DB.removeReward(rid);
+    DB.removeCustomReward(rid);
     closePanel();
     toast('Récompense supprimée');
     renderRewards();
@@ -3100,11 +3113,11 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const codesPool=type==='promo-unique'?document.getElementById('rwCodesPool').value.split('\n').map(s=>s.trim()).filter(Boolean):undefined;
     const fulfillmentInstructions=type==='custom'?document.getElementById('rwInstructions').value.trim():undefined;
     if(rid){
-      const r=DB.REWARDS.find(x=>x.id===rid);
-      Object.assign(r,{name,type,pointsCost,validity,status,promoCode,codesPool,fulfillmentInstructions});
+      const r=DB.rewardById(rid);
+      Object.assign(r,{name,type:r.system?r.type:type,pointsCost,validity,status,promoCode,codesPool,fulfillmentInstructions});
       toast('Récompense mise à jour');
     } else {
-      DB.addReward({id:'r'+String(DB.REWARDS.length+1).padStart(2,'0'), name, type, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0});
+      DB.addCustomReward({id:'rw-'+Date.now(), name, type, system:false, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0});
       toast('Récompense créée');
     }
     closePanel(); renderRewards();
@@ -3259,7 +3272,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       ${clubPvSectionLabel('Comment gagner des points')}
       ${activeRules.length?activeRules.map(r=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px"><span style="color:var(--ink)">${r.label}</span><b style="color:${primary}">+${r.points} pts</b></div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e8gle active.</p>`}`;
 
-    const availableRewards=DB.REWARDS.filter(r=>r.status==='active');
+    const availableRewards=DB.allRewards().filter(r=>r.status==='active');
     const rewardsScreen=`
       ${clubPvSectionLabel('R\u00e9compenses disponibles')}
       ${availableRewards.length?availableRewards.map(r=>{
@@ -3273,7 +3286,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         </div>`;
       }).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense disponible pour le moment.</p>`}`;
 
-    const obtainedRewards=member.rewardIds.map(rid=>DB.REWARDS.find(r=>r.id===rid)).filter(Boolean);
+    const obtainedRewards=member.rewardIds.map(rid=>DB.rewardById(rid)).filter(Boolean);
     const historyScreen=`
       ${clubPvSectionLabel('R\u00e9compenses obtenues')}
       ${obtainedRewards.length?obtainedRewards.map(r=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span style="font-size:12.5px;color:var(--ink)">${r.name}</span><span style="font-size:11px;color:var(--muted)">${r.pointsCost} pts</span></div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense obtenue pour le moment.</p>`}`;
@@ -3389,6 +3402,13 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     DB.CLUB.template=document.getElementById('loyalty-settings-appearance').dataset.template||'essentiel';
     toast('Apparence du Club enregistrée');
   }
+  const rewardTabsEl=document.getElementById('rewardTypeTabs');
+  if(rewardTabsEl) rewardTabsEl.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    rewardState.type=b.dataset.type;
+    rewardTabsEl.querySelectorAll('button').forEach(x=>{ x.classList.toggle('active',x===b); x.setAttribute('aria-pressed',x===b?'true':'false'); });
+    renderRewards();
+  });
   renderMembers(); renderRewards(); renderClubGeneral();
 
   // ============================================================
@@ -3984,7 +4004,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const rate=pointsIssued>0?Math.round(pointsUsed/pointsIssued*100):0;
     document.getElementById('alRedemptionBar').style.width=rate+'%';
     document.getElementById('alRedemptionLabel').textContent=rate+' % des points distribués ont été utilisés';
-    document.getElementById('alRewardBars').innerHTML=hbarListHtml(DB.REWARDS.map(r=>({label:r.name,value:r.obtainedCount,display:r.obtainedCount+' obtenue(s)'})).sort((a,b)=>b.value-a.value));
+    document.getElementById('alRewardBars').innerHTML=hbarListHtml(DB.allRewards().map(r=>({label:r.name,value:r.obtainedCount,display:r.obtainedCount+' obtenue(s)'})).sort((a,b)=>b.value-a.value));
   }
 
   // ============================================================
