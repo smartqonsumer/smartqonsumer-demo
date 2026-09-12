@@ -1239,7 +1239,7 @@
         </div>
       </div>
 
-      <button data-route="scenarios.all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Scénarios automatisés</button>
+      <button data-route="scenarios.all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Automatisations</button>
 
       <div class="nav-group" data-group="analytics">
         <button class="nav-group-head" data-group-toggle="analytics" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg><span>Analyses</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg></button>
@@ -1701,35 +1701,35 @@
       </div>
     </section>
 
-    <!-- SCÉNARIOS AUTOMATISÉS -->
+    <!-- AUTOMATISATIONS -->
     <section class="screen" id="scenarios-all">
       <div class="screen-head">
-        <div><div class="eyebrow">Animation de la relation</div><h2 style="margin:2px 0 0;color:var(--ink)">Scénarios automatisés</h2><p>Relances et notifications déclenchées automatiquement — anniversaires, réactivation, et plus.</p></div>
-        <button class="btn primary" onclick="startScenCreation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer un scénario</button>
+        <div><div class="eyebrow">Animation de la relation</div><h2 style="margin:2px 0 0;color:var(--ink)">Automatisations</h2><p>Relances et notifications déclenchées automatiquement — anniversaires, réactivation, et plus.</p></div>
+        <button class="btn primary" onclick="startScenCreation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>Créer une automatisation</button>
       </div>
       <div class="filters-bar">
-        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="scenSearch" placeholder="Nom du scénario" oninput="renderScenarios()"></div>
+        <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="scenSearch" placeholder="Nom de l'automatisation" oninput="renderScenarios()"></div>
         <select id="scenFilterStatus" onchange="renderScenarios()"><option value="">Statut (tous)</option><option value="active">Actif</option><option value="draft">Brouillon</option><option value="paused">En pause</option></select>
       </div>
       <div class="card" style="padding:4px 4px 0">
-        <table><thead><tr><th>Nom</th><th>Déclencheur</th><th class="right">Messages</th><th>Statut</th><th class="right">Entrés</th><th class="right">Taux d'ouverture</th><th>Dernière modification</th><th></th></tr></thead>
+        <table><thead><tr><th>Nom</th><th>Déclencheur</th><th class="right">Messages</th><th>Statut</th><th class="right">Entrées</th><th class="right">Terminées</th><th class="right">Taux d'ouverture</th><th>Dernière modification</th><th></th></tr></thead>
         <tbody id="scenRows"></tbody></table>
       </div>
     </section>
 
     <section class="screen" id="scenarios-new">
       <div id="scenGateView" style="display:none">
-        <div class="screen-head"><div><div class="eyebrow">Scénarios automatisés</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer un scénario</h2></div></div>
+        <div class="screen-head"><div><div class="eyebrow">Automatisations</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer une automatisation</h2></div></div>
         <div class="premium-gate">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
           <h4>Le Club Fidélité doit être configuré</h4>
-          <p>Les scénarios s'appuient sur le Club Fidélité (statut, règles de points). Activez-le avant de créer un scénario.</p>
+          <p>Les automatisations s'appuient sur le Club Fidélité (statut, règles de points). Activez-le avant de créer une automatisation.</p>
           <button class="btn primary" onclick="go('loyalty.settings.general')">Configurer le Club Fidélité</button>
         </div>
       </div>
       <div id="scenWizardView" style="display:none">
         <div class="screen-head">
-          <div><div class="eyebrow">Scénarios automatisés</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer un scénario</h2></div>
+          <div><div class="eyebrow">Automatisations</div><h2 style="margin:2px 0 0;color:var(--ink)">Créer une automatisation</h2></div>
           <button class="btn ghost" onclick="cancelScenWizard()">Annuler</button>
         </div>
         <div class="wizard-steps" id="scenWizardSteps"></div>
@@ -1880,8 +1880,8 @@
     'campaigns.all':{screenId:'campaigns-all', title:'Toutes les campagnes', group:'campaigns', onEnter:()=>renderCampaigns()},
     'campaigns.new':{screenId:'campaigns-new', title:'Créer une campagne', group:'campaigns', onEnter:()=>enterCampaignsNew()},
     'campaigns.lists':{screenId:'campaigns-lists', title:'Listes de contacts', group:'campaigns', onEnter:()=>renderContactLists()},
-    'scenarios.all':{screenId:'scenarios-all', title:'Scénarios automatisés', onEnter:()=>renderScenarios()},
-    'scenarios.new':{screenId:'scenarios-new', title:'Créer un scénario', onEnter:()=>enterScenariosNew()},
+    'scenarios.all':{screenId:'scenarios-all', title:'Automatisations', onEnter:()=>renderScenarios()},
+    'scenarios.new':{screenId:'scenarios-new', title:'Créer une automatisation', onEnter:()=>enterScenariosNew()},
     'analytics.overview':{screenId:'analytics-overview', title:"Vue d'ensemble", group:'analytics', onEnter:()=>renderAnalyticsOverview()},
     'analytics.contacts':{screenId:'analytics-contacts', title:'Contacts et acquisition', group:'analytics', onEnter:()=>renderAnalyticsContacts()},
     'analytics.products':{screenId:'analytics-products', title:'Produits et scans', group:'analytics', onEnter:()=>renderAnalyticsProducts()},
@@ -2331,17 +2331,29 @@
       const days=trigger.offsetDays||0;
       if(trigger.type==='days_after_signup') return CONTACTS.filter(c=>{ const d=daysSinceD(c.createdAt); return d>=days && d<days+7; }).length;
       if(trigger.type==='scan_no_signup') return CONTACTS.filter(c=>{ if(c.isLoyaltyMember||!c.lastScanAt) return false; const d=daysSinceD(c.lastScanAt); return d>=days && d<days+7; }).length;
+      if(trigger.type==='points_reached'){ const th=trigger.pointsThreshold||100; return CONTACTS.filter(c=>{ const m=c.isLoyaltyMember?memberById(c.loyaltyMemberId):null; return m && m.pointsBalance>=th; }).length; }
       return 0;
     }
     const dormantCount0=CONTACTS.filter(c=>c.status==='dormant').length;
     const nearRewardCount0=CONTACTS.filter(c=>c.isLoyaltyMember && pointsToNextReward(c.loyaltyMemberId)<=50).length;
     const birthdayCount0=CONTACTS.filter(c=>c.birthDate).length;
+    function genAutomationLog(n){
+      const arr=[];
+      for(let i=0;i<n;i++){
+        const c=pick(CONTACTS);
+        const roll=rnd();
+        const result = roll<0.15?'clicked':(roll<0.55?'opened':'envoyé');
+        arr.push({date:daysAgo(randInt(0,60)), contactName:c.name, result});
+      }
+      return arr.sort((a,b)=>b.date-a.date);
+    }
     let AUTOMATIONS=[
       {
-        id:'auto01', name:"Souhait d'anniversaire", status:'active',
+        id:'auto01', name:"Souhait d'anniversaire", status:'active', system:true,
         trigger:{type:'birthday'},
         steps:[{delayDays:0, title:'Joyeux anniversaire !', subject:'Joyeux anniversaire de la part de SmartQonsumer !', shortDesc:'Un cadeau vous attend dans votre espace Club.', longDesc:'Pour célébrer votre anniversaire, nous vous offrons un bonus de points valable 30 jours dans votre espace Club Fidélité.', ctaLabel:'Découvrir mon cadeau', ctaType:'club', ctaTarget:''}],
-        stats:{entered:Math.round(birthdayCount0*0.9), sent:Math.round(birthdayCount0*0.9), opened:Math.round(birthdayCount0*0.9*0.52), clicked:Math.round(birthdayCount0*0.9*0.18)},
+        stats:{entered:Math.round(birthdayCount0*0.9), sent:Math.round(birthdayCount0*0.9), opened:Math.round(birthdayCount0*0.9*0.52), clicked:Math.round(birthdayCount0*0.9*0.18), completed:Math.round(birthdayCount0*0.9)},
+        log:genAutomationLog(14),
         createdAt:daysAgo(120), lastModified:daysAgo(4),
       },
       {
@@ -2351,14 +2363,16 @@
           {delayDays:0, title:'On ne vous a pas vu depuis un moment', subject:'On ne vous a pas vu depuis un moment', shortDesc:'Redécouvrez vos produits préférés.', longDesc:"Cela fait un moment que nous n'avons pas eu de vos nouvelles. Reprenez où vous en étiez et retrouvez vos produits favoris.", ctaLabel:'Je reviens', ctaType:'club', ctaTarget:''},
           {delayDays:7, title:'Toujours là pour vous', subject:'Toujours là pour vous', shortDesc:'Une offre spéciale retour.', longDesc:'Une offre spéciale vous attend pour votre retour parmi nous.', ctaLabel:"Voir l'offre", ctaType:'club', ctaTarget:''},
         ],
-        stats:{entered:dormantCount0, sent:dormantCount0, opened:Math.round(dormantCount0*0.34), clicked:Math.round(dormantCount0*0.09)},
+        stats:{entered:dormantCount0, sent:dormantCount0, opened:Math.round(dormantCount0*0.34), clicked:Math.round(dormantCount0*0.09), completed:Math.round(dormantCount0*0.58)},
+        log:genAutomationLog(11),
         createdAt:daysAgo(75), lastModified:daysAgo(20),
       },
       {
         id:'auto03', name:'Relance avant récompense', status:'draft',
         trigger:{type:'segment_enter', segmentId:'sys-near-reward'},
         steps:[{delayDays:0, title:'Plus que quelques points !', subject:'Plus que quelques points avant votre récompense !', shortDesc:'Ne la laissez pas filer.', longDesc:'Vous êtes tout proche de débloquer votre prochaine récompense. Complétez vos actions pour ne pas la manquer.', ctaLabel:'Voir ma récompense', ctaType:'club', ctaTarget:''}],
-        stats:{entered:0, sent:0, opened:0, clicked:0},
+        stats:{entered:0, sent:0, opened:0, clicked:0, completed:0},
+        log:[],
         createdAt:daysAgo(6), lastModified:daysAgo(6),
       },
     ];
@@ -4791,6 +4805,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     {key:'near_reward', type:'segment_enter', segmentId:'sys-near-reward', label:"Proche d'une récompense", desc:'Se déclenche quand le membre passe à moins de 50 points de sa prochaine récompense.'},
     {key:'after_signup', type:'days_after_signup', label:"X jours après l'inscription", desc:"Se déclenche X jours après la création du contact.", needsDays:true},
     {key:'scan_no_signup', type:'scan_no_signup', label:'Scan sans inscription', desc:"Se déclenche X jours après un scan, si le contact n'a toujours pas rejoint le Club.", needsDays:true},
+    {key:'points_reached', type:'points_reached', label:'Nombre de points atteint', desc:"Se déclenche quand un membre atteint X points cumulés.", needsPoints:true},
   ];
   function triggerDefFor(trigger){
     if(!trigger) return null;
@@ -4799,6 +4814,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   function triggerBlockLabel(trigger){
     const def=triggerDefFor(trigger);
     if(!def) return {title:'Déclencheur', desc:''};
+    if(def.needsPoints) return {title:def.label, desc:`${(trigger&&trigger.pointsThreshold)||100} points`};
     return {title:def.label, desc: def.needsDays ? `${(trigger&&trigger.offsetDays)||7} jours` : def.desc};
   }
   function flowDiagramHtml(trigger, steps, opts){
@@ -4832,44 +4848,54 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         <td class="right">${a.steps.length}</td>
         <td>${scenStatusTag(a.status)}</td>
         <td class="right">${fmtN(a.stats.entered)}</td>
+        <td class="right">${fmtN(a.stats.completed||0)}</td>
         <td class="right">${a.stats.sent>0?openRate+' %':'—'}</td>
         <td>${fmtDateFR(a.lastModified)}</td>
         <td class="right muted" style="font-size:12px">Ouvrir →</td></tr>`;
-    }).join('') : `<tr><td colspan="8">${emptyStateHtml({icon:'search',title:'Aucun scénario trouvé',text:'Essayez un autre terme de recherche.'})}</td></tr>`;
+    }).join('') : `<tr><td colspan="9">${emptyStateHtml({icon:'search',title:'Aucune automatisation trouvée',text:'Essayez un autre terme de recherche.'})}</td></tr>`;
   }
   function openScenarioDetail(id){
     const a=DB.automationById(id); if(!a) return;
     const openRate=a.stats.sent>0?Math.round(a.stats.opened/a.stats.sent*100):0;
     const clickRate=a.stats.sent>0?Math.round(a.stats.clicked/a.stats.sent*100):0;
     const bodyHtml=`
+      <div class="row" style="gap:6px;margin-bottom:14px"><span class="tag ${a.system?'grey':'teal'}">${a.system?'Système':'Personnalisée'}</span></div>
       ${flowDiagramHtml(a.trigger, a.steps)}
       <div class="grid cards-4" style="margin-top:18px">
         ${kpiCardHtml('Contacts entrés', fmtN(a.stats.entered))}
         ${kpiCardHtml('Envoyés', fmtN(a.stats.sent))}
+        ${kpiCardHtml('Terminées', fmtN(a.stats.completed||0))}
         ${kpiCardHtml("Taux d'ouverture", a.stats.sent>0?openRate+' %':'—')}
-        ${kpiCardHtml('Taux de clic', a.stats.sent>0?clickRate+' %':'—')}
       </div>
       <div class="kv" style="margin-top:18px"><span>Statut</span><b>${scenStatusTag(a.status)}</b></div>
       <div class="kv"><span>Créé le</span><b>${fmtDateFR(a.createdAt)}</b></div>
-      <div class="kv" style="border-bottom:0"><span>Dernière modification</span><b>${fmtDateFR(a.lastModified)}</b></div>`;
+      <div class="kv" style="border-bottom:0"><span>Dernière modification</span><b>${fmtDateFR(a.lastModified)}</b></div>
+      <div class="opt" style="border-bottom:0"><div><b>Journal des exécutions</b><br><small>Historique détaillé, par contact et par message</small></div><button class="btn ghost" onclick="openAutomationLog('${a.id}')">Consulter →</button></div>`;
     const toggleLabel = a.status==='active' ? 'Mettre en pause' : 'Activer';
     const canEdit = a.status!=='active';
-    openPanel({eyebrow:'Scénario automatisé', title:a.name, bodyHtml, wide:true,
-      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button><button class="btn ghost" onclick="deleteScenario('${a.id}')">Supprimer</button>${canEdit?`<button class="btn ghost" onclick="editScenario('${a.id}')">Modifier</button>`:''}<button class="btn ghost" onclick="toggleScenarioStatus('${a.id}')">${toggleLabel}</button>`});
+    openPanel({eyebrow:'Automatisation', title:a.name, bodyHtml, wide:true,
+      footerHtml:`<button class="btn ghost" onclick="closePanel()">Fermer</button>${a.system?'':`<button class="btn ghost" onclick="deleteScenario('${a.id}')">Supprimer</button>`}${canEdit?`<button class="btn ghost" onclick="editScenario('${a.id}')">Modifier</button>`:''}<button class="btn ghost" onclick="toggleScenarioStatus('${a.id}')">${toggleLabel}</button>`});
+  }
+  function openAutomationLog(id){
+    const a=DB.automationById(id); if(!a) return;
+    const rows=(a.log||[]).map(e=>`<tr><td>${fmtDateFR(e.date)}</td><td>${e.contactName}</td><td><span class="tag ${e.result==='clicked'?'green':(e.result==='opened'?'teal':'grey')}">${e.result==='clicked'?'Cliqué':(e.result==='opened'?'Ouvert':'Envoyé')}</span></td></tr>`).join('');
+    const bodyHtml=`<div class="card" style="padding:4px 4px 0"><table><thead><tr><th>Date</th><th>Contact</th><th>Résultat</th></tr></thead><tbody>${rows||`<tr><td colspan="3">${emptyStateHtml({icon:'search',title:'Aucune exécution',text:"Cette automatisation n'a pas encore été déclenchée."})}</td></tr>`}</tbody></table></div>`;
+    openPanel({eyebrow:'Automatisation', title:'Journal — '+a.name, bodyHtml, wide:true,
+      footerHtml:`<button class="btn ghost" onclick="openScenarioDetail('${a.id}')">← Retour</button>`});
   }
   function deleteScenario(id){
-    if(!confirm('Supprimer définitivement ce scénario automatisé ?')) return;
+    if(!confirm('Supprimer définitivement cette automatisation ?')) return;
     DB.removeAutomation(id);
     closePanel();
-    toast('Scénario supprimé');
+    toast('Automatisation supprimée');
     renderScenarios();
   }
   function toggleScenarioStatus(id){
     const a=DB.automationById(id); if(!a) return;
-    if(a.status==='active' && !confirm('Mettre ce scénario en pause ? Il cessera de se déclencher pour les nouveaux contacts concernés.')) return;
+    if(a.status==='active' && !confirm('Mettre cette automatisation en pause ? Elle cessera de se déclencher pour les nouveaux contacts concernés.')) return;
     a.status = a.status==='active' ? 'paused' : 'active';
     a.lastModified=new Date();
-    toast(a.status==='active'?'Scénario activé':'Scénario mis en pause');
+    toast(a.status==='active'?'Automatisation activée':'Automatisation mise en pause');
     closePanel(); renderScenarios();
   }
   renderScenarios();
@@ -4886,9 +4912,11 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     }).join('');
   }
   function selectScenTrigger(key){
+    if(scenDraft.triggerLocked) return;
     scenDraft.triggerKey=key;
     const def=TRIGGER_DEFS.find(t=>t.key===key);
     if(def && def.needsDays && !scenDraft.triggerOffsetDays) scenDraft.triggerOffsetDays=7;
+    if(def && def.needsPoints && !scenDraft.triggerPointsThreshold) scenDraft.triggerPointsThreshold=100;
     renderScenWizardStepBody();
   }
   function scTriggerToDraft(){
@@ -4897,30 +4925,38 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const trigger={type:def.type};
     if(def.segmentId) trigger.segmentId=def.segmentId;
     if(def.needsDays) trigger.offsetDays=scenDraft.triggerOffsetDays||7;
+    if(def.needsPoints) trigger.pointsThreshold=scenDraft.triggerPointsThreshold||100;
     return trigger;
   }
   function updateScenAudiencePreview(){
     const el=document.getElementById('scAudiencePreview'); if(!el) return;
     const daysInput=document.getElementById('scDays');
     if(daysInput) scenDraft.triggerOffsetDays=parseInt(daysInput.value,10)||7;
+    const pointsInput=document.getElementById('scPoints');
+    if(pointsInput) scenDraft.triggerPointsThreshold=parseInt(pointsInput.value,10)||100;
     const trigger=scTriggerToDraft();
     if(!trigger){ el.textContent=''; return; }
     const count=DB.triggerAudienceCount(trigger);
     el.textContent=`${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement`;
   }
   const SCEN_DAY_PRESETS=[3,7,14,30,60,90];
+  const SCEN_POINTS_PRESETS=[50,100,150,250,500];
   function scStep1Html(){
     const sel=scenDraft.triggerKey;
-    const cards=TRIGGER_DEFS.map(td=>`<div class="lp-template-card ${sel===td.key?'selected':''}" data-trigger="${td.key}" onclick="selectScenTrigger('${td.key}')" style="flex:1 1 220px;max-width:none"><b>${td.label}</b><small>${td.desc}</small></div>`).join('');
+    const locked=!!scenDraft.triggerLocked;
+    const cards=TRIGGER_DEFS.filter(td=>!locked||sel===td.key).map(td=>`<div class="lp-template-card ${sel===td.key?'selected':''}" data-trigger="${td.key}" onclick="selectScenTrigger('${td.key}')" style="flex:1 1 220px;max-width:none;${locked?'cursor:default':''}"><b>${td.label}</b><small>${td.desc}</small></div>`).join('');
     const def=TRIGGER_DEFS.find(t=>t.key===sel);
     const curDays=scenDraft.triggerOffsetDays||7;
+    const curPoints=scenDraft.triggerPointsThreshold||100;
     const daysField = def&&def.needsDays ? `<div class="field" style="max-width:220px"><label>Délai</label><select id="scDays" onchange="updateScenAudiencePreview()">${SCEN_DAY_PRESETS.map(d=>`<option value="${d}" ${curDays===d?'selected':''}>${d} jours</option>`).join('')}</select></div>` : '';
+    const pointsField = def&&def.needsPoints ? `<div class="field" style="max-width:220px"><label>Seuil de points</label><select id="scPoints" onchange="updateScenAudiencePreview()">${SCEN_POINTS_PRESETS.map(p=>`<option value="${p}" ${curPoints===p?'selected':''}>${p} points</option>`).join('')}</select></div>` : '';
     const trigger=sel?scTriggerToDraft():null;
     const count=trigger?DB.triggerAudienceCount(trigger):0;
     return `<div class="card" style="max-width:720px">
-      <h3>Déclencheur</h3><div class="sub">Choisissez l'événement qui déclenche l'envoi.</div>
+      <h3>Déclencheur</h3><div class="sub">${locked?'Déclencheur système, non modifiable.':"Choisissez l'événement qui déclenche l'envoi."}</div>
       <div class="row" style="gap:10px;flex-wrap:wrap;margin:14px 0">${cards}</div>
       ${daysField}
+      ${pointsField}
       <p class="muted" style="font-size:11.5px;margin-top:10px" id="scAudiencePreview">${sel?`${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement`:''}</p>
       <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="wizardNextScen()">Suivant</button></div>
     </div>`;
@@ -5014,7 +5050,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const trigger=scTriggerToDraft();
     return `<div class="card" style="max-width:760px">
       <h3>Vérification</h3>
-      <div class="field" style="max-width:360px"><label>Nom du scénario</label><input type="text" id="scName" value="${scenDraft.name||''}" placeholder="Ex. Relance anniversaire"></div>
+      <div class="field" style="max-width:360px"><label>Nom de l'automatisation</label><input type="text" id="scName" value="${scenDraft.name||''}" placeholder="Ex. Relance anniversaire"></div>
       ${flowDiagramHtml(trigger, scenDraft.steps)}
       <div class="row" style="justify-content:space-between;margin-top:16px">
         <button class="btn ghost" onclick="wizardBackScen()">Précédent</button>
@@ -5044,21 +5080,22 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   function cancelScenWizard(){ scenDraft=null; go('scenarios.all'); }
   function finishScenWizard(status){
     readScenStepsFromForm();
-    const name=(document.getElementById('scName')||{}).value.trim()||'Nouveau scénario';
+    const name=(document.getElementById('scName')||{}).value.trim()||'Nouvelle automatisation';
     const trigger=scTriggerToDraft();
     const steps=scenDraft.steps.map(s=>({delayDays:s.delayDays||0, title:s.title, subject:s.subject, shortDesc:s.shortDesc, longDesc:s.longDesc, ctaLabel:s.ctaLabel||'Découvrir', ctaType:s.ctaType||'club', ctaTarget:s.ctaTarget||''}));
     if(scenDraft.id){
       const a=DB.automationById(scenDraft.id);
       Object.assign(a,{name,status,trigger,steps,lastModified:new Date()});
-      toast('Scénario mis à jour');
+      toast('Automatisation mise à jour');
     } else {
       DB.addAutomation({
-        id:'auto'+String(DB.AUTOMATIONS.length+1).padStart(2,'0'),
+        id:'auto-'+Date.now(),
         name, status, trigger, steps,
-        stats:{entered:0, sent:0, opened:0, clicked:0},
+        stats:{entered:0, sent:0, opened:0, clicked:0, completed:0},
+        log:[],
         createdAt:new Date(), lastModified:new Date(),
       });
-      toast(status==='active' ? 'Scénario activé' : 'Scénario enregistré en brouillon');
+      toast(status==='active' ? 'Automatisation activée' : 'Automatisation enregistrée en brouillon');
     }
     scenDraft=null;
     go('scenarios.all');
@@ -5073,7 +5110,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   function editScenario(id){
     const a=DB.automationById(id); if(!a) return;
     const def=TRIGGER_DEFS.find(t=>t.type===a.trigger.type && (t.segmentId||null)===(a.trigger.segmentId||null));
-    scenDraft={id:a.id, name:a.name, triggerKey:def?def.key:'', triggerOffsetDays:a.trigger.offsetDays||7, steps:a.steps.map(s=>({...s}))};
+    scenDraft={id:a.id, name:a.name, triggerKey:def?def.key:'', triggerOffsetDays:a.trigger.offsetDays||7, triggerPointsThreshold:a.trigger.pointsThreshold||100, triggerLocked:!!a.system, steps:a.steps.map(s=>({...s}))};
     scenStep=1;
     closePanel();
     go('scenarios.new');
