@@ -298,7 +298,7 @@
   .field{display:flex; flex-direction:column; gap:6px; margin-bottom:14px}
   .field label{font-size:12.5px; font-weight:600; color:var(--ink)}
   .field small{color:var(--muted); font-weight:400; font-size:11.5px}
-  select,input[type=text],input[type=email],input[type=password],textarea{font-family:inherit; font-size:13px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--color-white); color:var(--color-text-primary); width:100%}
+  select,input[type=text],input[type=email],input[type=password],input[type=number],textarea{font-family:inherit; font-size:13px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--color-white); color:var(--color-text-primary); width:100%}
   select:focus,input:focus,textarea:focus{outline:none; border-color:var(--focus-border-color); box-shadow:var(--focus-ring)}
 
   /* drawer */
@@ -2167,16 +2167,16 @@
 
     // ---- REWARDS (6) ----
     const REWARDS=[
-      {id:'r01', name:'-15% sur la prochaine commande', type:'promo-generic', promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0, redeemedCount:0},
-      {id:'r02', name:'Produit offert (édition découverte)', type:'promo-unique', codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0, redeemedCount:0},
-      {id:'r03', name:'Accès prévente collection limitée', type:'custom', fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0, redeemedCount:0},
-      {id:'r04', name:'Dégustation en boutique', type:'custom', fulfillmentInstructions:"Le membre présente son QR Code à l'accueil de la boutique pour la dégustation.", pointsCost:300, validity:'120 jours', status:'active', obtainedCount:0, redeemedCount:0},
-      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0, redeemedCount:0},
-      {id:'r06', name:'Invitation événement privé', type:'custom', fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0, redeemedCount:0},
+      {id:'r01', name:'-15% sur la prochaine commande', type:'promo-generic', promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'r02', name:'Produit offert (édition découverte)', type:'promo-unique', codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0},
+      {id:'r03', name:'Accès prévente collection limitée', type:'custom', fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0},
+      {id:'r04', name:'Dégustation en boutique', type:'custom', fulfillmentInstructions:"Le membre présente son QR Code à l'accueil de la boutique pour la dégustation.", pointsCost:300, validity:'120 jours', status:'active', obtainedCount:0},
+      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0},
+      {id:'r06', name:'Invitation événement privé', type:'custom', fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0},
     ];
     LOYALTY_MEMBERS.forEach(m=>{
       const nb=Math.floor(m.pointsUsed/150);
-      for(let k=0;k<nb && k<3;k++){ const rw=pick(REWARDS); m.rewardIds.push(rw.id); rw.obtainedCount++; if(rnd()<0.7) rw.redeemedCount++; }
+      for(let k=0;k<nb && k<3;k++){ const rw=pick(REWARDS); m.rewardIds.push(rw.id); rw.obtainedCount++; }
     });
 
     // ---- SCAN_EVENTS (90-day log — single ledger every scan count derives from) ----
@@ -3037,8 +3037,7 @@
         <div class="sub" style="margin-bottom:12px">${rewardTypeLabel(r.type)}</div>
         <div class="kv"><span>Coût</span><b>${r.pointsCost} pts</b></div>
         <div class="kv"><span>Validité</span><b>${r.validity}</b></div>
-        <div class="kv"><span>Obtentions</span><b>${r.obtainedCount}</b></div>
-        <div class="kv" style="border-bottom:0"><span>Consommations</span><b>${r.redeemedCount}</b></div>
+        <div class="kv" style="border-bottom:0"><span>Obtentions</span><b>${r.obtainedCount}</b></div>
         ${rewardConfigSummaryHtml(r)}
       </div>`).join('');
   }
@@ -3063,7 +3062,15 @@
 CODE-0002
 CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       <div class="field" id="rwFieldCustom" ${t!=='custom'?'style="display:none"':''}><label>Instructions de traitement</label><textarea id="rwInstructions" rows="3" placeholder="Ex. Le membre présente son QR Code à l'accueil de la boutique">${r&&r.fulfillmentInstructions?r.fulfillmentInstructions:''}</textarea></div>
-      <div class="field"><label>Statut</label><select id="rwStatus"><option value="active" ${!r||r.status==='active'?'selected':''}>Active</option><option value="archivee" ${r&&r.status==='archivee'?'selected':''}>Archivée</option></select></div>`;
+      <div class="field"><label>Statut</label><select id="rwStatus"><option value="active" ${!r||r.status==='active'?'selected':''}>Active</option><option value="archivee" ${r&&r.status==='archivee'?'selected':''}>Archivée</option></select></div>
+      ${!r ? `<div class="field" style="margin-top:4px">
+        <label>Idées de récompenses</label>
+        <div style="border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7">
+          <b style="color:var(--ink);font-weight:700">Code promo générique</b> — ex. « -10 % sur la prochaine commande », « Livraison offerte »<br>
+          <b style="color:var(--ink);font-weight:700">Code unique</b> — ex. « Un produit offert (stock limité) », « Accès prioritaire à une nouveauté »<br>
+          <b style="color:var(--ink);font-weight:700">Récompense personnalisée</b> — ex. « Dégustation en boutique, sur présentation du QR Code à l'accueil », « Invitation à un événement privé, détails envoyés par e-mail »
+        </div>
+      </div>` : ''}`;
   }
   function updateRewardTypeFields(){
     const t=document.getElementById('rwType').value;
@@ -3097,7 +3104,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       Object.assign(r,{name,type,pointsCost,validity,status,promoCode,codesPool,fulfillmentInstructions});
       toast('Récompense mise à jour');
     } else {
-      DB.addReward({id:'r'+String(DB.REWARDS.length+1).padStart(2,'0'), name, type, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0, redeemedCount:0});
+      DB.addReward({id:'r'+String(DB.REWARDS.length+1).padStart(2,'0'), name, type, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0});
       toast('Récompense créée');
     }
     closePanel(); renderRewards();
@@ -3977,7 +3984,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const rate=pointsIssued>0?Math.round(pointsUsed/pointsIssued*100):0;
     document.getElementById('alRedemptionBar').style.width=rate+'%';
     document.getElementById('alRedemptionLabel').textContent=rate+' % des points distribués ont été utilisés';
-    document.getElementById('alRewardBars').innerHTML=hbarListHtml(DB.REWARDS.map(r=>({label:r.name,value:r.obtainedCount,display:r.obtainedCount+' obt. · '+r.redeemedCount+' conso.'})).sort((a,b)=>b.value-a.value));
+    document.getElementById('alRewardBars').innerHTML=hbarListHtml(DB.REWARDS.map(r=>({label:r.name,value:r.obtainedCount,display:r.obtainedCount+' obtenue(s)'})).sort((a,b)=>b.value-a.value));
   }
 
   // ============================================================
