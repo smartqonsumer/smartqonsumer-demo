@@ -1779,6 +1779,9 @@
       <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Produits et scans</h2></div></div>
       <div class="filters-bar">
         <div class="seg-tabs" id="apPeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="7">7 jours</button><button type="button" data-period="30" class="active" aria-pressed="true">30 jours</button><button type="button" data-period="90">90 jours</button></div>
+        <select id="apSource" onchange="renderAnalyticsProducts()"><option value="">Tous les canaux</option></select>
+        <select id="apSegment" onchange="renderAnalyticsProducts()"><option value="">Tous segments</option></select>
+        <select id="apPersona" onchange="renderAnalyticsProducts()"><option value="">Tous personas</option></select>
       </div>
       <div class="grid cards-4" id="apKpis"></div>
       <div class="grid cards-2" style="margin-top:16px;align-items:start">
@@ -4051,10 +4054,42 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   // ANALYSES — Produits et scans
   // ============================================================
   const apState={period:30};
+  function populateAnalyticsProductsFilters(){
+    const srcSel=document.getElementById('apSource');
+    if(srcSel && !srcSel.dataset.filled){ DB.SOURCES.forEach(s=>srcSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); srcSel.dataset.filled='1'; }
+    const segSel=document.getElementById('apSegment');
+    if(segSel && !segSel.dataset.filled){ DB.SEGMENT_NAMES.forEach(s=>segSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); segSel.dataset.filled='1'; }
+    const perSel=document.getElementById('apPersona');
+    if(perSel && !perSel.dataset.filled){ DB.PERSONAS.forEach(p=>perSel.insertAdjacentHTML('beforeend',`<option>${p}</option>`)); perSel.dataset.filled='1'; }
+  }
+  function apFilteredScans(){
+    const source=document.getElementById('apSource').value, segment=document.getElementById('apSegment').value, persona=document.getElementById('apPersona').value;
+    return DB.SCAN_EVENTS.filter(ev=>{
+      if(source && ev.source!==source) return false;
+      if(segment || persona){
+        const c=ev.contactId?DB.contactById(ev.contactId):null;
+        if(!c) return false;
+        if(segment && c.segment!==segment) return false;
+        if(persona && c.persona!==persona) return false;
+      }
+      return true;
+    });
+  }
+  function apMetricsFor(evs){
+    const uniqueContacts=new Set(evs.filter(e=>e.contactId).map(e=>e.contactId));
+    const anonCount=evs.filter(e=>!e.contactId).length;
+    const signups=evs.filter(e=>e.resultedInSignup).length;
+    const unique=uniqueContacts.size+anonCount;
+    return {scans:evs.length, unique, signups, conv: unique>0 ? signups/unique*100 : null};
+  }
   function renderAnalyticsProducts(){
+    populateAnalyticsProductsFilters();
     wirePeriodTabs('apPeriodTabs',apState,renderAnalyticsProducts);
     const days=apState.period;
-    const totals=DERIVE.scanTotals(days);
+    const since=Date.now()-days*86400000;
+    const scansFiltered=apFilteredScans();
+    const scansPeriod=scansFiltered.filter(e=>e.timestamp.getTime()>=since);
+    const totals=apMetricsFor(scansPeriod);
     document.getElementById('apKpis').innerHTML=[
       kpiCardHtml('Scans totaux', fmtN(totals.scans)),
       kpiCardHtml('Scans uniques', fmtN(totals.unique)),
@@ -4062,15 +4097,15 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       kpiCardHtml('Produits actifs', fmtN(DB.PRODUCTS.filter(p=>p.status==='active').length)),
     ].join('');
     const points=[];
-    for(let d=days-1; d>=0; d--){ const [s,e]=dayRange(d); points.push({x:d,y:DB.SCAN_EVENTS.filter(ev=>ev.timestamp>=s&&ev.timestamp<e).length}); }
+    for(let d=days-1; d>=0; d--){ const [s,e]=dayRange(d); points.push({x:d,y:scansFiltered.filter(ev=>ev.timestamp>=s&&ev.timestamp<e).length}); }
     renderLineChart('apTrendChart',[{label:'Scans',color:'var(--accent)',points}]);
-    const prodRows=DB.PRODUCTS.map(p=>Object.assign({product:p},DERIVE.productMetrics(p.id,days))).sort((a,b)=>b.scans-a.scans);
+    const prodRows=DB.PRODUCTS.map(p=>Object.assign({product:p},apMetricsFor(scansPeriod.filter(e=>e.productId===p.id)))).sort((a,b)=>b.scans-a.scans);
     document.getElementById('apTopProducts').innerHTML=hbarListHtml(prodRows.slice(0,5).map(r=>({label:r.product.name,value:r.unique})));
     const destCounts={landing:0,club:0,external:0};
     DB.QR_CODES.forEach(q=>{ const p=q.destinations.find(d=>d.isPrimary); if(p) destCounts[p.type]=(destCounts[p.type]||0)+1; });
     const destLabels={landing:'Landing Page',club:'Club Fidélité',external:'URL externe'};
     document.getElementById('apDestBars').innerHTML=hbarListHtml(Object.entries(destCounts).map(([k,v])=>({label:destLabels[k],value:v})));
-    const inactiveQr=DB.QR_CODES.filter(q=>DERIVE.productMetrics(q.productId,days).scans===0);
+    const inactiveQr=DB.QR_CODES.filter(q=>{ const r=prodRows.find(r=>r.product.id===q.productId); return !r || r.scans===0; });
     document.getElementById('apInactiveQr').innerHTML = inactiveQr.length ? inactiveQr.map(q=>`<div class="kv"><span>${DB.productById(q.productId).name}</span><b class="muted">0 scan</b></div>`).join('') : `<p class="muted" style="font-size:12.5px">Tous les QR Codes ont eu de l'activité sur la période.</p>`;
     document.getElementById('apDetailTable').innerHTML=prodRows.map(r=>`<tr><td>${r.product.name}</td><td class="right">${fmtN(r.scans)}</td><td class="right">${fmtN(r.unique)}</td><td class="right">${r.conv==null?'—':fmtPct(r.conv)}</td></tr>`).join('');
   }
