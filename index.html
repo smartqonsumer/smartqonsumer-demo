@@ -2197,16 +2197,17 @@
     function posById(id){ return POINTS_DE_VENTE.find(p=>p.id===id)||null; }
 
     // ---- REWARDS: système (paramétrable, non supprimable) + personnalisées (libres), comme les segments ----
+    function genVerificationToken(seedStr){ return (seedStr||'rwd').split('').reduce((h,c)=>((h<<5)-h+c.charCodeAt(0))|0,0).toString(36).replace('-','x')+Date.now().toString(36).slice(-4); }
     let REWARDS=[
-      {id:'sys-promo', name:'Réduction fidélité', type:'promo-generic', promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'sys-shipping', name:'Livraison gratuite', type:'promo-generic', promoCode:'FREESHIP', pointsCost:60, validity:'60 jours', status:'active', obtainedCount:0},
-      {id:'sys-gift', name:'Produit offert', type:'promo-unique', codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0},
-      {id:'sys-early-access', name:'Accès prioritaire aux nouveautés', type:'promo-unique', codesPool:['EARLY-001','EARLY-002','EARLY-003','EARLY-004'], pointsCost:180, validity:'45 jours', status:'active', obtainedCount:0},
-      {id:'sys-experience', name:'Expérience personnalisée', type:'custom', fulfillmentInstructions:"Envoyer un e-mail au membre avec les modalités de sa récompense.", pointsCost:300, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'sys-donation', name:'Don caritatif en votre nom', type:'custom', fulfillmentInstructions:"Un don est versé à l'association partenaire au nom du membre ; confirmation envoyée par e-mail.", pointsCost:150, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'r03', name:'Accès prévente collection limitée', type:'custom', fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0},
-      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0},
-      {id:'r06', name:'Invitation événement privé', type:'custom', fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0},
+      {id:'sys-promo', name:'Réduction fidélité', type:'promo-generic', promoCode:'WELCOME15', pointsCost:100, validity:'90 jours', status:'active', obtainedCount:0, qrEnabled:false, verificationToken:null},
+      {id:'sys-shipping', name:'Livraison gratuite', type:'promo-generic', promoCode:'FREESHIP', pointsCost:60, validity:'60 jours', status:'active', obtainedCount:0, qrEnabled:false, verificationToken:null},
+      {id:'sys-gift', name:'Produit offert', type:'promo-unique', codesPool:['GIFT-0001','GIFT-0002','GIFT-0003','GIFT-0004','GIFT-0005'], pointsCost:250, validity:'60 jours', status:'active', obtainedCount:0, qrEnabled:false, verificationToken:null},
+      {id:'sys-early-access', name:'Accès prioritaire aux nouveautés', type:'promo-unique', codesPool:['EARLY-001','EARLY-002','EARLY-003','EARLY-004'], pointsCost:180, validity:'45 jours', status:'active', obtainedCount:0, qrEnabled:false, verificationToken:null},
+      {id:'sys-experience', name:'Expérience personnalisée', type:'custom', fulfillmentInstructions:"Envoyer un e-mail au membre avec les modalités de sa récompense.", pointsCost:300, validity:'90 jours', status:'active', obtainedCount:0, qrEnabled:true, verificationToken:genVerificationToken('sys-experience')},
+      {id:'sys-donation', name:'Don caritatif en votre nom', type:'custom', fulfillmentInstructions:"Un don est versé à l'association partenaire au nom du membre ; confirmation envoyée par e-mail.", pointsCost:150, validity:'90 jours', status:'active', obtainedCount:0, qrEnabled:false, verificationToken:null},
+      {id:'r03', name:'Accès prévente collection limitée', type:'custom', fulfillmentInstructions:"Envoyer le lien d'accès prévente par e-mail 48h avant l'ouverture.", pointsCost:150, validity:'30 jours', status:'active', obtainedCount:0, qrEnabled:false, verificationToken:null},
+      {id:'r05', name:'Coffret cadeau surprise', type:'promo-unique', codesPool:['COFFRET-01','COFFRET-02','COFFRET-03'], pointsCost:500, validity:'90 jours', status:'active', obtainedCount:0, qrEnabled:false, verificationToken:null},
+      {id:'r06', name:'Invitation événement privé', type:'custom', fulfillmentInstructions:"Ajouter le membre à la liste d'invités transmise à l'organisateur.", pointsCost:400, validity:'45 jours', status:'archivee', obtainedCount:0, qrEnabled:true, verificationToken:genVerificationToken('r06')},
     ];
     function allRewards(){ return REWARDS; }
     function rewardById(id){ return REWARDS.find(r=>r.id===id)||null; }
@@ -2509,7 +2510,7 @@
       POINTS_DE_VENTE, posById, addPointOfVente(p){ POINTS_DE_VENTE.push(p); }, removePointOfVente,
       LOYALTY_MEMBERS, memberById, loyaltyMemberByContact, memberIsActive, pointsToNextReward, pointsExpiryDate, removeMember,
       addLoyaltyMember(m){ LOYALTY_MEMBERS.push(m); },
-      allRewards, rewardById, addCustomReward, removeCustomReward,
+      allRewards, rewardById, addCustomReward, removeCustomReward, genVerificationToken,
       LANDING_PAGES, landingPageByProduct, landingPageById, addLandingPage(lp){ LANDING_PAGES.push(lp); productById(lp.productId).landingPageId=lp.id; }, removeLandingPage,
       QR_CODES, qrByProduct, qrById, setPrimaryDestination, addQrCode(q){ QR_CODES.push(q); productById(q.productId).qrCodeId=q.id; }, removeQrCode,
       CLUB, PLAN, setPlanTier, CURRENT_USER, WORKSPACE,
@@ -3091,7 +3092,7 @@
           <h3 style="margin:0">${r.name}</h3>
           <label class="switch" style="flex:none" onclick="event.stopPropagation()"><input type="checkbox" ${r.status==='active'?'checked':''} onclick="event.stopPropagation();toggleRewardStatus('${r.id}')"><span class="slider"></span></label>
         </div>
-        <div class="sub" style="margin-bottom:12px">${rewardTypeLabel(r.type)}</div>
+        <div class="row" style="gap:6px;margin-bottom:12px"><span class="sub" style="margin:0">${rewardTypeLabel(r.type)}</span>${r.qrEnabled?'<span class="tag teal">QR de vérification</span>':''}</div>
         <div class="kv"><span>Coût</span><b>${r.pointsCost} pts</b></div>
         <div class="kv"><span>Validité</span><b>${r.validity}</b></div>
         <div class="kv" style="border-bottom:0"><span>Obtentions</span><b>${r.obtainedCount}</b></div>
@@ -3103,6 +3104,11 @@
     if(r.type==='promo-unique' && r.codesPool) return `<div class="kv" style="border-bottom:0"><span>Stock</span><b>${r.codesPool.length} code(s)</b></div>`;
     if(r.type==='custom' && r.fulfillmentInstructions) return `<div class="kv" style="border-bottom:0"><span>Traitement</span><b style="font-weight:400;font-size:11.5px;text-align:right">${r.fulfillmentInstructions}</b></div>`;
     return '';
+  }
+  function rewardVerificationUrl(token){ return 'https://verify.smartqonsumer.com/r/'+token; }
+  function rewardQrSeed(r){
+    const str=(r&&(r.verificationToken||r.id))||('preview'+Date.now());
+    return str.split('').reduce((h,c)=>((h<<5)-h+c.charCodeAt(0))|0,0)>>>0;
   }
   function rewardFormBodyHtml(r){
     const types=[['promo-generic','Code promo générique'],['promo-unique','Code unique'],['custom','Récompense personnalisée']];
@@ -3120,6 +3126,13 @@ CODE-0002
 CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       <div class="field" id="rwFieldCustom" ${t!=='custom'?'style="display:none"':''}><label>Instructions de traitement</label><textarea id="rwInstructions" rows="3" placeholder="Ex. Envoyer le lien d'accès par e-mail au membre">${r&&r.fulfillmentInstructions?r.fulfillmentInstructions:''}</textarea></div>
       <div class="field"><label>Statut</label><select id="rwStatus"><option value="active" ${!r||r.status==='active'?'selected':''}>Active</option><option value="archivee" ${r&&r.status==='archivee'?'selected':''}>Archivée</option></select></div>
+      <div class="opt"><div><b>Générer un QR Code de vérification</b><br><small>Permet de vérifier la validité de cette récompense au moment de son utilisation</small></div><label class="switch"><input type="checkbox" id="rwQrEnabled" ${r&&r.qrEnabled?'checked':''} onchange="updateRewardQrPreview()"><span class="slider"></span></label></div>
+      <div id="rwQrPreview" style="${r&&r.qrEnabled?'':'display:none'};text-align:center;border:1px solid var(--line);border-radius:10px;padding:16px;margin:4px 0">
+        <div class="qr" style="margin:0 auto;width:110px;height:110px">${qrGridHtml(rewardQrSeed(r))}</div>
+        ${r&&r.verificationToken
+          ? `<p style="font-size:11px;margin-top:10px;word-break:break-all;color:var(--ink)">${rewardVerificationUrl(r.verificationToken)}</p><p class="muted" style="font-size:10.5px">URL unique de vérification — un service web simple confirme la validité de la récompense au scan.</p>`
+          : `<p class="muted" style="font-size:11px;margin-top:10px">Le QR Code et son URL de vérification unique seront générés à l'enregistrement.</p>`}
+      </div>
       ${!r ? `<div class="field" style="margin-top:4px">
         <label>Idées de récompenses</label>
         <div style="border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7">
@@ -3134,6 +3147,9 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     document.getElementById('rwFieldGeneric').style.display = t==='promo-generic'?'':'none';
     document.getElementById('rwFieldUnique').style.display = t==='promo-unique'?'':'none';
     document.getElementById('rwFieldCustom').style.display = t==='custom'?'':'none';
+  }
+  function updateRewardQrPreview(){
+    document.getElementById('rwQrPreview').style.display = document.getElementById('rwQrEnabled').checked ? '' : 'none';
   }
   function openRewardPanel(rid){
     const r=rid?DB.rewardById(rid):null;
@@ -3156,12 +3172,16 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const promoCode=type==='promo-generic'?document.getElementById('rwPromoCode').value.trim():undefined;
     const codesPool=type==='promo-unique'?document.getElementById('rwCodesPool').value.split('\n').map(s=>s.trim()).filter(Boolean):undefined;
     const fulfillmentInstructions=type==='custom'?document.getElementById('rwInstructions').value.trim():undefined;
+    const qrEnabled=document.getElementById('rwQrEnabled').checked;
     if(rid){
       const r=DB.rewardById(rid);
-      Object.assign(r,{name,type,pointsCost,validity,status,promoCode,codesPool,fulfillmentInstructions});
+      const verificationToken = qrEnabled ? (r.verificationToken||DB.genVerificationToken(rid)) : r.verificationToken;
+      Object.assign(r,{name,type,pointsCost,validity,status,promoCode,codesPool,fulfillmentInstructions,qrEnabled,verificationToken});
       toast('Récompense mise à jour');
     } else {
-      DB.addCustomReward({id:'rw-'+Date.now(), name, type, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0});
+      const newId='rw-'+Date.now();
+      const verificationToken = qrEnabled ? DB.genVerificationToken(newId) : null;
+      DB.addCustomReward({id:newId, name, type, pointsCost, validity, status, promoCode, codesPool, fulfillmentInstructions, obtainedCount:0, qrEnabled, verificationToken});
       toast('Récompense créée');
     }
     closePanel(); renderRewards();
