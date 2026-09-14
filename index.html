@@ -584,17 +584,23 @@
   .device-bar{background:#F1F0F8; padding:10px 14px; display:flex; gap:6px; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line)}
   .device-dots{display:flex; gap:6px}
   .device-dot{width:9px; height:9px; border-radius:50%; background:#DAD9EE}
-  .device-body{display:grid; grid-template-columns:150px 1fr; min-height:360px; animation:fade .3s ease}
-  .device-dash{padding:22px 24px; min-height:360px; animation:fade .3s ease}
+  .device-body{display:grid; grid-template-columns:168px 1fr; min-height:320px; animation:paneSwap .4s cubic-bezier(.2,.7,.2,1)}
+  .device-dash{padding:20px 22px; min-height:320px; animation:paneSwap .4s cubic-bezier(.2,.7,.2,1)}
+  @keyframes paneSwap{from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none}}
+  .device-row .avatar{flex:none}
+  .device-row > div:last-child{min-width:0}
+  .device-row .nm, .device-row .sg{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
   .product-showcase{display:flex; gap:28px; align-items:flex-start; max-width:1040px; margin:0 auto; flex-wrap:wrap}
   .feature-grid{display:flex; flex-direction:column; gap:6px; flex:0 0 220px}
-  .feature-tile{width:100%; text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:9px 14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:10px; transition:border-color .2s ease, background .2s ease}
-  .feature-tile:hover{border-color:var(--accent)}
+  .feature-tile{width:100%; text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:9px 14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:10px; transition:border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease}
+  .feature-tile:hover{border-color:var(--accent); transform:translateX(4px); box-shadow:0 6px 16px rgba(18,22,26,.08)}
+  .feature-tile:hover .feature-tile-ico{background:var(--accent); color:#fff}
   .feature-tile.active{border-color:var(--accent); background:var(--lav3)}
-  .feature-tile-ico{width:28px; height:28px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
+  .feature-tile.active .feature-tile-ico{background:var(--accent); color:#fff}
+  .feature-tile-ico{width:28px; height:28px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none; transition:background .2s ease, color .2s ease}
   .feature-tile-ico svg{width:15px; height:15px}
   .feature-tile b{font-size:12.5px; color:var(--ink); font-weight:700; white-space:nowrap}
-  @media (max-width:900px){ .product-showcase{flex-direction:column; align-items:stretch} .feature-grid{flex-direction:row; flex-wrap:wrap; width:100%; flex:none; justify-content:center} .feature-tile{width:auto; border-radius:999px; padding:6px 14px 6px 6px} .device-frame{max-width:100%!important} }
+  @media (max-width:900px){ .product-showcase{flex-direction:column; align-items:stretch} .feature-grid{flex-direction:row; flex-wrap:wrap; width:100%; flex:none; justify-content:center} .feature-tile{width:auto; border-radius:999px; padding:6px 14px 6px 6px} .feature-tile:hover{transform:none} .device-frame{max-width:100%!important} }
   .club-mini-card{border-radius:16px; padding:20px 22px; background:linear-gradient(135deg, var(--accent), var(--accentd)); color:#fff; box-shadow:0 14px 30px rgba(18,22,26,.18)}
   .club-mini-card-top{display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700; opacity:.9; text-transform:uppercase; letter-spacing:.4px}
   .club-mini-card-name{font-size:16px; font-weight:800; margin-top:14px}
@@ -1189,6 +1195,12 @@
           <div class="reward-chip"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 5 5 19M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg></div><div><b>Réduction fidélité</b><span>100 pts</span></div></div>
           <div class="reward-chip"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div><div><b>Produit offert</b><span>250 pts</span></div></div>
           <div class="reward-chip"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.6 6.6L22 9l-5.5 4.6L18 21l-6-3.9L6 21l1.5-7.4L2 9l7.4-.4L12 2z"/></svg></div><div><b>Expérience personnalisée</b><span>300 pts</span></div></div>
+        </div>
+        <div class="card" style="margin-top:16px; padding:14px 16px">
+          <h4 style="margin:0 0 8px">Activité récente</h4>
+          <div class="kv"><span>Produit offert — obtenue</span><b class="muted" style="font-weight:400">il y a 2 jours</b></div>
+          <div class="kv"><span>Scan « Édition Limitée n°4 »</span><b class="muted" style="font-weight:400">il y a 5 jours</b></div>
+          <div class="kv" style="border-bottom:0"><span>Inscription au Club</span><b class="muted" style="font-weight:400">12 mars 2026</b></div>
         </div>
       </div>
       <div class="device-dash" id="deviceViewCampaigns" style="display:none">
