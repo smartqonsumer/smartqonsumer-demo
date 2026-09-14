@@ -3294,6 +3294,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   let clubPvActiveMemberId=DB.LOYALTY_MEMBERS[0].id;
   let clubPvLoginStep='email', clubPvLoginEmail='';
   let clubPvRedeemMessage=null;
+  let clubPvQrRewardId=null;
   const CLUB_PV_SCREENS=[
     {id:'home', label:'Accueil'},
     {id:'points', label:'Mes points'},
@@ -3359,7 +3360,13 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       ${activeRules.length?activeRules.map(r=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px"><span style="color:var(--ink)">${r.label}</span><b style="color:${primary}">+${r.points} pts</b></div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e8gle active.</p>`}`;
 
     const availableRewards=DB.allRewards().filter(r=>r.status==='active');
-    const redeemBanner = clubPvRedeemMessage ? `<div style="background:#EAF7EE;border:1px solid #BEE6C9;color:#1F7A3F;border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;line-height:1.5"><b>R\u00e9compense obtenue : ${clubPvRedeemMessage.name}</b><br>${clubPvRedeemMessage.detail}</div>` : '';
+    const redeemBanner = clubPvRedeemMessage ? `<div style="background:#EAF7EE;border:1px solid #BEE6C9;color:#1F7A3F;border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;line-height:1.5">
+      <b>R\u00e9compense obtenue : ${clubPvRedeemMessage.name}</b><br>${clubPvRedeemMessage.detail}
+      ${clubPvRedeemMessage.qrEnabled ? `<div style="text-align:center;background:#fff;border:1px solid #BEE6C9;border-radius:10px;padding:12px;margin-top:10px">
+        <div class="qr" style="margin:0 auto;width:100px;height:100px">${qrGridHtml(rewardQrSeed(DB.rewardById(clubPvRedeemMessage.rewardId)))}</div>
+        <p style="font-size:10.5px;color:#1F7A3F;margin-top:8px">Pr\u00e9sentez ce QR Code pour faire v\u00e9rifier votre r\u00e9compense</p>
+      </div>` : ''}
+    </div>` : '';
     const rewardsScreen=`
       ${redeemBanner}
       ${clubPvSectionLabel('R\u00e9compenses disponibles')}
@@ -3375,9 +3382,19 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       }).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense disponible pour le moment.</p>`}`;
 
     const obtainedRewards=member.rewardIds.map(rid=>DB.rewardById(rid)).filter(Boolean);
-    const historyScreen=`
+    const qrReward = clubPvQrRewardId ? DB.rewardById(clubPvQrRewardId) : null;
+    const historyScreen = qrReward ? `
+      <div onclick="clubPvHideRewardQr()" style="display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:${primary};cursor:pointer;margin-bottom:14px">${backIco}Retour</div>
+      <div style="text-align:center;border:1px solid var(--line);border-radius:12px;padding:20px">
+        <div style="font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:12px">${qrReward.name}</div>
+        <div class="qr" style="margin:0 auto;width:150px;height:150px">${qrGridHtml(rewardQrSeed(qrReward))}</div>
+        <p class="muted" style="font-size:10.5px;margin-top:12px">Pr\u00e9sentez ce QR Code pour faire v\u00e9rifier votre r\u00e9compense</p>
+      </div>` : `
       ${clubPvSectionLabel('R\u00e9compenses obtenues')}
-      ${obtainedRewards.length?obtainedRewards.map(r=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span style="font-size:12.5px;color:var(--ink)">${r.name}</span><span style="font-size:11px;color:var(--muted)">${r.pointsCost} pts</span></div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense obtenue pour le moment.</p>`}`;
+      ${obtainedRewards.length?obtainedRewards.map(r=>`<div ${r.qrEnabled?`onclick="clubPvShowRewardQr('${r.id}')"`:''} style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);${r.qrEnabled?'cursor:pointer':''}">
+        <span style="font-size:12.5px;color:var(--ink)">${r.name}${r.qrEnabled?' <span style="color:'+primary+';font-weight:700;font-size:10.5px">\u00b7 QR Code</span>':''}</span>
+        <span style="font-size:11px;color:var(--muted)">${r.pointsCost} pts</span>
+      </div>`).join(''):`<p class="muted" style="font-size:12px">Aucune r\u00e9compense obtenue pour le moment.</p>`}`;
 
     const profileScreen=`
       <div style="text-align:center;margin-bottom:18px">
@@ -3450,6 +3467,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     clubPvDrawerOpen=false;
     clubPvScreen='home';
     clubPvRedeemMessage=null;
+    clubPvQrRewardId=null;
     if(state!=='connected'){ clubPvLoginStep='email'; clubPvLoginEmail=''; }
     const tabs=document.getElementById('clubPvStateTabs');
     if(tabs) tabs.querySelectorAll('button').forEach(b=>{ const on=b.dataset.state===state; b.classList.toggle('active',on); b.setAttribute('aria-pressed',on?'true':'false'); });
@@ -3487,7 +3505,9 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     setClubPvState('connected');
   }
   function toggleClubPreviewMenu(){ clubPvDrawerOpen=!clubPvDrawerOpen; updateClubPreview(); }
-  function navigateClubPv(screen){ clubPvScreen=screen; clubPvDrawerOpen=false; clubPvRedeemMessage=null; updateClubPreview(); }
+  function navigateClubPv(screen){ clubPvScreen=screen; clubPvDrawerOpen=false; clubPvRedeemMessage=null; clubPvQrRewardId=null; updateClubPreview(); }
+  function clubPvShowRewardQr(rid){ clubPvQrRewardId=rid; updateClubPreview(); }
+  function clubPvHideRewardQr(){ clubPvQrRewardId=null; updateClubPreview(); }
   function clubPvRedeemReward(rid){
     const member=DB.memberById(clubPvActiveMemberId)||DB.LOYALTY_MEMBERS[0];
     const r=DB.rewardById(rid); if(!r || member.pointsBalance<r.pointsCost) return;
@@ -3501,7 +3521,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       const code=(r.codesPool&&r.codesPool.length)?r.codesPool.shift():null;
       detail = code ? `Votre code : <b>${code}</b>` : "Stock épuisé — l'équipe vous contactera pour un remplacement.";
     } else { detail = r.fulfillmentInstructions || 'Vous recevrez les instructions par e-mail.'; }
-    clubPvRedeemMessage={name:r.name, detail};
+    clubPvRedeemMessage={name:r.name, detail, rewardId:r.id, qrEnabled:!!r.qrEnabled};
     updateClubPreview();
   }
   function selectClubTemplateVisual(t){
