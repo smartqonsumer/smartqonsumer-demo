@@ -586,16 +586,13 @@
   .device-dot{width:9px; height:9px; border-radius:50%; background:#DAD9EE}
   .device-body{display:grid; grid-template-columns:.85fr 1.3fr; min-height:380px; animation:fade .3s ease}
   .device-dash{padding:24px 26px; min-height:380px; animation:fade .3s ease}
-  .feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:980px; margin:0 auto 24px}
-  .feature-tile{text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:14px; padding:16px; cursor:pointer; font-family:inherit; display:flex; flex-direction:column; gap:6px; transition:border-color .2s ease, background .2s ease, transform .2s ease}
-  .feature-tile:hover{border-color:var(--accent); transform:translateY(-2px)}
+  .feature-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; max-width:980px; margin:0 auto 20px}
+  .feature-tile{text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:6px 16px 6px 6px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:8px; transition:border-color .2s ease, background .2s ease}
+  .feature-tile:hover{border-color:var(--accent)}
   .feature-tile.active{border-color:var(--accent); background:var(--lav3)}
-  .feature-tile-ico{width:34px; height:34px; border-radius:9px; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
-  .feature-tile-ico svg{width:18px; height:18px}
-  .feature-tile b{font-size:13.5px; color:var(--ink)}
-  .feature-tile span{font-size:12px; color:var(--muted); line-height:1.4}
-  @media (max-width:760px){ .feature-grid{grid-template-columns:1fr 1fr} }
-  @media (max-width:480px){ .feature-grid{grid-template-columns:1fr} }
+  .feature-tile-ico{width:26px; height:26px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
+  .feature-tile-ico svg{width:14px; height:14px}
+  .feature-tile b{font-size:12.5px; color:var(--ink); font-weight:700; white-space:nowrap}
   .device-list{border-right:1px solid var(--line); padding:14px}
   .device-row{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; transition:background .3s ease}
   .device-row.active{background:var(--lav)}
@@ -1077,32 +1074,26 @@
       <button type="button" class="feature-tile active" data-feature="contacts" onclick="showFeatureTab('contacts')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
         <b>Contacts</b>
-        <span>Une fiche unique par consommateur, enrichie à chaque scan.</span>
       </button>
       <button type="button" class="feature-tile" data-feature="products" onclick="showFeatureTab('products')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
         <b>Produits &amp; QR Codes</b>
-        <span>Un QR Code par produit, une Landing Page qui convertit.</span>
       </button>
       <button type="button" class="feature-tile" data-feature="club" onclick="showFeatureTab('club')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
         <b>Club Fidélité</b>
-        <span>Points, récompenses et programme entièrement configurables.</span>
       </button>
       <button type="button" class="feature-tile" data-feature="campaigns" onclick="showFeatureTab('campaigns')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
         <b>Campagnes e-mail</b>
-        <span>Créez et envoyez des campagnes ciblées en quelques clics.</span>
       </button>
       <button type="button" class="feature-tile" data-feature="automations" onclick="showFeatureTab('automations')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
         <b>Automatisations</b>
-        <span>Des relances déclenchées automatiquement, sans effort manuel.</span>
       </button>
       <button type="button" class="feature-tile" data-feature="analytics" onclick="showFeatureTab('analytics')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div>
         <b>Analyses</b>
-        <span>Tous vos indicateurs d'acquisition et de fidélisation.</span>
       </button>
     </div>
     <div class="device-frame" data-reveal>
