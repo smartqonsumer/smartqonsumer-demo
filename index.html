@@ -631,8 +631,15 @@
   /* ---------- chart (device dashboard tab) ---------- */
   .kpi .val{font-size:32px}
   .chart-wrap{margin-top:6px}
-  .chart-labels{display:flex; justify-content:space-between; padding:6px 20px 0; margin-top:2px}
+  .chart-labels{display:flex; justify-content:space-between; padding:2px 20px 0; margin-top:0}
   .chart-labels span{font-size:11px; color:var(--muted)}
+  #product .card.kpi{padding:9px 10px}
+  #product .kpi .top{margin-bottom:2px}
+  #product .ico-pill{width:24px; height:24px}
+  #product .ico-pill svg{width:13px; height:13px}
+  #product .kpi .label{font-size:10px}
+  #product .kpi .val{font-size:18px; margin-top:2px}
+  #product .kpi .delta{font-size:10px; margin-top:1px}
 
   /* ---------- STORY ROWS ---------- */
   .story-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; max-width:1120px; margin:0 auto}
@@ -1092,27 +1099,27 @@
     <div class="sec-title" data-reveal><div class="eyebrow">La plateforme</div><h2>Une seule plateforme.<br>Toute la relation avec vos consommateurs.</h2></div>
     <div class="product-showcase" data-reveal>
     <div class="feature-grid">
-      <button type="button" class="feature-tile active" data-feature="contacts" onclick="showFeatureTab('contacts')">
+      <button type="button" class="feature-tile active" data-feature="contacts" onmouseenter="showFeatureTab('contacts')" onclick="showFeatureTab('contacts')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
         <b>Contacts</b>
       </button>
-      <button type="button" class="feature-tile" data-feature="products" onclick="showFeatureTab('products')">
+      <button type="button" class="feature-tile" data-feature="products" onmouseenter="showFeatureTab('products')" onclick="showFeatureTab('products')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
         <b>Produits &amp; QR Codes</b>
       </button>
-      <button type="button" class="feature-tile" data-feature="club" onclick="showFeatureTab('club')">
+      <button type="button" class="feature-tile" data-feature="club" onmouseenter="showFeatureTab('club')" onclick="showFeatureTab('club')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
         <b>Club Fidélité</b>
       </button>
-      <button type="button" class="feature-tile" data-feature="campaigns" onclick="showFeatureTab('campaigns')">
+      <button type="button" class="feature-tile" data-feature="campaigns" onmouseenter="showFeatureTab('campaigns')" onclick="showFeatureTab('campaigns')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
         <b>Campagnes e-mail</b>
       </button>
-      <button type="button" class="feature-tile" data-feature="automations" onclick="showFeatureTab('automations')">
+      <button type="button" class="feature-tile" data-feature="automations" onmouseenter="showFeatureTab('automations')" onclick="showFeatureTab('automations')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
         <b>Automatisations</b>
       </button>
-      <button type="button" class="feature-tile" data-feature="analytics" onclick="showFeatureTab('analytics')">
+      <button type="button" class="feature-tile" data-feature="analytics" onmouseenter="showFeatureTab('analytics')" onclick="showFeatureTab('analytics')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div>
         <b>Analyses</b>
       </button>
@@ -1148,10 +1155,10 @@
           <div class="card kpi"><div class="top"><div class="label">Scan → inscription</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12l5 5L20 6"/></svg></div></div><div class="val" data-count="34" data-suffix="%">0</div><div class="delta">+3 pts vs sem. dernière</div></div>
           <div class="card kpi"><div class="top"><div class="label">Nouveaux contacts</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="val" data-count="126" data-prefix="+">0</div><div class="delta flat">cette semaine</div></div>
         </div>
-        <div class="card" style="margin-top:16px">
-          <h3>Acquisition de contacts</h3><div class="sub">Nouveaux contacts par canal, 6 dernières semaines</div>
+        <div class="card" style="margin-top:8px; padding:12px 16px">
+          <h3 style="margin:0">Acquisition de contacts</h3><div class="sub" style="margin-bottom:4px">Nouveaux contacts par canal, 6 dernières semaines</div>
           <div class="chart-wrap">
-            <svg viewBox="0 0 580 170" style="width:100%; height:170px; display:block" preserveAspectRatio="none">
+            <svg viewBox="0 0 580 170" style="width:100%; height:52px; display:block" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="var(--amber)" stop-opacity=".32"/>
@@ -1169,7 +1176,7 @@
             </svg>
             <div class="chart-labels"><span>S-5</span><span>S-4</span><span>S-3</span><span>S-2</span><span>S-1</span><span>Cette sem.</span></div>
           </div>
-          <div class="legend" style="margin-top:10px"><span><i style="background:var(--amber)"></i>Via QR (indirect)</span><span><i style="background:var(--ink-soft)"></i>Via page fidélité (direct)</span></div>
+          <div class="legend" style="margin-top:4px"><span><i style="background:var(--amber)"></i>Via QR (indirect)</span><span><i style="background:var(--ink-soft)"></i>Via page fidélité (direct)</span></div>
         </div>
       </div>
       <div class="device-dash" id="deviceViewProducts" style="display:none">
