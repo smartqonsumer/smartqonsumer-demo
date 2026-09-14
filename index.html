@@ -1797,6 +1797,9 @@
       <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Fidélité</h2></div></div>
       <div class="filters-bar">
         <div class="seg-tabs" id="alPeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="7">7 jours</button><button type="button" data-period="30" class="active" aria-pressed="true">30 jours</button><button type="button" data-period="90">90 jours</button></div>
+        <select id="alSource" onchange="renderAnalyticsLoyalty()"><option value="">Tous les canaux</option></select>
+        <select id="alSegment" onchange="renderAnalyticsLoyalty()"><option value="">Tous segments</option></select>
+        <select id="alPersona" onchange="renderAnalyticsLoyalty()"><option value="">Tous personas</option></select>
       </div>
       <div class="grid cards-4" id="alKpis"></div>
       <div class="grid cards-2" style="margin-top:16px;align-items:start">
@@ -1813,13 +1816,22 @@
       <div class="screen-head"><div><div class="eyebrow">Analyses</div><h2 style="margin:2px 0 0;color:var(--ink)">Campagnes e-mail</h2></div></div>
       <div class="filters-bar">
         <div class="seg-tabs" id="aePeriodTabs" role="tablist" aria-label="Période"><button type="button" data-period="30">30 jours</button><button type="button" data-period="90" class="active" aria-pressed="true">90 jours</button><button type="button" data-period="365">Toutes</button></div>
+        <div class="seg-tabs" id="aeTypeTabs">
+          <button type="button" data-type="" class="active" aria-pressed="true">Toutes</button>
+          <button type="button" data-type="campaign" aria-pressed="false">Campagnes</button>
+          <button type="button" data-type="automation" aria-pressed="false">Automatisations</button>
+        </div>
+        <select id="aeSource" onchange="renderAnalyticsEmail()"><option value="">Tous les canaux</option></select>
+        <select id="aeSegment" onchange="renderAnalyticsEmail()"><option value="">Tous segments</option></select>
+        <select id="aePersona" onchange="renderAnalyticsEmail()"><option value="">Tous personas</option></select>
       </div>
+      <p class="muted" style="font-size:11.5px;margin:-6px 0 12px">Les filtres canal/segment/persona s'appliquent aux campagnes classiques — les automatisations n'ont pas de liste de destinataires figée et restent affichées telles quelles.</p>
       <div class="grid cards-4" id="aeKpis"></div>
       <div class="grid cards-2" style="margin-top:16px;align-items:start">
-        <div class="card"><h3>Comparaison des campagnes</h3><div class="sub">Taux d'ouverture</div><div id="aeCampBars"></div></div>
-        <div class="card"><h3>Performance par liste</h3><div id="aeListBars"></div></div>
+        <div class="card"><h3>Comparaison des envois</h3><div class="sub">Taux d'ouverture, campagnes et automatisations</div><div id="aeCampBars"></div></div>
+        <div class="card"><h3>Performance par liste</h3><div class="sub">Campagnes classiques uniquement</div><div id="aeListBars"></div></div>
       </div>
-      <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Campagne</th><th>Statut</th><th class="right">Destinataires</th><th class="right">Ouvertures</th><th class="right">Taux d'ouverture</th></tr></thead><tbody id="aeDetailTable"></tbody></table></div>
+      <div class="card" style="margin-top:16px;padding:4px 4px 0"><table><thead><tr><th>Envoi</th><th>Type</th><th>Statut</th><th class="right">Destinataires</th><th class="right">Ouvertures</th><th class="right">Taux d'ouverture</th></tr></thead><tbody id="aeDetailTable"></tbody></table></div>
     </section>
     <section class="screen" id="settings-workspace">
       <div class="screen-head"><div><div class="eyebrow">Espace de travail</div><h2 style="margin:2px 0 0;color:var(--ink)">Informations générales</h2><p>Informations de votre espace de travail SmartQonsumer. Démo statique — les modifications ne sont pas persistées côté serveur.</p></div></div>
@@ -4104,53 +4116,121 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   // ANALYSES — Fidélité
   // ============================================================
   const alState={period:30};
+  function populateAnalyticsLoyaltyFilters(){
+    const srcSel=document.getElementById('alSource');
+    if(srcSel && !srcSel.dataset.filled){ DB.SOURCES.forEach(s=>srcSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); srcSel.dataset.filled='1'; }
+    const segSel=document.getElementById('alSegment');
+    if(segSel && !segSel.dataset.filled){ DB.SEGMENT_NAMES.forEach(s=>segSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); segSel.dataset.filled='1'; }
+    const perSel=document.getElementById('alPersona');
+    if(perSel && !perSel.dataset.filled){ DB.PERSONAS.forEach(p=>perSel.insertAdjacentHTML('beforeend',`<option>${p}</option>`)); perSel.dataset.filled='1'; }
+  }
+  function alFilteredMembers(){
+    const source=document.getElementById('alSource').value, segment=document.getElementById('alSegment').value, persona=document.getElementById('alPersona').value;
+    return DB.LOYALTY_MEMBERS.filter(m=>{
+      const c=DB.contactById(m.contactId); if(!c) return false;
+      if(source && c.source!==source) return false;
+      if(segment && c.segment!==segment) return false;
+      if(persona && c.persona!==persona) return false;
+      return true;
+    });
+  }
   function renderAnalyticsLoyalty(){
+    populateAnalyticsLoyaltyFilters();
     wirePeriodTabs('alPeriodTabs',alState,renderAnalyticsLoyalty);
     const days=alState.period;
-    const total=DB.LOYALTY_MEMBERS.length, active=DERIVE.activeMembersCount();
+    const members=alFilteredMembers();
+    const total=members.length, active=members.filter(m=>DB.memberIsActive(m.id)).length;
     document.getElementById('alKpis').innerHTML=[
       kpiCardHtml('Membres inscrits', fmtN(total)),
       kpiCardHtml('Membres actifs', fmtN(active), total>0?fmtPct(Math.round(active/total*100))+' de la base':''),
-      kpiCardHtml('Nouvelles inscriptions', fmtN(DB.LOYALTY_MEMBERS.filter(m=>daysSince(m.joinedAt)<=days).length), days+' derniers jours'),
-      kpiCardHtml("Proches d'une récompense", fmtN(DERIVE.membersNearRewardCount())),
+      kpiCardHtml('Nouvelles inscriptions', fmtN(members.filter(m=>daysSince(m.joinedAt)<=days).length), days+' derniers jours'),
+      kpiCardHtml("Proches d'une récompense", fmtN(members.filter(m=>DB.pointsToNextReward(m.id)<=50).length)),
     ].join('');
     const points=[];
-    for(let d=days-1; d>=0; d--){ const [s,e]=dayRange(d); points.push({x:d,y:DB.LOYALTY_MEMBERS.filter(m=>m.joinedAt>=s&&m.joinedAt<e).length}); }
+    for(let d=days-1; d>=0; d--){ const [s,e]=dayRange(d); points.push({x:d,y:members.filter(m=>m.joinedAt>=s&&m.joinedAt<e).length}); }
     renderLineChart('alTrendChart',[{label:'Inscriptions',color:'var(--accent)',points}]);
-    document.getElementById('alTierBars').innerHTML=hbarListHtml(['Club','Membre','Prospect'].map(t=>({label:t,value:DB.LOYALTY_MEMBERS.filter(m=>m.tier===t).length})));
-    const pointsIssued=DB.LOYALTY_MEMBERS.reduce((s,m)=>s+m.pointsEarned,0), pointsUsed=DB.LOYALTY_MEMBERS.reduce((s,m)=>s+m.pointsUsed,0);
+    document.getElementById('alTierBars').innerHTML=hbarListHtml(['Club','Membre','Prospect'].map(t=>({label:t,value:members.filter(m=>m.tier===t).length})));
+    const pointsIssued=members.reduce((s,m)=>s+m.pointsEarned,0), pointsUsed=members.reduce((s,m)=>s+m.pointsUsed,0);
     document.getElementById('alPointsIssued').textContent=fmtN(pointsIssued);
     document.getElementById('alPointsUsed').textContent=fmtN(pointsUsed);
     const rate=pointsIssued>0?Math.round(pointsUsed/pointsIssued*100):0;
     document.getElementById('alRedemptionBar').style.width=rate+'%';
     document.getElementById('alRedemptionLabel').textContent=rate+' % des points distribués ont été utilisés';
-    document.getElementById('alRewardBars').innerHTML=hbarListHtml(DB.allRewards().map(r=>({label:r.name,value:r.obtainedCount,display:r.obtainedCount+' obtenue(s)'})).sort((a,b)=>b.value-a.value));
+    const rewardCounts=DB.allRewards().map(r=>{
+      const cnt=members.reduce((s,m)=>s+(m.rewardIds||[]).filter(rid=>rid===r.id).length,0);
+      return {label:r.name, value:cnt, display:cnt+' obtenue(s)'};
+    }).sort((a,b)=>b.value-a.value);
+    document.getElementById('alRewardBars').innerHTML=hbarListHtml(rewardCounts);
   }
 
   // ============================================================
   // ANALYSES — Campagnes e-mail
   // ============================================================
   const aeState={period:90};
+  let aeTypeFilter='';
+  function populateAnalyticsEmailFilters(){
+    const srcSel=document.getElementById('aeSource');
+    if(srcSel && !srcSel.dataset.filled){ DB.SOURCES.forEach(s=>srcSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); srcSel.dataset.filled='1'; }
+    const segSel=document.getElementById('aeSegment');
+    if(segSel && !segSel.dataset.filled){ DB.SEGMENT_NAMES.forEach(s=>segSel.insertAdjacentHTML('beforeend',`<option>${s}</option>`)); segSel.dataset.filled='1'; }
+    const perSel=document.getElementById('aePersona');
+    if(perSel && !perSel.dataset.filled){ DB.PERSONAS.forEach(p=>perSel.insertAdjacentHTML('beforeend',`<option>${p}</option>`)); perSel.dataset.filled='1'; }
+  }
+  function aeFilteredCampaignRows(days){
+    const source=document.getElementById('aeSource').value, segment=document.getElementById('aeSegment').value, persona=document.getElementById('aePersona').value;
+    const hasFilter=!!(source||segment||persona);
+    return DB.CAMPAIGNS.filter(c=>c.status==='sent' && (days>=365 || daysSince(c.sentAt)<=days)).map(c=>{
+      let delivered=c.stats.delivered, opened=c.stats.opened;
+      if(hasFilter){
+        const matching=(c.recipientSnapshotIds||[]).filter(cid=>{
+          const ct=DB.contactById(cid); if(!ct) return false;
+          if(source && ct.source!==source) return false;
+          if(segment && ct.segment!==segment) return false;
+          if(persona && ct.persona!==persona) return false;
+          return true;
+        });
+        const ratio=c.stats.delivered>0 ? matching.length/c.stats.delivered : 0;
+        delivered=matching.length; opened=Math.round(c.stats.opened*ratio);
+      }
+      return {type:'campaign', name:c.name, status:c.status, date:c.sentAt, delivered, opened, listId:c.listId};
+    }).filter(r=>!hasFilter || r.delivered>0);
+  }
+  function aeAutomationRows(days){
+    return DB.AUTOMATIONS.filter(a=>(a.stats.sent||0)>0 && (days>=365 || daysSince(a.lastModified)<=days)).map(a=>({
+      type:'automation', name:a.name, status:a.status, date:a.lastModified, delivered:a.stats.sent, opened:a.stats.opened,
+    }));
+  }
   function renderAnalyticsEmail(){
+    populateAnalyticsEmailFilters();
     wirePeriodTabs('aePeriodTabs',aeState,renderAnalyticsEmail);
     const days=aeState.period;
-    const sent=DB.CAMPAIGNS.filter(c=>c.status==='sent' && (days>=365 || daysSince(c.sentAt)<=days));
-    const delivered=sent.reduce((s,c)=>s+c.stats.delivered,0), opened=sent.reduce((s,c)=>s+c.stats.opened,0);
+    const campRows=aeFilteredCampaignRows(days);
+    const autoRows=aeAutomationRows(days);
+    const rows = aeTypeFilter==='campaign' ? campRows : aeTypeFilter==='automation' ? autoRows : campRows.concat(autoRows);
+    const delivered=rows.reduce((s,r)=>s+r.delivered,0), opened=rows.reduce((s,r)=>s+r.opened,0);
     const openRate=delivered>0?Math.round(opened/delivered*100):null;
     document.getElementById('aeKpis').innerHTML=[
-      kpiCardHtml('Campagnes envoyées', fmtN(sent.length)),
+      kpiCardHtml('Envois', fmtN(rows.length)),
       kpiCardHtml('Destinataires', fmtN(delivered)),
       kpiCardHtml('Ouvertures uniques', fmtN(opened)),
       kpiCardHtml("Taux d'ouverture moyen", openRate==null?'—':fmtPct(openRate)),
     ].join('');
-    const campRows=sent.map(c=>{ const r=c.stats.delivered>0?Math.round(c.stats.opened/c.stats.delivered*100):0; return {label:c.name,value:r,display:r+' %'}; }).sort((a,b)=>b.value-a.value);
-    document.getElementById('aeCampBars').innerHTML=hbarListHtml(campRows,100);
+    const barRows=rows.map(r=>{ const rate=r.delivered>0?Math.round(r.opened/r.delivered*100):0; return {label:r.name+(r.type==='automation'?' · Automatisation':''), value:rate, display:rate+' %'}; }).sort((a,b)=>b.value-a.value);
+    document.getElementById('aeCampBars').innerHTML=hbarListHtml(barRows,100);
     const byList={};
-    sent.forEach(c=>{ const l=DB.listById(c.listId); const key=l?l.name:'—'; byList[key]=byList[key]||{delivered:0,opened:0}; byList[key].delivered+=c.stats.delivered; byList[key].opened+=c.stats.opened; });
-    const listRows=Object.entries(byList).map(([name,v])=>{ const r=v.delivered>0?Math.round(v.opened/v.delivered*100):0; return {label:name,value:r,display:r+' %'}; });
+    campRows.forEach(r=>{ const l=DB.listById(r.listId); const key=l?l.name:'—'; byList[key]=byList[key]||{delivered:0,opened:0}; byList[key].delivered+=r.delivered; byList[key].opened+=r.opened; });
+    const listRows=Object.entries(byList).map(([name,v])=>{ const rate=v.delivered>0?Math.round(v.opened/v.delivered*100):0; return {label:name,value:rate,display:rate+' %'}; });
     document.getElementById('aeListBars').innerHTML=hbarListHtml(listRows,100);
-    document.getElementById('aeDetailTable').innerHTML=sent.map(c=>`<tr><td>${c.name}</td><td>${campStatusTag(c.status)}</td><td class="right">${fmtN(c.stats.delivered)}</td><td class="right">${fmtN(c.stats.opened)}</td><td class="right">${c.stats.delivered>0?fmtPct(Math.round(c.stats.opened/c.stats.delivered*100)):'—'}</td></tr>`).join('') || `<tr><td colspan="5">${emptyStateHtml({title:'Aucune campagne envoyée sur cette période'})}</td></tr>`;
+    const sortedRows=[...rows].sort((a,b)=>(b.date?b.date.getTime():0)-(a.date?a.date.getTime():0));
+    document.getElementById('aeDetailTable').innerHTML = sortedRows.length ? sortedRows.map(r=>`<tr><td>${r.name}</td><td><span class="tag ${r.type==='automation'?'teal':'grey'}">${r.type==='automation'?'Automatisation':'Campagne'}</span></td><td>${r.type==='automation'?scenStatusTag(r.status):campStatusTag(r.status)}</td><td class="right">${fmtN(r.delivered)}</td><td class="right">${fmtN(r.opened)}</td><td class="right">${r.delivered>0?fmtPct(Math.round(r.opened/r.delivered*100)):'—'}</td></tr>`).join('') : `<tr><td colspan="6">${emptyStateHtml({title:'Aucun envoi sur cette période'})}</td></tr>`;
   }
+  const aeTypeTabsEl=document.getElementById('aeTypeTabs');
+  if(aeTypeTabsEl) aeTypeTabsEl.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    aeTypeFilter=b.dataset.type;
+    aeTypeTabsEl.querySelectorAll('button').forEach(x=>{ x.classList.toggle('active',x===b); x.setAttribute('aria-pressed',x===b?'true':'false'); });
+    renderAnalyticsEmail();
+  });
 
   // ============================================================
   // PARAMÈTRES
