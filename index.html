@@ -229,6 +229,16 @@
   .lp-template-card b{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--ink)}
   .lp-template-card small{display:block; color:var(--muted); font-size:11.5px; margin-top:4px}
   .lp-template-card.selected{border-color:var(--accent); background:var(--lav3)}
+  .trigger-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin:14px 0}
+  .trigger-card{border:1.5px solid var(--line); border-radius:12px; padding:14px; cursor:pointer; min-height:96px; display:flex; flex-direction:column; justify-content:center}
+  .trigger-card b{display:block; font-size:13px; color:var(--ink)}
+  .trigger-card small{display:block; color:var(--muted); font-size:11.5px; margin-top:4px; line-height:1.4}
+  .trigger-card.selected{border-color:var(--accent); background:var(--lav3)}
+  .trigger-card.locked{cursor:default}
+  .trigger-audience{background:var(--lav3); border-radius:10px; padding:14px 16px; margin-top:18px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  .trigger-audience .lbl{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; font-weight:700}
+  .trigger-audience .num{font-size:24px; font-weight:800; color:var(--ink); margin-top:2px}
+  .trigger-audience .hint{font-size:11.5px; color:var(--muted); text-align:right; max-width:240px}
   .dest-row{display:flex; align-items:flex-start; gap:10px; padding:12px; border:1px solid var(--line); border-radius:10px}
   .dest-row + .dest-row{margin-top:8px}
   .dest-row input[type=radio]{margin-top:3px}
@@ -2323,10 +2333,15 @@
     function campaignById(id){ return CAMPAIGNS.find(c=>c.id===id); }
 
     // ---- AUTOMATIONS (3 seeded — trigger-based email scenarios) ----
+    function contactLastActivityDate(c){
+      if(c.isLoyaltyMember){ const m=memberById(c.loyaltyMemberId); if(m) return m.lastActivityAt; }
+      return c.lastScanAt || c.createdAt;
+    }
     function triggerAudienceCount(trigger){
       if(!trigger || !trigger.type) return 0;
       if(trigger.type==='birthday') return CONTACTS.filter(c=>c.birthDate).length;
-      if(trigger.type==='segment_enter'){ const seg=allSegments().find(s=>s.id===trigger.segmentId); return seg?computeSegmentMembers(seg).length:0; }
+      if(trigger.type==='dormant'){ const days=trigger.offsetDays||60; return CONTACTS.filter(c=>daysSinceD(contactLastActivityDate(c))>=days).length; }
+      if(trigger.type==='near_reward'){ const th=trigger.pointsThreshold||50; return CONTACTS.filter(c=>c.isLoyaltyMember && pointsToNextReward(c.loyaltyMemberId)<=th).length; }
       const days=trigger.offsetDays||0;
       if(trigger.type==='days_after_signup') return CONTACTS.filter(c=>{ const d=daysSinceD(c.createdAt); return d>=days && d<days+7; }).length;
       if(trigger.type==='scan_no_signup') return CONTACTS.filter(c=>{ if(c.isLoyaltyMember||!c.lastScanAt) return false; const d=daysSinceD(c.lastScanAt); return d>=days && d<days+7; }).length;
@@ -2357,7 +2372,7 @@
       },
       {
         id:'auto02', name:'Réactivation contacts en sommeil', status:'active',
-        trigger:{type:'segment_enter', segmentId:'sys-dormant'},
+        trigger:{type:'dormant', offsetDays:60},
         steps:[
           {delayDays:0, title:'On ne vous a pas vu depuis un moment', subject:'On ne vous a pas vu depuis un moment', shortDesc:'Redécouvrez vos produits préférés.', longDesc:"Cela fait un moment que nous n'avons pas eu de vos nouvelles. Reprenez où vous en étiez et retrouvez vos produits favoris.", ctaLabel:'Je reviens', ctaType:'club', ctaTarget:''},
           {delayDays:7, title:'Toujours là pour vous', subject:'Toujours là pour vous', shortDesc:'Une offre spéciale retour.', longDesc:'Une offre spéciale vous attend pour votre retour parmi nous.', ctaLabel:"Voir l'offre", ctaType:'club', ctaTarget:''},
@@ -2368,7 +2383,7 @@
       },
       {
         id:'auto03', name:'Relance avant récompense', status:'draft',
-        trigger:{type:'segment_enter', segmentId:'sys-near-reward'},
+        trigger:{type:'near_reward', pointsThreshold:50},
         steps:[{delayDays:0, title:'Plus que quelques points !', subject:'Plus que quelques points avant votre récompense !', shortDesc:'Ne la laissez pas filer.', longDesc:'Vous êtes tout proche de débloquer votre prochaine récompense. Complétez vos actions pour ne pas la manquer.', ctaLabel:'Voir ma récompense', ctaType:'club', ctaTarget:''}],
         stats:{entered:0, sent:0, opened:0, clicked:0, completed:0},
         log:[],
@@ -2783,7 +2798,7 @@
         ? `<p class="muted" style="font-size:12.5px">Ce segment système est calculé automatiquement à partir de vos données et ne peut pas être modifié.</p>`
         : `<div id="ruleGroups">${groups.map(g=>ruleGroupHtml(g)).join('')}</div><button type="button" class="rule-add" onclick="addRuleGroup()" style="margin-top:6px">+ Ajouter un groupe de règles</button>`}
       <div class="segment-preview" id="segPreview"></div>`;
-    const scenTrigger=isSystem?TRIGGER_DEFS.find(t=>t.segmentId===seg.id):null;
+    const scenTrigger=isSystem&&SEGMENT_TO_TRIGGER_KEY[seg.id]?TRIGGER_DEFS.find(t=>t.key===SEGMENT_TO_TRIGGER_KEY[seg.id]):null;
     openPanel({eyebrow:'Segment', title: seg?(isSystem?seg.name:'Modifier le segment'):'Créer un segment', bodyHtml, wide:true,
       footerHtml: isSystem ? `<button class="btn ghost" onclick="closePanel()">Fermer</button>${scenTrigger?`<button class="btn primary" onclick="closePanel();startScenCreationFromSegment('${seg.id}')">Créer une relance</button>`:''}`
         : `<button class="btn ghost" onclick="closePanel()">Annuler</button>${seg?`<button class="btn ghost" onclick="deleteSegment('${seg.id}')">Supprimer</button>`:''}<button class="btn primary" onclick="saveSegment(${seg?`'${seg.id}'`:'null'})">Enregistrer</button>`});
@@ -4818,22 +4833,24 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   // SCÉNARIOS AUTOMATISÉS — bibliothèque de déclencheurs + diagramme
   // ============================================================
   const TRIGGER_DEFS=[
-    {key:'birthday', type:'birthday', label:'Anniversaire du contact', desc:"Se déclenche le jour de l'anniversaire du contact."},
-    {key:'dormant', type:'segment_enter', segmentId:'sys-dormant', label:'Entrée en sommeil', desc:'Se déclenche quand le contact devient inactif (plus de 60 jours).'},
-    {key:'near_reward', type:'segment_enter', segmentId:'sys-near-reward', label:"Proche d'une récompense", desc:'Se déclenche quand le membre passe à moins de 50 points de sa prochaine récompense.'},
-    {key:'after_signup', type:'days_after_signup', label:"X jours après l'inscription", desc:"Se déclenche X jours après la création du contact.", needsDays:true},
-    {key:'scan_no_signup', type:'scan_no_signup', label:'Scan sans inscription', desc:"Se déclenche X jours après un scan, si le contact n'a toujours pas rejoint le Club.", needsDays:true},
-    {key:'points_reached', type:'points_reached', label:'Nombre de points atteint', desc:"Se déclenche quand un membre atteint X points cumulés.", needsPoints:true},
+    {key:'birthday', type:'birthday', label:'Anniversaire du contact', shortDesc:'Le jour J', desc:"Se déclenche le jour de l'anniversaire du contact."},
+    {key:'dormant', type:'dormant', label:'Entrée en sommeil', shortDesc:"Après une période d'inactivité", desc:"Se déclenche après une période d'inactivité, durée à définir.", needsDays:true, dayPresets:[30,45,60,90,120], configLabel:"jours d'inactivité"},
+    {key:'near_reward', type:'near_reward', label:"Proche d'une récompense", shortDesc:'À quelques points de la suivante', desc:"Se déclenche quand il ne manque plus que quelques points avant la prochaine récompense.", needsPoints:true, pointsPresets:[10,25,50,75,100], configLabel:'points restants'},
+    {key:'after_signup', type:'days_after_signup', label:"X jours après l'inscription", shortDesc:"Un délai fixe après l'inscription", desc:"Se déclenche X jours après la création du contact.", needsDays:true, dayPresets:[3,7,14,30], configLabel:'jours après inscription'},
+    {key:'scan_no_signup', type:'scan_no_signup', label:'Scan sans inscription', shortDesc:"Scanné, mais pas encore membre", desc:"Se déclenche X jours après un scan, si le contact n'a toujours pas rejoint le Club.", needsDays:true, dayPresets:[1,3,7,14], configLabel:'jours après le scan'},
+    {key:'points_reached', type:'points_reached', label:'Nombre de points atteint', shortDesc:'Un cap de points cumulés', desc:"Se déclenche quand un membre atteint un total de points défini.", needsPoints:true, pointsPresets:[50,100,150,250,500], configLabel:'points cumulés'},
   ];
+  const SEGMENT_TO_TRIGGER_KEY={'sys-dormant':'dormant', 'sys-near-reward':'near_reward'};
   function triggerDefFor(trigger){
     if(!trigger) return null;
-    return TRIGGER_DEFS.find(t=>t.type===trigger.type && (t.segmentId||null)===(trigger.segmentId||null)) || TRIGGER_DEFS.find(t=>t.type===trigger.type) || null;
+    return TRIGGER_DEFS.find(t=>t.type===trigger.type) || null;
   }
   function triggerBlockLabel(trigger){
     const def=triggerDefFor(trigger);
     if(!def) return {title:'Déclencheur', desc:''};
-    if(def.needsPoints) return {title:def.label, desc:`${(trigger&&trigger.pointsThreshold)||100} points`};
-    return {title:def.label, desc: def.needsDays ? `${(trigger&&trigger.offsetDays)||7} jours` : def.desc};
+    if(def.needsPoints) return {title:def.label, desc:`${(trigger&&trigger.pointsThreshold)||def.pointsPresets[0]} ${def.configLabel}`};
+    if(def.needsDays) return {title:def.label, desc:`${(trigger&&trigger.offsetDays)||def.dayPresets[0]} ${def.configLabel}`};
+    return {title:def.label, desc:def.desc};
   }
   function flowDiagramHtml(trigger, steps, opts){
     opts=opts||{};
@@ -4933,50 +4950,54 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     if(scenDraft.triggerLocked) return;
     scenDraft.triggerKey=key;
     const def=TRIGGER_DEFS.find(t=>t.key===key);
-    if(def && def.needsDays && !scenDraft.triggerOffsetDays) scenDraft.triggerOffsetDays=7;
-    if(def && def.needsPoints && !scenDraft.triggerPointsThreshold) scenDraft.triggerPointsThreshold=100;
+    if(def && def.needsDays && !scenDraft.triggerOffsetDays) scenDraft.triggerOffsetDays=def.dayPresets[0];
+    if(def && def.needsPoints && !scenDraft.triggerPointsThreshold) scenDraft.triggerPointsThreshold=def.pointsPresets[0];
     renderScenWizardStepBody();
   }
   function scTriggerToDraft(){
     const def=TRIGGER_DEFS.find(t=>t.key===scenDraft.triggerKey);
     if(!def) return null;
     const trigger={type:def.type};
-    if(def.segmentId) trigger.segmentId=def.segmentId;
-    if(def.needsDays) trigger.offsetDays=scenDraft.triggerOffsetDays||7;
-    if(def.needsPoints) trigger.pointsThreshold=scenDraft.triggerPointsThreshold||100;
+    if(def.needsDays) trigger.offsetDays=scenDraft.triggerOffsetDays||def.dayPresets[0];
+    if(def.needsPoints) trigger.pointsThreshold=scenDraft.triggerPointsThreshold||def.pointsPresets[0];
     return trigger;
   }
   function updateScenAudiencePreview(){
-    const el=document.getElementById('scAudiencePreview'); if(!el) return;
+    const numEl=document.getElementById('scAudienceNum'); if(!numEl) return;
+    const hintEl=document.getElementById('scAudienceHint');
     const daysInput=document.getElementById('scDays');
-    if(daysInput) scenDraft.triggerOffsetDays=parseInt(daysInput.value,10)||7;
+    if(daysInput) scenDraft.triggerOffsetDays=parseInt(daysInput.value,10)||scenDraft.triggerOffsetDays;
     const pointsInput=document.getElementById('scPoints');
-    if(pointsInput) scenDraft.triggerPointsThreshold=parseInt(pointsInput.value,10)||100;
+    if(pointsInput) scenDraft.triggerPointsThreshold=parseInt(pointsInput.value,10)||scenDraft.triggerPointsThreshold;
     const trigger=scTriggerToDraft();
-    if(!trigger){ el.textContent=''; return; }
+    if(!trigger){ numEl.textContent='—'; if(hintEl) hintEl.textContent='Sélectionnez un déclencheur pour estimer l’audience.'; return; }
     const count=DB.triggerAudienceCount(trigger);
-    el.textContent=`${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement`;
+    numEl.textContent=fmtN(count);
+    if(hintEl) hintEl.textContent=`contact${count>1?'s':''} concerné${count>1?'s':''} avec ce réglage`;
   }
-  const SCEN_DAY_PRESETS=[3,7,14,30,60,90];
-  const SCEN_POINTS_PRESETS=[50,100,150,250,500];
   function scStep1Html(){
     const sel=scenDraft.triggerKey;
     const locked=!!scenDraft.triggerLocked;
-    const cards=TRIGGER_DEFS.filter(td=>!locked||sel===td.key).map(td=>`<div class="lp-template-card ${sel===td.key?'selected':''}" data-trigger="${td.key}" onclick="selectScenTrigger('${td.key}')" style="flex:1 1 220px;max-width:none;${locked?'cursor:default':''}"><b>${td.label}</b><small>${td.desc}</small></div>`).join('');
+    const cards=TRIGGER_DEFS.filter(td=>!locked||sel===td.key).map(td=>`<div class="trigger-card ${sel===td.key?'selected':''}${locked?' locked':''}" data-trigger="${td.key}" onclick="selectScenTrigger('${td.key}')"><b>${td.label}</b><small>${td.shortDesc}</small></div>`).join('');
     const def=TRIGGER_DEFS.find(t=>t.key===sel);
-    const curDays=scenDraft.triggerOffsetDays||7;
-    const curPoints=scenDraft.triggerPointsThreshold||100;
-    const daysField = def&&def.needsDays ? `<div class="field" style="max-width:220px"><label>Délai</label><select id="scDays" onchange="updateScenAudiencePreview()">${SCEN_DAY_PRESETS.map(d=>`<option value="${d}" ${curDays===d?'selected':''}>${d} jours</option>`).join('')}</select></div>` : '';
-    const pointsField = def&&def.needsPoints ? `<div class="field" style="max-width:220px"><label>Seuil de points</label><select id="scPoints" onchange="updateScenAudiencePreview()">${SCEN_POINTS_PRESETS.map(p=>`<option value="${p}" ${curPoints===p?'selected':''}>${p} points</option>`).join('')}</select></div>` : '';
+    const curDays=scenDraft.triggerOffsetDays||(def&&def.dayPresets?def.dayPresets[0]:0);
+    const curPoints=scenDraft.triggerPointsThreshold||(def&&def.pointsPresets?def.pointsPresets[0]:0);
+    const configField = def&&def.needsDays
+      ? `<div class="field" style="max-width:260px;margin-top:2px"><label>Seuil — ${def.configLabel}</label><select id="scDays" onchange="updateScenAudiencePreview()">${def.dayPresets.map(d=>`<option value="${d}" ${curDays===d?'selected':''}>${d} jours</option>`).join('')}</select></div>`
+      : def&&def.needsPoints
+        ? `<div class="field" style="max-width:260px;margin-top:2px"><label>Seuil — ${def.configLabel}</label><select id="scPoints" onchange="updateScenAudiencePreview()">${def.pointsPresets.map(p=>`<option value="${p}" ${curPoints===p?'selected':''}>${p} points</option>`).join('')}</select></div>`
+        : '';
     const trigger=sel?scTriggerToDraft():null;
     const count=trigger?DB.triggerAudienceCount(trigger):0;
-    return `<div class="card" style="max-width:720px">
-      <h3>Déclencheur</h3><div class="sub">${locked?'Déclencheur système, non modifiable.':"Choisissez l'événement qui déclenche l'envoi."}</div>
-      <div class="row" style="gap:10px;flex-wrap:wrap;margin:14px 0">${cards}</div>
-      ${daysField}
-      ${pointsField}
-      <p class="muted" style="font-size:11.5px;margin-top:10px" id="scAudiencePreview">${sel?`${count} contact${count>1?'s':''} concerné${count>1?'s':''} actuellement`:''}</p>
-      <div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn primary" onclick="wizardNextScen()">Suivant</button></div>
+    return `<div class="card" style="max-width:760px">
+      <h3>Déclencheur</h3><div class="sub">${locked?'Déclencheur système, non modifiable.':"Choisissez l'événement qui déclenche l'automatisation."}</div>
+      <div class="trigger-grid">${cards}</div>
+      ${configField}
+      <div class="trigger-audience">
+        <div><div class="lbl">Audience actuelle</div><div class="num" id="scAudienceNum">${sel?fmtN(count):'—'}</div></div>
+        <div class="hint" id="scAudienceHint">${sel?`contact${count>1?'s':''} concerné${count>1?'s':''} avec ce réglage`:'Sélectionnez un déclencheur pour estimer l’audience.'}</div>
+      </div>
+      <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn primary" onclick="wizardNextScen()">Suivant</button></div>
     </div>`;
   }
   function scStepRowHtml(step, idx){
@@ -5120,8 +5141,9 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
   }
   function startScenCreation(){ scenDraft=null; go('scenarios.new'); }
   function startScenCreationFromSegment(segId){
-    const def=TRIGGER_DEFS.find(t=>t.segmentId===segId);
-    scenDraft={name:'', triggerKey:def?def.key:'', triggerOffsetDays:7, steps:[{delayDays:0, title:'', subject:'', shortDesc:'', longDesc:'', ctaLabel:'Découvrir', ctaType:'club', ctaTarget:''}]};
+    const key=SEGMENT_TO_TRIGGER_KEY[segId]||'';
+    const def=TRIGGER_DEFS.find(t=>t.key===key);
+    scenDraft={name:'', triggerKey:key, triggerOffsetDays:def&&def.dayPresets?def.dayPresets[0]:7, triggerPointsThreshold:def&&def.pointsPresets?def.pointsPresets[0]:100, steps:[{delayDays:0, title:'', subject:'', shortDesc:'', longDesc:'', ctaLabel:'Découvrir', ctaType:'club', ctaTarget:''}]};
     scenStep=1;
     go('scenarios.new');
   }
