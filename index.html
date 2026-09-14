@@ -1341,7 +1341,6 @@
       </div>
       <div class="filters-bar">
         <div class="search-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="contactsSearch" placeholder="Nom ou e-mail" oninput="renderContacts()"></div>
-        <select id="fType" onchange="renderContacts()"><option value="">Type (tous)</option><option value="client">Client</option><option value="prospect">Prospect</option></select>
         <select id="fOrigin" onchange="renderContacts()"><option value="">Tous les canaux</option></select>
         <select id="fSegment" onchange="renderContacts()"><option value="">Tous segments</option></select>
         <select id="fPersona" onchange="renderContacts()"><option value="">Tous personas</option></select>
@@ -1352,7 +1351,7 @@
       </div>
       <div class="card" style="padding:4px 4px 0">
         <table><thead><tr>
-          <th data-sort-key="name">Contact</th><th>Type</th><th data-sort-key="email">E-mail</th><th>Canal</th><th>Segments</th><th>Statut Club</th><th data-sort-key="lastScan">Dernier scan</th><th>Consentement</th><th></th>
+          <th data-sort-key="name">Contact</th><th data-sort-key="email">E-mail</th><th>Canal</th><th>Segments</th><th>Statut Club</th><th data-sort-key="lastScan">Dernier scan</th><th>Consentement</th><th></th>
         </tr></thead>
         <tbody id="clientRows"></tbody></table>
         <div class="pagination" id="contactsPagination"></div>
@@ -2130,12 +2129,11 @@
       const scannedProductIds=pickN(PRODUCTS.map(p=>p.id), Math.min(scannedCount,PRODUCTS.length));
       const isLoyaltyMember = i<50;
       const source=pick(SOURCES);
-      const type = source==='Fichier client' ? 'client' : (isLoyaltyMember ? 'client' : (rnd()<0.35 ? 'client' : 'prospect'));
       const birthDate = rnd()<0.75 ? (function(){ const d=new Date(); d.setFullYear(d.getFullYear()-randInt(22,68)); d.setMonth(randInt(0,11)); d.setDate(randInt(1,28)); return d; })() : null;
       CONTACTS.push({
         id:'c'+String(i+1).padStart(3,'0'), name:first+' '+last,
         email:slug(first)+'.'+slug(last)+i+'@email.com',
-        createdAt, source, type, birthDate, persona:pick(PERSONAS), segment:pick(SEGMENT_NAMES),
+        createdAt, source, birthDate, persona:pick(PERSONAS), segment:pick(SEGMENT_NAMES),
         consentMarketing: rnd()<0.82, consentDate:createdAt,
         lastScanAt: scannedCount>0 ? daysAgo(randInt(0,85)) : null,
         scannedProductIds,
@@ -2247,7 +2245,6 @@
         case 'segment': return c.segment===v;
         case 'persona': return c.persona===v;
         case 'source': return c.source===v;
-        case 'type': return c.type===v;
         case 'status': return c.status===v;
         case 'isMember': return (v==='oui')===!!c.isLoyaltyMember;
         case 'scanCount': return (c.scannedProductIds||[]).length >= Number(v||0);
@@ -2587,7 +2584,7 @@
   }
   function contactFiltersActive(){
     return {
-      type:document.getElementById('fType').value, origin:document.getElementById('fOrigin').value, segment:document.getElementById('fSegment').value,
+      origin:document.getElementById('fOrigin').value, segment:document.getElementById('fSegment').value,
       persona:document.getElementById('fPersona').value, club:document.getElementById('fClub').value,
       consent:document.getElementById('fConsent').value, status:document.getElementById('fStatus').value,
     };
@@ -2597,7 +2594,6 @@
     const f=contactFiltersActive();
     let list=DB.CONTACTS.filter(c=>
       matchesSearch(c.name+' '+c.email,q) &&
-      (!f.type||c.type===f.type) &&
       (!f.origin||c.source===f.origin) && (!f.segment||c.segment===f.segment) && (!f.persona||c.persona===f.persona) &&
       (!f.club||(f.club==='member'?c.isLoyaltyMember:!c.isLoyaltyMember)) &&
       (!f.consent||(f.consent==='yes'?c.consentMarketing:!c.consentMarketing)) &&
@@ -2613,19 +2609,19 @@
   }
   function renderContactsFilterChips(){
     const f=contactFiltersActive();
-    const labels={type:'Type',origin:"Canal",segment:'Segment',persona:'Persona',club:'Club',consent:'Consentement',status:'Activité'};
-    const valueLabels={type:{client:'Client',prospect:'Prospect'},club:{member:'Membre du Club','non-member':'Non membre'},consent:{yes:'Consentement donné',no:'Sans consentement'},status:{active:'Actif',dormant:'En sommeil'}};
+    const labels={origin:"Canal",segment:'Segment',persona:'Persona',club:'Club',consent:'Consentement',status:'Activité'};
+    const valueLabels={club:{member:'Membre du Club','non-member':'Non membre'},consent:{yes:'Consentement donné',no:'Sans consentement'},status:{active:'Actif',dormant:'En sommeil'}};
     const entries=Object.entries(f).filter(([,v])=>v);
     const el=document.getElementById('contactsFiltersActive');
     if(!entries.length){ el.innerHTML=''; return; }
     el.innerHTML=entries.map(([k,v])=>`<span class="filter-chip">${labels[k]} : ${(valueLabels[k]&&valueLabels[k][v])||v}<button type="button" onclick="resetContactFilter('${k}')">✕</button></span>`).join('')+'<button type="button" class="filter-reset" onclick="resetAllContactFilters()">Réinitialiser</button>';
   }
   function resetContactFilter(key){
-    const map={type:'fType',origin:'fOrigin',segment:'fSegment',persona:'fPersona',club:'fClub',consent:'fConsent',status:'fStatus'};
+    const map={origin:'fOrigin',segment:'fSegment',persona:'fPersona',club:'fClub',consent:'fConsent',status:'fStatus'};
     document.getElementById(map[key]).value=''; renderContacts();
   }
   function resetAllContactFilters(){
-    ['fType','fOrigin','fSegment','fPersona','fClub','fConsent','fStatus'].forEach(id=>document.getElementById(id).value='');
+    ['fOrigin','fSegment','fPersona','fClub','fConsent','fStatus'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('contactsSearch').value=''; renderContacts();
   }
   function renderContacts(keepPage){
@@ -2640,7 +2636,6 @@
       const m=c.isLoyaltyMember?DB.memberById(c.loyaltyMemberId):null;
       return `<tr onclick="openClient('${c.id}')">
         <td><b style="color:var(--ink)">${c.name}</b></td>
-        <td><span class="tag ${c.type==='client'?'green':'teal'}">${c.type==='client'?'Client':'Prospect'}</span></td>
         <td class="muted">${c.email}</td>
         <td>${c.source}</td>
         <td><span class="tag">${c.segment}</span></td>
@@ -2661,7 +2656,6 @@
     const m=c.isLoyaltyMember?DB.memberById(c.loyaltyMemberId):null;
     const campaigns=(c.campaignsReceivedIds||[]).map(cid2=>DB.campaignById(cid2)).filter(Boolean);
     const bodyHtml=`
-      <div class="kv"><span>Type</span><b><span class="tag ${c.type==='client'?'green':'teal'}">${c.type==='client'?'Client':'Prospect'}</span></b></div>
       <div class="kv"><span>E-mail</span><b>${c.email}</b></div>
       <div class="kv"><span>Canal d'acquisition</span><b>${c.source}</b></div>
       <div class="kv"><span>Segment</span><b>${c.segment}</b></div>
@@ -2689,7 +2683,6 @@
     const bodyHtml=`
       <div class="field"><label>Nom</label><input type="text" id="cfName" value="${c?c.name:''}" placeholder="Ex. Camille Rousseau"></div>
       <div class="field"><label>E-mail</label><input type="email" id="cfEmail" value="${c?c.email:''}" placeholder="prenom.nom@email.com"></div>
-      <div class="field"><label>Type de contact</label><select id="cfType"><option value="client" ${!c||c.type==='client'?'selected':''}>Client</option><option value="prospect" ${c&&c.type==='prospect'?'selected':''}>Prospect</option></select></div>
       <div class="field"><label>Canal d'acquisition</label><select id="cfSource">${DB.SOURCES.map(s=>`<option ${c&&c.source===s?'selected':''}>${s}</option>`).join('')}</select></div>
       <div class="field"><label>Segment</label><select id="cfSegment">${DB.SEGMENT_NAMES.map(s=>`<option ${c&&c.segment===s?'selected':''}>${s}</option>`).join('')}</select></div>
       <div class="field"><label>Persona</label><select id="cfPersona">${DB.PERSONAS.map(s=>`<option ${c&&c.persona===s?'selected':''}>${s}</option>`).join('')}</select></div>
@@ -2700,15 +2693,14 @@
   function saveContact(cid){
     const name=document.getElementById('cfName').value.trim()||'Nouveau contact';
     const email=document.getElementById('cfEmail').value.trim()||'contact@email.com';
-    const type=document.getElementById('cfType').value;
     const source=document.getElementById('cfSource').value, segment=document.getElementById('cfSegment').value, persona=document.getElementById('cfPersona').value;
     const consentMarketing=document.getElementById('cfConsent').checked;
     if(cid){
       const c=DB.contactById(cid);
-      Object.assign(c,{name,email,type,source,segment,persona,consentMarketing});
+      Object.assign(c,{name,email,source,segment,persona,consentMarketing});
       toast('Contact mis à jour');
     } else {
-      DB.addContact({id:'c'+(DB.CONTACTS.length+1), name, email, createdAt:new Date(), type, source, persona, segment,
+      DB.addContact({id:'c'+(DB.CONTACTS.length+1), name, email, createdAt:new Date(), source, persona, segment,
         consentMarketing, consentDate:new Date(), lastScanAt:null, scannedProductIds:[], isLoyaltyMember:false, loyaltyMemberId:null, campaignsReceivedIds:[], status:'active'});
       toast('Contact ajouté');
     }
@@ -2720,7 +2712,6 @@
   // SEGMENTS (list + rule-builder)
   // ============================================================
   const RULE_FIELDS=[
-    {key:'type', label:'Type de contact', type:'select', options:()=>['client','prospect'], optionLabels:{client:'Client',prospect:'Prospect'}},
     {key:'source', label:"Canal d'acquisition", type:'select', options:()=>DB.SOURCES},
     {key:'segment', label:'Segment marketing', type:'select', options:()=>DB.SEGMENT_NAMES},
     {key:'persona', label:'Persona', type:'select', options:()=>DB.PERSONAS},
@@ -3432,7 +3423,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const name=(first+' '+last).trim()||'Nouveau membre';
     const now=new Date();
     const cid='c-new-'+Date.now();
-    DB.addContact({ id:cid, name, email:clubPvLoginEmail, createdAt:now, source:'Club Fidélité', type:'client', birthDate:null, persona:'', segment:'', consentMarketing:true, consentDate:now, lastScanAt:null, scannedProductIds:[], isLoyaltyMember:true, loyaltyMemberId:null, campaignsReceivedIds:[], status:'active' });
+    DB.addContact({ id:cid, name, email:clubPvLoginEmail, createdAt:now, source:'Club Fidélité', birthDate:null, persona:'', segment:'', consentMarketing:true, consentDate:now, lastScanAt:null, scannedProductIds:[], isLoyaltyMember:true, loyaltyMemberId:null, campaignsReceivedIds:[], status:'active' });
     const mid='m-new-'+Date.now();
     DB.addLoyaltyMember({ id:mid, contactId:cid, joinedAt:now, tier:'Prospect', pointsEarned:0, pointsUsed:0, pointsBalance:0, lastActivityAt:now, rewardIds:[] });
     DB.contactById(cid).loyaltyMemberId=mid;
@@ -5041,8 +5032,8 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         ${idx>0?`<button type="button" class="rm" onclick="removeScenStep(${idx})" aria-label="Retirer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>`:''}
       </div>
       ${idx>0?`<div class="field" style="max-width:200px"><label>Délai après le message précédent (jours)</label><input type="number" class="scStepDelay" min="1" value="${step.delayDays||1}"></div>`:''}
-      <div class="field"><label>Titre</label><input type="text" class="scStepTitle" value="${step.title||''}"></div>
       <div class="field"><label>Objet de l'e-mail</label><input type="text" class="scStepSubject" value="${step.subject||''}"></div>
+      <div class="field"><label>Titre</label><input type="text" class="scStepTitle" value="${step.title||''}"></div>
       <div class="field"><label>Description courte</label><input type="text" class="scStepShortDesc" value="${step.shortDesc||''}"></div>
       <div class="field"><label>Description longue</label><textarea class="scStepLongDesc" rows="3">${step.longDesc||''}</textarea></div>
       <div class="field"><label>Image d'en-tête</label><div style="border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:12px">Image d'en-tête (démo)</div></div>
