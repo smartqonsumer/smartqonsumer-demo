@@ -584,11 +584,18 @@
   .device-bar{background:#F1F0F8; padding:10px 14px; display:flex; gap:6px; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line)}
   .device-dots{display:flex; gap:6px}
   .device-dot{width:9px; height:9px; border-radius:50%; background:#DAD9EE}
-  .device-tabs{display:flex; gap:4px}
-  .device-tab{border:0; background:transparent; color:var(--muted); font-size:11.5px; font-weight:700; padding:6px 13px; border-radius:999px; cursor:pointer; font-family:inherit}
-  .device-tab.active{background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(18,22,26,.14)}
-  .device-body{display:grid; grid-template-columns:.85fr 1.3fr; min-height:380px}
-  .device-dash{padding:24px 26px; min-height:380px}
+  .device-body{display:grid; grid-template-columns:.85fr 1.3fr; min-height:380px; animation:fade .3s ease}
+  .device-dash{padding:24px 26px; min-height:380px; animation:fade .3s ease}
+  .feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:980px; margin:0 auto 24px}
+  .feature-tile{text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:14px; padding:16px; cursor:pointer; font-family:inherit; display:flex; flex-direction:column; gap:6px; transition:border-color .2s ease, background .2s ease, transform .2s ease}
+  .feature-tile:hover{border-color:var(--accent); transform:translateY(-2px)}
+  .feature-tile.active{border-color:var(--accent); background:var(--lav3)}
+  .feature-tile-ico{width:34px; height:34px; border-radius:9px; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
+  .feature-tile-ico svg{width:18px; height:18px}
+  .feature-tile b{font-size:13.5px; color:var(--ink)}
+  .feature-tile span{font-size:12px; color:var(--muted); line-height:1.4}
+  @media (max-width:760px){ .feature-grid{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .feature-grid{grid-template-columns:1fr} }
   .device-list{border-right:1px solid var(--line); padding:14px}
   .device-row{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; transition:background .3s ease}
   .device-row.active{background:var(--lav)}
@@ -1063,16 +1070,45 @@
     </div>
   </section>
 
-  <!-- ============ PRODUCT SHOWCASE (Clients + Tableau de bord) ============ -->
+  <!-- ============ PRODUCT SHOWCASE (6 modules) ============ -->
   <section class="feat spad" id="product" style="padding-top:40px; padding-bottom:40px">
     <div class="sec-title" data-reveal><div class="eyebrow">La plateforme</div><h2>Une seule plateforme.<br>Toute la relation avec vos consommateurs.</h2></div>
+    <div class="feature-grid" data-reveal>
+      <button type="button" class="feature-tile active" data-feature="contacts" onclick="showFeatureTab('contacts')">
+        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
+        <b>Contacts</b>
+        <span>Une fiche unique par consommateur, enrichie à chaque scan.</span>
+      </button>
+      <button type="button" class="feature-tile" data-feature="products" onclick="showFeatureTab('products')">
+        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
+        <b>Produits &amp; QR Codes</b>
+        <span>Un QR Code par produit, une Landing Page qui convertit.</span>
+      </button>
+      <button type="button" class="feature-tile" data-feature="club" onclick="showFeatureTab('club')">
+        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
+        <b>Club Fidélité</b>
+        <span>Points, récompenses et programme entièrement configurables.</span>
+      </button>
+      <button type="button" class="feature-tile" data-feature="campaigns" onclick="showFeatureTab('campaigns')">
+        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
+        <b>Campagnes e-mail</b>
+        <span>Créez et envoyez des campagnes ciblées en quelques clics.</span>
+      </button>
+      <button type="button" class="feature-tile" data-feature="automations" onclick="showFeatureTab('automations')">
+        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
+        <b>Automatisations</b>
+        <span>Des relances déclenchées automatiquement, sans effort manuel.</span>
+      </button>
+      <button type="button" class="feature-tile" data-feature="analytics" onclick="showFeatureTab('analytics')">
+        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div>
+        <b>Analyses</b>
+        <span>Tous vos indicateurs d'acquisition et de fidélisation.</span>
+      </button>
+    </div>
     <div class="device-frame" data-reveal>
       <div class="device-bar">
         <div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div>
-        <div class="device-tabs">
-          <button type="button" class="device-tab active" id="tabClients" onclick="showDeviceTab('clients')">Clients</button>
-          <button type="button" class="device-tab" id="tabDash" onclick="showDeviceTab('dashboard')">Tableau de bord</button>
-        </div>
+        <div style="font-size:11px; font-weight:700; color:var(--muted)" id="deviceCurrentLabel">Contacts</div>
       </div>
       <div class="device-body" id="deviceViewClients">
         <div class="device-list" id="deviceList">
@@ -1122,13 +1158,58 @@
           <div class="legend" style="margin-top:10px"><span><i style="background:var(--amber)"></i>Via QR (indirect)</span><span><i style="background:var(--ink-soft)"></i>Via page fidélité (direct)</span></div>
         </div>
       </div>
-    </div>
-    <div class="mini-chip-row" data-reveal>
-      <span class="mini-chip">Produits scannés</span>
-      <span class="mini-chip">Profil client</span>
-      <span class="mini-chip">Préférences</span>
-      <span class="mini-chip">Canal d'acquisition</span>
-      <span class="mini-chip">Fidélité</span>
+      <div class="device-dash" id="deviceViewProducts" style="display:none">
+        <div class="row" style="justify-content:space-between; align-items:center; margin-bottom:14px">
+          <div><h3 style="margin:0">Catalogue produits</h3><div class="sub">Chaque produit : une Landing Page, un QR Code</div></div>
+        </div>
+        <div class="card" style="padding:4px 4px 0">
+          <table><thead><tr><th>Produit</th><th>GTIN</th><th class="right">Scans 30j</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td><b>Édition Limitée n°4</b></td><td class="muted">3401560012348</td><td class="right">612</td><td><span class="tag green">Actif</span></td></tr>
+              <tr><td><b>Blend Signature</b></td><td class="muted">3401560098765</td><td class="right">348</td><td><span class="tag green">Actif</span></td></tr>
+              <tr><td><b>Coffret Découverte</b></td><td class="muted">3401560045612</td><td class="right">201</td><td><span class="tag grey">Brouillon</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="device-dash" id="deviceViewClub" style="display:none">
+        <div class="row" style="gap:16px; align-items:flex-start; flex-wrap:wrap">
+          <div class="card" style="flex:1; min-width:220px">
+            <h3>Camille Rousseau</h3><div class="sub">Membre · Club</div>
+            <div style="margin:14px 0">
+              <div class="hbar-track"><span class="hbar-fill" style="width:68%"></span></div>
+              <div class="muted" style="font-size:12px; margin-top:6px">680 / 1000 pts avant la prochaine récompense</div>
+            </div>
+            <div class="kv"><span>Solde actuel</span><b>680 pts</b></div>
+            <div class="kv" style="border-bottom:0"><span>Valables jusqu'au</span><b>12 déc. 2026</b></div>
+          </div>
+          <div class="card" style="flex:1; min-width:220px">
+            <h3>Récompenses</h3><div class="sub">Ce que Camille peut obtenir</div>
+            <div class="kv"><span>Réduction fidélité</span><b>100 pts</b></div>
+            <div class="kv"><span>Produit offert</span><b>250 pts</b></div>
+            <div class="kv" style="border-bottom:0"><span>Expérience personnalisée</span><b>300 pts</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="device-dash" id="deviceViewCampaigns" style="display:none">
+        <h3 style="margin:0 0 2px">Dernières campagnes</h3><div class="sub" style="margin-bottom:16px">Taux d'ouverture</div>
+        <div class="kv"><span>Nouvelle collection</span><b>54 %</b></div>
+        <div class="hbar-track" style="margin-bottom:14px"><span class="hbar-fill" style="width:54%"></span></div>
+        <div class="kv"><span>Sélection VIP — avant-première</span><b>44 %</b></div>
+        <div class="hbar-track" style="margin-bottom:14px"><span class="hbar-fill" style="width:44%"></span></div>
+        <div class="kv"><span>Relance club — printemps</span><b>28 %</b></div>
+        <div class="hbar-track"><span class="hbar-fill" style="width:28%"></span></div>
+      </div>
+      <div class="device-dash" id="deviceViewAutomations" style="display:none">
+        <h3 style="margin:0 0 2px">Réactivation contacts en sommeil</h3><div class="sub" style="margin-bottom:18px">Se déclenche automatiquement, sans intervention manuelle</div>
+        <div class="flow">
+          <div class="flow-block trigger"><div class="k">Déclencheur</div><div class="t">Entrée en sommeil</div><div class="d">60 jours d'inactivité</div></div>
+          <div class="flow-arrow"><span class="lbl">Immédiat</span><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg></div>
+          <div class="flow-block"><div class="k">Message 1</div><div class="t">On ne vous a pas vu depuis un moment</div></div>
+          <div class="flow-arrow"><span class="lbl">J+7</span><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg></div>
+          <div class="flow-block"><div class="k">Message 2</div><div class="t">Toujours là pour vous</div></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -5412,17 +5493,22 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     }
   })();
 
-  function showDeviceTab(name){
-    const clientsView = document.getElementById('deviceViewClients');
-    const dashView = document.getElementById('deviceViewDash');
-    const tabClients = document.getElementById('tabClients');
-    const tabDash = document.getElementById('tabDash');
-    if(!clientsView || !dashView) return;
-    const showDash = name === 'dashboard';
-    clientsView.style.display = showDash ? 'none' : 'grid';
-    dashView.style.display = showDash ? 'block' : 'none';
-    tabClients.classList.toggle('active', !showDash);
-    tabDash.classList.toggle('active', showDash);
+  const FEATURE_PANES={
+    contacts:{view:'deviceViewClients', display:'grid', label:'Contacts'},
+    products:{view:'deviceViewProducts', display:'block', label:'Produits & QR Codes'},
+    club:{view:'deviceViewClub', display:'block', label:'Club Fidélité'},
+    campaigns:{view:'deviceViewCampaigns', display:'block', label:'Campagnes e-mail'},
+    automations:{view:'deviceViewAutomations', display:'block', label:'Automatisations'},
+    analytics:{view:'deviceViewDash', display:'block', label:'Analyses'},
+  };
+  function showFeatureTab(key){
+    const cfg=FEATURE_PANES[key]; if(!cfg) return;
+    Object.entries(FEATURE_PANES).forEach(([k,c])=>{
+      const el=document.getElementById(c.view); if(!el) return;
+      el.style.display = k===key ? c.display : 'none';
+    });
+    document.querySelectorAll('.feature-tile').forEach(t=>t.classList.toggle('active', t.dataset.feature===key));
+    const labelEl=document.getElementById('deviceCurrentLabel'); if(labelEl) labelEl.textContent=cfg.label;
   }
 </script>
 </body>
