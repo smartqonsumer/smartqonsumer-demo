@@ -584,15 +584,29 @@
   .device-bar{background:#F1F0F8; padding:10px 14px; display:flex; gap:6px; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line)}
   .device-dots{display:flex; gap:6px}
   .device-dot{width:9px; height:9px; border-radius:50%; background:#DAD9EE}
-  .device-body{display:grid; grid-template-columns:.85fr 1.3fr; min-height:380px; animation:fade .3s ease}
-  .device-dash{padding:24px 26px; min-height:380px; animation:fade .3s ease}
-  .feature-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; max-width:980px; margin:0 auto 20px}
-  .feature-tile{text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:6px 16px 6px 6px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:8px; transition:border-color .2s ease, background .2s ease}
+  .device-body{display:grid; grid-template-columns:150px 1fr; min-height:360px; animation:fade .3s ease}
+  .device-dash{padding:22px 24px; min-height:360px; animation:fade .3s ease}
+  .product-showcase{display:flex; gap:28px; align-items:flex-start; max-width:1040px; margin:0 auto; flex-wrap:wrap}
+  .feature-grid{display:flex; flex-direction:column; gap:6px; flex:0 0 220px}
+  .feature-tile{width:100%; text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:9px 14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:10px; transition:border-color .2s ease, background .2s ease}
   .feature-tile:hover{border-color:var(--accent)}
   .feature-tile.active{border-color:var(--accent); background:var(--lav3)}
-  .feature-tile-ico{width:26px; height:26px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
-  .feature-tile-ico svg{width:14px; height:14px}
+  .feature-tile-ico{width:28px; height:28px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
+  .feature-tile-ico svg{width:15px; height:15px}
   .feature-tile b{font-size:12.5px; color:var(--ink); font-weight:700; white-space:nowrap}
+  @media (max-width:900px){ .product-showcase{flex-direction:column; align-items:stretch} .feature-grid{flex-direction:row; flex-wrap:wrap; width:100%; flex:none; justify-content:center} .feature-tile{width:auto; border-radius:999px; padding:6px 14px 6px 6px} .device-frame{max-width:100%!important} }
+  .club-mini-card{border-radius:16px; padding:20px 22px; background:linear-gradient(135deg, var(--accent), var(--accentd)); color:#fff; box-shadow:0 14px 30px rgba(18,22,26,.18)}
+  .club-mini-card-top{display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700; opacity:.9; text-transform:uppercase; letter-spacing:.4px}
+  .club-mini-card-name{font-size:16px; font-weight:800; margin-top:14px}
+  .club-mini-card-pts{font-size:28px; font-weight:800; margin-top:2px}
+  .club-mini-card-bar{height:6px; border-radius:999px; background:rgba(255,255,255,.28); margin-top:12px; overflow:hidden}
+  .club-mini-card-bar span{display:block; height:100%; background:#fff; border-radius:999px}
+  .club-mini-card-sub{font-size:11px; opacity:.85; margin-top:8px}
+  .reward-chip{display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:12px; padding:9px 14px; flex:1; min-width:160px}
+  .reward-chip-ico{width:30px; height:30px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
+  .reward-chip-ico svg{width:15px; height:15px}
+  .reward-chip b{display:block; font-size:12px; color:var(--ink)}
+  .reward-chip span{font-size:11px; color:var(--muted)}
   .device-list{border-right:1px solid var(--line); padding:14px}
   .device-row{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; transition:background .3s ease}
   .device-row.active{background:var(--lav)}
@@ -1070,7 +1084,8 @@
   <!-- ============ PRODUCT SHOWCASE (6 modules) ============ -->
   <section class="feat spad" id="product" style="padding-top:40px; padding-bottom:40px">
     <div class="sec-title" data-reveal><div class="eyebrow">La plateforme</div><h2>Une seule plateforme.<br>Toute la relation avec vos consommateurs.</h2></div>
-    <div class="feature-grid" data-reveal>
+    <div class="product-showcase" data-reveal>
+    <div class="feature-grid">
       <button type="button" class="feature-tile active" data-feature="contacts" onclick="showFeatureTab('contacts')">
         <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
         <b>Contacts</b>
@@ -1096,7 +1111,7 @@
         <b>Analyses</b>
       </button>
     </div>
-    <div class="device-frame" data-reveal>
+    <div class="device-frame" style="max-width:640px; flex:1; min-width:300px">
       <div class="device-bar">
         <div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div>
         <div style="font-size:11px; font-weight:700; color:var(--muted)" id="deviceCurrentLabel">Contacts</div>
@@ -1113,9 +1128,11 @@
           <div class="kv"><span>Produit préféré</span><b id="devFav">Édition Limitée n°4</b></div>
           <div class="kv"><span>Fréquence</span><b id="devFreq">1 achat / 3 semaines</b></div>
           <div class="kv"><span>Origine</span><b id="devOrigin">Scan chez un revendeur</b></div>
-          <div class="kv"><span>Scans</span><b id="devScans">12</b></div>
-          <div class="kv"><span>Segment</span><b id="devSegment">Adeptes des bons plans</b></div>
           <div class="kv" style="border-bottom:0"><span>Campagnes reçues</span><b id="devCamp">3</b></div>
+          <div style="margin-top:14px">
+            <div class="row" style="justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:4px"><span>Score d'engagement</span><span id="devEngagementVal">82 %</span></div>
+            <div class="hbar-track"><span class="hbar-fill" id="devEngagementBar" style="width:82%"></span></div>
+          </div>
         </div>
       </div>
       <div class="device-dash" id="deviceViewDash" style="display:none">
@@ -1152,47 +1169,42 @@
       <div class="device-dash" id="deviceViewProducts" style="display:none">
         <div class="row" style="justify-content:space-between; align-items:center; margin-bottom:14px">
           <div><h3 style="margin:0">Catalogue produits</h3><div class="sub">Chaque produit : une Landing Page, un QR Code</div></div>
+          <div class="feature-tile-ico" style="width:34px;height:34px;border-radius:9px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
         </div>
-        <div class="card" style="padding:4px 4px 0">
-          <table><thead><tr><th>Produit</th><th>GTIN</th><th class="right">Scans 30j</th><th>Statut</th></tr></thead>
-            <tbody>
-              <tr><td><b>Édition Limitée n°4</b></td><td class="muted">3401560012348</td><td class="right">612</td><td><span class="tag green">Actif</span></td></tr>
-              <tr><td><b>Blend Signature</b></td><td class="muted">3401560098765</td><td class="right">348</td><td><span class="tag green">Actif</span></td></tr>
-              <tr><td><b>Coffret Découverte</b></td><td class="muted">3401560045612</td><td class="right">201</td><td><span class="tag grey">Brouillon</span></td></tr>
-            </tbody>
-          </table>
+        <div class="grid cards-3" style="margin-bottom:16px" id="prodKpis"></div>
+        <div class="card" style="padding:16px 16px 4px">
+          <h4 style="margin:0 0 4px">Produits les plus scannés</h4>
+          <div id="prodTopList"></div>
         </div>
       </div>
       <div class="device-dash" id="deviceViewClub" style="display:none">
-        <div class="row" style="gap:16px; align-items:flex-start; flex-wrap:wrap">
-          <div class="card" style="flex:1; min-width:220px">
-            <h3>Camille Rousseau</h3><div class="sub">Membre · Club</div>
-            <div style="margin:14px 0">
-              <div class="hbar-track"><span class="hbar-fill" style="width:68%"></span></div>
-              <div class="muted" style="font-size:12px; margin-top:6px">680 / 1000 pts avant la prochaine récompense</div>
-            </div>
-            <div class="kv"><span>Solde actuel</span><b>680 pts</b></div>
-            <div class="kv" style="border-bottom:0"><span>Valables jusqu'au</span><b>12 déc. 2026</b></div>
-          </div>
-          <div class="card" style="flex:1; min-width:220px">
-            <h3>Récompenses</h3><div class="sub">Ce que Camille peut obtenir</div>
-            <div class="kv"><span>Réduction fidélité</span><b>100 pts</b></div>
-            <div class="kv"><span>Produit offert</span><b>250 pts</b></div>
-            <div class="kv" style="border-bottom:0"><span>Expérience personnalisée</span><b>300 pts</b></div>
-          </div>
+        <div class="club-mini-card">
+          <div class="club-mini-card-top"><span>Club SmartQonsumer</span><span class="tag" style="background:rgba(255,255,255,.22); color:#fff">Membre</span></div>
+          <div class="club-mini-card-name">Camille Rousseau</div>
+          <div class="club-mini-card-pts">680 pts</div>
+          <div class="club-mini-card-bar"><span style="width:68%"></span></div>
+          <div class="club-mini-card-sub">320 pts avant la prochaine récompense · valables jusqu'au 12 déc. 2026</div>
+        </div>
+        <div class="row" style="gap:10px; margin-top:16px; flex-wrap:wrap">
+          <div class="reward-chip"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 5 5 19M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg></div><div><b>Réduction fidélité</b><span>100 pts</span></div></div>
+          <div class="reward-chip"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div><div><b>Produit offert</b><span>250 pts</span></div></div>
+          <div class="reward-chip"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.6 6.6L22 9l-5.5 4.6L18 21l-6-3.9L6 21l1.5-7.4L2 9l7.4-.4L12 2z"/></svg></div><div><b>Expérience personnalisée</b><span>300 pts</span></div></div>
         </div>
       </div>
       <div class="device-dash" id="deviceViewCampaigns" style="display:none">
-        <h3 style="margin:0 0 2px">Dernières campagnes</h3><div class="sub" style="margin-bottom:16px">Taux d'ouverture</div>
-        <div class="kv"><span>Nouvelle collection</span><b>54 %</b></div>
-        <div class="hbar-track" style="margin-bottom:14px"><span class="hbar-fill" style="width:54%"></span></div>
-        <div class="kv"><span>Sélection VIP — avant-première</span><b>44 %</b></div>
-        <div class="hbar-track" style="margin-bottom:14px"><span class="hbar-fill" style="width:44%"></span></div>
-        <div class="kv"><span>Relance club — printemps</span><b>28 %</b></div>
-        <div class="hbar-track"><span class="hbar-fill" style="width:28%"></span></div>
+        <h3 style="margin:0 0 2px">Campagnes e-mail</h3><div class="sub" style="margin-bottom:16px">Vue d'ensemble, 90 derniers jours</div>
+        <div class="grid cards-3" style="margin-bottom:16px" id="campKpis"></div>
+        <div class="card" style="padding:16px 16px 4px">
+          <h4 style="margin:0 0 4px">Taux d'ouverture par campagne</h4>
+          <div id="campTopList"></div>
+        </div>
       </div>
       <div class="device-dash" id="deviceViewAutomations" style="display:none">
-        <h3 style="margin:0 0 2px">Réactivation contacts en sommeil</h3><div class="sub" style="margin-bottom:18px">Se déclenche automatiquement, sans intervention manuelle</div>
+        <div class="row" style="justify-content:space-between; align-items:center; margin-bottom:4px">
+          <h3 style="margin:0">Réactivation contacts en sommeil</h3>
+          <span class="tag green">● Actif</span>
+        </div>
+        <div class="sub" style="margin-bottom:16px">Se déclenche automatiquement, sans intervention manuelle</div>
         <div class="flow">
           <div class="flow-block trigger"><div class="k">Déclencheur</div><div class="t">Entrée en sommeil</div><div class="d">60 jours d'inactivité</div></div>
           <div class="flow-arrow"><span class="lbl">Immédiat</span><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg></div>
@@ -1200,7 +1212,9 @@
           <div class="flow-arrow"><span class="lbl">J+7</span><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg></div>
           <div class="flow-block"><div class="k">Message 2</div><div class="t">Toujours là pour vous</div></div>
         </div>
+        <div class="grid cards-3" style="margin-top:16px" id="autoKpis"></div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -5459,10 +5473,10 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const deviceRows = document.querySelectorAll('#deviceList .device-row');
     if(deviceRows.length && !reduceMotion){
       const deviceData = [
-        {initials:'CR', name:'Camille Rousseau', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 3 semaines', origin:'Scan chez un revendeur', scans:'12', segment:'Adeptes des bons plans', camp:'3'},
-        {initials:'TM', name:'Thomas Morel', tag:'Nouveau contact', tagClass:'grey', fav:'Coffret Découverte', freq:'1er achat', origin:'Scan en magasin', scans:'1', segment:'Ambassadeurs de la marque', camp:'0'},
-        {initials:'LP', name:'Léa Petit', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 2 semaines', origin:'Scan à un événement', scans:'8', segment:'Premium engagés', camp:'5'},
-        {initials:'SB', name:'Sami Ben', tag:'À réactiver', tagClass:'teal', fav:'Coffret Découverte', freq:'Dernier achat il y a 2 mois', origin:'Scan en magasin', scans:'4', segment:'Adeptes des bons plans', camp:'1'},
+        {initials:'CR', name:'Camille Rousseau', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 3 semaines', origin:'Scan chez un revendeur', camp:'3', engagement:82},
+        {initials:'TM', name:'Thomas Morel', tag:'Nouveau contact', tagClass:'grey', fav:'Coffret Découverte', freq:'1er achat', origin:'Scan en magasin', camp:'0', engagement:35},
+        {initials:'LP', name:'Léa Petit', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 2 semaines', origin:'Scan à un événement', camp:'5', engagement:94},
+        {initials:'SB', name:'Sami Ben', tag:'À réactiver', tagClass:'teal', fav:'Coffret Découverte', freq:'Dernier achat il y a 2 mois', origin:'Scan en magasin', camp:'1', engagement:58},
       ];
       let devIdx = 0;
       setInterval(()=>{
@@ -5477,11 +5491,12 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         document.getElementById('devFav').textContent = d.fav;
         document.getElementById('devFreq').textContent = d.freq;
         document.getElementById('devOrigin').textContent = d.origin;
-        document.getElementById('devScans').textContent = d.scans;
-        document.getElementById('devSegment').textContent = d.segment;
         document.getElementById('devCamp').textContent = d.camp;
+        document.getElementById('devEngagementVal').textContent = d.engagement + ' %';
+        document.getElementById('devEngagementBar').style.width = d.engagement + '%';
       }, 2800);
     }
+    initProductShowcase();
   })();
 
   const FEATURE_PANES={
@@ -5492,6 +5507,38 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     automations:{view:'deviceViewAutomations', display:'block', label:'Automatisations'},
     analytics:{view:'deviceViewDash', display:'block', label:'Analyses'},
   };
+  function initProductShowcase(){
+    const prodKpis=document.getElementById('prodKpis');
+    if(prodKpis) prodKpis.innerHTML=[
+      kpiCardHtml('Produits actifs','11'),
+      kpiCardHtml('Scans (30 jours)','3 906'),
+      kpiCardHtml('Scan → inscription','34 %'),
+    ].join('');
+    const prodTop=document.getElementById('prodTopList');
+    if(prodTop) prodTop.innerHTML=hbarListHtml([
+      {label:'Édition Limitée n°4', value:612},
+      {label:'Blend Signature', value:348},
+      {label:'Coffret Découverte', value:201},
+    ]);
+    const campKpis=document.getElementById('campKpis');
+    if(campKpis) campKpis.innerHTML=[
+      kpiCardHtml('Campagnes envoyées','6'),
+      kpiCardHtml('Destinataires','268'),
+      kpiCardHtml("Taux d'ouverture moyen",'43 %'),
+    ].join('');
+    const campTop=document.getElementById('campTopList');
+    if(campTop) campTop.innerHTML=hbarListHtml([
+      {label:'Nouvelle collection', value:54, display:'54 %'},
+      {label:'Sélection VIP — avant-première', value:44, display:'44 %'},
+      {label:'Relance club — printemps', value:28, display:'28 %'},
+    ],100);
+    const autoKpis=document.getElementById('autoKpis');
+    if(autoKpis) autoKpis.innerHTML=[
+      kpiCardHtml('Contacts entrés','31'),
+      kpiCardHtml('Terminées','18'),
+      kpiCardHtml("Taux d'ouverture",'35 %'),
+    ].join('');
+  }
   function showFeatureTab(key){
     const cfg=FEATURE_PANES[key]; if(!cfg) return;
     Object.entries(FEATURE_PANES).forEach(([k,c])=>{
