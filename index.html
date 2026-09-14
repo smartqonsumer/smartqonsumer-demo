@@ -361,11 +361,19 @@
   }
 
   /* ===== sq-header (marketing-shell-spec §2) ===== */
-  .home-nav{position:sticky; top:0; z-index:40; height:var(--header-height); display:flex; align-items:center;
-    background:var(--color-bg-marketing); border-bottom:1px solid var(--color-border); box-shadow:none;
-    transition:height var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard)}
+  .home-nav{position:fixed; top:0; left:0; right:0; z-index:40; height:var(--header-height); display:flex; align-items:center;
+    background:transparent; border-bottom:1px solid transparent; box-shadow:none; backdrop-filter:none;
+    transition:height var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard), backdrop-filter var(--duration-base) var(--ease-standard)}
   .home-nav .sq-container{width:100%; max-width:var(--max-content); margin:0 auto; padding:0 var(--gutter-page); display:flex; align-items:center; gap:28px; min-width:0}
-  .home-nav.scrolled{height:var(--header-height-condensed); box-shadow:var(--shadow-md)}
+  #product, #how, #story{scroll-margin-top:var(--header-height)}
+  .home-nav.scrolled{height:var(--header-height-condensed); box-shadow:var(--shadow-md); background:rgba(255,255,255,.86); backdrop-filter:blur(14px) saturate(1.4); border-bottom-color:var(--color-border)}
+  .home-nav:not(.scrolled) .sq-logo img{filter:brightness(0) invert(1)}
+  .home-nav:not(.scrolled) .sq-nav-item>button{color:rgba(255,255,255,.82)}
+  .home-nav:not(.scrolled) .sq-nav-item:hover>button{color:#fff}
+  .home-nav:not(.scrolled) .sq-nav-item:hover>span{background:rgba(255,255,255,.55)}
+  .home-nav:not(.scrolled) .sq-login{background:transparent; border-color:rgba(255,255,255,.35); color:#fff}
+  .home-nav:not(.scrolled) .sq-login:hover{background:rgba(255,255,255,.1)}
+  .home-nav:not(.scrolled) .sq-burger{color:#fff}
 
   .sq-logo{display:flex; flex:none; border:0}
   .sq-logo img{height:22px; width:auto; display:block; transition:height var(--duration-base) var(--ease-standard)}
