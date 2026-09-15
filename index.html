@@ -439,6 +439,26 @@
   .sec-title h2{font-size:36px; color:var(--ink); margin:10px 0 10px; letter-spacing:-.8px; line-height:1.15}
   .sec-title p{color:var(--muted); font-size:15.5px; margin:0}
 
+  /* ---------- HERO STEPS STRIP ---------- */
+  .hero-steps{background:#fff; border-bottom:1px solid var(--line); padding:34px 32px; position:relative; z-index:1}
+  .hero-steps-row{max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr)}
+  .hero-step{padding:0 28px}
+  .hero-step + .hero-step{border-left:1px solid var(--line)}
+  .hero-step-top{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+  .hero-step-num{font-size:13px; font-weight:800; color:var(--accent); letter-spacing:.02em}
+  .hero-step-arrow{width:24px; height:24px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:12.5px; flex:none}
+  .hero-step p{margin:0; font-size:14.5px; color:var(--ink); line-height:1.5; font-weight:600}
+  @media (max-width:900px){
+    .hero-steps-row{grid-template-columns:1fr 1fr; row-gap:26px}
+    .hero-step:nth-child(2n+1){border-left:none}
+  }
+  @media (max-width:560px){
+    .hero-steps{padding:28px 24px}
+    .hero-steps-row{grid-template-columns:1fr; row-gap:22px}
+    .hero-step{padding:0}
+    .hero-step + .hero-step{border-left:none; border-top:1px solid var(--line); padding-top:20px}
+  }
+
   /* ---------- SECURITY / TRUST ---------- */
   .security-band{background:var(--color-bg-marketing-band)}
   .security-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; max-width:1120px; margin:0 auto}
@@ -1001,6 +1021,28 @@
     </div>
   </section>
 
+  <!-- ============ HERO STEPS STRIP ============ -->
+  <section class="hero-steps">
+    <div class="hero-steps-row">
+      <div class="hero-step" data-reveal>
+        <div class="hero-step-top"><span class="hero-step-num">01</span><span class="hero-step-arrow">↗</span></div>
+        <p>Identifiez l'intérêt produit au moment du scan</p>
+      </div>
+      <div class="hero-step" data-reveal style="transition-delay:.08s">
+        <div class="hero-step-top"><span class="hero-step-num">02</span><span class="hero-step-arrow">↗</span></div>
+        <p>Transformez un visiteur anonyme en membre consentant</p>
+      </div>
+      <div class="hero-step" data-reveal style="transition-delay:.16s">
+        <div class="hero-step-top"><span class="hero-step-num">03</span><span class="hero-step-arrow">↗</span></div>
+        <p>Enrichissez automatiquement votre connaissance client</p>
+      </div>
+      <div class="hero-step" data-reveal style="transition-delay:.24s">
+        <div class="hero-step-top"><span class="hero-step-num">04</span><span class="hero-step-arrow">↗</span></div>
+        <p>Activez des campagnes ciblées à partir des comportements réels</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ HOW (3 steps) ============ -->
   <section class="feat spad" id="how" style="padding-top:52px; padding-bottom:40px">
     <div class="sec-title" data-reveal><div class="eyebrow">Le mécanisme</div><h2>Chaque scan devient une opportunité.</h2></div>
@@ -1135,7 +1177,7 @@
 
   <!-- ============ PRODUCT SHOWCASE (6 modules) ============ -->
   <section class="feat spad" id="product" style="padding-top:40px; padding-bottom:40px">
-    <div class="sec-title" data-reveal><div class="eyebrow">La plateforme</div><h2>Une seule plateforme.<br>Toute la relation avec vos consommateurs.</h2></div>
+    <div class="sec-title" data-reveal><div class="eyebrow">La plateforme</div><h2>Une seule plateforme.<br>Toute la relation avec vos consommateurs.</h2><p>Du produit à la campagne, chaque module enrichit le suivant. Votre équipe garde une vision d'ensemble.</p></div>
     <div class="product-showcase" data-reveal>
     <div class="feature-grid">
       <button type="button" class="feature-tile active" data-feature="contacts" onmouseenter="showFeatureTab('contacts')" onclick="showFeatureTab('contacts')">
