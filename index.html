@@ -373,7 +373,7 @@
     background:transparent; border-bottom:1px solid transparent; box-shadow:none; backdrop-filter:none;
     transition:height var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard), backdrop-filter var(--duration-base) var(--ease-standard)}
   .home-nav .sq-container{width:100%; max-width:var(--max-content); margin:0 auto; padding:0 var(--gutter-page); display:flex; align-items:center; gap:28px; min-width:0}
-  #product, #how, #story{scroll-margin-top:var(--header-height)}
+  #product, #how, #story, #security{scroll-margin-top:var(--header-height)}
   .home-nav.scrolled{height:var(--header-height-condensed); box-shadow:var(--shadow-md); background:rgba(255,255,255,.86); backdrop-filter:blur(14px) saturate(1.4); border-bottom-color:var(--color-border)}
   .home-nav:not(.scrolled) .sq-logo img{filter:brightness(0) invert(1)}
   .home-nav:not(.scrolled) .sq-nav-item>button{color:rgba(255,255,255,.82)}
@@ -390,7 +390,7 @@
 
   .sq-nav{display:flex; align-items:center; gap:2px; flex:1 1 auto; min-width:0; margin-left:12px}
   .sq-nav-item{position:relative}
-  .sq-nav-item>button{display:inline-flex; align-items:center; gap:5px; height:34px; padding:0 12px; border:0;
+  .sq-nav-item>button{display:inline-flex; align-items:center; gap:5px; height:34px; padding:0 10px; border:0;
     background:transparent; cursor:pointer; font:inherit; font-size:var(--font-size-body-sm); font-weight:var(--font-weight-medium);
     color:var(--color-text-secondary); border-radius:var(--radius-sm); white-space:nowrap;
     transition:color var(--duration-fast) var(--ease-standard)}
@@ -438,6 +438,16 @@
   .sec-title{text-align:center; max-width:680px; margin:0 auto 44px}
   .sec-title h2{font-size:36px; color:var(--ink); margin:10px 0 10px; letter-spacing:-.8px; line-height:1.15}
   .sec-title p{color:var(--muted); font-size:15.5px; margin:0}
+
+  /* ---------- SECURITY / TRUST ---------- */
+  .security-rgpd-link{display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:700; font-size:13.5px; text-decoration:none; cursor:pointer; background:none; border:0; font:inherit; padding:0}
+  .security-rgpd-link:hover{text-decoration:underline}
+  .security-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px; max-width:900px; margin:36px auto 0}
+  .security-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px; display:flex; flex-direction:column; gap:10px}
+  .security-ico{width:42px; height:42px; border-radius:12px; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center}
+  .security-card h3{margin:0; font-size:16px; color:var(--ink); letter-spacing:-.2px}
+  .security-card p{margin:0; font-size:13px; color:var(--muted); line-height:1.55}
+  @media (max-width:760px){ .security-grid{grid-template-columns:1fr} }
 
   /* ===== marketing-hero (hero-spec.md) ===== */
   .hero{position:relative; overflow:hidden; background:var(--color-bg-inverse); color:#fff}
@@ -882,9 +892,10 @@
         <span class="hn-demo">DÉMO · données fictives</span>
       </div>
       <nav class="sq-nav">
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('product')">Produit</button><span aria-hidden="true"></span></div>
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('how')">Comment ça marche</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('product')">Solution</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('how')">Le mécanisme</button><span aria-hidden="true"></span></div>
         <div class="sq-nav-item"><button type="button" onclick="scrollTo2('story')">Fonctionnalités</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('security')">Sécurité</button><span aria-hidden="true"></span></div>
       </nav>
       <a class="sq-login" onclick="enterApp()">Se connecter</a>
       <button class="sq-cta" onclick="enterApp()">Commencer gratuitement</button>
@@ -899,9 +910,10 @@
       <button class="sq-mm-close" onclick="toggleMobileMenu(false)" aria-label="Fermer le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     </div>
     <div class="sq-mm-body">
-      <button class="sq-mm-row" onclick="mobileNavGo('product')">Produit<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="sq-mm-row" onclick="mobileNavGo('how')">Comment ça marche<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('product')">Solution<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('how')">Le mécanisme<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
       <button class="sq-mm-row" onclick="mobileNavGo('story')">Fonctionnalités<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('security')">Sécurité<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
     <div class="sq-mm-foot">
       <button class="sq-mm-secondary" onclick="enterApp()">Se connecter</button>
@@ -916,7 +928,7 @@
       <div class="hero-copy">
         <div class="hero-eyebrow hero-in" style="animation-delay:.05s">CRM nouvelle génération pour la vente indirecte</div>
         <h1 class="hero-title hero-in" style="animation-delay:.15s">Vous vendez vos produits partout.<br>Enfin, sachez qui les achète.</h1>
-        <p class="hero-subtitle hero-in" style="animation-delay:.28s">SmartQonsumer vous permet de connaître vos consommateurs, d'échanger directement avec eux et de les fidéliser, même lorsque vous ne maîtrisez pas le point de vente.</p>
+        <p class="hero-subtitle hero-in" style="animation-delay:.28s">SmartQonsumer relie vos produits physiques à un parcours digital personnalisé, enrichit automatiquement votre CRM et active les bonnes audiences au bon moment.</p>
         <div class="hero-actions hero-in" style="animation-delay:.4s">
           <button class="btn-primary btn-lg" onclick="enterApp()">Commencer gratuitement</button>
           <button class="btn-secondary btn-lg" onclick="enterApp()">Demander une démo</button>
@@ -1281,6 +1293,38 @@
     <p data-reveal>Transformez vos produits vendus en nouveaux points de contact avec vos consommateurs.</p>
     <div class="hero-cta" data-reveal>
       <button class="btn cta big" onclick="enterApp()">Explorer SmartQonsumer</button>
+    </div>
+  </section>
+
+  <!-- ============ SECURITY / TRUST ============ -->
+  <section class="feat spad" id="security" style="padding-top:64px; padding-bottom:56px">
+    <div class="sec-title" data-reveal>
+      <div class="eyebrow">La confiance fait partie du parcours</div>
+      <h2>La relation client commence par le respect des données.</h2>
+      <p>Des espaces distincts, des accès définis et des consentements pris en compte. Une base pour organiser vos usages en responsabilité.</p>
+      <button type="button" class="security-rgpd-link" style="margin-top:16px" onclick="toast('Informations RGPD — démo statique')">Consulter les informations RGPD<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="security-grid">
+      <div class="security-card" data-reveal>
+        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>Un espace pour chaque entreprise</h3>
+        <p>Architecture multi-tenant, séparation des données et des accès, administration par rôles Super Admin et Tenant.</p>
+      </div>
+      <div class="security-card" data-reveal style="transition-delay:.06s">
+        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15.5" r="1.5"/></svg></div>
+        <h3>Des accès qui se maîtrisent</h3>
+        <p>Connexion MFA par code OTP, gestion des sessions et contrôle des utilisateurs autorisés.</p>
+      </div>
+      <div class="security-card" data-reveal style="transition-delay:.12s">
+        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+        <h3>Des connexions qui se suivent</h3>
+        <p>Alertes de connexion et journal des connexions pour accompagner le suivi des accès.</p>
+      </div>
+      <div class="security-card" data-reveal style="transition-delay:.18s">
+        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5 5 5.8v5.6c0 5 3 8.4 7 9.9 4-1.5 7-4.9 7-9.9V5.8L12 2.5Z"/><path d="M9 12.2l2 2 4-4.2"/></svg></div>
+        <h3>Des préférences qui comptent</h3>
+        <p>Consentements, gestion des cookies et parcours RGPD pour accompagner les usages autorisés des données.</p>
+      </div>
     </div>
   </section>
 
