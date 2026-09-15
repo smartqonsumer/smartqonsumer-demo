@@ -743,17 +743,17 @@
   #product .kpi .delta{font-size:10.5px; margin-top:3px}
 
   /* ---------- STORY ROWS ---------- */
-  .story-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; max-width:1120px; margin:0 auto}
+  .story-row{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:64px; align-items:center; max-width:1120px; margin:0 auto}
   .story-row + .story-row{margin-top:90px}
-  .story-text{order:1}
-  .story-visual{order:2; display:flex; justify-content:center}
+  .story-text{order:1; min-width:0}
+  .story-visual{order:2; display:flex; justify-content:center; min-width:0}
   .story-row.rev .story-text{order:2}
   .story-row.rev .story-visual{order:1}
   .story-ico{width:38px; height:38px; border-radius:11px; background:var(--amber-soft); color:var(--amber-d); display:grid; place-items:center; margin-bottom:14px}
   .story-eyebrow{font-size:11.5px; font-weight:800; letter-spacing:.6px; text-transform:uppercase; color:var(--amber-d); margin-bottom:10px}
   .story-text h3{font-size:28px; color:var(--ink); margin:0 0 14px; letter-spacing:-.6px; line-height:1.18}
   .story-text p{font-size:15px; color:var(--muted); line-height:1.65; margin:0}
-  @media (max-width:900px){ .story-row, .story-row.rev{grid-template-columns:1fr; gap:32px} .story-row .story-text, .story-row.rev .story-text{order:1} .story-row .story-visual, .story-row.rev .story-visual{order:2} .story-row + .story-row{margin-top:56px} }
+  @media (max-width:900px){ .story-row, .story-row.rev{grid-template-columns:minmax(0,1fr); gap:32px} .story-row .story-text, .story-row.rev .story-text{order:1} .story-row .story-visual, .story-row.rev .story-visual{order:2} .story-row + .story-row{margin-top:56px} }
 
   .signal-chain{display:flex; flex-direction:column; gap:0; background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px 24px; box-shadow:var(--shadow); width:100%; max-width:400px}
   .signal-chain .t{position:relative; padding:0 0 20px 22px; border-left:2px solid var(--lav2)}
@@ -782,6 +782,7 @@
   .campaign-card{width:100%; max-width:440px; background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); overflow:hidden}
   .campaign-meta{display:flex; gap:6px; padding:16px 18px; border-bottom:1px solid var(--line); flex-wrap:nowrap}
   .campaign-meta span{background:var(--lav); border-radius:999px; padding:5px 10px; font-size:10.5px; font-weight:700; color:var(--ink); white-space:nowrap}
+  @media (max-width:480px){ .campaign-meta{flex-wrap:wrap} }
   .campaign-body{padding:18px}
   .campaign-channel{display:flex; align-items:center; gap:6px; font-size:10.5px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:var(--amber-d); margin:0 0 8px}
   .campaign-body .subj{font-size:14px; font-weight:700; color:var(--ink); margin:0 0 8px}
@@ -789,6 +790,14 @@
   .campaign-results{display:flex; gap:22px; padding:14px 18px; background:var(--lav3)}
   .campaign-results b{display:block; font-size:18px; color:var(--ink)}
   .campaign-results span{font-size:11px; color:var(--muted); font-weight:600}
+  .reactivate-stack{display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; min-width:0}
+  .reactivate-auto-card{width:100%; max-width:440px; background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:16px 18px}
+  .reactivate-auto-head{display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; color:var(--ink)}
+  .reactivate-auto-head svg{color:var(--accent); flex:none}
+  .reactivate-auto-head .tag{margin-left:auto}
+  .reactivate-auto-flow{display:flex; align-items:center; gap:8px; margin-top:12px; font-size:12px; color:var(--ink); flex-wrap:wrap}
+  .reactivate-auto-flow svg{color:var(--muted); flex:none}
+  .reactivate-auto-sub{margin-top:8px; font-size:11.5px; color:var(--muted)}
 
   /* ---------- FAQ ---------- */
   .faq-item{background:#fff; border:1px solid var(--line); border-radius:var(--r); padding:18px 20px; box-shadow:var(--shadow)}
@@ -1258,18 +1267,25 @@
         <div class="story-ico reveal-sm" data-reveal><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
         <div class="story-eyebrow reveal-sm" data-reveal style="transition-delay:.08s">Réactiver</div>
         <h3 class="reveal-sm" data-reveal style="transition-delay:.16s">Transformez vos données en conversations.</h3>
-        <p class="reveal-sm" data-reveal style="transition-delay:.24s">Ciblez un segment précis et envoyez une campagne en quelques clics, avec un suivi immédiat des résultats.</p>
+        <p class="reveal-sm" data-reveal style="transition-delay:.24s">Ciblez un segment précis et envoyez une campagne en quelques clics, ou laissez un scénario automatisé relancer, féliciter et réengager vos consommateurs au bon moment — sans intervention manuelle.</p>
       </div>
       <div class="story-visual" data-reveal style="transition-delay:.3s">
-        <div class="campaign-card">
-          <div class="campaign-meta"><span>Segment : Premium engagés</span><span>Canal : Email</span><span>Audience : 92</span></div>
-          <div class="campaign-body">
-            <div class="campaign-channel"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Campagne email</div>
-            <div class="subj">Une nouvelle collection arrive vendredi.</div>
-            <p style="margin:0;font-size:12.5px;color:var(--muted)">Soyez parmi les premiers à la découvrir en avant-première.</p>
-            <span class="cta2">Découvrir la prévente</span>
+        <div class="reactivate-stack">
+          <div class="campaign-card">
+            <div class="campaign-meta"><span>Segment : Premium engagés</span><span>Canal : Email</span><span>Audience : 92</span></div>
+            <div class="campaign-body">
+              <div class="campaign-channel"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Campagne email</div>
+              <div class="subj">Une nouvelle collection arrive vendredi.</div>
+              <p style="margin:0;font-size:12.5px;color:var(--muted)">Soyez parmi les premiers à la découvrir en avant-première.</p>
+              <span class="cta2">Découvrir la prévente</span>
+            </div>
+            <div class="campaign-results"><div><b>48 %</b><span>ouverture</span></div><div><b>31</b><span>conversions</span></div></div>
           </div>
-          <div class="campaign-results"><div><b>48 %</b><span>ouverture</span></div><div><b>31</b><span>conversions</span></div></div>
+          <div class="reactivate-auto-card">
+            <div class="reactivate-auto-head"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>Scénario automatisé<span class="tag green">● Actif</span></div>
+            <div class="reactivate-auto-flow"><span>Anniversaire du contact</span><svg width="22" height="12" viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg><b>Joyeux anniversaire 🎉</b></div>
+            <div class="reactivate-auto-sub">Se déclenche automatiquement, sans intervention manuelle</div>
+          </div>
         </div>
       </div>
     </div>
