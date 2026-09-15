@@ -556,6 +556,53 @@
     .club-promo-caption{text-align:left}
   }
 
+  /* ---------- E-MAILING & MARKETING AUTOMATION ---------- */
+  .ea-wizard{max-width:1180px; margin:0 auto; background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); overflow:hidden}
+  .ea-wizard-head{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 26px; border-bottom:1px solid var(--line); background:var(--lav3); flex-wrap:wrap}
+  .ea-wizard-head-left{display:flex; align-items:center; gap:10px; font-size:14.5px; color:var(--ink)}
+  .ea-wizard-head-left svg{color:var(--accent); flex:none}
+  .ea-wizard-head-left b{font-weight:800}
+  .ea-wizard-badge{font-size:11px; color:var(--muted); background:#fff; border:1px solid var(--line); border-radius:999px; padding:5px 12px; white-space:nowrap}
+  .ea-steps{display:flex; align-items:center; padding:16px 26px; border-bottom:1px solid var(--line); overflow-x:auto}
+  .ea-step{display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600; color:var(--muted); padding:7px 14px; border-radius:999px; flex:none; white-space:nowrap}
+  .ea-step .dot{width:20px; height:20px; border-radius:50%; background:var(--lav2); color:var(--muted); display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; flex:none}
+  .ea-step.done .dot{background:var(--ok); color:#fff}
+  .ea-step.current{background:#fff; color:var(--ink)}
+  .ea-step.current .dot{background:var(--ink); color:#fff}
+  .ea-step-sep{flex:1; height:1px; background:var(--line); min-width:16px; margin:0 2px}
+  .ea-wizard-body{display:grid; grid-template-columns:1.1fr .9fr}
+  .ea-wizard-form{padding:28px 32px; border-right:1px solid var(--line); min-width:0}
+  .ea-wizard-eyebrow{font-size:10.5px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:10px}
+  .ea-wizard-form h3{margin:0 0 8px; font-size:22px; color:var(--ink); letter-spacing:-.4px}
+  .ea-wizard-form > p{margin:0 0 14px; font-size:13.5px; color:var(--muted)}
+  .ea-check{display:flex; align-items:center; gap:10px; padding:9px 0; font-size:14px; color:var(--ink)}
+  .ea-check .box{width:19px; height:19px; border-radius:5px; border:1.5px solid var(--line); flex:none; display:flex; align-items:center; justify-content:center; color:#fff}
+  .ea-check.checked .box{background:var(--ok); border-color:var(--ok)}
+  .ea-check.highlight{outline:2px solid var(--accent); outline-offset:5px; border-radius:8px}
+  .ea-wizard-note{margin-top:14px; padding:12px 14px; border-radius:10px; background:var(--lav3); font-size:12px; color:var(--muted)}
+  .ea-wizard-preview{padding:28px 32px; background:var(--lav); min-width:0}
+  .ea-preview-label{font-size:10.5px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:14px}
+  .ea-preview-banner{border-radius:14px; background:var(--lav3); padding:20px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:12px}
+  .ea-preview-banner b{font-size:22px; font-weight:800; color:var(--ink); letter-spacing:-.4px}
+  .ea-preview-banner span{font-size:10.5px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; color:var(--ink); text-align:right; line-height:1.4}
+  .ea-wizard-preview h4{margin:0 0 6px; font-size:17px; color:var(--ink)}
+  .ea-wizard-preview > p{margin:0 0 14px; font-size:13px; color:var(--muted); line-height:1.55}
+  .ea-wizard-preview .cta2{display:inline-flex; align-items:center; gap:6px; background:var(--amber); color:#fff; font-weight:800; font-size:12.5px; padding:9px 16px; border-radius:9px}
+  .ea-preview-fine{margin-top:16px; font-size:10.5px; color:var(--muted); line-height:1.6}
+  .ea-auto-list{display:flex; flex-direction:column; gap:10px; width:100%}
+  .ea-auto-rule{display:flex; align-items:center; gap:10px; padding:14px 18px; border-radius:12px; background:var(--lav3); font-size:14px; font-weight:600; color:var(--ink)}
+  .ea-auto-rule .dot{width:6px; height:6px; border-radius:2px; background:var(--accent); flex:none}
+  .ea-auto-rule svg{margin-left:auto; color:var(--accent); flex:none}
+  @media (max-width:900px){
+    .ea-wizard-body{grid-template-columns:1fr}
+    .ea-wizard-form{border-right:0; border-bottom:1px solid var(--line)}
+  }
+  @media (max-width:640px){
+    .ea-wizard-head{padding:16px 18px}
+    .ea-steps{padding:14px 18px}
+    .ea-wizard-form, .ea-wizard-preview{padding:22px 20px}
+  }
+
   /* ---------- SECURITY / TRUST ---------- */
   .security-band{background:var(--color-bg-marketing-band)}
   .security-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; max-width:1120px; margin:0 auto}
@@ -1410,6 +1457,67 @@
           </div>
         </div>
         <div class="club-promo-caption">Données fictives · illustration du parcours</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ E-MAILING & MARKETING AUTOMATION ============ -->
+  <section class="feat spad email-automation" id="email-automation">
+    <div class="sec-title" data-reveal><div class="eyebrow">E-mailing & Marketing Automation</div><h2>La bonne audience. Le bon message. Le bon moment.</h2><p>Passez de la connaissance client à une campagne concrète. Combinez les audiences, préparez le contenu et choisissez le moment de l'envoi.</p></div>
+
+    <div class="ea-wizard" data-reveal>
+      <div class="ea-wizard-head">
+        <div class="ea-wizard-head-left"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><b>Nouvelle campagne</b> · Nouvelle collection</div>
+        <span class="ea-wizard-badge">Données fictives · illustration du parcours</span>
+      </div>
+      <div class="ea-steps">
+        <div class="ea-step done"><span class="dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Informations</div>
+        <div class="ea-step-sep"></div>
+        <div class="ea-step current"><span class="dot">2</span>Audience</div>
+        <div class="ea-step-sep"></div>
+        <div class="ea-step"><span class="dot">3</span>Contenu</div>
+        <div class="ea-step-sep"></div>
+        <div class="ea-step"><span class="dot">4</span>Planification</div>
+        <div class="ea-step-sep"></div>
+        <div class="ea-step"><span class="dot">5</span>Validation</div>
+      </div>
+      <div class="ea-wizard-body">
+        <div class="ea-wizard-form">
+          <div class="ea-wizard-eyebrow">Étape 2 / 5</div>
+          <h3>À qui souhaitez-vous vous adresser ?</h3>
+          <p>Les audiences sont cumulables. Essayez la sélection :</p>
+          <div class="ea-check"><span class="box"></span>Toute la base de contacts</div>
+          <div class="ea-check checked"><span class="box"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Membres du Club</div>
+          <div class="ea-check checked highlight"><span class="box"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Segment Adeptes des bons plans</div>
+          <div class="ea-check"><span class="box"></span>Segment Premium engagés</div>
+          <div class="ea-check"><span class="box"></span>Contacts sélectionnés individuellement</div>
+          <div class="ea-wizard-note">2 sources sélectionnées · Déduplication et préférences d'envoi prises en compte</div>
+        </div>
+        <div class="ea-wizard-preview">
+          <div class="ea-preview-label">Aperçu du message · exemple</div>
+          <div class="ea-preview-banner"><b>Édition Limitée n°4</b><span>Une nouvelle<br>découverte</span></div>
+          <h4>Retrouvez ce qui vous a plu.</h4>
+          <p>Une nouvelle occasion de découvrir la gamme et de retrouver votre Club.</p>
+          <span class="cta2">Découvrir le produit<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          <div class="ea-preview-fine">Préférences de communication · Désinscription<br>Mentions représentées dans cet exemple</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-row" data-reveal style="margin-top:64px; transition-delay:.1s">
+      <div class="story-text">
+        <div class="story-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/><path d="M7.5 11v2a3 3 0 0 0 3 3h2"/></svg></div>
+        <h3>Vos règles prennent le relais.</h3>
+        <p>Des scénarios déclenchés par les comportements clients, selon vos règles métier et les autorisations de chaque contact.</p>
+      </div>
+      <div class="story-visual">
+        <div class="ea-auto-list">
+          <div class="ea-auto-rule"><span class="dot"></span>Anniversaire du contact<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="ea-auto-rule"><span class="dot"></span>Proche d'une récompense<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="ea-auto-rule"><span class="dot"></span>Entrée en sommeil<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="ea-auto-rule"><span class="dot"></span>X jours après l'inscription<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="ea-auto-rule"><span class="dot"></span>Nombre de points atteint<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        </div>
       </div>
     </div>
   </section>
