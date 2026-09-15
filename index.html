@@ -578,7 +578,6 @@
   .ea-check{display:flex; align-items:center; gap:10px; padding:9px 0; font-size:14px; color:var(--ink)}
   .ea-check .box{width:19px; height:19px; border-radius:5px; border:1.5px solid var(--line); flex:none; display:flex; align-items:center; justify-content:center; color:#fff}
   .ea-check.checked .box{background:var(--ok); border-color:var(--ok)}
-  .ea-check.highlight{outline:2px solid var(--accent); outline-offset:5px; border-radius:8px}
   .ea-wizard-note{margin-top:14px; padding:12px 14px; border-radius:10px; background:var(--lav3); font-size:12px; color:var(--muted)}
   .ea-wizard-preview{padding:28px 32px; background:var(--lav); min-width:0}
   .ea-preview-label{font-size:10.5px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:14px}
@@ -634,8 +633,6 @@
   .pilot-strip > div{display:flex; flex-direction:column; gap:4px}
   .pilot-strip span{font-size:12px; color:var(--muted)}
   .pilot-strip b{font-size:15px; color:var(--ink); font-weight:700}
-  .pilot-cta{margin-left:auto; display:inline-flex; align-items:center; gap:6px; background:none; border:0; font:inherit; color:var(--accent); font-weight:700; font-size:13.5px; cursor:pointer; padding:0}
-  .pilot-cta:hover{text-decoration:underline}
   .pilot-fine{margin-top:2px; padding-top:16px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted)}
   @media (max-width:900px){
     .pilot-kpis{grid-template-columns:1fr}
@@ -643,7 +640,6 @@
   }
   @media (max-width:560px){
     .pilot-strip{gap:18px}
-    .pilot-cta{margin-left:0}
   }
 
   /* ---------- SECURITY / TRUST ---------- */
@@ -1503,7 +1499,7 @@
   </section>
 
   <!-- ============ E-MAILING & MARKETING AUTOMATION ============ -->
-  <section class="feat spad email-automation" id="email-automation">
+  <section class="feat spad email-automation" id="email-automation" style="padding-top:40px; padding-bottom:40px; background:var(--color-bg-marketing-band)">
     <div class="sec-title" data-reveal><div class="eyebrow">E-mailing & Marketing Automation</div><h2>La bonne audience. Le bon message. Le bon moment.</h2><p>Passez de la connaissance client à une campagne concrète. Combinez les audiences, préparez le contenu et choisissez le moment de l'envoi.</p></div>
 
     <div class="ea-wizard" data-reveal>
@@ -1529,7 +1525,7 @@
           <p>Les audiences sont cumulables. Essayez la sélection :</p>
           <div class="ea-check"><span class="box"></span>Toute la base de contacts</div>
           <div class="ea-check checked"><span class="box"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Membres du Club</div>
-          <div class="ea-check checked highlight"><span class="box"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Segment Adeptes des bons plans</div>
+          <div class="ea-check checked"><span class="box"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Segment Adeptes des bons plans</div>
           <div class="ea-check"><span class="box"></span>Segment Premium engagés</div>
           <div class="ea-check"><span class="box"></span>Contacts sélectionnés individuellement</div>
           <div class="ea-wizard-note">2 sources sélectionnées · Déduplication et préférences d'envoi prises en compte</div>
@@ -1630,7 +1626,6 @@
         <div><span>Ouverture des campagnes</span><b>32 %</b></div>
         <div><span>Total de points attribués</span><b>6 400 points</b></div>
         <div><span>Proches d'une récompense</span><b>18 membres</b></div>
-        <button type="button" class="pilot-cta" onclick="toast('Créer une campagne - demo statique')">Créer une campagne<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
       </div>
       <div class="pilot-fine">Toutes les valeurs de ce tableau sont fictives. Elles illustrent les indicateurs du produit, pas des résultats clients.</div>
     </div>
