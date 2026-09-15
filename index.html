@@ -716,15 +716,22 @@
   .reward-chip b{display:block; font-size:12px; color:var(--ink)}
   .reward-chip span{font-size:11px; color:var(--muted)}
   .device-list{border-right:1px solid var(--line); padding:14px}
+  .device-list-head{display:flex; justify-content:space-between; padding:0 12px 8px; font-size:9px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:var(--muted)}
   .device-row{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; transition:background .3s ease}
   .device-row.active{background:var(--lav)}
   .device-row .nm{font-size:12.5px; font-weight:700; color:var(--ink); display:block}
   .device-row .sg{font-size:11px; color:var(--muted)}
   .device-detail{padding:26px 28px}
+  .device-detail-title{font-size:10px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
   .device-detail .dh{display:flex; align-items:center; gap:12px; margin-bottom:6px}
   .device-detail .dh b{font-size:16px; color:var(--ink)}
   .device-detail .kv{font-size:13px}
   .device-detail .kv b, .device-detail .dh b, #devTag{transition:opacity .25s ease}
+  .dev-scan-history{margin-top:6px; padding-top:6px; border-top:1px solid var(--line)}
+  .dev-scan-history-title{font-size:10px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+  .dev-scan-row{display:flex; justify-content:space-between; gap:10px; font-size:11.5px; padding:1px 0}
+  .dev-scan-row span:first-child{color:var(--muted); flex:none}
+  .dev-scan-row span:last-child{color:var(--ink); font-weight:600; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
   @media (max-width:760px){ .device-body{grid-template-columns:1fr} .device-list{display:none} }
 
   .mini-chip-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; max-width:900px; margin:28px auto 0}
@@ -1320,20 +1327,27 @@
       </div>
       <div class="device-body" id="deviceViewClients">
         <div class="device-list" id="deviceList">
+          <div class="device-list-head"><span>Contact</span><span>Segment</span></div>
           <div class="device-row active"><div class="avatar" style="width:30px;height:30px;font-size:11px">CR</div><div><span class="nm">Camille Rousseau</span><span class="sg">Adeptes des bons plans</span></div></div>
           <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">TM</div><div><span class="nm">Thomas Morel</span><span class="sg">Ambassadeurs de la marque</span></div></div>
           <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">LP</div><div><span class="nm">Léa Petit</span><span class="sg">Premium engagés</span></div></div>
           <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">SB</div><div><span class="nm">Sami Ben</span><span class="sg">Adeptes des bons plans</span></div></div>
         </div>
         <div class="device-detail">
+          <div class="device-detail-title">Fiche contact 360°</div>
           <div class="dh"><div class="avatar" style="width:40px;height:40px" id="devAvatar">CR</div><div><b id="devName">Camille Rousseau</b><br><span class="tag green" id="devTag">Membre fidèle</span></div></div>
           <div class="kv"><span>Produit préféré</span><b id="devFav">Édition Limitée n°4</b></div>
-          <div class="kv"><span>Fréquence</span><b id="devFreq">1 achat / 3 semaines</b></div>
-          <div class="kv"><span>Origine</span><b id="devOrigin">Scan chez un revendeur</b></div>
+          <div class="kv"><span>Provenance</span><b id="devOrigin">Scan chez un revendeur</b></div>
+          <div class="kv"><span>Statut fidélité</span><b id="devFreq">320 points</b></div>
           <div class="kv" style="border-bottom:0"><span>Campagnes reçues</span><b id="devCamp">3</b></div>
-          <div style="margin-top:14px">
+          <div style="margin-top:8px">
             <div class="row" style="justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:4px"><span>Score d'engagement</span><span id="devEngagementVal">82 %</span></div>
             <div class="hbar-track"><span class="hbar-fill" id="devEngagementBar" style="width:82%"></span></div>
+          </div>
+          <div class="dev-scan-history">
+            <div class="dev-scan-history-title">Historique des scans</div>
+            <div class="dev-scan-row" id="devScan1"><span id="devScan1Date">12 mars</span><span id="devScan1Ctx">Édition Limitée n°4</span></div>
+            <div class="dev-scan-row" id="devScan2"><span id="devScan2Date">28 févr.</span><span id="devScan2Ctx">Produit exemple</span></div>
           </div>
         </div>
       </div>
@@ -5720,10 +5734,10 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     const deviceRows = document.querySelectorAll('#deviceList .device-row');
     if(deviceRows.length && !reduceMotion){
       const deviceData = [
-        {initials:'CR', name:'Camille Rousseau', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 3 semaines', origin:'Scan chez un revendeur', camp:'3', engagement:82},
-        {initials:'TM', name:'Thomas Morel', tag:'Nouveau contact', tagClass:'grey', fav:'Coffret Découverte', freq:'1er achat', origin:'Scan en magasin', camp:'0', engagement:35},
-        {initials:'LP', name:'Léa Petit', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', freq:'1 achat / 2 semaines', origin:'Scan à un événement', camp:'5', engagement:94},
-        {initials:'SB', name:'Sami Ben', tag:'À réactiver', tagClass:'teal', fav:'Coffret Découverte', freq:'Dernier achat il y a 2 mois', origin:'Scan en magasin', camp:'1', engagement:58},
+        {initials:'CR', name:'Camille Rousseau', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', points:'320 points', origin:'Scan chez un revendeur', camp:'3', engagement:82, scans:[['12 mars','Édition Limitée n°4'],['28 févr.','Produit exemple']]},
+        {initials:'TM', name:'Thomas Morel', tag:'Nouveau contact', tagClass:'grey', fav:'Coffret Découverte', points:'15 points', origin:'Scan en magasin', camp:'0', engagement:35, scans:[['9 mars','Coffret Découverte']]},
+        {initials:'LP', name:'Léa Petit', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', points:'540 points', origin:'Scan à un événement', camp:'5', engagement:94, scans:[['14 mars','Édition Limitée n°4'],['2 mars','Édition Limitée n°4']]},
+        {initials:'SB', name:'Sami Ben', tag:'À réactiver', tagClass:'teal', fav:'Coffret Découverte', points:'95 points', origin:'Scan en magasin', camp:'1', engagement:58, scans:[['30 janv.','Coffret Découverte']]},
       ];
       let devIdx = 0;
       setInterval(()=>{
@@ -5736,11 +5750,22 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
         const tagEl = document.getElementById('devTag');
         tagEl.textContent = d.tag; tagEl.className = 'tag ' + d.tagClass;
         document.getElementById('devFav').textContent = d.fav;
-        document.getElementById('devFreq').textContent = d.freq;
+        document.getElementById('devFreq').textContent = d.points;
         document.getElementById('devOrigin').textContent = d.origin;
         document.getElementById('devCamp').textContent = d.camp;
         document.getElementById('devEngagementVal').textContent = d.engagement + ' %';
         document.getElementById('devEngagementBar').style.width = d.engagement + '%';
+        const scan1 = document.getElementById('devScan1'), scan2 = document.getElementById('devScan2');
+        document.getElementById('devScan1Date').textContent = d.scans[0][0];
+        document.getElementById('devScan1Ctx').textContent = d.scans[0][1];
+        scan1.style.display = '';
+        if(d.scans[1]){
+          document.getElementById('devScan2Date').textContent = d.scans[1][0];
+          document.getElementById('devScan2Ctx').textContent = d.scans[1][1];
+          scan2.style.display = '';
+        } else {
+          scan2.style.display = 'none';
+        }
       }, 2800);
     }
     initProductShowcase();
