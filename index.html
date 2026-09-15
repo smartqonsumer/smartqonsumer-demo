@@ -459,6 +459,50 @@
     .hero-step + .hero-step{border-left:none; border-top:1px solid var(--line); padding-top:20px}
   }
 
+  /* ---------- QR CODE AUGMENTÉ ---------- */
+  .qr-aug{position:relative; overflow:hidden; background:var(--lav3)}
+  .qr-aug:before{content:''; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image:radial-gradient(var(--color-brand-500) 1px, transparent 1.5px); background-size:15px 15px;
+    -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%, transparent 45%, #000 100%);
+    mask-image:radial-gradient(ellipse 70% 60% at 50% 40%, transparent 45%, #000 100%)}
+  .qr-aug-top{position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; max-width:1180px; margin:0 auto}
+  .qr-aug-eyebrow{display:flex; align-items:center; gap:8px; margin-bottom:14px}
+  .qr-aug-eyebrow:before{content:''; width:7px; height:7px; border-radius:2px; background:var(--accent); flex:none}
+  .qr-aug-text h2{font-size:38px; color:var(--ink); margin:0 0 16px; letter-spacing:-.8px; line-height:1.15}
+  .qr-aug-text p{font-size:15.5px; color:var(--muted); line-height:1.65; margin:0 0 28px; max-width:440px}
+  .qr-aug-cta{border:1px solid var(--line); border-radius:10px; padding:13px 20px; font-weight:700; font-size:14px; font-family:inherit; cursor:pointer; background:#fff; color:var(--ink); display:inline-flex; align-items:center; gap:10px; box-shadow:var(--shadow-sm)}
+  .qr-aug-cta:hover{border-color:var(--color-border-strong)}
+  .qr-aug-flow{position:relative; z-index:1; display:flex; flex-direction:column; align-items:stretch}
+  .qr-aug-node{background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px 20px; display:flex; align-items:center; gap:16px; box-shadow:var(--shadow-sm)}
+  .qr-aug-node-ico{width:48px; height:48px; border-radius:12px; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center; flex:none; color:var(--ink)}
+  .qr-aug-node-ico.dark{background:var(--ink); border-color:var(--ink); color:#fff; font-size:20px; font-weight:800}
+  .qr-aug-node-label{font-size:10.5px; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:2px}
+  .qr-aug-node-title{font-size:16px; color:var(--ink); font-weight:700; letter-spacing:-.1px}
+  .qr-aug-node-sub{font-size:12.5px; color:var(--muted); margin-top:2px}
+  .qr-aug-node-trail{margin-left:auto; color:var(--muted); flex:none}
+  .qr-aug-arrow{text-align:center; color:var(--accent); opacity:.55; font-size:16px; line-height:1; padding:6px 0}
+  .qr-aug-link{background:var(--lav2); border-radius:12px; padding:14px 20px; display:flex; align-items:center; gap:10px; color:var(--ink); font-family:var(--font-mono,monospace); font-size:13.5px}
+  .qr-aug-link svg{color:var(--accent); flex:none}
+  .qr-aug-cards{position:relative; z-index:1; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1180px; margin:56px auto 0}
+  .qr-aug-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px; display:flex; flex-direction:column; gap:12px}
+  .qr-aug-card.active{background:var(--okbg); border-color:transparent}
+  .qr-aug-card-head{display:flex; align-items:center; gap:10px}
+  .qr-aug-card-ico{color:var(--ink); display:flex}
+  .qr-aug-card-tag{font-size:11px; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); font-weight:700}
+  .qr-aug-card h3{margin:0; font-size:19px; color:var(--ink); letter-spacing:-.2px}
+  .qr-aug-card p{margin:0; font-size:13.5px; color:var(--muted); line-height:1.6; flex:1}
+  .qr-aug-card-foot{display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--ink)}
+  .qr-aug-footnote{position:relative; z-index:1; display:flex; justify-content:space-between; gap:24px; max-width:1180px; margin:28px auto 0}
+  .qr-aug-footnote p{margin:0; font-size:12px; color:var(--muted); line-height:1.5}
+  .qr-aug-footnote p:first-child b{color:var(--ink)}
+  .qr-aug-footnote p:last-child{text-align:right}
+  @media (max-width:900px){
+    .qr-aug-top{grid-template-columns:1fr; gap:36px}
+    .qr-aug-cards{grid-template-columns:1fr}
+    .qr-aug-footnote{flex-direction:column; gap:10px}
+    .qr-aug-footnote p:last-child{text-align:left}
+  }
+
   /* ---------- SECURITY / TRUST ---------- */
   .security-band{background:var(--color-bg-marketing-band)}
   .security-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; max-width:1120px; margin:0 auto}
@@ -1097,6 +1141,58 @@
           <div class="kv" style="border-bottom:0"><span>Statut</span><b>Fidèle</b></div>
         </div></div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ QR CODE AUGMENTÉ ============ -->
+  <section class="feat spad qr-aug" id="qr-augmente">
+    <div class="qr-aug-top">
+      <div class="qr-aug-text" data-reveal>
+        <div class="eyebrow qr-aug-eyebrow">Le QR code augmenté</div>
+        <h2>Une étiquette imprimée. Des expériences qui évoluent.</h2>
+        <p>Le lien reste sur le produit. Vous pilotez ce qui se passe après le scan, selon votre programme et vos temps forts.</p>
+        <button type="button" class="qr-aug-cta" onclick="toast('Demande de démo - demo statique')">Demander une démo<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
+      </div>
+      <div class="qr-aug-flow" data-reveal style="transition-delay:.1s">
+        <div class="qr-aug-node">
+          <div class="qr-aug-node-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
+          <div><div class="qr-aug-node-label">Sur votre produit</div><div class="qr-aug-node-title">Scan du QR Code</div></div>
+          <div class="qr-aug-node-trail"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 1-1 1h-3"/></svg></div>
+        </div>
+        <div class="qr-aug-arrow">↓</div>
+        <div class="qr-aug-link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.46"/><path d="M14 11a5 5 0 0 0-7.07 0L4.93 12.93a5 5 0 0 0 7.07 7.07L13.46 18.5"/></svg><span>qr.{domaine}/01/{GTIN}</span></div>
+        <div class="qr-aug-arrow">↓</div>
+        <div class="qr-aug-node">
+          <div class="qr-aug-node-ico dark">Q</div>
+          <div><div class="qr-aug-node-title">Résolution SaaS</div><div class="qr-aug-node-sub">Les règles de votre marque décident.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qr-aug-cards">
+      <div class="qr-aug-card active" data-reveal>
+        <div class="qr-aug-card-head"><span class="qr-aug-card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="4" rx="1"/><rect x="5" y="12" width="14" height="8" rx="1"/><path d="M12 8v12M12 8c-1.6-3.2-5.2-3-5.2-1s2 1 5.2 1M12 8c1.6-3.2 5.2-3 5.2-1s-2 1-5.2 1"/></svg></span><span class="qr-aug-card-tag">01 · Prioritaire</span></div>
+        <h3>Club Fidélité</h3>
+        <p>Lorsqu'il est actif, le Club accueille le consommateur et lui propose son parcours membre.</p>
+        <span class="qr-aug-card-foot">La relation commence ici<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="qr-aug-card" data-reveal style="transition-delay:.08s">
+        <div class="qr-aug-card-head"><span class="qr-aug-card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span><span class="qr-aug-card-tag">02 · Sinon</span></div>
+        <h3>Landing page du SaaS</h3>
+        <p>Une page produit ou promotionnelle configurée, publiée et suivie dans SmartQonsumer.</p>
+        <span class="qr-aug-card-foot">La bonne information produit</span>
+      </div>
+      <div class="qr-aug-card" data-reveal style="transition-delay:.16s">
+        <div class="qr-aug-card-head"><span class="qr-aug-card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></span><span class="qr-aug-card-tag">03 · Sinon</span></div>
+        <h3>URL produit externe</h3>
+        <p>Une redirection vers l'adresse produit configurée sur le site de votre entreprise.</p>
+        <span class="qr-aug-card-foot">Votre écosystème reste connecté</span>
+      </div>
+    </div>
+
+    <div class="qr-aug-footnote">
+      <p><b>Sans destination active&nbsp;?</b> Un état inactif explicite prend le relais, sans page cassée.</p>
+      <p>GS1 Digital Link est le standard utilisé pour le lien produit. Aucune certification GS1 n'est revendiquée.</p>
     </div>
   </section>
 
