@@ -506,6 +506,7 @@
   /* ---------- SECURITY / TRUST ---------- */
   .security-band{background:var(--color-bg-marketing-band)}
   .security-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; max-width:1120px; margin:0 auto}
+  .security-badge-big{width:64px; height:64px; border-radius:18px; background:var(--ink); color:var(--color-brand-400); display:flex; align-items:center; justify-content:center; margin-bottom:22px; box-shadow:var(--shadow)}
   .security-intro .eyebrow{display:block; margin-bottom:10px}
   .security-intro h2{font-size:30px; color:var(--ink); margin:0 0 14px; letter-spacing:-.6px; line-height:1.22}
   .security-intro p{font-size:15px; color:var(--muted); line-height:1.65; margin:0 0 18px}
@@ -1176,7 +1177,7 @@
         <div class="qr-aug-link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.46"/><path d="M14 11a5 5 0 0 0-7.07 0L4.93 12.93a5 5 0 0 0 7.07 7.07L13.46 18.5"/></svg><span>qr.{domaine}/01/{GTIN}</span></div>
         <div class="qr-aug-arrow">↓</div>
         <div class="qr-aug-node">
-          <div class="qr-aug-node-ico dark">Q</div>
+          <div class="qr-aug-node-ico dark"><img src="assets/q-mark.png" alt="Q" width="24" height="24" style="object-fit:contain"></div>
           <div><div class="qr-aug-node-title">Résolution SaaS</div><div class="qr-aug-node-sub">Les règles de votre marque décident.</div></div>
         </div>
       </div>
@@ -1186,19 +1187,19 @@
       <div class="qr-aug-card active" data-reveal>
         <div class="qr-aug-card-head"><span class="qr-aug-card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="4" rx="1"/><rect x="5" y="12" width="14" height="8" rx="1"/><path d="M12 8v12M12 8c-1.6-3.2-5.2-3-5.2-1s2 1 5.2 1M12 8c1.6-3.2 5.2-3 5.2-1s-2 1-5.2 1"/></svg></span><span class="qr-aug-card-tag">01 · Prioritaire</span></div>
         <h3>Club Fidélité</h3>
-        <p>Lorsqu'il est actif, le Club accueille le consommateur et lui propose son parcours membre.</p>
+        <p>Un club de fidélité à votre image : dès qu'il est actif, il accueille le consommateur et lui propose son parcours membre.</p>
         <span class="qr-aug-card-foot">La relation commence ici<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
       <div class="qr-aug-card" data-reveal style="transition-delay:.08s">
         <div class="qr-aug-card-head"><span class="qr-aug-card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span><span class="qr-aug-card-tag">02 · Sinon</span></div>
         <h3>Landing page du SaaS</h3>
-        <p>Une page produit ou promotionnelle configurée, publiée et suivie dans SmartQonsumer.</p>
+        <p>Une landing page de votre produit, configurée, publiée et suivie directement dans SmartQonsumer.</p>
         <span class="qr-aug-card-foot">La bonne information produit</span>
       </div>
       <div class="qr-aug-card" data-reveal style="transition-delay:.16s">
         <div class="qr-aug-card-head"><span class="qr-aug-card-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></span><span class="qr-aug-card-tag">03 · Sinon</span></div>
         <h3>URL produit externe</h3>
-        <p>Une redirection vers l'adresse produit configurée sur le site de votre entreprise.</p>
+        <p>Une URL produit de votre écosystème : une redirection vers l'adresse configurée sur le site de votre entreprise.</p>
         <span class="qr-aug-card-foot">Votre écosystème reste connecté</span>
       </div>
     </div>
@@ -1441,6 +1442,7 @@
   <section class="feat spad security-band" id="security">
     <div class="security-row">
       <div class="security-intro" data-reveal>
+        <div class="security-badge-big"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2.5 5 5.8v5.6c0 5 3 8.4 7 9.9 4-1.5 7-4.9 7-9.9V5.8L12 2.5Z"/><path d="M9 12.2l2 2 4-4.2"/></svg></div>
         <div class="eyebrow">La confiance fait partie du parcours</div>
         <h2>La relation client commence par le respect des données.</h2>
         <p>Des espaces distincts, des accès définis et des consentements pris en compte. Une base pour organiser vos usages en responsabilité.</p>
@@ -1452,19 +1454,19 @@
       </div>
       <div class="security-list">
         <div class="security-item" data-reveal>
-          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 3 3 8 12 13 21 8 12 3"/><polyline points="3 16 12 21 21 16"/><polyline points="3 12 12 17 21 12"/></svg></div>
           <div><h3>Un espace pour chaque entreprise</h3><p>Architecture multi-tenant, séparation des données et des accès, administration par rôles Super Admin et Tenant.</p></div>
         </div>
         <div class="security-item" data-reveal style="transition-delay:.06s">
-          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15.5" r="1.5"/></svg></div>
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3L22 7l-3-3"/></svg></div>
           <div><h3>Des accès qui se maîtrisent</h3><p>Connexion MFA par code OTP, gestion des sessions et contrôle des utilisateurs autorisés.</p></div>
         </div>
         <div class="security-item" data-reveal style="transition-delay:.12s">
-          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
           <div><h3>Des connexions qui se suivent</h3><p>Alertes de connexion et journal des connexions pour accompagner le suivi des accès.</p></div>
         </div>
         <div class="security-item" data-reveal style="transition-delay:.18s">
-          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5 5 5.8v5.6c0 5 3 8.4 7 9.9 4-1.5 7-4.9 7-9.9V5.8L12 2.5Z"/><path d="M9 12.2l2 2 4-4.2"/></svg></div>
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 11a2 2 0 0 0-2 2c0 3.5-.5 6-1 7"/><path d="M8 12a4 4 0 0 1 8 0c0 1 0 2.5-.3 4"/><path d="M5 12a7 7 0 0 1 11.5-5.3"/><path d="M4 16c.7-1.5 1-3 1-4"/><path d="M19 8a9 9 0 0 1 1 6.5"/><path d="M14.5 20c.7-1.2 1-2.5 1.2-3.5"/></svg></div>
           <div><h3>Des préférences qui comptent</h3><p>Consentements, gestion des cookies et parcours RGPD pour accompagner les usages autorisés des données.</p></div>
         </div>
       </div>
