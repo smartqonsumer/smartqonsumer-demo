@@ -603,7 +603,7 @@
   }
 
   /* ---------- ANALYSES / PILOTAGE ---------- */
-  .pilot-dash{max-width:1180px; margin:0 auto}
+  .pilot-dash{max-width:1180px; margin:0 auto; background:var(--color-bg-marketing-band); border-radius:28px; padding:40px}
   .pilot-kpis{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px}
   .pilot-kpi{background:#fff; border:1px solid var(--line); border-radius:18px; padding:24px 26px; box-shadow:var(--shadow)}
   .pilot-kpi-head{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); margin-bottom:20px}
@@ -637,9 +637,11 @@
   @media (max-width:900px){
     .pilot-kpis{grid-template-columns:1fr}
     .pilot-mid{grid-template-columns:1fr}
+    .pilot-dash{padding:28px}
   }
   @media (max-width:560px){
     .pilot-strip{gap:18px}
+    .pilot-dash{padding:20px; border-radius:20px}
   }
 
   /* ---------- SECURITY / TRUST ---------- */
@@ -822,6 +824,7 @@
 
   /* ---------- DEVICE FRAME (product showcase) ---------- */
   .device-frame{background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:0 40px 100px rgba(18,22,26,.16); overflow:hidden; max-width:980px; margin:0 auto}
+  .device-frame .hbar-row{grid-template-columns:230px 1fr auto}
   .device-bar{background:#F1F0F8; padding:10px 14px; display:flex; gap:6px; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line)}
   .device-dots{display:flex; gap:6px}
   .device-dot{width:9px; height:9px; border-radius:50%; background:#DAD9EE}
@@ -831,7 +834,7 @@
   .device-row .avatar{flex:none}
   .device-row > div:last-child{min-width:0}
   .device-row .nm, .device-row .sg{display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .product-showcase{display:flex; gap:28px; align-items:flex-start; max-width:1040px; margin:0 auto; flex-wrap:wrap}
+  .product-showcase{display:flex; gap:28px; align-items:flex-start; max-width:1180px; margin:0 auto; flex-wrap:wrap}
   .feature-grid{display:flex; flex-direction:column; gap:6px; flex:0 0 220px}
   .feature-tile{width:100%; text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:9px 14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:10px; transition:border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease}
   .feature-tile:hover{border-color:var(--accent); transform:translateX(4px); box-shadow:0 6px 16px rgba(18,22,26,.08)}
@@ -860,13 +863,13 @@
   .device-row.active{background:var(--lav)}
   .device-row .nm{font-size:12.5px; font-weight:700; color:var(--ink); display:block}
   .device-row .sg{font-size:11px; color:var(--muted)}
-  .device-detail{padding:26px 28px}
-  .device-detail-title{font-size:10px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
-  .device-detail .dh{display:flex; align-items:center; gap:12px; margin-bottom:6px}
+  .device-detail{padding:16px 28px 22px}
+  .device-detail-title{font-size:10px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+  .device-detail .dh{display:flex; align-items:center; gap:12px; margin-bottom:4px}
   .device-detail .dh b{font-size:16px; color:var(--ink)}
   .device-detail .kv{font-size:13px}
   .device-detail .kv b, .device-detail .dh b, #devTag{transition:opacity .25s ease}
-  .dev-scan-history{margin-top:6px; padding-top:6px; border-top:1px solid var(--line)}
+  .dev-scan-history{margin-top:4px; padding-top:4px; border-top:1px solid var(--line)}
   .dev-scan-history-title{font-size:10px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
   .dev-scan-row{display:flex; justify-content:space-between; gap:10px; font-size:11.5px; padding:1px 0}
   .dev-scan-row span:first-child{color:var(--muted); flex:none}
@@ -1661,7 +1664,7 @@
         <b>Analyses</b>
       </button>
     </div>
-    <div class="device-frame" style="max-width:640px; flex:1; min-width:300px">
+    <div class="device-frame" style="max-width:880px; flex:1; min-width:300px">
       <div class="device-bar">
         <div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div>
         <div style="font-size:11px; font-weight:700; color:var(--muted)" id="deviceCurrentLabel">Contacts</div>
@@ -1681,7 +1684,7 @@
           <div class="kv"><span>Provenance</span><b id="devOrigin">Scan chez un revendeur</b></div>
           <div class="kv"><span>Statut fidélité</span><b id="devFreq">320 points</b></div>
           <div class="kv" style="border-bottom:0"><span>Campagnes reçues</span><b id="devCamp">3</b></div>
-          <div style="margin-top:8px">
+          <div style="margin-top:4px">
             <div class="row" style="justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:4px"><span>Score d'engagement</span><span id="devEngagementVal">82 %</span></div>
             <div class="hbar-track"><span class="hbar-fill" id="devEngagementBar" style="width:82%"></span></div>
           </div>
@@ -1748,7 +1751,8 @@
         </div>
         <div class="card" style="margin-top:10px; padding:10px 16px">
           <h4 style="margin:0 0 4px">Activité récente</h4>
-          <div class="kv" style="border-bottom:0"><span>Produit offert — obtenue</span><b class="muted" style="font-weight:400">il y a 2 jours</b></div>
+          <div class="kv"><span>Produit offert — obtenue</span><b class="muted" style="font-weight:400">il y a 2 jours</b></div>
+          <div class="kv" style="border-bottom:0"><span>Points gagnés — Scan produit</span><b class="muted" style="font-weight:400">il y a 5 jours</b></div>
         </div>
       </div>
       <div class="device-dash" id="deviceViewCampaigns" style="display:none">
