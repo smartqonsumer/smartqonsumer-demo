@@ -440,14 +440,19 @@
   .sec-title p{color:var(--muted); font-size:15.5px; margin:0}
 
   /* ---------- SECURITY / TRUST ---------- */
+  .security-band{background:var(--color-bg-marketing-band)}
+  .security-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; max-width:1120px; margin:0 auto}
+  .security-intro .eyebrow{display:block; margin-bottom:10px}
+  .security-intro h2{font-size:30px; color:var(--ink); margin:0 0 14px; letter-spacing:-.6px; line-height:1.22}
+  .security-intro p{font-size:15px; color:var(--muted); line-height:1.65; margin:0 0 18px}
   .security-rgpd-link{display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:700; font-size:13.5px; text-decoration:none; cursor:pointer; background:none; border:0; font:inherit; padding:0}
   .security-rgpd-link:hover{text-decoration:underline}
-  .security-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px; max-width:900px; margin:36px auto 0}
-  .security-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:26px; display:flex; flex-direction:column; gap:10px}
-  .security-ico{width:42px; height:42px; border-radius:12px; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center}
-  .security-card h3{margin:0; font-size:16px; color:var(--ink); letter-spacing:-.2px}
-  .security-card p{margin:0; font-size:13px; color:var(--muted); line-height:1.55}
-  @media (max-width:760px){ .security-grid{grid-template-columns:1fr} }
+  .security-list{display:flex; flex-direction:column; gap:28px}
+  .security-item{display:flex; gap:14px; align-items:flex-start}
+  .security-item h3{margin:0 0 4px; font-size:15px; color:var(--ink); letter-spacing:-.1px}
+  .security-item p{margin:0; font-size:13px; color:var(--muted); line-height:1.55}
+  .security-ico{width:38px; height:38px; border-radius:11px; background:#fff; color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none; box-shadow:var(--shadow)}
+  @media (max-width:900px){ .security-row{grid-template-columns:1fr; gap:32px} }
 
   /* ===== marketing-hero (hero-spec.md) ===== */
   .hero{position:relative; overflow:hidden; background:var(--color-bg-inverse); color:#fff}
@@ -1274,6 +1279,36 @@
     </div>
   </section>
 
+  <!-- ============ SECURITY / TRUST ============ -->
+  <section class="feat spad security-band" id="security">
+    <div class="security-row">
+      <div class="security-intro" data-reveal>
+        <div class="eyebrow">La confiance fait partie du parcours</div>
+        <h2>La relation client commence par le respect des données.</h2>
+        <p>Des espaces distincts, des accès définis et des consentements pris en compte. Une base pour organiser vos usages en responsabilité.</p>
+        <button type="button" class="security-rgpd-link" onclick="toast('Informations RGPD - démo statique')">Consulter les informations RGPD<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <div class="security-list">
+        <div class="security-item" data-reveal>
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+          <div><h3>Un espace pour chaque entreprise</h3><p>Architecture multi-tenant, séparation des données et des accès, administration par rôles Super Admin et Tenant.</p></div>
+        </div>
+        <div class="security-item" data-reveal style="transition-delay:.06s">
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15.5" r="1.5"/></svg></div>
+          <div><h3>Des accès qui se maîtrisent</h3><p>Connexion MFA par code OTP, gestion des sessions et contrôle des utilisateurs autorisés.</p></div>
+        </div>
+        <div class="security-item" data-reveal style="transition-delay:.12s">
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <div><h3>Des connexions qui se suivent</h3><p>Alertes de connexion et journal des connexions pour accompagner le suivi des accès.</p></div>
+        </div>
+        <div class="security-item" data-reveal style="transition-delay:.18s">
+          <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5 5 5.8v5.6c0 5 3 8.4 7 9.9 4-1.5 7-4.9 7-9.9V5.8L12 2.5Z"/><path d="M9 12.2l2 2 4-4.2"/></svg></div>
+          <div><h3>Des préférences qui comptent</h3><p>Consentements, gestion des cookies et parcours RGPD pour accompagner les usages autorisés des données.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ FAQ ============ -->
   <section class="feat spad" id="faq">
     <div class="sec-title" data-reveal><div class="eyebrow">Questions fréquentes</div><h2>Tout savoir avant de se lancer.</h2></div>
@@ -1296,37 +1331,6 @@
     </div>
   </section>
 
-  <!-- ============ SECURITY / TRUST ============ -->
-  <section class="feat spad" id="security" style="padding-top:64px; padding-bottom:56px">
-    <div class="sec-title" data-reveal>
-      <div class="eyebrow">La confiance fait partie du parcours</div>
-      <h2>La relation client commence par le respect des données.</h2>
-      <p>Des espaces distincts, des accès définis et des consentements pris en compte. Une base pour organiser vos usages en responsabilité.</p>
-      <button type="button" class="security-rgpd-link" style="margin-top:16px" onclick="toast('Informations RGPD — démo statique')">Consulter les informations RGPD<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-    </div>
-    <div class="security-grid">
-      <div class="security-card" data-reveal>
-        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
-        <h3>Un espace pour chaque entreprise</h3>
-        <p>Architecture multi-tenant, séparation des données et des accès, administration par rôles Super Admin et Tenant.</p>
-      </div>
-      <div class="security-card" data-reveal style="transition-delay:.06s">
-        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15.5" r="1.5"/></svg></div>
-        <h3>Des accès qui se maîtrisent</h3>
-        <p>Connexion MFA par code OTP, gestion des sessions et contrôle des utilisateurs autorisés.</p>
-      </div>
-      <div class="security-card" data-reveal style="transition-delay:.12s">
-        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
-        <h3>Des connexions qui se suivent</h3>
-        <p>Alertes de connexion et journal des connexions pour accompagner le suivi des accès.</p>
-      </div>
-      <div class="security-card" data-reveal style="transition-delay:.18s">
-        <div class="security-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5 5 5.8v5.6c0 5 3 8.4 7 9.9 4-1.5 7-4.9 7-9.9V5.8L12 2.5Z"/><path d="M9 12.2l2 2 4-4.2"/></svg></div>
-        <h3>Des préférences qui comptent</h3>
-        <p>Consentements, gestion des cookies et parcours RGPD pour accompagner les usages autorisés des données.</p>
-      </div>
-    </div>
-  </section>
 
   <footer class="home-footer">
     <div class="sq-container">
