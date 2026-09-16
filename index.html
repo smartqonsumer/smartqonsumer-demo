@@ -379,8 +379,6 @@
   .home-nav:not(.scrolled) .sq-nav-item>button{color:rgba(255,255,255,.82)}
   .home-nav:not(.scrolled) .sq-nav-item:hover>button{color:#fff}
   .home-nav:not(.scrolled) .sq-nav-item:hover>span{background:rgba(255,255,255,.55)}
-  .home-nav:not(.scrolled) .sq-login{background:transparent; border-color:rgba(255,255,255,.35); color:#fff}
-  .home-nav:not(.scrolled) .sq-login:hover{background:rgba(255,255,255,.1)}
   .home-nav:not(.scrolled) .sq-burger{color:#fff}
 
   .sq-logo{display:flex; flex:none; border:0}
@@ -399,13 +397,6 @@
   .sq-nav-item:hover>button{color:var(--color-text-primary)}
   .sq-nav-item:hover>span{background:var(--color-neutral-300)}
 
-  .sq-login{display:inline-flex; align-items:center; justify-content:center; height:38px; padding:0 14px; flex:none;
-    font:inherit; font-size:var(--font-size-body-sm); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-label);
-    border:1px solid var(--color-border-strong); border-radius:var(--radius-sm); background:var(--color-action-secondary); color:var(--color-action-secondary-text);
-    box-shadow:none; cursor:pointer; white-space:nowrap; text-decoration:none;
-    transition:background var(--duration-fast) var(--ease-standard)}
-  .sq-login:hover{background:var(--color-action-secondary-hover)}
-  .sq-login:active{background:var(--color-action-secondary-active)}
 
   .sq-cta{display:inline-flex; align-items:center; justify-content:center; gap:7px; height:38px; padding:0 15px; flex:none;
     font:inherit; font-size:var(--font-size-body-sm); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-label);
@@ -704,13 +695,6 @@
   .btn-primary.btn-lg:active{background:var(--color-action-primary-active)}
   .btn-primary.btn-lg:focus-visible{outline:none; box-shadow:var(--focus-ring)}
 
-  .btn-secondary.btn-lg{display:inline-flex; align-items:center; justify-content:center; height:44px; padding:0 18px;
-    font:inherit; font-size:var(--font-size-body); font-weight:var(--font-weight-semibold); letter-spacing:var(--letter-spacing-label);
-    border:1px solid rgba(255,255,255,.3); border-radius:var(--radius-sm); background:transparent; color:#fff;
-    cursor:pointer; white-space:nowrap; transition:background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard)}
-  .btn-secondary.btn-lg:hover{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.45)}
-  .btn-secondary.btn-lg:focus-visible{outline:none; box-shadow:var(--focus-ring)}
-
   .hero-visual{position:relative; z-index:1; display:flex; flex-direction:column; gap:12px}
   .loyalty-card{background:var(--color-surface); padding:20px; border-radius:var(--radius-lg); box-shadow:var(--shadow-xl)}
   .loyalty-top{display:flex; gap:16px; align-items:flex-start}
@@ -768,7 +752,7 @@
     .hero-subtitle{font-size:var(--font-size-body)}
     .hero-proof{flex-direction:column; gap:10px}
     .hero-actions{flex-direction:column; align-items:stretch}
-    .btn-primary.btn-lg, .btn-secondary.btn-lg{width:100%}
+    .btn-primary.btn-lg{width:100%}
     .loyalty-top{flex-direction:column; align-items:center}
     .hero-loyalty-info{width:100%}
     .hero-segment-track{width:56px}
@@ -1000,7 +984,7 @@
 
   @media (max-width:900px){
     .home-nav .sq-container{padding:0 var(--space-7); gap:16px}
-    .home-nav .sq-nav, .home-nav .sq-login, .home-nav .sq-cta{display:none}
+    .home-nav .sq-nav, .home-nav .sq-cta{display:none}
     .sq-burger{display:inline-flex}
   }
   @media (max-width:1000px){
@@ -1025,10 +1009,7 @@
   .sq-mm-row{width:100%; display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--color-border); background:transparent; border-left:0; border-right:0; border-top:0; font:inherit; font-size:var(--font-size-h4); font-weight:var(--font-weight-semibold); color:var(--color-text-primary); cursor:pointer; text-align:left}
   .sq-mm-row svg{width:17px; height:17px; color:var(--color-neutral-400); flex:none}
   .sq-mm-foot{flex:none; padding:20px; border-top:1px solid var(--color-border); display:flex; flex-direction:column; gap:10px}
-  .sq-mm-foot .sq-cta, .sq-mm-foot .sq-mm-secondary{width:100%; height:44px; justify-content:center}
-  .sq-mm-secondary{display:inline-flex; align-items:center; gap:8px; border-radius:var(--radius-sm); font:inherit; font-size:var(--font-size-body); font-weight:var(--font-weight-semibold); cursor:pointer; background:var(--color-action-secondary); color:var(--color-action-secondary-text); border:1px solid var(--color-border-strong); box-shadow:var(--shadow-sm)}
-  .sq-mm-secondary:hover{background:var(--color-action-secondary-hover)}
-  .sq-mm-secondary:active{background:var(--color-action-secondary-active)}
+  .sq-mm-foot .sq-cta{width:100%; height:44px; justify-content:center}
 
   /* toggles */
   .switch{position:relative; width:42px; height:24px; flex:0 0 42px}
@@ -1125,8 +1106,7 @@
         <div class="sq-nav-item"><button type="button" onclick="scrollTo2('story')">Fonctionnalités</button><span aria-hidden="true"></span></div>
         <div class="sq-nav-item"><button type="button" onclick="scrollTo2('security')">Sécurité</button><span aria-hidden="true"></span></div>
       </nav>
-      <a class="sq-login" onclick="enterApp()">Se connecter</a>
-      <button class="sq-cta" onclick="enterApp()">Commencer gratuitement</button>
+      <button class="sq-cta" onclick="openCalendly()">Nous contacter</button>
       <div class="sq-spacer"></div>
       <button class="sq-burger" onclick="toggleMobileMenu(true)" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
     </div>
@@ -1143,8 +1123,7 @@
       <button class="sq-mm-row" onclick="mobileNavGo('security')">Sécurité<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
     <div class="sq-mm-foot">
-      <button class="sq-mm-secondary" onclick="enterApp()">Se connecter</button>
-      <button class="sq-cta" onclick="enterApp()">Commencer gratuitement</button>
+      <button class="sq-cta" onclick="openCalendly()">Nous contacter</button>
     </div>
   </div>
 
@@ -1157,8 +1136,7 @@
         <h1 class="hero-title hero-in" style="animation-delay:.15s">Vous vendez vos produits partout.<br>Enfin, sachez qui les achète.</h1>
         <p class="hero-subtitle hero-in" style="animation-delay:.28s">SmartQonsumer vous permet de passer d'une connaissance limitée de vos consommateurs à une relation directe avec eux. Chaque interaction avec vos produits enrichit leur profil dans la plateforme et vous permet ensuite de communiquer avec eux de manière ciblée et automatisée.</p>
         <div class="hero-actions hero-in" style="animation-delay:.4s">
-          <button class="btn-primary btn-lg" onclick="enterApp()">Commencer gratuitement</button>
-          <button class="btn-secondary btn-lg" onclick="enterApp()">Demander une démo</button>
+          <button class="btn-primary btn-lg" onclick="openCalendly()">Nous contacter</button>
         </div>
         <div class="hero-proof hero-in" style="animation-delay:.5s">
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Connaissance client</span>
@@ -2612,6 +2590,10 @@
     'settings.email':{screenId:'settings-email', title:'Configuration e-mails', group:'settings', onEnter:()=>renderSettingsEmail()},
   };
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
+  function openCalendly(){
+    if(window.Calendly && typeof Calendly.initPopupWidget==='function'){ Calendly.initPopupWidget({url:'https://calendly.com/a-breton-likyly/30min'}); }
+    else { window.open('https://calendly.com/a-breton-likyly/30min','_blank','noopener'); }
+  }
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
   function scrollTo2(id){const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:'smooth'});}
   function toggleMobileMenu(open){
@@ -6218,5 +6200,8 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     }
   }
 </script>
+<!-- Calendly popup widget assets (used by openCalendly() on the "Nous contacter" buttons) -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </body>
 </html>
