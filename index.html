@@ -461,8 +461,6 @@
   .qr-aug-eyebrow:before{content:''; width:7px; height:7px; border-radius:2px; background:var(--accent); flex:none}
   .qr-aug-text h2{font-size:38px; color:var(--ink); margin:0 0 16px; letter-spacing:-.8px; line-height:1.15}
   .qr-aug-text p{font-size:15.5px; color:var(--muted); line-height:1.65; margin:0 0 28px; max-width:440px}
-  .qr-aug-cta{border:1px solid var(--line); border-radius:10px; padding:13px 20px; font-weight:700; font-size:14px; font-family:inherit; cursor:pointer; background:#fff; color:var(--ink); display:inline-flex; align-items:center; gap:10px; box-shadow:var(--shadow-sm)}
-  .qr-aug-cta:hover{border-color:var(--color-border-strong)}
   .qr-aug-flow{position:relative; z-index:1; display:flex; flex-direction:column; align-items:stretch}
   .qr-aug-node{background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px 20px; display:flex; align-items:center; gap:16px; box-shadow:var(--shadow-sm)}
   .qr-aug-node-ico{width:48px; height:48px; border-radius:12px; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center; flex:none; color:var(--ink)}
@@ -1287,7 +1285,6 @@
         <div class="eyebrow qr-aug-eyebrow">Le QR code augmenté</div>
         <h2>Une étiquette imprimée. Des expériences qui évoluent.</h2>
         <p>Le lien reste sur le produit. Vous pilotez ce qui se passe après le scan, selon votre programme et vos temps forts.</p>
-        <button type="button" class="qr-aug-cta" onclick="toast('Demande de démo - demo statique')">Demander une démo<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
       </div>
       <div class="qr-aug-flow" data-reveal style="transition-delay:.1s">
         <div class="qr-aug-node">
@@ -1481,7 +1478,7 @@
 
   <!-- ============ E-MAILING & MARKETING AUTOMATION ============ -->
   <section class="feat spad email-automation" id="email-automation" style="padding-top:40px; padding-bottom:40px; background:var(--color-bg-marketing-band)">
-    <div class="sec-title" data-reveal><div class="eyebrow">E-mailing & Marketing Automation</div><h2>La bonne audience. Le bon message. Le bon moment.</h2><p>Passez de la connaissance client à une campagne concrète. Combinez les audiences, préparez le contenu et choisissez le moment de l'envoi.</p></div>
+    <div class="sec-title" data-reveal><div class="eyebrow">E-mailing & Marketing Automation</div><h2>La bonne audience. Le bon message.<br>Le bon moment.</h2><p>Passez de la connaissance client à une campagne concrète. Combinez les audiences, préparez le contenu et choisissez le moment de l'envoi.</p></div>
 
     <div class="ea-wizard" data-reveal>
       <div class="ea-wizard-head">
@@ -1826,7 +1823,7 @@
       <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Campagnes</span>
     </div>
     <div class="hero-cta" data-reveal>
-      <button class="btn cta big" onclick="toast('Contact commercial - demo statique')">Contacter l'équipe commerciale</button>
+      <button class="btn cta big" onclick="openCalendly()">Contacter l'équipe commerciale</button>
     </div>
   </section>
 
