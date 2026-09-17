@@ -9,7 +9,30 @@
           api_host: 'https://eu.i.posthog.com',
           defaults: '2026-05-30',
           person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+          opt_out_capturing_by_default: true, // no capture until Axeptio confirms consent, see below
       })
+  </script>
+  <script>
+    window.axeptioSettings = {
+      clientId: "6aabffab12d1349a8dc81f7b",
+      cookiesVersion: "3ad3ffb7-c0c1-418f-b633-842820e53000",
+    };
+    (function(d, s) {
+      var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+      e.async = true; e.src = "//static.axept.io/sdk.js";
+      t.parentNode.insertBefore(e, t);
+    })(document, "script");
+    // Gate PostHog capture behind the Axeptio consent choice for the "posthog" vendor.
+    // NB: this vendor key must match the slug configured in the Axeptio backoffice
+    // (https://admin.axeptio.eu/projects/6aabffab12d1349a8dc81f7b) once the project is published.
+    window._axcb = window._axcb || [];
+    window._axcb.push(function(axeptio) {
+      axeptio.on("cookies:complete", function(choices) {
+        if (!window.posthog) return;
+        if (choices.posthog) { posthog.opt_in_capturing(); }
+        else { posthog.opt_out_capturing(); }
+      });
+    });
   </script>
   <title>Page introuvable | SmartQonsumer</title>
   <meta name="description" content="La page demandée est introuvable. Retrouvez la présentation de SmartQonsumer depuis la page d'accueil.">
