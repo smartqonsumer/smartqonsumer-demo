@@ -3,15 +3,82 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SmartQonsumer — Sachez enfin qui achète vos produits</title>
-<meta name="description" content="SmartQonsumer transforme chaque produit vendu en circuit indirect (magasins, revendeurs, distributeurs) en un point de contact direct avec vos consommateurs finaux : scan, landing personnalisée, CRM et fidélité, sans projet IT lourd.">
-<meta property="og:title" content="SmartQonsumer — Sachez enfin qui achète vos produits">
-<meta property="og:description" content="Transformez chaque produit vendu en une relation directe avec vos consommateurs, même en circuit indirect.">
+<title>CRM pour marques en circuits indirects | SmartQonsumer</title>
+<meta name="description" content="Transformez chaque produit vendu en point de contact direct : QR Code GS1, CRM, fidélité et campagnes pour mieux connaître vos consommateurs.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="canonical" href="https://smartqonsumer.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/q-mark.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/q-mark.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0F4A25">
+<meta property="og:title" content="CRM pour marques en circuits indirects | SmartQonsumer">
+<meta property="og:description" content="Transformez chaque produit vendu en point de contact direct : QR Code GS1, CRM, fidélité et campagnes pour mieux connaître vos consommateurs.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://smartqonsumer.com/">
+<meta property="og:image" content="https://smartqonsumer.com/assets/SmartQonsumeR-home-v1-cover.png">
+<meta property="og:image:width" content="1400">
+<meta property="og:image:height" content="787">
+<meta property="og:image:alt" content="Présentation du parcours client SmartQonsumer, du scan produit à l'expérience digitale">
+<meta property="og:site_name" content="SmartQonsumer">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CRM pour marques en circuits indirects | SmartQonsumer">
+<meta name="twitter:description" content="Transformez chaque produit vendu en point de contact direct : QR Code GS1, CRM, fidélité et campagnes pour mieux connaître vos consommateurs.">
+<meta name="twitter:image" content="https://smartqonsumer.com/assets/SmartQonsumeR-home-v1-cover.png">
+<meta name="twitter:image:alt" content="Présentation du parcours client SmartQonsumer, du scan produit à l'expérience digitale">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="/assets/SmartQonsumeR-home-v1-cover.png" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-tokens.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://smartqonsumer.com/#organization",
+      "name": "SmartQonsumer",
+      "url": "https://smartqonsumer.com/",
+      "logo": "https://smartqonsumer.com/assets/logo-smartqonsumer.png"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://smartqonsumer.com/#website",
+      "url": "https://smartqonsumer.com/",
+      "name": "SmartQonsumer",
+      "description": "CRM pour les marques qui vendent leurs produits en circuits indirects.",
+      "inLanguage": "fr-FR",
+      "publisher": {"@id": "https://smartqonsumer.com/#organization"}
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://smartqonsumer.com/#webpage",
+      "url": "https://smartqonsumer.com/",
+      "name": "CRM pour marques en circuits indirects | SmartQonsumer",
+      "description": "Transformez chaque produit vendu en point de contact direct : QR Code GS1, CRM, fidélité et campagnes pour mieux connaître vos consommateurs.",
+      "isPartOf": {"@id": "https://smartqonsumer.com/#website"},
+      "about": {"@id": "https://smartqonsumer.com/#organization"},
+      "inLanguage": "fr-FR"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://smartqonsumer.com/#faq",
+      "url": "https://smartqonsumer.com/#faq",
+      "isPartOf": {"@id": "https://smartqonsumer.com/#website"},
+      "inLanguage": "fr-FR",
+      "mainEntity": [
+        {"@type":"Question","name":"Dois-je changer mes étiquettes ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le QR peut être ajouté sur une étiquette existante, un packaging, une affiche ou tout autre support déjà en circulation."}},
+        {"@type":"Question","name":"Que se passe-t-il lorsqu'un client scanne ?","acceptedAnswer":{"@type":"Answer","text":"Il arrive sur une landing page à votre image, peut découvrir un contenu, rejoindre votre programme de fidélité ou laisser ses coordonnées ; sa fiche client est mise à jour automatiquement."}},
+        {"@type":"Question","name":"Est-ce que mes données restent ma propriété ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Contrairement à un programme de fidélité d'enseigne, la donnée collectée vous appartient et n'est partagée avec personne."}},
+        {"@type":"Question","name":"Faut-il installer une application ?","acceptedAnswer":{"@type":"Answer","text":"Non, ni pour vous ni pour vos consommateurs. Tout se passe dans le navigateur, dès le scan."}},
+        {"@type":"Question","name":"Puis-je commencer avec un seul produit ?","acceptedAnswer":{"@type":"Answer","text":"Oui. La plupart des marques démarrent avec un seul produit avant d'étendre progressivement à tout leur catalogue."}}
+      ]
+    }
+  ]
+}
+</script>
 <style>
   :root{
     /* Legacy variable names kept for a minimal diff — each now resolves to a design-tokens.css token. */
@@ -60,7 +127,7 @@
   /* Main */
   .main{flex:1; min-width:0; display:flex; flex-direction:column}
   .topbar{height:62px; background:var(--white); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:16px; padding:0 26px; position:sticky; top:0; z-index:5}
-  .topbar h1{font-size:18px; margin:0; font-weight:700; color:var(--ink)}
+  .topbar .page-title{font-size:18px; margin:0; font-weight:700; color:var(--ink)}
   .spacer{flex:1}
   .demo-badge{font-size:11px; font-weight:800; letter-spacing:.4px; color:var(--color-brand-400); background:var(--color-neutral-900); padding:6px 12px; border-radius:999px}
   .brand.demo{margin-bottom:10px}
@@ -373,7 +440,7 @@
     background:transparent; border-bottom:1px solid transparent; box-shadow:none; backdrop-filter:none;
     transition:height var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard), backdrop-filter var(--duration-base) var(--ease-standard)}
   .home-nav .sq-container{width:100%; max-width:var(--max-content); margin:0 auto; padding:0 var(--gutter-page); display:flex; align-items:center; gap:28px; min-width:0}
-  #product, #how, #story, #security{scroll-margin-top:var(--header-height)}
+  #marketing-hero, #features, #how, #story, #qr-augmente, #security, #faq{scroll-margin-top:var(--header-height)}
   .home-nav.scrolled{height:var(--header-height-condensed); box-shadow:var(--shadow-md); background:rgba(255,255,255,.86); backdrop-filter:blur(14px) saturate(1.4); border-bottom-color:var(--color-border)}
   .home-nav:not(.scrolled) .sq-logo img{filter:brightness(0) invert(1)}
   .home-nav:not(.scrolled) .sq-nav-item>button{color:rgba(255,255,255,.82)}
@@ -483,6 +550,8 @@
   .qr-aug-footnote{position:relative; z-index:1; display:flex; justify-content:space-between; gap:24px; max-width:1180px; margin:28px auto 0}
   .qr-aug-footnote p{margin:0; font-size:12px; color:var(--muted); line-height:1.5}
   .qr-aug-footnote p:first-child b{color:var(--ink)}
+  .qr-aug-footnote a{display:inline-block; margin-top:5px; color:var(--accent); font-weight:700; text-decoration:none}
+  .qr-aug-footnote a:hover{text-decoration:underline}
   .qr-aug-footnote p:last-child{text-align:right}
   @media (max-width:900px){
     .qr-aug-top{grid-template-columns:1fr; gap:36px}
@@ -490,6 +559,23 @@
     .qr-aug-footnote{flex-direction:column; gap:10px}
     .qr-aug-footnote p:last-child{text-align:left}
   }
+
+  /* ---------- PRODUCT CAPABILITY BANDS ---------- */
+  .product-band{position:relative; isolation:isolate; overflow:hidden; padding-top:88px!important; padding-bottom:88px!important; border-top:1px solid rgba(31,132,67,.14); border-bottom:1px solid rgba(31,132,67,.1)}
+  .product-band::before{content:""; position:absolute; z-index:-1; left:0; right:0; top:0; height:4px; background:linear-gradient(90deg,var(--color-brand-900),var(--color-brand-500),var(--color-brand-300),var(--color-brand-700))}
+  .product-band::after{content:""; position:absolute; z-index:-1; width:380px; height:380px; right:-190px; top:-210px; border-radius:50%; background:radial-gradient(circle,rgba(81,189,111,.11),transparent 68%); pointer-events:none}
+  .product-band .eyebrow{display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid rgba(31,132,67,.2); border-radius:999px; background:rgba(255,255,255,.9); box-shadow:var(--shadow-sm)}
+  .product-band .eyebrow::before{content:""; width:7px; height:7px; border-radius:2px; background:var(--color-brand-600); flex:none}
+  .product-band-club{background:linear-gradient(180deg,var(--color-brand-50) 0%,#FAFDFA 100%); animation:clubBandEdges 4.8s ease-in-out infinite}
+  .product-band-club::before{background:linear-gradient(90deg,var(--color-brand-900),var(--color-brand-600),var(--color-brand-300),var(--color-brand-700),var(--color-brand-900)); background-size:240% 100%; animation:clubBandFlow 6s linear infinite}
+  @keyframes clubBandFlow{from{background-position:0 0}to{background-position:240% 0}}
+  @keyframes clubBandEdges{0%,100%{border-color:rgba(31,132,67,.12); box-shadow:inset 0 -1px rgba(81,189,111,.12)}50%{border-color:rgba(47,165,92,.34); box-shadow:inset 0 -2px rgba(81,189,111,.3)}}
+  @media (prefers-reduced-motion:reduce){.product-band-club,.product-band-club::before,.product-band-pilot,.product-band-pilot::before{animation:none}}
+  .product-band-email{background:#fff}
+  .product-band-email::before{display:none}
+  .product-band-pilot{padding-bottom:52px!important; background:linear-gradient(180deg,#EFF7F4 0%,var(--color-neutral-50) 100%); animation:clubBandEdges 4.8s ease-in-out infinite}
+  .product-band-pilot::before{background:linear-gradient(90deg,var(--color-brand-900),var(--color-brand-600),var(--color-brand-300),var(--color-brand-700),var(--color-brand-900)); background-size:240% 100%; animation:clubBandFlow 6s linear infinite}
+  @media (max-width:900px){.product-band{padding-top:64px!important; padding-bottom:64px!important}}
 
   /* ---------- CLUB FIDÉLITÉ ---------- */
   .club-promo-top{display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.3fr); gap:56px; align-items:start; max-width:1180px; margin:0 auto}
@@ -621,7 +707,7 @@
   .pilot-strip > div{display:flex; flex-direction:column; gap:4px}
   .pilot-strip span{font-size:12px; color:var(--muted)}
   .pilot-strip b{font-size:15px; color:var(--ink); font-weight:700}
-  .pilot-fine{margin-top:2px; padding-top:16px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted)}
+  .pilot-fine{margin-top:2px; padding-top:6px; border-top:0; font-size:11.5px; color:var(--muted)}
   @media (max-width:900px){
     .pilot-kpis{grid-template-columns:1fr}
     .pilot-mid{grid-template-columns:1fr}
@@ -633,16 +719,18 @@
   }
 
   /* ---------- SECURITY / TRUST ---------- */
-  .security-band{background:var(--color-bg-marketing-band)}
-  .security-row{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; max-width:1120px; margin:0 auto}
-  .security-badge-big{width:64px; height:64px; border-radius:18px; background:var(--ink); color:var(--color-brand-400); display:flex; align-items:center; justify-content:center; margin-bottom:22px; box-shadow:var(--shadow)}
-  .security-intro .eyebrow{display:block; margin-bottom:10px}
-  .security-intro h2{font-size:30px; color:var(--ink); margin:0 0 14px; letter-spacing:-.6px; line-height:1.22}
-  .security-intro p{font-size:15px; color:var(--muted); line-height:1.65; margin:0 0 18px}
-  .security-rgpd-link{display:inline-flex; align-items:center; gap:6px; color:var(--accent); font-weight:700; font-size:13.5px; text-decoration:none; cursor:pointer; background:none; border:0; font:inherit; padding:0}
+  .security-band{position:relative; overflow:hidden; background:linear-gradient(135deg,var(--color-brand-900) 0%,#103923 58%,var(--color-neutral-950) 100%); color:#fff; border-top:1px solid rgba(143,216,167,.25); border-bottom:1px solid var(--color-brand-900)}
+  .security-band::before{content:""; position:absolute; inset:0; pointer-events:none; opacity:.12; background-image:radial-gradient(var(--color-brand-300) 1px,transparent 1.5px); background-size:12px 12px; -webkit-mask-image:linear-gradient(90deg,transparent,#000 70%); mask-image:linear-gradient(90deg,transparent,#000 70%)}
+  .security-row{position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; max-width:1120px; margin:0 auto}
+  .security-badge-big{width:64px; height:64px; border-radius:18px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16); color:var(--color-brand-300); display:flex; align-items:center; justify-content:center; margin-bottom:22px; box-shadow:var(--shadow)}
+  .security-intro .eyebrow{display:inline-flex; margin-bottom:12px; padding:6px 10px; border:1px solid rgba(143,216,167,.28); border-radius:999px; background:rgba(255,255,255,.08); color:var(--color-brand-300)}
+  .security-intro h2{font-size:30px; color:#fff; margin:0 0 14px; letter-spacing:-.6px; line-height:1.22}
+  .security-intro p{font-size:15px; color:var(--color-neutral-300); line-height:1.65; margin:0 0 18px}
+  .security-rgpd-link{display:inline-flex; align-items:center; gap:6px; color:var(--color-brand-300); font-weight:700; font-size:13.5px; text-decoration:none; cursor:pointer; background:none; border:0; font:inherit; padding:0}
   .security-rgpd-link:hover{text-decoration:underline}
-  .security-list{display:flex; flex-direction:column; gap:28px}
+  .security-list{display:flex; flex-direction:column; gap:14px}
   .security-item{display:flex; gap:14px; align-items:flex-start}
+  .security-band .security-item{padding:18px; border:1px solid rgba(255,255,255,.16); border-radius:16px; background:rgba(255,255,255,.96); box-shadow:0 14px 32px rgba(0,0,0,.14)}
   .security-item h3{margin:0 0 4px; font-size:15px; color:var(--ink); letter-spacing:-.1px}
   .security-item p{margin:0; font-size:13px; color:var(--muted); line-height:1.55}
   .security-ico{width:38px; height:38px; border-radius:11px; background:#fff; color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none; box-shadow:var(--shadow)}
@@ -662,8 +750,8 @@
     animation:heroDotsDrift 40s linear infinite}
   @keyframes heroDotsDrift{from{background-position:0 0} to{background-position:180px 180px}}
   @media (prefers-reduced-motion:reduce){ .hero-modules{animation:none} }
-  .hero-inner{position:relative; z-index:1; max-width:var(--max-content); margin:0 auto; padding:calc(var(--header-height) + 56px) 32px 88px;
-    display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:center}
+  .hero-inner{position:relative; z-index:1; max-width:1320px; margin:0 auto; padding:calc(var(--header-height) + 56px) 32px 88px;
+    display:grid; grid-template-columns:.9fr 1.1fr; gap:40px; align-items:center}
   .hero-in{opacity:0; animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both}
 
   .hero-eyebrow{font-size:var(--font-size-micro); font-weight:var(--font-weight-bold); letter-spacing:var(--letter-spacing-eyebrow); text-transform:uppercase; color:var(--color-brand-400); margin:0}
@@ -693,6 +781,16 @@
   .btn-primary.btn-lg:focus-visible{outline:none; box-shadow:var(--focus-ring)}
 
   .hero-visual{position:relative; z-index:1; display:flex; flex-direction:column; gap:12px}
+
+  .hero-video-frame{position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:var(--radius-lg); background:#fff; box-shadow:var(--shadow-xl)}
+  .hero-video{display:block; width:100%; height:100%; object-fit:cover}
+  .hero-video-controls{position:absolute; right:14px; bottom:14px; display:flex; gap:8px; z-index:2}
+  .hero-video-control{width:42px; height:42px; padding:0; border:1px solid rgba(255,255,255,.32); border-radius:50%; background:rgba(18,22,26,.78); color:#fff; display:grid; place-items:center; cursor:pointer; box-shadow:0 6px 18px rgba(18,22,26,.24); backdrop-filter:blur(8px); transition:background var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard)}
+  .hero-video-control:hover{background:var(--accent); transform:translateY(-1px)}
+  .hero-video-control:focus-visible{outline:2px solid #fff; outline-offset:2px}
+  .hero-video-control svg{width:18px; height:18px}
+  .hero-video-frame:fullscreen{aspect-ratio:auto; border-radius:0; background:#000; display:grid; place-items:center}
+  .hero-video-frame:fullscreen .hero-video{object-fit:contain}
 
   /* ---------- HERO JOURNEY (animated slideshow) ---------- */
   .hj{background:var(--color-surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-xl); padding:22px; display:flex; flex-direction:column; gap:14px; width:100%; box-sizing:border-box}
@@ -878,8 +976,8 @@
   .hf-crm .kv{padding:6px 0; font-size:11.5px}
 
 
-  /* ---------- HOW (3 steps) ---------- */
-  .how-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1120px; margin:0 auto}
+  /* ---------- HOW (4 steps) ---------- */
+  .how-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; max-width:1240px; margin:0 auto}
   .how-card{background:#fff; border:1px solid var(--line); border-radius:20px; padding:30px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow); min-height:280px;
     transition:transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s cubic-bezier(.2,.7,.2,1), border-color .4s ease}
   .how-card:hover{transform:translateY(-8px); box-shadow:0 24px 48px rgba(18,22,26,.14); border-color:var(--color-brand-300,var(--line))}
@@ -890,61 +988,41 @@
   .how-card h3{margin:0; font-size:19px; color:var(--ink); letter-spacing:-.2px}
   .how-card p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.55}
   .how-visual{display:flex; justify-content:center; align-items:center; position:relative; flex:1; margin-top:18px; padding-bottom:8px}
-  @media (max-width:900px){ .how-grid{grid-template-columns:1fr} }
+  .mechanism-band{position:relative; overflow:hidden; background:linear-gradient(135deg, #EDF8F2 0%, #F2FAF8 52%, #EEF6FB 100%); border-top:1px solid rgba(26,137,72,.14); border-bottom:1px solid rgba(14,111,176,.13)}
+  .mechanism-band::before{content:""; position:absolute; width:360px; height:360px; right:-120px; top:-180px; border-radius:50%; background:radial-gradient(circle, rgba(14,111,176,.13), transparent 68%); pointer-events:none}
+  .mechanism-band .sec-title,.mechanism-band .how-grid{position:relative; z-index:1}
+  .mechanism-band .eyebrow{display:inline-flex; padding:7px 12px; border-radius:999px; background:#fff; border:1px solid rgba(26,137,72,.2); box-shadow:var(--shadow-sm)}
+  .how-gs1-link{display:inline-flex; align-items:center; gap:5px; color:var(--accent); font-size:12px; font-weight:750; line-height:1.4; text-decoration:none}
+  .how-gs1-link:hover{text-decoration:underline}
+  .how-gs1-link:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:3px}
+  .how-repurchase{display:flex; align-items:center; justify-content:center; gap:10px; width:100%}
+  .promo-ticket{width:90px; min-height:108px; padding:10px 8px; border:1px dashed var(--accent); border-radius:12px; background:#fff; text-align:center; box-shadow:var(--shadow-sm)}
+  .promo-ticket span{display:block; color:var(--muted); font-size:7px; font-weight:800; letter-spacing:.6px}
+  .promo-ticket svg{display:block; width:34px; height:34px; margin:8px auto 5px; color:var(--ink)}
+  .promo-ticket b{font-size:18px; color:var(--accent)}
+  .repurchase-arrow{width:22px; height:22px; color:var(--accent); flex:none}
+  .repurchase-profile{width:104px; padding:11px; border-radius:12px; background:var(--ink); color:#fff; box-shadow:var(--shadow)}
+  .repurchase-profile b{display:block; font-size:10px; line-height:1.3; margin-bottom:8px}
+  .repurchase-profile span{display:block; padding:5px 6px; border-radius:6px; background:rgba(255,255,255,.12); font-size:8px; line-height:1.25; margin-top:5px}
+  @media (max-width:1100px){ .how-grid{grid-template-columns:1fr 1fr} }
+  @media (max-width:680px){ .how-grid{grid-template-columns:1fr} }
 
-  /* ---------- DEVICE FRAME (product showcase) ---------- */
-  .device-frame{background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:0 40px 100px rgba(18,22,26,.16); overflow:hidden; max-width:980px; margin:0 auto}
-  .device-frame .hbar-row{grid-template-columns:230px 1fr auto}
+  /* ---------- DEVICE BAR (reused as a browser-chrome header by several preview mockups) ---------- */
   .device-bar{background:#F1F0F8; padding:10px 14px; display:flex; gap:6px; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line)}
   .device-dots{display:flex; gap:6px}
   .device-dot{width:9px; height:9px; border-radius:50%; background:#DAD9EE}
-  .device-body{display:grid; grid-template-columns:222px 1fr; height:380px; overflow:hidden; animation:paneSwap .4s cubic-bezier(.2,.7,.2,1)}
-  .device-dash{padding:20px 22px; height:380px; overflow:hidden; animation:paneSwap .4s cubic-bezier(.2,.7,.2,1)}
-  @keyframes paneSwap{from{opacity:0; transform:translateY(12px) scale(.98)} to{opacity:1; transform:none}}
-  .device-row .avatar{flex:none}
-  .device-row > div:last-child{min-width:0}
-  .device-row .nm, .device-row .sg{display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .product-showcase{display:flex; gap:28px; align-items:flex-start; max-width:1180px; margin:0 auto; flex-wrap:wrap}
-  .feature-grid{display:flex; flex-direction:column; gap:6px; flex:0 0 220px}
-  .feature-tile{width:100%; text-align:left; border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:9px 14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:10px; transition:border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease}
-  .feature-tile:hover{border-color:var(--accent); transform:translateX(4px); box-shadow:0 6px 16px rgba(18,22,26,.08)}
-  .feature-tile:hover .feature-tile-ico{background:var(--accent); color:#fff}
-  .feature-tile.active{border-color:var(--accent); background:var(--lav3)}
-  .feature-tile.active .feature-tile-ico{background:var(--accent); color:#fff}
-  .feature-tile-ico{width:28px; height:28px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none; transition:background .2s ease, color .2s ease}
-  .feature-tile-ico svg{width:15px; height:15px}
-  .feature-tile b{font-size:12.5px; color:var(--ink); font-weight:700; white-space:nowrap}
-  @media (max-width:900px){ .product-showcase{flex-direction:column; align-items:stretch} .feature-grid{flex-direction:row; flex-wrap:wrap; width:100%; flex:none; justify-content:center} .feature-tile{width:auto; border-radius:999px; padding:6px 14px 6px 6px} .feature-tile:hover{transform:none} .device-frame{max-width:100%!important} }
-  .club-mini-card{border-radius:16px; padding:20px 22px; background:linear-gradient(135deg, var(--accent), var(--accentd)); color:#fff; box-shadow:0 14px 30px rgba(18,22,26,.18)}
-  .club-mini-card-top{display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700; opacity:.9; text-transform:uppercase; letter-spacing:.4px}
-  .club-mini-card-name{font-size:16px; font-weight:800; margin-top:14px}
-  .club-mini-card-pts{font-size:28px; font-weight:800; margin-top:2px}
-  .club-mini-card-bar{height:6px; border-radius:999px; background:rgba(255,255,255,.28); margin-top:12px; overflow:hidden}
-  .club-mini-card-bar span{display:block; height:100%; background:#fff; border-radius:999px}
-  .club-mini-card-sub{font-size:11px; opacity:.85; margin-top:8px}
-  .reward-chip{display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:12px; padding:9px 14px; flex:1; min-width:160px}
-  .reward-chip-ico{width:30px; height:30px; border-radius:50%; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
-  .reward-chip-ico svg{width:15px; height:15px}
-  .reward-chip b{display:block; font-size:12px; color:var(--ink)}
-  .reward-chip span{font-size:11px; color:var(--muted)}
-  .device-list{border-right:1px solid var(--line); padding:14px}
-  .device-list-head{display:flex; justify-content:space-between; padding:0 12px 8px; font-size:9px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:var(--muted)}
-  .device-row{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; transition:background .3s ease}
-  .device-row.active{background:var(--lav)}
-  .device-row .nm{font-size:12.5px; font-weight:700; color:var(--ink); display:block}
-  .device-row .sg{font-size:11px; color:var(--muted)}
-  .device-detail{padding:16px 28px 22px}
-  .device-detail-title{font-size:10px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
-  .device-detail .dh{display:flex; align-items:center; gap:12px; margin-bottom:4px}
-  .device-detail .dh b{font-size:16px; color:var(--ink)}
-  .device-detail .kv{font-size:13px}
-  .device-detail .kv b, .device-detail .dh b, #devTag{transition:opacity .25s ease}
-  .dev-scan-history{margin-top:4px; padding-top:4px; border-top:1px solid var(--line)}
-  .dev-scan-history-title{font-size:10px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
-  .dev-scan-row{display:flex; justify-content:space-between; gap:10px; font-size:11.5px; padding:1px 0}
-  .dev-scan-row span:first-child{color:var(--muted); flex:none}
-  .dev-scan-row span:last-child{color:var(--ink); font-weight:600; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
-  @media (max-width:760px){ .device-body{grid-template-columns:1fr} .device-list{display:none} }
+
+  /* ---------- 6 FEATURES OVERVIEW GRID ---------- */
+  .feat6-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1180px; margin:0 auto}
+  .feat6-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:28px; display:flex; flex-direction:column; gap:12px; box-shadow:var(--shadow)}
+  .feat6-ico{width:44px; height:44px; border-radius:12px; background:var(--lav2); color:var(--accent); display:flex; align-items:center; justify-content:center; flex:none}
+  .feat6-ico svg{width:22px; height:22px}
+  .feat6-card h3{margin:0; font-size:17px; color:var(--ink); letter-spacing:-.2px}
+  .feat6-card p{margin:0; font-size:13.5px; color:var(--muted); line-height:1.6; flex:1}
+  .feat6-card a{display:inline-flex; align-items:center; gap:5px; font-size:12.5px; font-weight:700; color:var(--accent); cursor:pointer}
+  .feat6-card a:hover{text-decoration:underline}
+  @media (max-width:900px){ .feat6-grid{grid-template-columns:1fr 1fr} }
+  @media (max-width:600px){ .feat6-grid{grid-template-columns:1fr} }
 
   .mini-chip-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; max-width:900px; margin:28px auto 0}
   .mini-chip{background:var(--lav); border-radius:999px; padding:9px 16px; font-size:12.5px; font-weight:600; color:var(--ink)}
@@ -1066,7 +1144,6 @@
   @media (max-width:640px){ .hf-big-logo img{height:64px} .hf-ai-row{gap:14px} }
   .hf-legal{margin-top:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap}
   .hf-legal *{font-size:var(--font-size-micro); color:var(--color-text-muted)}
-  .hf-legal .hf-note{font-family:var(--font-mono)}
 
   @media (max-width:900px){
     .home-nav .sq-container{padding:0 var(--space-7); gap:16px}
@@ -1096,7 +1173,6 @@
   .sq-mm-row svg{width:17px; height:17px; color:var(--color-neutral-400); flex:none}
   .sq-mm-foot{flex:none; padding:20px; border-top:1px solid var(--color-border); display:flex; flex-direction:column; gap:10px}
   .sq-mm-foot .sq-cta{width:100%; height:44px; justify-content:center}
-  body.mobile-menu-open .calendly-badge-widget{display:none!important}
 
   /* toggles */
   .switch{position:relative; width:42px; height:24px; flex:0 0 42px}
@@ -1149,7 +1225,7 @@
     .sidebar-backdrop.open{display:block}
     .hamburger{display:inline-flex}
     .topbar{padding:0 14px; gap:10px}
-    .topbar h1{font-size:15px}
+    .topbar .page-title{font-size:15px}
     .demo-badge{display:none}
     .screen{padding:16px}
     .phone-wrap{gap:20px}
@@ -1185,12 +1261,14 @@
   <header class="home-nav" id="siteNav">
     <div class="sq-container">
       <div class="hn-left">
-        <a class="sq-logo" href="#" onclick="return false" aria-label="SmartQonsumer — accueil"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer"></a>
+        <a class="sq-logo" href="/" aria-label="SmartQonsumer — accueil"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257" fetchpriority="high"></a>
       </div>
       <nav class="sq-nav">
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('product')">Solution</button><span aria-hidden="true"></span></div>
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('story')">Fonctionnalités</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('marketing-hero')">Solution</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('how')">Comment ça marche</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('features')">Fonctionnalités</button><span aria-hidden="true"></span></div>
         <div class="sq-nav-item"><button type="button" onclick="scrollTo2('security')">Sécurité</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('faq')">FAQ</button><span aria-hidden="true"></span></div>
       </nav>
       <button class="sq-cta" onclick="openCalendly()">Nous contacter</button>
       <div class="sq-spacer"></div>
@@ -1200,19 +1278,22 @@
 
   <div class="sq-mobile-menu" id="mobileMenu">
     <div class="sq-mm-head">
-      <img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer">
+      <img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257">
       <button class="sq-mm-close" onclick="toggleMobileMenu(false)" aria-label="Fermer le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     </div>
     <div class="sq-mm-body">
-      <button class="sq-mm-row" onclick="mobileNavGo('product')">Solution<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="sq-mm-row" onclick="mobileNavGo('story')">Fonctionnalités<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('marketing-hero')">Solution<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('how')">Comment ça marche<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('features')">Fonctionnalités<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
       <button class="sq-mm-row" onclick="mobileNavGo('security')">Sécurité<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="mobileNavGo('faq')">FAQ<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
     <div class="sq-mm-foot">
       <button class="sq-cta" onclick="openCalendly()">Nous contacter</button>
     </div>
   </div>
 
+  <main id="main-content">
   <!-- ============ HERO ============ -->
   <section class="hero" id="marketing-hero">
     <div class="hero-modules" aria-hidden="true"></div>
@@ -1232,20 +1313,13 @@
       </div>
 
       <div class="hero-visual hero-in" style="animation-delay:.55s">
-        <div class="hj" id="heroJourney">
-          <div class="hj-top"><span class="hj-counter" id="hjCounter">01 / 13</span><h3 class="hj-title" id="hjTitle"></h3></div>
-          <p class="hj-desc" id="hjDesc"></p>
-          <div class="hj-card">
-            <div class="hj-card-head" id="hjCardHead"></div>
-            <div class="hj-card-body" id="hjCardBody"></div>
-          </div>
-          <div class="hj-checklist" id="hjChecklist"></div>
-          <div id="hjFoot"></div>
-          <div class="hj-controls">
-            <button type="button" id="hjPrev" aria-label="Étape précédente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
-            <button type="button" id="hjPlay" class="hj-play" aria-label="Lecture"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
-            <button type="button" id="hjNext" aria-label="Étape suivante"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-            <button type="button" id="hjReset" aria-label="Recommencer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+        <div class="hero-video-frame">
+          <video class="hero-video" id="heroVideo" width="1400" height="787" autoplay muted loop playsinline preload="metadata" poster="assets/SmartQonsumeR-home-v1-cover.png" aria-label="Présentation de SmartQonsumer">
+            <source src="assets/SmartQonsumeR-home-v1.mp4" type="video/mp4">
+          </video>
+          <div class="hero-video-controls" aria-label="Contrôles de la vidéo">
+            <button class="hero-video-control" type="button" id="heroVideoPlay" aria-label="Mettre la vidéo en pause"></button>
+            <button class="hero-video-control" type="button" id="heroVideoFullscreen" aria-label="Afficher la vidéo en plein écran"></button>
           </div>
         </div>
       </div>
@@ -1274,14 +1348,15 @@
     </div>
   </section>
 
-  <!-- ============ HOW (3 steps) ============ -->
-  <section class="feat spad" id="how" style="padding-top:52px; padding-bottom:40px">
+  <!-- ============ HOW (4 steps) ============ -->
+  <section class="feat spad mechanism-band" id="how" style="padding-top:72px; padding-bottom:72px">
     <div class="sec-title" data-reveal><div class="eyebrow">Le mécanisme</div><h2>Chaque scan devient une opportunité.</h2></div>
     <div class="how-grid">
       <div class="how-card" data-reveal>
         <div class="how-num reveal-sm" data-reveal>01</div>
         <h3 class="reveal-sm" data-reveal style="transition-delay:.08s">Le consommateur scanne</h3>
-        <p class="reveal-sm" data-reveal style="transition-delay:.16s">Sur un produit, son emballage ou une affiche — où qu'il se trouve dans le circuit de vente.</p>
+        <p class="reveal-sm" data-reveal style="transition-delay:.16s">Il scanne le QR Code augmenté GS1 imprimé sur le produit. Grâce à GS1 Digital Link, ce code 2D contient le GTIN — l'identifiant unique du produit, identique à celui porté par son EAN-13 — et ouvre l'expérience digitale choisie par la marque.</p>
+        <a class="how-gs1-link reveal-sm" data-reveal style="transition-delay:.22s" href="https://www.gs1.fr/vos-secteurs-dactivite/communaute-dinteret-pgc-dediee-au-qr-code-augmente-gs1" target="_blank" rel="noopener">QR Code augmenté GS1 et transition 2027&nbsp;↗</a>
         <div class="how-visual">
           <div class="scan-visual">
             <div class="qr-glyph">
@@ -1328,6 +1403,18 @@
           <div class="kv" style="border-bottom:0"><span>Statut</span><b>Fidèle</b></div>
         </div></div>
       </div>
+      <div class="how-card" data-reveal style="transition-delay:.3s">
+        <div class="how-num reveal-sm" data-reveal style="transition-delay:.3s">04</div>
+        <h3 class="reveal-sm" data-reveal style="transition-delay:.38s">Le réachat enrichit la relation</h3>
+        <p class="reveal-sm" data-reveal style="transition-delay:.46s">Lors d'un nouvel achat, le consommateur présente son QR Code promotionnel. Son utilisation est suivie, rattachée à son profil et ajoute un nouveau signal d'achat à votre base client.</p>
+        <div class="how-visual">
+          <div class="how-repurchase">
+            <div class="promo-ticket"><span>OFFRE FIDÉLITÉ</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg><b>−10%</b></div>
+            <svg class="repurchase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <div class="repurchase-profile"><b>Profil client enrichi</b><span>+1 réachat suivi</span><span>Offre utilisée</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1346,10 +1433,10 @@
           <div class="qr-aug-node-trail"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 1-1 1h-3"/></svg></div>
         </div>
         <div class="qr-aug-arrow">↓</div>
-        <div class="qr-aug-link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.46"/><path d="M14 11a5 5 0 0 0-7.07 0L4.93 12.93a5 5 0 0 0 7.07 7.07L13.46 18.5"/></svg><span>qr.{domaine}/01/{GTIN}</span></div>
+        <div class="qr-aug-link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.46"/><path d="M14 11a5 5 0 0 0-7.07 0L4.93 12.93a5 5 0 0 0 7.07 7.07L13.46 18.5"/></svg><span>qr.smartqonsumer/01/{GTIN}</span></div>
         <div class="qr-aug-arrow">↓</div>
         <div class="qr-aug-node">
-          <div class="qr-aug-node-ico dark"><img src="assets/q-mark.png" alt="Q" width="24" height="24" style="object-fit:contain"></div>
+          <div class="qr-aug-node-ico dark"><img src="assets/q-mark.png" alt="Symbole SmartQonsumer" width="24" height="24" loading="lazy" decoding="async" style="object-fit:contain"></div>
           <div><div class="qr-aug-node-title">Résolution SaaS</div><div class="qr-aug-node-sub">Les règles de votre marque décident.</div></div>
         </div>
       </div>
@@ -1377,8 +1464,7 @@
     </div>
 
     <div class="qr-aug-footnote">
-      <p><b>Sans destination active&nbsp;?</b> Un état inactif explicite prend le relais, sans page cassée.</p>
-      <p>GS1 Digital Link est le standard utilisé pour le lien produit. Aucune certification GS1 n'est revendiquée.</p>
+      <p>GS1 Digital Link est le standard utilisé pour le lien produit. Aucune certification GS1 n'est revendiquée.<br><a href="https://www.gs1.fr/qr-code-augmente-gs1" target="_blank" rel="noopener">Comprendre la transition GS1</a></p>
     </div>
   </section>
 
@@ -1463,8 +1549,51 @@
     </div>
   </section>
 
+  <!-- ============ FONCTIONNALITÉS (6 modules) ============ -->
+  <section class="feat spad" id="features" style="padding-top:64px; padding-bottom:64px">
+    <div class="sec-title" data-reveal><div class="eyebrow">Fonctionnalités</div><h2>Tout ce dont vous avez besoin, dans une seule plateforme.</h2><p>Du scan du produit à la campagne ciblée, chaque module s'appuie sur les données des précédents.</p></div>
+    <div class="feat6-grid">
+      <div class="feat6-card" data-reveal>
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
+        <h3>Contacts</h3>
+        <p>Une fiche client 360° qui se construit à chaque scan, sans ressaisie : produit préféré, provenance, statut fidélité, historique.</p>
+        <a onclick="scrollTo2('story')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.06s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
+        <h3>Produits &amp; QR Codes</h3>
+        <p>Un QR Code par produit, conforme GS1 Digital Link, avec une destination que vous choisissez et changez à tout moment.</p>
+        <a onclick="scrollTo2('qr-augmente')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.12s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
+        <h3>Club Fidélité</h3>
+        <p>Points, paliers et récompenses activables directement par vos consommateurs, aux couleurs de votre marque.</p>
+        <a onclick="scrollTo2('club-fidelite')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.18s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
+        <h3>Campagnes e-mail</h3>
+        <p>Ciblez un segment précis et envoyez une campagne en quelques clics, avec aperçu du message avant l'envoi.</p>
+        <a onclick="scrollTo2('email-automation')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.24s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
+        <h3>Automatisations</h3>
+        <p>Des scénarios déclenchés par le comportement du contact : anniversaire, entrée en sommeil, proche d'une récompense.</p>
+        <a onclick="scrollTo2('email-automation')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.3s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div>
+        <h3>Analyses</h3>
+        <p>Scans, contacts, conversion, segments : les indicateurs pour comprendre le parcours et décider de la prochaine action.</p>
+        <a onclick="scrollTo2('pilotage')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CLUB FIDÉLITÉ ============ -->
-  <section class="feat spad club-promo" id="club-fidelite">
+  <section class="feat spad club-promo product-band product-band-club" id="club-fidelite">
     <div class="club-promo-top">
       <div class="club-promo-text" data-reveal>
         <div class="eyebrow">Le Club Fidélité</div>
@@ -1530,7 +1659,7 @@
   </section>
 
   <!-- ============ E-MAILING & MARKETING AUTOMATION ============ -->
-  <section class="feat spad email-automation" id="email-automation" style="padding-top:40px; padding-bottom:40px; background:var(--color-bg-marketing-band)">
+  <section class="feat spad email-automation product-band product-band-email" id="email-automation">
     <div class="sec-title" data-reveal><div class="eyebrow">E-mailing & Marketing Automation</div><h2>La bonne audience. Le bon message.<br>Le bon moment.</h2><p>Passez de la connaissance client à une campagne concrète. Combinez les audiences, préparez le contenu et choisissez le moment de l'envoi.</p></div>
 
     <div class="ea-wizard" data-reveal>
@@ -1591,7 +1720,7 @@
   </section>
 
   <!-- ============ ANALYSES / PILOTAGE ============ -->
-  <section class="feat spad pilot-promo" id="pilotage">
+  <section class="feat spad pilot-promo product-band product-band-pilot" id="pilotage">
     <div class="sec-title" data-reveal><div class="eyebrow">Le pilotage, en continu</div><h2>Voyez ce qui crée de l'intérêt. Décidez de la suite.</h2><p>Reliez les scans, l'engagement du Club et les campagnes. Des indicateurs pour comprendre le parcours et préparer votre prochaine action.</p></div>
 
     <div class="pilot-dash" data-reveal>
@@ -1662,160 +1791,6 @@
     </div>
   </section>
 
-  <!-- ============ PRODUCT SHOWCASE (6 modules) ============ -->
-  <section class="feat spad" id="product" style="padding-top:40px; padding-bottom:40px">
-    <div class="sec-title" data-reveal><div class="eyebrow">La plateforme</div><h2>Une seule plateforme.<br>Toute la relation avec vos consommateurs.</h2><p>Du produit à la campagne, chaque module enrichit le suivant. Votre équipe garde une vision d'ensemble.</p></div>
-    <div class="product-showcase" data-reveal>
-    <div class="feature-grid">
-      <button type="button" class="feature-tile active" data-feature="contacts" onmouseenter="showFeatureTab('contacts')" onclick="showFeatureTab('contacts')">
-        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
-        <b>Contacts</b>
-      </button>
-      <button type="button" class="feature-tile" data-feature="products" onmouseenter="showFeatureTab('products')" onclick="showFeatureTab('products')">
-        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
-        <b>Produits &amp; QR Codes</b>
-      </button>
-      <button type="button" class="feature-tile" data-feature="club" onmouseenter="showFeatureTab('club')" onclick="showFeatureTab('club')">
-        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
-        <b>Club Fidélité</b>
-      </button>
-      <button type="button" class="feature-tile" data-feature="campaigns" onmouseenter="showFeatureTab('campaigns')" onclick="showFeatureTab('campaigns')">
-        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
-        <b>Campagnes e-mail</b>
-      </button>
-      <button type="button" class="feature-tile" data-feature="automations" onmouseenter="showFeatureTab('automations')" onclick="showFeatureTab('automations')">
-        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
-        <b>Automatisations</b>
-      </button>
-      <button type="button" class="feature-tile" data-feature="analytics" onmouseenter="showFeatureTab('analytics')" onclick="showFeatureTab('analytics')">
-        <div class="feature-tile-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div>
-        <b>Analyses</b>
-      </button>
-    </div>
-    <div class="device-frame" style="max-width:880px; flex:1; min-width:300px">
-      <div class="device-bar">
-        <div class="device-dots"><span class="device-dot"></span><span class="device-dot"></span><span class="device-dot"></span></div>
-        <div style="font-size:11px; font-weight:700; color:var(--muted)" id="deviceCurrentLabel">Contacts</div>
-      </div>
-      <div class="device-body" id="deviceViewClients">
-        <div class="device-list" id="deviceList">
-          <div class="device-list-head"><span>Contact</span><span>Segment</span></div>
-          <div class="device-row active"><div class="avatar" style="width:30px;height:30px;font-size:11px">CR</div><div><span class="nm">Camille Rousseau</span><span class="sg">Adeptes des bons plans</span></div></div>
-          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">TM</div><div><span class="nm">Thomas Morel</span><span class="sg">Ambassadeurs de la marque</span></div></div>
-          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">LP</div><div><span class="nm">Léa Petit</span><span class="sg">Premium engagés</span></div></div>
-          <div class="device-row"><div class="avatar" style="width:30px;height:30px;font-size:11px">SB</div><div><span class="nm">Sami Ben</span><span class="sg">Adeptes des bons plans</span></div></div>
-        </div>
-        <div class="device-detail">
-          <div class="device-detail-title">Fiche contact 360°</div>
-          <div class="dh"><div class="avatar" style="width:40px;height:40px" id="devAvatar">CR</div><div><b id="devName">Camille Rousseau</b><br><span class="tag green" id="devTag">Membre fidèle</span></div></div>
-          <div class="kv"><span>Produit préféré</span><b id="devFav">Édition Limitée n°4</b></div>
-          <div class="kv"><span>Provenance</span><b id="devOrigin">Scan chez un revendeur</b></div>
-          <div class="kv"><span>Statut fidélité</span><b id="devFreq">320 points</b></div>
-          <div class="kv" style="border-bottom:0"><span>Campagnes reçues</span><b id="devCamp">3</b></div>
-          <div style="margin-top:4px">
-            <div class="row" style="justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:4px"><span>Score d'engagement</span><span id="devEngagementVal">82 %</span></div>
-            <div class="hbar-track"><span class="hbar-fill" id="devEngagementBar" style="width:82%"></span></div>
-          </div>
-          <div class="dev-scan-history">
-            <div class="dev-scan-history-title">Historique des scans</div>
-            <div class="dev-scan-row" id="devScan1"><span id="devScan1Date">12 mars</span><span id="devScan1Ctx">Édition Limitée n°4</span></div>
-            <div class="dev-scan-row" id="devScan2"><span id="devScan2Date">28 févr.</span><span id="devScan2Ctx">Produit exemple</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="device-dash" id="deviceViewDash" style="display:none">
-        <div class="grid cards-4">
-          <div class="card kpi"><div class="top"><div class="label">Contacts connus</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/></svg></div></div><div class="val" data-count="1248">0</div><div class="delta">+126 cette semaine</div></div>
-          <div class="card kpi"><div class="top"><div class="label">Scans QR</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div></div><div class="val" data-count="3906">0</div><div class="delta">+312 cette semaine</div></div>
-          <div class="card kpi"><div class="top"><div class="label">Conversion</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12l5 5L20 6"/></svg></div></div><div class="val" data-count="34" data-suffix="%">0</div><div class="delta">+3 pts vs sem. dernière</div></div>
-          <div class="card kpi"><div class="top"><div class="label">Nouveaux contacts</div><div class="ico-pill"><svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg></div></div><div class="val" data-count="126" data-prefix="+">0</div><div class="delta flat">cette semaine</div></div>
-        </div>
-        <div class="card" style="margin-top:14px; padding:16px 18px">
-          <h3 style="margin:0">Acquisition de contacts</h3><div class="sub" style="margin-bottom:4px">Nouveaux contacts par canal, 6 dernières semaines</div>
-          <div class="chart-wrap">
-            <svg viewBox="0 0 580 170" style="width:100%; height:84px; display:block" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="var(--amber)" stop-opacity=".32"/>
-                  <stop offset="100%" stop-color="var(--amber)" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
-              <line x1="20" y1="30" x2="560" y2="30" stroke="var(--line)" stroke-width="1"/>
-              <line x1="20" y1="80" x2="560" y2="80" stroke="var(--line)" stroke-width="1"/>
-              <line x1="20" y1="130" x2="560" y2="130" stroke="var(--line)" stroke-width="1"/>
-              <path d="M20,123 C60,118 90,112 128,113 C170,114 200,108 236,110 C280,112 310,105 344,103 C385,101 415,100 452,97 C495,94 525,90 560,87" fill="none" stroke="var(--ink-soft)" stroke-width="2" stroke-linecap="round" opacity=".55"/>
-              <path d="M20,97 C60,85 90,75 128,73 C170,71 200,90 236,83 C280,74 310,55 344,53 C385,51 415,70 452,63 C495,55 525,35 560,23 L560,160 L20,160 Z" fill="url(#chartGrad)"/>
-              <path id="chartMainLine" d="M20,97 C60,85 90,75 128,73 C170,71 200,90 236,83 C280,74 310,55 344,53 C385,51 415,70 452,63 C495,55 525,35 560,23" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="560" cy="23" r="4.5" fill="var(--amber)"/>
-              <circle class="chart-pulse" cx="560" cy="23" r="4.5" fill="var(--amber)" opacity=".45"><animate attributeName="r" values="5;13;5" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".45;0;.45" dur="2.2s" repeatCount="indefinite"/></circle>
-            </svg>
-            <div class="chart-labels"><span>S-5</span><span>S-4</span><span>S-3</span><span>S-2</span><span>S-1</span><span>Cette sem.</span></div>
-          </div>
-          <div class="legend" style="margin-top:8px"><span><i style="background:var(--amber)"></i>Via QR (indirect)</span><span><i style="background:var(--ink-soft)"></i>Via page fidélité (direct)</span></div>
-        </div>
-      </div>
-      <div class="device-dash" id="deviceViewProducts" style="display:none">
-        <div class="row" style="justify-content:space-between; align-items:center; margin-bottom:14px">
-          <div><h3 style="margin:0">Catalogue produits</h3><div class="sub">Chaque produit : une Landing Page, un QR Code</div></div>
-          <div class="feature-tile-ico" style="width:34px;height:34px;border-radius:9px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
-        </div>
-        <div class="grid cards-3" style="margin-bottom:16px" id="prodKpis"></div>
-        <div class="card" style="padding:16px 16px 4px">
-          <h4 style="margin:0 0 4px">Produits les plus scannés</h4>
-          <div id="prodTopList"></div>
-        </div>
-      </div>
-      <div class="device-dash" id="deviceViewClub" style="display:none">
-        <div class="club-mini-card" style="padding:14px 16px">
-          <div class="club-mini-card-top"><span>Club SmartQonsumer</span><span class="tag" style="background:rgba(255,255,255,.22); color:#fff">Membre</span></div>
-          <div class="club-mini-card-name" style="margin-top:8px">Camille Rousseau</div>
-          <div class="club-mini-card-pts">680 pts</div>
-          <div class="club-mini-card-bar"><span style="width:68%"></span></div>
-        </div>
-        <div class="row" style="gap:8px; margin-top:10px; flex-wrap:wrap">
-          <div class="reward-chip" style="padding:7px 12px"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 5 5 19M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg></div><div><b>Réduction fidélité</b><span>100 pts</span></div></div>
-          <div class="reward-chip" style="padding:7px 12px"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div><div><b>Produit offert</b><span>250 pts</span></div></div>
-          <div class="reward-chip" style="padding:7px 12px"><div class="reward-chip-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.6 6.6L22 9l-5.5 4.6L18 21l-6-3.9L6 21l1.5-7.4L2 9l7.4-.4L12 2z"/></svg></div><div><b>Expérience personnalisée</b><span>300 pts</span></div></div>
-        </div>
-        <div class="card" style="margin-top:10px; padding:10px 16px">
-          <h4 style="margin:0 0 4px">Activité récente</h4>
-          <div class="kv"><span>Produit offert — obtenue</span><b class="muted" style="font-weight:400">il y a 2 jours</b></div>
-          <div class="kv" style="border-bottom:0"><span>Points gagnés — Scan produit</span><b class="muted" style="font-weight:400">il y a 5 jours</b></div>
-        </div>
-      </div>
-      <div class="device-dash" id="deviceViewCampaigns" style="display:none">
-        <h3 style="margin:0 0 2px">Campagnes e-mail</h3><div class="sub" style="margin-bottom:16px">Vue d'ensemble, 90 derniers jours</div>
-        <div class="grid cards-3" style="margin-bottom:16px" id="campKpis"></div>
-        <div class="card" style="padding:16px 16px 4px">
-          <h4 style="margin:0 0 4px">Taux d'ouverture par campagne</h4>
-          <div id="campTopList"></div>
-        </div>
-      </div>
-      <div class="device-dash" id="deviceViewAutomations" style="display:none">
-        <div class="row" style="justify-content:space-between; align-items:center; margin-bottom:4px">
-          <h3 style="margin:0">Réactivation contacts en sommeil</h3>
-          <span class="tag green">● Actif</span>
-        </div>
-        <div class="sub" style="margin-bottom:16px">Se déclenche automatiquement, sans intervention manuelle</div>
-        <div class="flow">
-          <div class="flow-block trigger"><div class="k">Déclencheur</div><div class="t">Entrée en sommeil</div><div class="d">60 jours d'inactivité</div></div>
-          <div class="flow-arrow"><span class="lbl">Immédiat</span><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg></div>
-          <div class="flow-block"><div class="k">Message 1</div><div class="t">On ne vous a pas vu depuis un moment</div></div>
-          <div class="flow-arrow"><span class="lbl">J+7</span><svg viewBox="0 0 34 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h28M23 2l6 5-6 5"/></svg></div>
-          <div class="flow-block"><div class="k">Message 2</div><div class="t">Toujours là pour vous</div></div>
-        </div>
-        <div class="grid cards-3" style="margin-top:12px" id="autoKpis"></div>
-        <div class="card" style="margin-top:8px; padding:7px 16px">
-          <h4 style="margin:0 0 2px; font-size:12px">Journal des exécutions</h4>
-          <div class="kv" style="padding:4px 0; font-size:11.5px"><span>Léa Petit — entrée dans l'automatisation</span><span class="tag grey" style="font-size:9px">Démarrée</span></div>
-          <div class="kv" style="padding:4px 0; font-size:11.5px"><span>Thomas Morel — message 1 envoyé</span><span class="tag teal" style="font-size:9px">En cours</span></div>
-          <div class="kv" style="padding:4px 0; font-size:11.5px; border-bottom:0"><span>Camille Rousseau — message 2 envoyé</span><span class="tag green" style="font-size:9px">Terminée</span></div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </section>
-
   <!-- ============ SECURITY / TRUST ============ -->
   <section class="feat spad security-band" id="security">
     <div class="security-row">
@@ -1824,7 +1799,7 @@
         <div class="eyebrow">La confiance fait partie du parcours</div>
         <h2>La relation client commence par le respect des données.</h2>
         <p>Des espaces distincts, des accès définis et des consentements pris en compte. Une base pour organiser vos usages en responsabilité.</p>
-        <button type="button" class="security-rgpd-link" onclick="toast('Informations RGPD - démo statique')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5 5 5.8v5.6c0 5 3 8.4 7 9.9 4-1.5 7-4.9 7-9.9V5.8L12 2.5Z"/><path d="M9 12.2l2 2 4-4.2"/></svg>Consulter les informations RGPD<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <a class="security-rgpd-link" href="legal/rgpd.html" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5 5 5.8v5.6c0 5 3 8.4 7 9.9 4-1.5 7-4.9 7-9.9V5.8L12 2.5Z"/><path d="M9 12.2l2 2 4-4.2"/></svg>Consulter les informations RGPD<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <div class="security-cf-badge" data-reveal style="transition-delay:.24s">
           <div class="security-cf-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6.5 17a4 4 0 0 1-.5-7.97A5.5 5.5 0 0 1 16.4 8.1 4.5 4.5 0 0 1 16.5 17h-10z"/><path d="m10 13.2 1.6 1.6 3-3.2"/></svg></div>
           <div><b>Cloudflare</b><span>Protection anti-robots et contrôle des autorisations dans les parcours concernés.</span></div>
@@ -1880,30 +1855,29 @@
     </div>
   </section>
 
-
+  </main>
   <footer class="home-footer">
     <div class="sq-container">
       <div class="hf-grid">
         <div class="hf-brand">
-          <img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer">
+          <img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257" loading="lazy" decoding="async">
           <p>Le CRM qui reconnecte les marques vendues en circuits indirects à leurs consommateurs finaux. Prototype de démonstration.</p>
           <div class="hf-social">
-            <a onclick="toast('Réseaux sociaux — bientôt disponibles')" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h3v11H4z"/><circle cx="5.5" cy="5.5" r="1.6"/><path d="M11 9h3v1.8c.6-1.1 1.8-2 3.4-2 3 0 3.6 1.9 3.6 4.5V20h-3v-6.1c0-1.5 0-3.3-2-3.3s-2.4 1.6-2.4 3.2V20h-3z"/></svg></a>
-            <a onclick="toast('Réseaux sociaux — bientôt disponibles')" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+            <a href="https://www.linkedin.com/in/nicolas-wicke-09b771160/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h3v11H4z"/><circle cx="5.5" cy="5.5" r="1.6"/><path d="M11 9h3v1.8c.6-1.1 1.8-2 3.4-2 3 0 3.6 1.9 3.6 4.5V20h-3v-6.1c0-1.5 0-3.3-2-3.3s-2.4 1.6-2.4 3.2V20h-3z"/></svg></a>
           </div>
         </div>
-        <div class="hf-col"><h4>Produit</h4><ul class="hf-links"><li><a onclick="scrollTo2('product')">Produit</a></li><li><a onclick="scrollTo2('how')">Comment ça marche</a></li><li><a onclick="scrollTo2('story')">Fonctionnalités</a></li></ul></div>
-        <div class="hf-col"><h4>Ressources</h4><ul class="hf-links"><li><a onclick="scrollTo2('faq')">FAQ</a></li><li><a onclick="toast('Plan du site — bientôt disponible')">Plan du site</a></li></ul></div>
-        <div class="hf-col"><h4>Légal</h4><ul class="hf-links"><li><a onclick="toast('Page légale — démo statique')">CGV</a></li><li><a onclick="toast('Page légale — démo statique')">Confidentialité</a></li><li><a onclick="toast('Page légale — démo statique')">RGPD</a></li><li><a onclick="toast('Page légale — démo statique')">Mentions légales</a></li></ul></div>
+        <div class="hf-col"><h4>Produit</h4><ul class="hf-links"><li><a href="#how" onclick="scrollTo2('how'); return false">Comment ça marche</a></li><li><a href="#features" onclick="scrollTo2('features'); return false">Fonctionnalités</a></li><li><a href="#club-fidelite" onclick="scrollTo2('club-fidelite'); return false">Club Fidélité</a></li><li><a href="#email-automation" onclick="scrollTo2('email-automation'); return false">E-mailing &amp; automatisation</a></li><li><a href="#pilotage" onclick="scrollTo2('pilotage'); return false">Pilotage</a></li></ul></div>
+        <div class="hf-col"><h4>Ressources</h4><ul class="hf-links"><li><a href="#qr-augmente" onclick="scrollTo2('qr-augmente'); return false">QR Code augmenté &amp; GS1</a></li><li><a href="#security" onclick="scrollTo2('security'); return false">Sécurité &amp; RGPD</a></li><li><a href="#faq" onclick="scrollTo2('faq'); return false">FAQ</a></li></ul></div>
+        <div class="hf-col"><h4>Légal</h4><ul class="hf-links"><li><a href="legal/cgv.html" target="_blank" rel="noopener">CGV</a></li><li><a href="legal/confidentialite.html" target="_blank" rel="noopener">Confidentialité</a></li><li><a href="legal/rgpd.html" target="_blank" rel="noopener">RGPD</a></li><li><a href="legal/mentions-legales.html" target="_blank" rel="noopener">Mentions légales</a></li></ul></div>
       </div>
       <div class="hf-ai-row">
-        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Résumé IA</a>
-        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>ChatGPT</a>
-        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Claude</a>
-        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Gemini</a>
-        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Grok</a>
-        <a onclick="toast('Résumé IA — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Perplexity</a>
-        <a onclick="toast('Version Markdown — bientôt disponible')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Markdown</a>
+        <a href="resume-ia.md" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Résumé IA</a>
+        <a href="https://chatgpt.com/" onclick="openAiService('chatgpt'); return false" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>ChatGPT</a>
+        <a href="https://claude.ai/new" onclick="openAiService('claude'); return false" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Claude</a>
+        <a href="https://gemini.google.com/app" onclick="openAiService('gemini'); return false" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Gemini</a>
+        <a href="https://grok.com/" onclick="openAiService('grok'); return false" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Grok</a>
+        <a href="https://www.perplexity.ai/" onclick="openAiService('perplexity'); return false" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 4.6L18 8l-4.2 1.4L12 14l-1.8-4.6L6 8l4.2-1.4L12 2z"/><path d="M19 14l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg>Perplexity</a>
+        <a href="resume-ia.md" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Markdown</a>
       </div>
     </div>
     <div class="hf-bottom">
@@ -1913,18 +1887,18 @@
           <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg>Connexion sécurisée (MFA)</span>
           <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><g transform="translate(0,-1.3)"><path d="M6 10V7a6 6 0 0 1 12 0v3"/><rect x="4" y="10" width="16" height="10" rx="2"/></g></svg>Vos données vous appartiennent</span>
         </div>
-        <div class="hf-big-logo"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer"></div>
-        <div class="hf-legal"><span>© 2026 SmartQonsumer — données fictives</span><span class="hf-note">Prototype non contractuel</span></div>
+        <div class="hf-big-logo"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257" loading="lazy" decoding="async"></div>
+        <div class="hf-legal"><span>© 2026 SmartQonsumer</span></div>
       </div>
     </div>
   </footer>
 </div>
 
-<div class="app" id="appShell" style="display:none">
+<div class="app" id="appShell" style="display:none" data-nosnippet aria-hidden="true">
   <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar(false)"></div>
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand demo"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" style="height:20px;width:auto;display:block;align-self:center"></div>
+    <div class="brand demo"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257" loading="lazy" decoding="async" style="height:20px;width:auto;display:block;align-self:center"></div>
     <nav class="nav" id="nav">
       <button data-route="dash" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Tableau de bord</button>
 
@@ -2000,7 +1974,7 @@
   <div class="main">
     <header class="topbar">
       <button class="hamburger" onclick="toggleSidebar()" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-      <h1 id="pageTitle">Tableau de bord</h1>
+      <div class="page-title" id="pageTitle" role="heading" aria-level="1">Tableau de bord</div>
       <div class="spacer"></div>
       <div class="demo-badge">DÉMO · données fictives</div>
       <div class="dropdown-wrap">
@@ -2639,12 +2613,26 @@
     'settings.billing':{screenId:'settings-billing', title:'Abonnement', group:'settings', onEnter:()=>renderSettings()},
     'settings.email':{screenId:'settings-email', title:'Configuration e-mails', group:'settings', onEnter:()=>renderSettingsEmail()},
   };
-  function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
+  function enterApp(){document.getElementById('home').style.display='none'; const app=document.getElementById('appShell'); app.style.display='flex'; app.setAttribute('aria-hidden','false'); go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function openCalendly(){
     if(window.Calendly && typeof Calendly.initPopupWidget==='function'){ Calendly.initPopupWidget({url:'https://calendly.com/nicolas-wicke/30min'}); }
     else { window.open('https://calendly.com/nicolas-wicke/30min','_blank','noopener'); }
   }
-  function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
+  function openAiService(service){
+    const summaryUrl=new URL('resume-ia.md',window.location.href).href;
+    const prompt=`Consulte le résumé de SmartQonsumer disponible à cette adresse : ${summaryUrl}\n\nPrésente-moi clairement SmartQonsumer : le problème résolu, son fonctionnement, ses fonctionnalités clés et les bénéfices pour une marque qui vend ses produits en circuit indirect.`;
+    const encodedPrompt=encodeURIComponent(prompt);
+    const serviceUrls={
+      chatgpt:`https://chatgpt.com/?prompt=${encodedPrompt}`,
+      claude:`https://claude.ai/new?q=${encodedPrompt}`,
+      gemini:`https://gemini.google.com/app?prompt=${encodedPrompt}`,
+      grok:`https://grok.com/?q=${encodedPrompt}`,
+      perplexity:`https://www.perplexity.ai/search?q=${encodedPrompt}`
+    };
+    const url=serviceUrls[service];
+    if(url) window.open(url,'_blank','noopener,noreferrer');
+  }
+  function showHome(){const app=document.getElementById('appShell'); app.style.display='none'; app.setAttribute('aria-hidden','true'); document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
   function scrollTo2(id){const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:'smooth'});}
   function toggleMobileMenu(open){
     const m = document.getElementById('mobileMenu');
@@ -6112,7 +6100,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       body:'<div class="hj-checkout-top"><div class="hj-checkout-ico">'+HJ_ICO_MONITOR+'CAISSE</div>'+hjProdBox('small')+'</div>'
         +'<div class="hj-codes"><div class="hj-code">'+HJ_ICO_BARCODE+'<b>EAN-13</b><span>3761482950319</span></div><div class="hj-code">'+HJ_ICO_QR+'<b>QR Code GS1</b><span>Même GTIN</span></div></div>',
       check:["Produit présenté en caisse","EAN et QR sur le produit","Même identifiant produit","Achat enregistré en caisse"],
-      fine:"Objectif GS1 : lecture des codes 2D en caisse d'ici fin 2027, en complément de l'EAN. "+'<a onclick="toast(&#39;Transition GS1 - demo statique&#39;)">Comprendre la transition GS1</a>' },
+      fine:"Objectif GS1 : lecture des codes 2D en caisse d'ici fin 2027, en complément de l'EAN. "+'<a href="https://www.gs1.fr/qr-code-augmente-gs1" target="_blank" rel="noopener">Comprendre la transition GS1</a>' },
     { title:"Le consommateur scanne le produit",
       desc:"Thomas, un consommateur, vise le QR Code du produit avec son téléphone et ouvre le GS1 Digital Link. La résolution du lien détermine la destination configurée.",
       headIco:HJ_ICO_SCAN, headLabel:"Dans les mains du consommateur",
@@ -6121,7 +6109,7 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     { title:"SmartQonsumer ouvre l'expérience choisie",
       desc:"SmartQonsumer ouvre la destination associée au QR Code par la marque : son Club de Fidélité, sa page produit personnalisée ou son expérience digitale existante.",
       headIco:HJ_ICO_SCAN, headLabel:"Résolution dans SmartQonsumer",
-      body:'<div class="hj-resolve"><div class="hj-resolve-brand"><img src="assets/q-mark.png" alt="Q"><span>SmartQonsumer</span></div>'
+      body:'<div class="hj-resolve"><div class="hj-resolve-brand"><img src="assets/q-mark.png" alt="Symbole SmartQonsumer" width="244" height="257"><span>SmartQonsumer</span></div>'
         +'<div class="hj-resolve-list"><div class="hj-resolve-item active">Club de Fidélité</div><div class="hj-resolve-item">Ou page personnalisée</div><div class="hj-resolve-item">Ou expérience existante</div></div></div>',
       check:["Lien produit reconnu","Club de Fidélité de la marque","Ou page produit personnalisée","Ou expérience digitale existante"] },
     { title:"Le membre gagne des points",
@@ -6219,6 +6207,46 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     if(!reduce){ hjSetPlaying(true); }
   }
 
+  const HERO_VIDEO_PLAY_ICON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  const HERO_VIDEO_PAUSE_ICON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+  const HERO_VIDEO_EXPAND_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>';
+  const HERO_VIDEO_REDUCE_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h5V3M21 8h-5V3M3 16h5v5M21 16h-5v5"/></svg>';
+
+  function initHeroVideo(){
+    const video=document.getElementById('heroVideo');
+    const frame=video && video.closest('.hero-video-frame');
+    const playBtn=document.getElementById('heroVideoPlay');
+    const fullscreenBtn=document.getElementById('heroVideoFullscreen');
+    if(!video || !frame || !playBtn || !fullscreenBtn) return;
+
+    const syncPlayButton=()=>{
+      playBtn.innerHTML=video.paused ? HERO_VIDEO_PLAY_ICON : HERO_VIDEO_PAUSE_ICON;
+      playBtn.setAttribute('aria-label', video.paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
+    };
+    const syncFullscreenButton=()=>{
+      const expanded=document.fullscreenElement===frame;
+      fullscreenBtn.innerHTML=expanded ? HERO_VIDEO_REDUCE_ICON : HERO_VIDEO_EXPAND_ICON;
+      fullscreenBtn.setAttribute('aria-label', expanded ? 'Quitter le plein écran' : 'Afficher la vidéo en plein écran');
+    };
+
+    playBtn.addEventListener('click', ()=>{ video.paused ? video.play() : video.pause(); });
+    video.addEventListener('click', ()=>{ video.paused ? video.play() : video.pause(); });
+    video.addEventListener('play', syncPlayButton);
+    video.addEventListener('pause', syncPlayButton);
+    fullscreenBtn.addEventListener('click', async ()=>{
+      if(document.fullscreenElement===frame){
+        await document.exitFullscreen();
+      } else if(frame.requestFullscreen){
+        await frame.requestFullscreen();
+      } else if(video.webkitEnterFullscreen){
+        video.webkitEnterFullscreen();
+      }
+    });
+    document.addEventListener('fullscreenchange', syncFullscreenButton);
+    syncPlayButton();
+    syncFullscreenButton();
+  }
+
 
   // ===== Homepage: scroll reveal, header shrink, animated counters =====
   (function(){
@@ -6263,147 +6291,12 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
       counters.forEach(animateCount);
     }
 
-    // cycling CRM preview (product showcase)
-    const deviceRows = document.querySelectorAll('#deviceList .device-row');
-    if(deviceRows.length && !reduceMotion){
-      const deviceData = [
-        {initials:'CR', name:'Camille Rousseau', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', points:'320 points', origin:'Scan chez un revendeur', camp:'3', engagement:82, scans:[['12 mars','Édition Limitée n°4'],['28 févr.','Produit exemple']]},
-        {initials:'TM', name:'Thomas Morel', tag:'Nouveau contact', tagClass:'grey', fav:'Coffret Découverte', points:'15 points', origin:'Scan en magasin', camp:'0', engagement:35, scans:[['9 mars','Coffret Découverte']]},
-        {initials:'LP', name:'Léa Petit', tag:'Membre fidèle', tagClass:'green', fav:'Édition Limitée n°4', points:'540 points', origin:'Scan à un événement', camp:'5', engagement:94, scans:[['14 mars','Édition Limitée n°4'],['2 mars','Édition Limitée n°4']]},
-        {initials:'SB', name:'Sami Ben', tag:'À réactiver', tagClass:'teal', fav:'Coffret Découverte', points:'95 points', origin:'Scan en magasin', camp:'1', engagement:58, scans:[['30 janv.','Coffret Découverte']]},
-      ];
-      let devIdx = 0;
-      setInterval(()=>{
-        deviceRows.forEach(r=>r.classList.remove('active'));
-        devIdx = (devIdx + 1) % deviceData.length;
-        deviceRows[devIdx].classList.add('active');
-        const d = deviceData[devIdx];
-        document.getElementById('devAvatar').textContent = d.initials;
-        document.getElementById('devName').textContent = d.name;
-        const tagEl = document.getElementById('devTag');
-        tagEl.textContent = d.tag; tagEl.className = 'tag ' + d.tagClass;
-        document.getElementById('devFav').textContent = d.fav;
-        document.getElementById('devFreq').textContent = d.points;
-        document.getElementById('devOrigin').textContent = d.origin;
-        document.getElementById('devCamp').textContent = d.camp;
-        document.getElementById('devEngagementVal').textContent = d.engagement + ' %';
-        document.getElementById('devEngagementBar').style.width = d.engagement + '%';
-        const scan1 = document.getElementById('devScan1'), scan2 = document.getElementById('devScan2');
-        document.getElementById('devScan1Date').textContent = d.scans[0][0];
-        document.getElementById('devScan1Ctx').textContent = d.scans[0][1];
-        scan1.style.display = '';
-        if(d.scans[1]){
-          document.getElementById('devScan2Date').textContent = d.scans[1][0];
-          document.getElementById('devScan2Ctx').textContent = d.scans[1][1];
-          scan2.style.display = '';
-        } else {
-          scan2.style.display = 'none';
-        }
-      }, 2800);
-    }
-    initProductShowcase();
-    animatePaneMetrics(document.getElementById('deviceViewClients'));
     initHeroJourney();
+    initHeroVideo();
   })();
-
-  const FEATURE_PANES={
-    contacts:{view:'deviceViewClients', display:'grid', label:'Contacts'},
-    products:{view:'deviceViewProducts', display:'block', label:'Produits & QR Codes'},
-    club:{view:'deviceViewClub', display:'block', label:'Club Fidélité'},
-    campaigns:{view:'deviceViewCampaigns', display:'block', label:'Campagnes e-mail'},
-    automations:{view:'deviceViewAutomations', display:'block', label:'Automatisations'},
-    analytics:{view:'deviceViewDash', display:'block', label:'Analyses'},
-  };
-  function initProductShowcase(){
-    const prodKpis=document.getElementById('prodKpis');
-    if(prodKpis) prodKpis.innerHTML=[
-      kpiCardHtml('Produits actifs','11'),
-      kpiCardHtml('Scans (30 jours)','3 906'),
-      kpiCardHtml('Conversion','34 %'),
-    ].join('');
-    const prodTop=document.getElementById('prodTopList');
-    if(prodTop) prodTop.innerHTML=hbarListHtml([
-      {label:'Édition Limitée n°4', value:612},
-      {label:'Blend Signature', value:348},
-      {label:'Coffret Découverte', value:201},
-    ]);
-    const campKpis=document.getElementById('campKpis');
-    if(campKpis) campKpis.innerHTML=[
-      kpiCardHtml('Campagnes envoyées','6'),
-      kpiCardHtml('Destinataires','268'),
-      kpiCardHtml("Taux d'ouverture moyen",'43 %'),
-    ].join('');
-    const campTop=document.getElementById('campTopList');
-    if(campTop) campTop.innerHTML=hbarListHtml([
-      {label:'Nouvelle collection', value:54, display:'54 %'},
-      {label:'Sélection VIP — avant-première', value:44, display:'44 %'},
-      {label:'Relance club — printemps', value:28, display:'28 %'},
-    ],100);
-    const autoKpis=document.getElementById('autoKpis');
-    if(autoKpis) autoKpis.innerHTML=[
-      kpiCardHtml('Contacts entrés','31'),
-      kpiCardHtml('Terminées','18'),
-      kpiCardHtml("Taux d'ouverture",'35 %'),
-    ].join('');
-  }
-  function animateKpiValue(el){
-    const raw=el.textContent.trim();
-    const m=raw.match(/^([^\d]*)([\d\s]+)([^\d]*)$/);
-    if(!m) return;
-    const prefix=m[1], numStr=m[2].replace(/\s/g,''), suffix=m[3];
-    const target=parseInt(numStr,10); if(isNaN(target)) return;
-    const start=performance.now(), dur=850;
-    function tick(now){
-      const p=Math.min(1,(now-start)/dur);
-      const eased=1-Math.pow(1-p,3);
-      el.textContent=prefix+Math.round(target*eased).toLocaleString('fr-FR')+suffix;
-      if(p<1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-  function animatePaneMetrics(paneEl){
-    if(!paneEl) return;
-    paneEl.querySelectorAll('.kpi .val').forEach(el=>animateKpiValue(el));
-    paneEl.querySelectorAll('.hbar-fill, .club-mini-card-bar span').forEach(bar=>{
-      const targetWidth=bar.style.width||'0%';
-      bar.style.transition='none';
-      bar.style.width='0%';
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
-        bar.style.transition='width .7s cubic-bezier(.16,1,.3,1)';
-        bar.style.width=targetWidth;
-      }));
-    });
-  }
-  function animateChartDraw(paneEl){
-    const path=paneEl.querySelector('#chartMainLine'); if(!path) return;
-    const len=path.getTotalLength();
-    path.style.transition='none';
-    path.style.strokeDasharray=len;
-    path.style.strokeDashoffset=len;
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      path.style.transition='stroke-dashoffset 1s cubic-bezier(.16,1,.3,1)';
-      path.style.strokeDashoffset='0';
-    }));
-  }
-  function showFeatureTab(key){
-    const cfg=FEATURE_PANES[key]; if(!cfg) return;
-    let targetEl=null;
-    Object.entries(FEATURE_PANES).forEach(([k,c])=>{
-      const el=document.getElementById(c.view); if(!el) return;
-      if(k===key){ el.style.display=c.display; targetEl=el; } else { el.style.display='none'; }
-    });
-    document.querySelectorAll('.feature-tile').forEach(t=>t.classList.toggle('active', t.dataset.feature===key));
-    const labelEl=document.getElementById('deviceCurrentLabel'); if(labelEl) labelEl.textContent=cfg.label;
-    if(targetEl){
-      animatePaneMetrics(targetEl);
-      if(key==='analytics') animateChartDraw(targetEl);
-    }
-  }
 </script>
-<!-- Calendly badge widget begin -->
+<!-- Calendly popup widget assets (used by openCalendly() on the "Nous contacter" / "Contacter l'équipe commerciale" buttons only) -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-<script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/nicolas-wicke/30min', text: 'Schedule time with me', color: '#0069ff', textColor: '#ffffff', branding: true }); }</script>
-<!-- Calendly badge widget end -->
 </body>
 </html>
