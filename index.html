@@ -988,10 +988,6 @@
   .how-card h3{margin:0; font-size:19px; color:var(--ink); letter-spacing:-.2px}
   .how-card p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.55}
   .how-visual{display:flex; justify-content:center; align-items:center; position:relative; flex:1; margin-top:18px; padding-bottom:8px}
-  .mechanism-band{position:relative; overflow:hidden; background:linear-gradient(135deg, #EDF8F2 0%, #F2FAF8 52%, #EEF6FB 100%); border-top:1px solid rgba(26,137,72,.14); border-bottom:1px solid rgba(14,111,176,.13)}
-  .mechanism-band::before{content:""; position:absolute; width:360px; height:360px; right:-120px; top:-180px; border-radius:50%; background:radial-gradient(circle, rgba(14,111,176,.13), transparent 68%); pointer-events:none}
-  .mechanism-band .sec-title,.mechanism-band .how-grid{position:relative; z-index:1}
-  .mechanism-band .eyebrow{display:inline-flex; padding:7px 12px; border-radius:999px; background:#fff; border:1px solid rgba(26,137,72,.2); box-shadow:var(--shadow-sm)}
   .how-gs1-link{display:inline-flex; align-items:center; gap:5px; color:var(--accent); font-size:12px; font-weight:750; line-height:1.4; text-decoration:none}
   .how-gs1-link:hover{text-decoration:underline}
   .how-gs1-link:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:3px}
@@ -1348,51 +1344,8 @@
     </div>
   </section>
 
-  <!-- ============ FONCTIONNALITÉS (6 modules) ============ -->
-  <section class="feat spad" id="features" style="padding-top:64px; padding-bottom:64px">
-    <div class="sec-title" data-reveal><div class="eyebrow">Fonctionnalités</div><h2>Tout ce dont vous avez besoin, dans une seule plateforme.</h2><p>Du scan du produit à la campagne ciblée, chaque module s'appuie sur les données des précédents.</p></div>
-    <div class="feat6-grid">
-      <div class="feat6-card" data-reveal>
-        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
-        <h3>Contacts</h3>
-        <p>Une fiche client 360° qui se construit à chaque scan, sans ressaisie : produit préféré, provenance, statut fidélité, historique.</p>
-        <a onclick="scrollTo2('story')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="feat6-card" data-reveal style="transition-delay:.06s">
-        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
-        <h3>Produits &amp; QR Codes</h3>
-        <p>Un QR Code par produit, conforme GS1 Digital Link, avec une destination que vous choisissez et changez à tout moment.</p>
-        <a onclick="scrollTo2('qr-augmente')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="feat6-card" data-reveal style="transition-delay:.12s">
-        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
-        <h3>Club Fidélité</h3>
-        <p>Points, paliers et récompenses activables directement par vos consommateurs, aux couleurs de votre marque.</p>
-        <a onclick="scrollTo2('club-fidelite')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="feat6-card" data-reveal style="transition-delay:.18s">
-        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
-        <h3>Campagnes e-mail</h3>
-        <p>Ciblez un segment précis et envoyez une campagne en quelques clics, avec aperçu du message avant l'envoi.</p>
-        <a onclick="scrollTo2('email-automation')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="feat6-card" data-reveal style="transition-delay:.24s">
-        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
-        <h3>Automatisations</h3>
-        <p>Des scénarios déclenchés par le comportement du contact : anniversaire, entrée en sommeil, proche d'une récompense.</p>
-        <a onclick="scrollTo2('email-automation')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="feat6-card" data-reveal style="transition-delay:.3s">
-        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div>
-        <h3>Analyses</h3>
-        <p>Scans, contacts, conversion, segments : les indicateurs pour comprendre le parcours et décider de la prochaine action.</p>
-        <a onclick="scrollTo2('pilotage')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ HOW (4 steps) ============ -->
-  <section class="feat spad mechanism-band" id="how" style="padding-top:72px; padding-bottom:72px">
+  <section class="feat spad product-band product-band-club" id="how">
     <div class="sec-title" data-reveal><div class="eyebrow">Le mécanisme</div><h2>Chaque scan devient une opportunité.</h2></div>
     <div class="how-grid">
       <div class="how-card" data-reveal>
@@ -1588,6 +1541,49 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FONCTIONNALITÉS (6 modules) ============ -->
+  <section class="feat spad" id="features" style="padding-top:64px; padding-bottom:64px">
+    <div class="sec-title" data-reveal><div class="eyebrow">Fonctionnalités</div><h2>Tout ce dont vous avez besoin, dans une seule plateforme.</h2><p>Du scan du produit à la campagne ciblée, chaque module s'appuie sur les données des précédents.</p></div>
+    <div class="feat6-grid">
+      <div class="feat6-card" data-reveal>
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>
+        <h3>Contacts</h3>
+        <p>Une fiche client 360° qui se construit à chaque scan, sans ressaisie : produit préféré, provenance, statut fidélité, historique.</p>
+        <a onclick="scrollTo2('story')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.06s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg></div>
+        <h3>Produits &amp; QR Codes</h3>
+        <p>Un QR Code par produit, conforme GS1 Digital Link, avec une destination que vous choisissez et changez à tout moment.</p>
+        <a onclick="scrollTo2('qr-augmente')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.12s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.3-9.3-8.2C1 9.5 2.4 6 5.8 6c2 0 3.2 1.2 4.2 2.6C11 7.2 12.2 6 14.2 6c3.4 0 4.8 3.5 3.1 6.8C19 16.7 12 21 12 21z"/></svg></div>
+        <h3>Club Fidélité</h3>
+        <p>Points, paliers et récompenses activables directement par vos consommateurs, aux couleurs de votre marque.</p>
+        <a onclick="scrollTo2('club-fidelite')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.18s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
+        <h3>Campagnes e-mail</h3>
+        <p>Ciblez un segment précis et envoyez une campagne en quelques clics, avec aperçu du message avant l'envoi.</p>
+        <a onclick="scrollTo2('email-automation')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.24s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
+        <h3>Automatisations</h3>
+        <p>Des scénarios déclenchés par le comportement du contact : anniversaire, entrée en sommeil, proche d'une récompense.</p>
+        <a onclick="scrollTo2('email-automation')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="feat6-card" data-reveal style="transition-delay:.3s">
+        <div class="feat6-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div>
+        <h3>Analyses</h3>
+        <p>Scans, contacts, conversion, segments : les indicateurs pour comprendre le parcours et décider de la prochaine action.</p>
+        <a onclick="scrollTo2('pilotage')">Découvrir<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
   </section>
