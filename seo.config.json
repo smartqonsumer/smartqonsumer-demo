@@ -1,0 +1,18 @@
+{
+  "siteName": "SmartQonsumer",
+  "siteUrl": "https://smartqonsumer.com",
+  "locale": "fr-FR",
+  "defaultTitle": "CRM pour marques en circuits indirects | SmartQonsumer",
+  "defaultDescription": "Transformez chaque produit vendu en point de contact direct : QR Code GS1, CRM, fidélité et campagnes pour mieux connaître vos consommateurs.",
+  "defaultImage": "/assets/SmartQonsumeR-home-v1-cover.png",
+  "indexablePages": [
+    "/"
+  ],
+  "noindexPages": [
+    "/404.html",
+    "/legal/cgv.html",
+    "/legal/confidentialite.html",
+    "/legal/mentions-legales.html",
+    "/legal/rgpd.html"
+  ]
+}
