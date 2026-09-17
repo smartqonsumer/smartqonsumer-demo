@@ -384,7 +384,6 @@
   .sq-logo{display:flex; flex:none; border:0}
   .sq-logo img{height:20px; width:auto; display:block}
   .hn-left{display:flex; align-items:center; gap:14px; flex:none}
-  .hn-demo{font-size:10px; font-weight:800; letter-spacing:.4px; color:var(--color-brand-400); background:var(--color-neutral-900); padding:4px 9px; border-radius:999px; flex:none}
 
   .sq-nav{display:flex; align-items:center; gap:2px; flex:1 1 auto; min-width:0; margin-left:12px}
   .sq-nav-item{position:relative}
@@ -1097,6 +1096,7 @@
   .sq-mm-row svg{width:17px; height:17px; color:var(--color-neutral-400); flex:none}
   .sq-mm-foot{flex:none; padding:20px; border-top:1px solid var(--color-border); display:flex; flex-direction:column; gap:10px}
   .sq-mm-foot .sq-cta{width:100%; height:44px; justify-content:center}
+  body.mobile-menu-open .calendly-badge-widget{display:none!important}
 
   /* toggles */
   .switch{position:relative; width:42px; height:24px; flex:0 0 42px}
@@ -1186,7 +1186,6 @@
     <div class="sq-container">
       <div class="hn-left">
         <a class="sq-logo" href="#" onclick="return false" aria-label="SmartQonsumer — accueil"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer"></a>
-        <span class="hn-demo">DÉMO · données fictives</span>
       </div>
       <nav class="sq-nav">
         <div class="sq-nav-item"><button type="button" onclick="scrollTo2('product')">Solution</button><span aria-hidden="true"></span></div>
@@ -2642,8 +2641,8 @@
   };
   function enterApp(){document.getElementById('home').style.display='none'; document.getElementById('appShell').style.display='flex'; go('dash'); if(typeof toggleSidebar==='function')toggleSidebar(false); window.scrollTo(0,0);}
   function openCalendly(){
-    if(window.Calendly && typeof Calendly.initPopupWidget==='function'){ Calendly.initPopupWidget({url:'https://calendly.com/a-breton-likyly/30min'}); }
-    else { window.open('https://calendly.com/a-breton-likyly/30min','_blank','noopener'); }
+    if(window.Calendly && typeof Calendly.initPopupWidget==='function'){ Calendly.initPopupWidget({url:'https://calendly.com/nicolas-wicke/30min'}); }
+    else { window.open('https://calendly.com/nicolas-wicke/30min','_blank','noopener'); }
   }
   function showHome(){document.getElementById('appShell').style.display='none'; document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
   function scrollTo2(id){const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:'smooth'});}
@@ -2651,6 +2650,7 @@
     const m = document.getElementById('mobileMenu');
     if(!m) return;
     m.classList.toggle('open', open);
+    document.body.classList.toggle('mobile-menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   }
   function mobileNavGo(id){ toggleMobileMenu(false); setTimeout(()=>scrollTo2(id), 200); }
@@ -6400,8 +6400,10 @@ CODE-0003">${r&&r.codesPool?r.codesPool.join('\n'):''}</textarea></div>
     }
   }
 </script>
-<!-- Calendly popup widget assets (used by openCalendly() on the "Nous contacter" buttons) -->
+<!-- Calendly badge widget begin -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/nicolas-wicke/30min', text: 'Schedule time with me', color: '#0069ff', textColor: '#ffffff', branding: true }); }</script>
+<!-- Calendly badge widget end -->
 </body>
 </html>
