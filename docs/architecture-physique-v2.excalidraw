@@ -184,8 +184,8 @@
     {
       "id": "app1",
       "type": "rectangle",
-      "x": 137.63723172164634,
-      "y": 149.3265857094063,
+      "x": 137.40676297164634,
+      "y": 148.8773669594063,
       "width": 354.2226472655981,
       "height": 280,
       "backgroundColor": "#ffffff",
@@ -199,10 +199,6 @@
         "g427446"
       ],
       "boundElements": [
-        {
-          "id": "a211373",
-          "type": "arrow"
-        },
         {
           "id": "A9jvHAkQCfHvbeleI80zc",
           "type": "arrow"
@@ -222,10 +218,10 @@
       "opacity": 100,
       "frameId": null,
       "seed": 1473508279,
-      "version": 1808,
-      "versionNonce": 475707122,
+      "version": 1815,
+      "versionNonce": 1560588615,
       "isDeleted": false,
-      "updated": 1789377288672,
+      "updated": 1789379895488,
       "link": null,
       "locked": false,
       "index": "aD"
@@ -233,8 +229,8 @@
     {
       "id": "6yPhYbQ-iLFj2Ol_q4a0K",
       "type": "text",
-      "x": 187.98867528852742,
-      "y": 154.3265857094063,
+      "x": 187.75820653852742,
+      "y": 153.8773669594063,
       "width": 253.51976013183594,
       "height": 270,
       "angle": 0,
@@ -252,11 +248,11 @@
       "index": "aDV",
       "roundness": null,
       "seed": 1292092206,
-      "version": 31,
-      "versionNonce": 1293102386,
+      "version": 38,
+      "versionNonce": 1741630121,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1789377288672,
+      "boundElements": [],
+      "updated": 1789379895488,
       "link": null,
       "locked": false,
       "text": "SERVEUR FRONTAL\nApplicatif\n\nsrv-app-1\n4 vCPU · 8 Go · 100 Go SSD\n10.0.1.11\nDocker · Node.js\nFrontend SSR\n\n",
@@ -339,7 +335,7 @@
       "version": 11,
       "versionNonce": 2134621426,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1789377473152,
       "link": null,
       "locked": false,
@@ -356,10 +352,10 @@
     {
       "id": "A9jvHAkQCfHvbeleI80zc",
       "type": "arrow",
-      "x": 492.9990498025708,
-      "y": 262.039323274519,
-      "width": 185.88603859572987,
-      "height": 0,
+      "x": 492.5225133568074,
+      "y": 261.7537951247957,
+      "width": 186.62377502003994,
+      "height": 0.11985183824890555,
       "strokeColor": "#868e96",
       "strokeWidth": 2,
       "strokeStyle": "dashed",
@@ -369,8 +365,8 @@
           0
         ],
         [
-          185.88603859572987,
-          0
+          186.62377502003994,
+          0.11985183824890555
         ]
       ],
       "lastCommittedPoint": null,
@@ -395,11 +391,11 @@
       "frameId": null,
       "roundness": null,
       "seed": 218301884,
-      "version": 3007,
-      "versionNonce": 216069742,
+      "version": 3015,
+      "versionNonce": 1375751047,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1789377319445,
+      "updated": 1789379895489,
       "link": null,
       "locked": false,
       "index": "ae",
@@ -408,10 +404,10 @@
     {
       "id": "FT9Euo2nkd1qZA6Ntu5hS",
       "type": "arrow",
-      "x": 672.4635668280882,
-      "y": 320.3299835013143,
-      "width": 177.42941142027314,
-      "height": 2.016298734044085,
+      "x": 673.8249308158246,
+      "y": 320.1420613572688,
+      "width": 179.70975258364894,
+      "height": 1.9246480555543712,
       "strokeColor": "#868e96",
       "strokeWidth": 2,
       "strokeStyle": "dashed",
@@ -421,8 +417,8 @@
           0
         ],
         [
-          -177.42941142027314,
-          2.016298734044085
+          -179.70975258364894,
+          1.9246480555543712
         ]
       ],
       "lastCommittedPoint": null,
@@ -447,11 +443,11 @@
       "frameId": null,
       "roundness": null,
       "seed": 2090096558,
-      "version": 3310,
-      "versionNonce": 308806514,
+      "version": 3318,
+      "versionNonce": 94458985,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1789377322707,
+      "updated": 1789379895489,
       "link": null,
       "locked": false,
       "index": "af",
