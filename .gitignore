@@ -1,4 +1,4 @@
-sftp.json
-.vscode/sftp.json
-.claude/**
 .DS_Store
+.claude/**
+.vscode/**
+sftp.json

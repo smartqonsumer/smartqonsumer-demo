@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p||((p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",p.onerror=function(){p=null},(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r));var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="vu fu pu gu bu init Hu zu qu ju Gu Xl Bu Qu Du eh ih nh sh rh oh capture getExtension Uu cu hh calculateEventProperties uh register register_once register_for_session unregister unregister_for_session gh Nu dh getFeatureFlag getFeatureFlagPayload getFeatureFlagResult getAllFeatureFlags isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync mh identify setPersonProperties unsetPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset yh shutdown setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fh Xu createPersonProfile setInternalOrTestUser ph wu opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Ju debug Yl Os getPageViewId captureTraceFeedback captureTraceMetric Ru".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_tWnMkKTFhskPmPxyTkjzuBmzmxT2tjLx8Hi8GC3WpfGp', {
+        api_host: 'https://eu.i.posthog.com',
+        defaults: '2026-05-30',
+        person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+        opt_out_capturing_by_default: true, // no capture until Axeptio confirms consent, see below
+    })
+</script>
+<script>
+  window.axeptioSettings = {
+    clientId: "6aabffab12d1349a8dc81f7b",
+    cookiesVersion: "3ad3ffb7-c0c1-418f-b633-842820e53000",
+  };
+  (function(d, s) {
+    var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+    e.async = true; e.src = "//static.axept.io/sdk.js";
+    t.parentNode.insertBefore(e, t);
+  })(document, "script");
+  // Gate PostHog capture behind the Axeptio consent choice for the "posthog" vendor.
+  // NB: this vendor key must match the slug configured in the Axeptio backoffice
+  // (https://admin.axeptio.eu/projects/6aabffab12d1349a8dc81f7b) once the project is published.
+  window._axcb = window._axcb || [];
+  window._axcb.push(function(axeptio) {
+    axeptio.on("cookies:complete", function(choices) {
+      if (!window.posthog) return;
+      if (choices.posthog) { posthog.opt_in_capturing(); }
+      else { posthog.opt_out_capturing(); }
+    });
+  });
+</script>
+<title>Mentions légales — SmartQonsumer</title>
+<meta name="description" content="Mentions légales du site de démonstration SmartQonsumer : éditeur, hébergement, propriété intellectuelle, données personnelles et responsabilité.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://smartqonsumer.com/legal/mentions-legales.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/q-mark.png" type="image/png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-tokens.css">
+<link rel="stylesheet" href="legal.css">
+</head>
+<body>
+  <nav class="legal-nav">
+    <a class="legal-logo" href="../index.html"><img src="../assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257"></a>
+    <a class="legal-back" href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Retour au site</a>
+  </nav>
+
+  <main class="legal-wrap">
+    <div class="legal-eyebrow">Informations légales</div>
+    <h1>Mentions légales</h1>
+    <p class="legal-updated">Dernière mise à jour : 17 septembre 2026</p>
+
+    <div class="legal-callout"><strong>À propos de ce document.</strong> SmartQonsumer est un projet de démonstration produit ; les identifiants d'entreprise ci-dessous (SIRET, RCS, capital social) sont des espaces réservés illustratifs et ne correspondent pas à une société réellement immatriculée.</div>
+
+    <h2>1. Éditeur du site</h2>
+    <p>Le site smartqonsumer.com est édité par :</p>
+    <ul>
+      <li><strong>Raison sociale</strong> : SmartQonsumer SAS <em>(dénomination de démonstration)</em></li>
+      <li><strong>Forme juridique</strong> : Société par actions simplifiée</li>
+      <li><strong>Capital social</strong> : [capital social]</li>
+      <li><strong>Siège social</strong> : [adresse du siège social], France</li>
+      <li><strong>RCS</strong> : [ville d'immatriculation] [numéro RCS]</li>
+      <li><strong>SIRET</strong> : [numéro SIRET]</li>
+      <li><strong>N° de TVA intracommunautaire</strong> : [numéro de TVA]</li>
+      <li><strong>Directeur de la publication</strong> : [nom du représentant légal]</li>
+      <li><strong>Contact</strong> : via le bouton « Nous contacter » du site</li>
+    </ul>
+
+    <h2>2. Hébergement</h2>
+    <p>Le site et la plateforme SmartQonsumer sont hébergés au sein de l'Union européenne par un prestataire d'hébergement cloud dont l'identité complète est communiquée sur demande aux Clients dans le cadre de leur contrat de traitement des données.</p>
+
+    <h2>3. Propriété intellectuelle</h2>
+    <p>L'ensemble des éléments du site (textes, illustrations, logos, structure, code) est protégé au titre du droit de la propriété intellectuelle et demeure la propriété exclusive de SmartQonsumer, sauf mention contraire. Toute reproduction, représentation ou exploitation, totale ou partielle, sans autorisation préalable est interdite.</p>
+    <p>Le nom « SmartQonsumer » et son logo constituent des marques ; toute utilisation non autorisée est susceptible de constituer une contrefaçon.</p>
+
+    <h2>4. Données personnelles et cookies</h2>
+    <p>Le traitement des données personnelles collectées sur ce site est décrit dans notre <a href="confidentialite.html">politique de confidentialité</a>. Les modalités de conformité RGPD applicables à la plateforme sont détaillées sur la page <a href="rgpd.html">Informations RGPD</a>.</p>
+
+    <h2>5. Limitation de responsabilité</h2>
+    <p>SmartQonsumer s'efforce d'assurer l'exactitude des informations diffusées sur ce site, sans garantir qu'elles soient exemptes d'erreurs ou d'omissions. L'éditeur ne saurait être tenu responsable des dommages directs ou indirects résultant de l'accès au site ou de l'impossibilité d'y accéder.</p>
+
+    <h2>6. Liens hypertextes</h2>
+    <p>Le site peut contenir des liens vers des sites tiers. SmartQonsumer n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu.</p>
+
+    <h2>7. Médiation de la consommation</h2>
+    <p>Conformément aux dispositions du Code de la consommation, tout client professionnel ou consommateur dispose de la faculté de recourir gratuitement au service de médiation dont les coordonnées lui sont communiquées, le cas échéant, dans son contrat.</p>
+
+    <h2>8. Droit applicable</h2>
+    <p>Les présentes mentions légales sont soumises au droit français.</p>
+  </main>
+
+  <footer class="legal-footer">
+    Voir aussi : <a href="cgv.html">CGV</a> · <a href="confidentialite.html">Politique de confidentialité</a> · <a href="rgpd.html">RGPD</a><br>
+    <a href="../index.html">← Retour à SmartQonsumer</a>
+  </footer>
+</body>
+</html>

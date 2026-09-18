@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p||((p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",p.onerror=function(){p=null},(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r));var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="vu fu pu gu bu init Hu zu qu ju Gu Xl Bu Qu Du eh ih nh sh rh oh capture getExtension Uu cu hh calculateEventProperties uh register register_once register_for_session unregister unregister_for_session gh Nu dh getFeatureFlag getFeatureFlagPayload getFeatureFlagResult getAllFeatureFlags isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync mh identify setPersonProperties unsetPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset yh shutdown setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fh Xu createPersonProfile setInternalOrTestUser ph wu opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Ju debug Yl Os getPageViewId captureTraceFeedback captureTraceMetric Ru".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_tWnMkKTFhskPmPxyTkjzuBmzmxT2tjLx8Hi8GC3WpfGp', {
+        api_host: 'https://eu.i.posthog.com',
+        defaults: '2026-05-30',
+        person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+        opt_out_capturing_by_default: true, // no capture until Axeptio confirms consent, see below
+    })
+</script>
+<script>
+  window.axeptioSettings = {
+    clientId: "6aabffab12d1349a8dc81f7b",
+    cookiesVersion: "3ad3ffb7-c0c1-418f-b633-842820e53000",
+  };
+  (function(d, s) {
+    var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+    e.async = true; e.src = "//static.axept.io/sdk.js";
+    t.parentNode.insertBefore(e, t);
+  })(document, "script");
+  // Gate PostHog capture behind the Axeptio consent choice for the "posthog" vendor.
+  // NB: this vendor key must match the slug configured in the Axeptio backoffice
+  // (https://admin.axeptio.eu/projects/6aabffab12d1349a8dc81f7b) once the project is published.
+  window._axcb = window._axcb || [];
+  window._axcb.push(function(axeptio) {
+    axeptio.on("cookies:complete", function(choices) {
+      if (!window.posthog) return;
+      if (choices.posthog) { posthog.opt_in_capturing(); }
+      else { posthog.opt_out_capturing(); }
+    });
+  });
+</script>
+<title>Politique de confidentialité — SmartQonsumer</title>
+<meta name="description" content="Politique de confidentialité de la démonstration SmartQonsumer : données collectées, finalités, conservation, sécurité et droits des personnes.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://smartqonsumer.com/legal/confidentialite.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/q-mark.png" type="image/png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-tokens.css">
+<link rel="stylesheet" href="legal.css">
+</head>
+<body>
+  <nav class="legal-nav">
+    <a class="legal-logo" href="../index.html"><img src="../assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257"></a>
+    <a class="legal-back" href="../index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>Retour au site</a>
+  </nav>
+
+  <main class="legal-wrap">
+    <div class="legal-eyebrow">Vie privée</div>
+    <h1>Politique de confidentialité</h1>
+    <p class="legal-updated">Dernière mise à jour : 17 septembre 2026</p>
+
+    <div class="legal-callout"><strong>À propos de ce document.</strong> SmartQonsumer est présenté ici à titre de démonstration produit. Ce texte illustre la structure et le contenu type d'une politique de confidentialité pour ce genre de service ; il ne constitue pas un engagement contractuel réel.</div>
+
+    <div class="legal-toc">
+      <p>Sommaire</p>
+      <ol>
+        <li><a href="#responsable">Qui est responsable de vos données</a></li>
+        <li><a href="#donnees">Données que nous collectons</a></li>
+        <li><a href="#finalites">Pourquoi nous les traitons</a></li>
+        <li><a href="#base">Base légale des traitements</a></li>
+        <li><a href="#duree">Durée de conservation</a></li>
+        <li><a href="#destinataires">Qui a accès à ces données</a></li>
+        <li><a href="#cookies">Cookies et traceurs</a></li>
+        <li><a href="#transferts">Transferts hors de l'Union européenne</a></li>
+        <li><a href="#securite">Sécurité</a></li>
+        <li><a href="#droits">Vos droits</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ol>
+    </div>
+
+    <h2 id="responsable">1. Qui est responsable de vos données</h2>
+    <p>SmartQonsumer agit à des rôles distincts selon le type de donnée :</p>
+    <ul>
+      <li>en tant que <strong>responsable de traitement</strong>, pour les données des visiteurs du site smartqonsumer.com et de ses Clients (comptes, facturation, support) ;</li>
+      <li>en tant que <strong>sous-traitant</strong>, pour les données des Consommateurs finaux collectées pour le compte de ses Clients (marques) via les QR Codes, le Club de Fidélité et les campagnes marketing — chaque marque restant responsable de traitement vis-à-vis de ses propres consommateurs.</li>
+    </ul>
+
+    <h2 id="donnees">2. Données que nous collectons</h2>
+    <table>
+      <tr><th>Catégorie</th><th>Exemples</th><th>Origine</th></tr>
+      <tr><td>Compte Client</td><td>Nom de l'entreprise, identité et e-mail des Utilisateurs, préférences</td><td>Renseignées à l'inscription</td></tr>
+      <tr><td>Facturation</td><td>Coordonnées de facturation, historique des paiements</td><td>Renseignées par le Client</td></tr>
+      <tr><td>Navigation</td><td>Pages consultées, appareil, mesure d'audience</td><td>Collectées automatiquement</td></tr>
+      <tr><td>Consommateur final</td><td>Scan d'un produit, inscription au Club, points de fidélité, préférences de communication</td><td>Collectées via le parcours produit de la marque</td></tr>
+    </table>
+
+    <h2 id="finalites">3. Pourquoi nous les traitons</h2>
+    <ul>
+      <li>Fournir, sécuriser et améliorer le Service ;</li>
+      <li>Gérer la relation contractuelle et la facturation des Clients ;</li>
+      <li>Permettre aux marques de faire fonctionner leur Club de Fidélité et leurs campagnes, pour le compte de leurs Consommateurs ;</li>
+      <li>Répondre aux demandes de contact ou de démonstration ;</li>
+      <li>Établir des statistiques d'usage agrégées et anonymisées.</li>
+    </ul>
+
+    <h2 id="base">4. Base légale des traitements</h2>
+    <p>Selon les cas, nos traitements reposent sur l'exécution du contrat qui nous lie au Client, sur le consentement du Consommateur (inscription au Club, réception de campagnes), sur notre intérêt légitime (sécurité, amélioration du Service) ou sur le respect d'une obligation légale (facturation, comptabilité).</p>
+
+    <h2 id="duree">5. Durée de conservation</h2>
+    <p>Les données d'un Compte Client sont conservées pendant la durée du contrat, puis pendant trente (30) jours après sa résiliation pour permettre l'export des données, avant suppression ou anonymisation. Les données de facturation sont conservées conformément aux obligations comptables et fiscales en vigueur. Les données des Consommateurs sont conservées selon la politique définie par chaque marque cliente, dans les limites qu'elle configure dans le Club de Fidélité.</p>
+
+    <h2 id="destinataires">6. Qui a accès à ces données</h2>
+    <p>Seuls les Utilisateurs habilités du Client concerné, les équipes internes de SmartQonsumer soumises à une obligation de confidentialité, et nos sous-traitants techniques (hébergement, envoi d'e-mails, paiement) strictement nécessaires au fonctionnement du Service ont accès aux données, dans la limite de leurs besoins respectifs. Aucune donnée n'est vendue à des tiers.</p>
+
+    <h2 id="cookies">7. Cookies et traceurs</h2>
+    <p>Le site smartqonsumer.com utilise des cookies strictement nécessaires à son fonctionnement (préférences, sécurité) ainsi que, sous réserve de votre consentement, des cookies de mesure d'audience. Vous pouvez à tout moment modifier vos préférences depuis les paramètres de votre navigateur.</p>
+
+    <h2 id="transferts">8. Transferts hors de l'Union européenne</h2>
+    <p>Les données sont hébergées par défaut au sein de l'Union européenne. Lorsqu'un sous-traitant technique est situé hors de l'UE, un tel transfert n'intervient que sur la base de garanties appropriées (clauses contractuelles types de la Commission européenne, décision d'adéquation).</p>
+
+    <h2 id="securite">9. Sécurité</h2>
+    <p>Nous mettons en œuvre des mesures techniques et organisationnelles adaptées : chiffrement des données en transit, authentification à deux facteurs, séparation logique des données par Client, journalisation des connexions et des accès. Le détail de ces mesures est présenté sur la page <a href="rgpd.html">RGPD</a>.</p>
+
+    <h2 id="droits">10. Vos droits</h2>
+    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur vos données. Si vous êtes un Consommateur final d'une marque cliente, ce droit s'exerce en priorité auprès de cette marque, qui reste responsable du traitement de vos données ; SmartQonsumer relaie et exécute techniquement ces demandes.</p>
+
+    <h2 id="contact">11. Contact</h2>
+    <p>Pour toute question relative à cette politique ou pour exercer vos droits, vous pouvez nous contacter via le formulaire disponible sur <a href="../index.html">smartqonsumer.com</a>. Vous disposez également du droit d'introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).</p>
+  </main>
+
+  <footer class="legal-footer">
+    Voir aussi : <a href="cgv.html">CGV</a> · <a href="rgpd.html">RGPD</a> · <a href="mentions-legales.html">Mentions légales</a><br>
+    <a href="../index.html">← Retour à SmartQonsumer</a>
+  </footer>
+</body>
+</html>
