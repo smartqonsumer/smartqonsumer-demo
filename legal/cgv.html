@@ -22,24 +22,31 @@
     e.async = true; e.src = "//static.axept.io/sdk.js";
     t.parentNode.insertBefore(e, t);
   })(document, "script");
-  // Gate PostHog capture behind the Axeptio consent choice for the "posthog" vendor.
-  // NB: this vendor key must match the slug configured in the Axeptio backoffice
-  // (https://admin.axeptio.eu/projects/6aabffab12d1349a8dc81f7b) once the project is published.
+  // Userback widget: only injected once the user consents to the "userback" vendor.
+  window.Userback = window.Userback || {};
+  Userback.access_token = "A-27yhV9ClyqY09r6HExerkRWBo";
+  function loadUserback() {
+    if (window.Userback.loaded) return;
+    window.Userback.loaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://static.userback.io/widget/v1.js';
+    (document.head || document.body).appendChild(s);
+  }
+
+  // Gate PostHog capture and the Userback widget behind the Axeptio consent choices.
+  // NB: these vendor keys ("posthog", "userback") must match the slugs configured in the
+  // Axeptio backoffice (https://admin.axeptio.eu/projects/6aabffab12d1349a8dc81f7b).
   window._axcb = window._axcb || [];
   window._axcb.push(function(axeptio) {
     axeptio.on("cookies:complete", function(choices) {
-      if (!window.posthog) return;
-      if (choices.posthog) { posthog.opt_in_capturing(); }
-      else { posthog.opt_out_capturing(); }
+      if (window.posthog) {
+        if (choices.posthog) { posthog.opt_in_capturing(); }
+        else { posthog.opt_out_capturing(); }
+      }
+      if (choices.userback) { loadUserback(); }
     });
   });
-</script>
-<script>
-  window.Userback = window.Userback || {};
-  Userback.access_token = "A-27yhV9ClyqY09r6HExerkRWBo";
-  (function(d) {
-    var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
-  })(document);
 </script>
 <title>Conditions Générales de Vente — SmartQonsumer</title>
 <meta name="description" content="Conditions générales de vente de la démonstration SmartQonsumer : accès au service SaaS, abonnements, responsabilités et traitement des données.">
