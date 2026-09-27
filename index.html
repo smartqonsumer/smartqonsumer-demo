@@ -1305,13 +1305,13 @@
         <a class="sq-logo" href="/" aria-label="SmartQonsumer — accueil"><img src="assets/logo-smartqonsumer.png" alt="SmartQonsumer" width="1917" height="257" fetchpriority="high"></a>
       </div>
       <nav class="sq-nav">
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('marketing-hero')">Solution</button><span aria-hidden="true"></span></div>
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('how')">Comment ça marche</button><span aria-hidden="true"></span></div>
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('features')">Fonctionnalités</button><span aria-hidden="true"></span></div>
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('security')">Sécurité</button><span aria-hidden="true"></span></div>
-        <div class="sq-nav-item"><button type="button" onclick="scrollTo2('faq')">FAQ</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="trackNavClick('Solution','desktop'); scrollTo2('marketing-hero')">Solution</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="trackNavClick('Comment ça marche','desktop'); scrollTo2('how')">Comment ça marche</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="trackNavClick('Fonctionnalités','desktop'); scrollTo2('features')">Fonctionnalités</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="trackNavClick('Sécurité','desktop'); scrollTo2('security')">Sécurité</button><span aria-hidden="true"></span></div>
+        <div class="sq-nav-item"><button type="button" onclick="trackNavClick('FAQ','desktop'); scrollTo2('faq')">FAQ</button><span aria-hidden="true"></span></div>
       </nav>
-      <button class="sq-cta" onclick="openCalendly()">Nous contacter</button>
+      <button class="sq-cta" onclick="trackNavClick('Nous contacter','desktop'); openCalendly()">Nous contacter</button>
       <div class="sq-spacer"></div>
       <button class="sq-burger" onclick="toggleMobileMenu(true)" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
     </div>
@@ -1323,14 +1323,14 @@
       <button class="sq-mm-close" onclick="toggleMobileMenu(false)" aria-label="Fermer le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     </div>
     <div class="sq-mm-body">
-      <button class="sq-mm-row" onclick="mobileNavGo('marketing-hero')">Solution<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="sq-mm-row" onclick="mobileNavGo('how')">Comment ça marche<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="sq-mm-row" onclick="mobileNavGo('features')">Fonctionnalités<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="sq-mm-row" onclick="mobileNavGo('security')">Sécurité<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-      <button class="sq-mm-row" onclick="mobileNavGo('faq')">FAQ<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="trackNavClick('Solution','mobile'); mobileNavGo('marketing-hero')">Solution<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="trackNavClick('Comment ça marche','mobile'); mobileNavGo('how')">Comment ça marche<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="trackNavClick('Fonctionnalités','mobile'); mobileNavGo('features')">Fonctionnalités<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="trackNavClick('Sécurité','mobile'); mobileNavGo('security')">Sécurité<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      <button class="sq-mm-row" onclick="trackNavClick('FAQ','mobile'); mobileNavGo('faq')">FAQ<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
     <div class="sq-mm-foot">
-      <button class="sq-cta" onclick="openCalendly()">Nous contacter</button>
+      <button class="sq-cta" onclick="trackNavClick('Nous contacter','mobile'); openCalendly()">Nous contacter</button>
     </div>
   </div>
 
@@ -2675,6 +2675,9 @@
   }
   function showHome(){const app=document.getElementById('appShell'); app.style.display='none'; app.setAttribute('aria-hidden','true'); document.getElementById('home').style.display='block'; window.scrollTo(0,0);}
   function scrollTo2(id){const e=document.getElementById(id); if(e) e.scrollIntoView({behavior:'smooth'});}
+  function trackNavClick(label, menu){
+    if (window.posthog && typeof posthog.capture === 'function') { posthog.capture('nav_click', { label, menu }); }
+  }
   function toggleMobileMenu(open){
     const m = document.getElementById('mobileMenu');
     if(!m) return;
