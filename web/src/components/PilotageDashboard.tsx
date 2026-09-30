@@ -30,9 +30,10 @@ const STRIP = [
 
 export function PilotageDashboard() {
   return (
-    <section id="pilotage" className="scroll-mt-20 bg-white py-20 sm:py-28">
+    <section id="pilotage" className="product-band product-band-pilot scroll-mt-20 pb-[52px] pt-[88px] max-md:pb-10 max-md:pt-16">
       <Container>
         <SectionHeading
+          pill
           eyebrow="Le pilotage, en continu"
           title="Voyez ce qui crée de l'intérêt. Décidez de la suite."
           description="Reliez les scans, l'engagement du Club et les campagnes. Des indicateurs pour comprendre le parcours et préparer votre prochaine action."

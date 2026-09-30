@@ -20,9 +20,10 @@ const AUTOMATION_RULES = [
 
 export function EmailAutomation() {
   return (
-    <section id="email-automation" className="scroll-mt-20 bg-neutral-50 py-20 sm:py-28">
+    <section id="email-automation" className="product-band product-band-email scroll-mt-20 py-[88px] max-md:py-16">
       <Container>
         <SectionHeading
+          pill
           eyebrow="E-mailing & Marketing Automation"
           title={
             <>
