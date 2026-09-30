@@ -54,14 +54,32 @@ export function Footer() {
         <FooterColumn title="Légal" links={LEGAL_LINKS} />
       </Container>
 
-      <div className="border-t border-neutral-200 bg-neutral-50 py-8">
-        <Container className="flex flex-col items-center gap-4 text-center text-xs text-neutral-700 sm:flex-row sm:justify-between sm:text-left">
-          <div className="flex flex-wrap justify-center gap-4">
-            <span>Conforme RGPD</span>
-            <span>Connexion sécurisée (MFA)</span>
-            <span>Vos données vous appartiennent</span>
+      <div className="mt-8 bg-brand-50 py-8">
+        <Container>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs font-semibold text-neutral-700">
+            <span className="inline-flex items-center gap-2">
+              <ShieldIcon />
+              Conforme RGPD
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <BadgeIcon />
+              Connexion sécurisée (MFA)
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <ShieldIcon />
+              Vos données vous appartiennent
+            </span>
           </div>
-          <span>© 2026 SmartQonsumer</span>
+          <div className="my-7 flex items-center justify-center">
+            <Image
+              src="/assets/logo-smartqonsumer.png"
+              alt="SmartQonsumer"
+              width={220}
+              height={30}
+              className="h-16 w-auto sm:h-[100px]"
+            />
+          </div>
+          <div className="text-center text-[11px] text-neutral-600 sm:text-left">© 2026 SmartQonsumer</div>
         </Container>
       </div>
     </footer>
@@ -94,5 +112,22 @@ function FooterColumn({
         ))}
       </ul>
     </div>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4 shrink-0 text-brand-600">
+      <path d="M6 10V7a6 6 0 0 1 12 0v3" />
+      <rect x="4" y="10" width="16" height="10" rx="2" />
+    </svg>
+  );
+}
+
+function BadgeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4 shrink-0 text-brand-600">
+      <path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z" />
+    </svg>
   );
 }

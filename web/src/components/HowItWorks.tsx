@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
 
 const STEPS = [
@@ -26,18 +27,25 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="how" className="bg-white py-20 sm:py-28">
+    <section id="how" className="scroll-mt-20 bg-white py-20 sm:py-28">
       <Container>
         <SectionHeading eyebrow="Le mécanisme" title="Chaque scan devient une opportunité." />
-        <div className="mt-14 grid gap-8 md:grid-cols-2">
-          {STEPS.map((step) => (
-            <div key={step.num} className="rounded-lg border border-neutral-200 bg-white p-7 shadow-sm">
-              <div aria-hidden="true" className="text-3xl font-bold text-brand-600">
+        <div className="mt-14 grid gap-[18px] md:grid-cols-2">
+          {STEPS.map((step, index) => (
+            <Reveal
+              key={step.num}
+              delay={index * 0.1}
+              className="group min-h-[220px] rounded-[20px] border border-neutral-200 bg-white p-[30px] shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-2 hover:border-brand-300 hover:shadow-xl"
+            >
+              <div
+                aria-hidden="true"
+                className="text-[13px] font-extrabold tracking-[0.6px] text-brand-700 transition-[letter-spacing] duration-300 group-hover:tracking-[1.6px]"
+              >
                 {step.num}
               </div>
-              <h3 className="mt-3 text-lg font-semibold text-neutral-950">{step.title}</h3>
+              <h3 className="mt-3.5 text-lg font-semibold tracking-[-0.2px] text-neutral-950">{step.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-neutral-700">{step.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
         <a

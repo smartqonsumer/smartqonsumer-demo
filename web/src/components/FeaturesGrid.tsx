@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
 
 const FEATURES = [
@@ -36,7 +37,7 @@ const FEATURES = [
 
 export function FeaturesGrid() {
   return (
-    <section id="features" className="bg-neutral-50 py-20 sm:py-28">
+    <section id="features" className="scroll-mt-20 bg-neutral-50 py-20 sm:py-28">
       <Container>
         <SectionHeading
           eyebrow="Fonctionnalités"
@@ -44,8 +45,12 @@ export function FeaturesGrid() {
           description="Du scan du produit à la campagne ciblée, chaque module s'appuie sur les données des précédents."
         />
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((feature) => (
-            <div key={feature.title} className="rounded-lg border border-neutral-200 bg-white p-6">
+          {FEATURES.map((feature, index) => (
+            <Reveal
+              key={feature.title}
+              delay={index * 0.06}
+              className="rounded-lg border border-neutral-200 bg-white p-6"
+            >
               <h3 className="text-base font-semibold text-neutral-950">{feature.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-neutral-700">{feature.text}</p>
               <a href={feature.href} className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-800 hover:text-brand-900">
@@ -54,7 +59,7 @@ export function FeaturesGrid() {
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </a>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>

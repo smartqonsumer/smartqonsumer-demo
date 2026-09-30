@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 
 const ITEMS = [
   {
@@ -17,9 +18,9 @@ const ITEMS = [
 
 export function LoyaltyClub() {
   return (
-    <section id="club-fidelite" className="bg-white py-20 sm:py-28">
+    <section id="club-fidelite" className="scroll-mt-20 bg-white py-20 sm:py-28">
       <Container className="grid gap-12 lg:grid-cols-2 lg:items-center">
-        <div>
+        <Reveal>
           <div className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-800">Le Club Fidélité</div>
           <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-[-0.014em] text-neutral-950 sm:text-3xl">
             Donnez une bonne raison de revenir.
@@ -36,9 +37,9 @@ export function LoyaltyClub() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
 
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-6">
+        <Reveal delay={0.1} className="rounded-lg border border-neutral-200 bg-neutral-50 p-6">
           <div className="text-xs font-medium uppercase tracking-wide text-neutral-700">Vue tenant · Votre marque</div>
           <h4 className="mt-1 text-lg font-semibold text-neutral-950">Le programme, sous vos yeux.</h4>
           <div className="mt-5 grid grid-cols-2 gap-4">
@@ -62,7 +63,7 @@ export function LoyaltyClub() {
             <span className="rounded-full bg-brand-100 px-2.5 py-1 text-brand-800">Consommé</span>
           </div>
           <p className="mt-4 text-center text-xs text-neutral-700">Données fictives · illustration du parcours</p>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

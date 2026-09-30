@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
 
 const AUDIENCES = [
@@ -19,7 +20,7 @@ const AUTOMATION_RULES = [
 
 export function EmailAutomation() {
   return (
-    <section id="email-automation" className="bg-neutral-50 py-20 sm:py-28">
+    <section id="email-automation" className="scroll-mt-20 bg-neutral-50 py-20 sm:py-28">
       <Container>
         <SectionHeading
           eyebrow="E-mailing & Marketing Automation"
@@ -33,7 +34,7 @@ export function EmailAutomation() {
           description="Passez de la connaissance client à une campagne concrète. Combinez les audiences, préparez le contenu et choisissez le moment de l'envoi."
         />
 
-        <div className="mt-14 grid gap-6 rounded-lg border border-neutral-200 bg-white p-6 lg:grid-cols-2">
+        <Reveal className="mt-14 grid gap-6 rounded-lg border border-neutral-200 bg-white p-6 lg:grid-cols-2">
           <div>
             <div className="text-xs font-medium text-neutral-700">Étape 2 / 5</div>
             <h3 className="mt-1 text-lg font-semibold text-neutral-950">À qui souhaitez-vous vous adresser ?</h3>
@@ -75,17 +76,17 @@ export function EmailAutomation() {
             </p>
             <span className="mt-3 inline-block text-sm font-semibold text-brand-800">Découvrir le produit →</span>
           </div>
-        </div>
+        </Reveal>
 
         <div className="mt-16 grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div>
+          <Reveal>
             <h3 className="text-xl font-semibold text-neutral-950">Vos règles prennent le relais.</h3>
             <p className="mt-3 text-base leading-relaxed text-neutral-700">
               Des scénarios déclenchés par les comportements clients, selon vos règles métier et les autorisations de
               chaque contact.
             </p>
-          </div>
-          <ul className="space-y-3">
+          </Reveal>
+          <Reveal as="ul" delay={0.1} className="space-y-3">
             {AUTOMATION_RULES.map((rule) => (
               <li
                 key={rule}
@@ -95,7 +96,7 @@ export function EmailAutomation() {
                 <span aria-hidden="true">→</span>
               </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
       </Container>
     </section>

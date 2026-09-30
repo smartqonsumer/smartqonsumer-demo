@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { trackNavClick } from '@/lib/analytics';
@@ -16,12 +16,33 @@ const NAV_ITEMS = [
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex h-[78px] max-w-content items-center justify-between gap-6 px-6">
+    <header
+      className={`fixed inset-x-0 top-0 z-40 border-b transition-[height,background-color,box-shadow,border-color,backdrop-filter] duration-200 ${
+        scrolled
+          ? 'h-[62px] border-neutral-200 bg-white/90 shadow-md backdrop-blur'
+          : 'h-[78px] border-transparent bg-transparent'
+      }`}
+    >
+      <div className="mx-auto flex h-full max-w-content items-center justify-between gap-6 px-6">
         <Link href="/" aria-label="SmartQonsumer — accueil" className="shrink-0">
-          <Image src="/assets/logo-smartqonsumer.png" alt="SmartQonsumer" width={150} height={20} priority />
+          <Image
+            src="/assets/logo-smartqonsumer.png"
+            alt="SmartQonsumer"
+            width={150}
+            height={20}
+            priority
+            className={scrolled ? '' : 'brightness-0 invert'}
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">
@@ -30,7 +51,9 @@ export function Header() {
               key={item.href}
               href={item.href}
               onClick={() => trackNavClick(item.label, 'desktop')}
-              className="rounded-sm px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:text-brand-800"
+              className={`rounded-sm px-3 py-2 text-sm font-medium transition-colors ${
+                scrolled ? 'text-neutral-700 hover:text-brand-800' : 'text-white/80 hover:text-white'
+              }`}
             >
               {item.label}
             </a>
@@ -52,7 +75,9 @@ export function Header() {
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
             aria-expanded={menuOpen}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-sm text-neutral-900 lg:hidden"
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-sm lg:hidden ${
+              scrolled ? 'text-neutral-900' : 'text-white'
+            }`}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-6 w-6">
               {menuOpen ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
@@ -62,7 +87,7 @@ export function Header() {
       </div>
 
       {menuOpen ? (
-        <div className="border-t border-neutral-200 bg-white lg:hidden">
+        <div className="absolute inset-x-0 top-full border-t border-neutral-200 bg-white lg:hidden">
           <nav className="flex flex-col gap-1 p-4">
             {NAV_ITEMS.map((item) => (
               <a

@@ -1,10 +1,12 @@
 import { Container } from '@/components/Container';
+import { Counter } from '@/components/Counter';
+import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
 
 const KPIS = [
-  { label: 'Contacts connus', value: '248', hint: 'dont 36 nouveaux' },
-  { label: 'Scans totaux', value: '420', hint: '310 scans uniques' },
-  { label: 'Scan → inscription', value: '18 %', hint: 'sur la période illustrée' },
+  { label: 'Contacts connus', value: 248, suffix: '', hint: 'dont 36 nouveaux' },
+  { label: 'Scans totaux', value: 420, suffix: '', hint: '310 scans uniques' },
+  { label: 'Scan → inscription', value: 18, suffix: ' %', hint: 'sur la période illustrée' },
 ] as const;
 
 const TOP_PRODUCTS = [
@@ -28,7 +30,7 @@ const STRIP = [
 
 export function PilotageDashboard() {
   return (
-    <section id="pilotage" className="bg-white py-20 sm:py-28">
+    <section id="pilotage" className="scroll-mt-20 bg-white py-20 sm:py-28">
       <Container>
         <SectionHeading
           eyebrow="Le pilotage, en continu"
@@ -37,17 +39,19 @@ export function PilotageDashboard() {
         />
 
         <div className="mt-14 grid gap-4 sm:grid-cols-3">
-          {KPIS.map((kpi) => (
-            <div key={kpi.label} className="rounded-lg border border-neutral-200 p-6">
+          {KPIS.map((kpi, index) => (
+            <Reveal key={kpi.label} delay={index * 0.06} className="rounded-lg border border-neutral-200 p-6">
               <div className="text-sm text-neutral-700">{kpi.label}</div>
-              <div className="mt-1 text-3xl font-bold text-neutral-950">{kpi.value}</div>
+              <div className="mt-1 text-3xl font-bold text-neutral-950">
+                <Counter value={kpi.value} suffix={kpi.suffix} />
+              </div>
               <div className="mt-1 text-xs text-neutral-700">{kpi.hint}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
-          <div className="rounded-lg border border-neutral-200 p-6">
+          <Reveal className="rounded-lg border border-neutral-200 p-6">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-neutral-950">Produits les plus scannés</h3>
               <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs text-neutral-700">
@@ -68,9 +72,9 @@ export function PilotageDashboard() {
               ))}
             </div>
             <p className="mt-5 text-xs text-neutral-700">Performance par produit · Scans totaux et uniques</p>
-          </div>
+          </Reveal>
 
-          <div className="rounded-lg border border-neutral-200 p-6">
+          <Reveal delay={0.06} className="rounded-lg border border-neutral-200 p-6">
             <h3 className="text-base font-semibold text-neutral-950">Segments &amp; personas</h3>
             <div className="mt-5 space-y-3">
               {SEGMENTS.map((segment) => (
@@ -82,17 +86,17 @@ export function PilotageDashboard() {
               ))}
             </div>
             <p className="mt-5 text-xs text-neutral-700">Personas déterminés par les règles de votre équipe</p>
-          </div>
+          </Reveal>
         </div>
 
-        <div className="mt-6 grid gap-4 rounded-lg bg-neutral-50 p-6 sm:grid-cols-4">
+        <Reveal className="mt-6 grid gap-4 rounded-lg bg-neutral-50 p-6 sm:grid-cols-4">
           {STRIP.map((item) => (
             <div key={item.label}>
               <div className="text-xs text-neutral-700">{item.label}</div>
               <div className="mt-1 text-sm font-semibold text-neutral-950">{item.value}</div>
             </div>
           ))}
-        </div>
+        </Reveal>
         <p className="mt-4 text-xs text-neutral-700">
           Toutes les valeurs de ce tableau sont fictives. Elles illustrent les indicateurs du produit, pas des
           résultats clients.

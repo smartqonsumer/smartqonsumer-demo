@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 
 const ROWS = [
   {
@@ -89,19 +90,21 @@ const ROWS = [
 
 export function StoryTelling() {
   return (
-    <section id="story" className="bg-white py-20 sm:py-28">
+    <section id="story" className="scroll-mt-20 bg-white py-20 sm:py-28">
       <Container className="space-y-20">
         {ROWS.map((row, index) => (
           <div
             key={row.title}
             className={`grid items-center gap-10 lg:grid-cols-2 ${index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}
           >
-            <div>
+            <Reveal>
               <div className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-800">{row.eyebrow}</div>
               <h3 className="mt-3 text-xl font-semibold text-neutral-950 sm:text-2xl">{row.title}</h3>
               <p className="mt-4 text-base leading-relaxed text-neutral-700">{row.text}</p>
-            </div>
-            <div className="rounded-lg bg-neutral-50 p-6">{row.visual}</div>
+            </Reveal>
+            <Reveal delay={0.1} className="rounded-lg bg-neutral-50 p-6">
+              {row.visual}
+            </Reveal>
           </div>
         ))}
       </Container>

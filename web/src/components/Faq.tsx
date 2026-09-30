@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
 import { siteConfig } from '@/lib/site-config';
 
@@ -41,7 +42,7 @@ const faqJsonLd = {
 
 export function Faq() {
   return (
-    <section id="faq" className="bg-white py-20 sm:py-28">
+    <section id="faq" className="scroll-mt-20 bg-white py-20 sm:py-28">
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
@@ -49,7 +50,7 @@ export function Faq() {
       />
       <Container>
         <SectionHeading eyebrow="Questions fréquentes" title="Tout savoir avant de se lancer." />
-        <div className="mx-auto mt-12 max-w-[760px] space-y-3">
+        <Reveal className="mx-auto mt-12 max-w-[760px] space-y-3">
           {FAQ_ITEMS.map((item) => (
             <details key={item.question} className="group rounded-lg border border-neutral-200 p-5">
               <summary className="cursor-pointer list-none text-base font-semibold text-neutral-950 marker:content-none">
@@ -58,7 +59,7 @@ export function Faq() {
               <p className="mt-2 text-sm leading-relaxed text-neutral-700">{item.answer}</p>
             </details>
           ))}
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

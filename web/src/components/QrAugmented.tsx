@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 
 const CARDS = [
   {
@@ -23,10 +24,10 @@ const CARDS = [
 
 export function QrAugmented() {
   return (
-    <section id="qr-augmente" className="bg-neutral-50 py-20 sm:py-28">
+    <section id="qr-augmente" className="scroll-mt-20 bg-neutral-50 py-20 sm:py-28">
       <Container>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div>
+          <Reveal>
             <div className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-800">Le QR code augmenté</div>
             <h2 className="mt-3 text-2xl font-semibold leading-tight tracking-[-0.014em] text-neutral-950 sm:text-3xl">
               Une étiquette imprimée. Des expériences qui évoluent.
@@ -35,8 +36,8 @@ export function QrAugmented() {
               Le lien reste sur le produit. Vous pilotez ce qui se passe après le scan, selon votre programme et vos
               temps forts.
             </p>
-          </div>
-          <div className="flex flex-col items-center gap-3 rounded-lg border border-neutral-200 bg-white p-6 text-center text-sm">
+          </Reveal>
+          <Reveal delay={0.1} className="flex flex-col items-center gap-3 rounded-lg border border-neutral-200 bg-white p-6 text-center text-sm">
             <div>
               <div className="text-xs font-medium text-neutral-700">Sur votre produit</div>
               <div className="font-semibold text-neutral-900">Scan du QR Code</div>
@@ -54,13 +55,14 @@ export function QrAugmented() {
               <div className="font-semibold text-neutral-900">Résolution SaaS</div>
               <div className="text-xs text-neutral-700">Les règles de votre marque décident.</div>
             </div>
-          </div>
+          </Reveal>
         </div>
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {CARDS.map((card) => (
-            <div
+          {CARDS.map((card, index) => (
+            <Reveal
               key={card.title}
+              delay={index * 0.08}
               className={`rounded-lg border p-6 ${
                 card.active ? 'border-brand-600 bg-white shadow-lg' : 'border-neutral-200 bg-white'
               }`}
@@ -68,7 +70,7 @@ export function QrAugmented() {
               <span className="text-xs font-semibold uppercase tracking-wide text-brand-800">{card.tag}</span>
               <h3 className="mt-3 text-base font-semibold text-neutral-950">{card.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-neutral-700">{card.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
 

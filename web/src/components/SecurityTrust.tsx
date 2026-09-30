@@ -1,4 +1,5 @@
 import { Container } from '@/components/Container';
+import { Reveal } from '@/components/Reveal';
 
 const ITEMS = [
   {
@@ -21,9 +22,9 @@ const ITEMS = [
 
 export function SecurityTrust() {
   return (
-    <section id="security" className="bg-neutral-950 py-20 text-white sm:py-28">
+    <section id="security" className="scroll-mt-20 bg-neutral-950 py-20 text-white sm:py-28">
       <Container className="grid gap-12 lg:grid-cols-2 lg:items-start">
-        <div>
+        <Reveal>
           <div className="text-xs font-semibold uppercase tracking-[0.1em] text-brand-300">
             La confiance fait partie du parcours
           </div>
@@ -48,13 +49,13 @@ export function SecurityTrust() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
         <div className="grid gap-6 sm:grid-cols-2">
-          {ITEMS.map((item) => (
-            <div key={item.title}>
+          {ITEMS.map((item, index) => (
+            <Reveal key={item.title} small delay={index * 0.06}>
               <h3 className="text-sm font-semibold text-white">{item.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-neutral-400">{item.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>
