@@ -1,0 +1,23 @@
+{
+  "name": "SmartQonsumer",
+  "short_name": "SmartQonsumer",
+  "description": "CRM pour les marques qui vendent leurs produits en circuits indirects.",
+  "lang": "fr-FR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0F4A25",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/assets/q-mark.png",
+      "type": "image/png",
+      "sizes": "244x257"
+    }
+  ]
+}
