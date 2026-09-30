@@ -9,6 +9,7 @@
           api_host: 'https://eu.i.posthog.com',
           defaults: '2026-05-30',
           person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+          capture_exceptions: true, // Error Tracking: auto-capture uncaught errors and unhandled rejections
           opt_out_capturing_by_default: true, // no capture until Axeptio confirms consent, see below
       })
   </script>
