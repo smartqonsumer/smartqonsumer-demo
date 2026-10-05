@@ -16,7 +16,8 @@ const FAQ_ITEMS = [
   },
   {
     question: 'Est-ce que mes données restent ma propriété ?',
-    answer: "Oui. Contrairement à un programme de fidélité d'enseigne, la donnée collectée vous appartient et n'est partagée avec personne.",
+    answer:
+      "Oui. Contrairement à un programme de fidélité d'enseigne, la donnée collectée vous appartient et n'est partagée avec personne. En fin de contrat, vous disposez de 30 jours pour exporter vos données ; elles sont ensuite supprimées ou anonymisées.",
   },
   {
     question: 'Faut-il installer une application ?',
