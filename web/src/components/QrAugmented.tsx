@@ -78,7 +78,7 @@ export function QrAugmented() {
                 <path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.46" />
                 <path d="M14 11a5 5 0 0 0-7.07 0L4.93 12.93a5 5 0 0 0 7.07 7.07L13.46 18.5" />
               </svg>
-              <code className="font-mono text-[13.5px] text-neutral-950">qr.smartqonsumer/01/{'{GTIN}'}</code>
+              <code className="font-mono text-[13.5px] text-neutral-950">qr.smartqonsumer.com/01/{'{GTIN}'}</code>
             </div>
 
             <span aria-hidden="true" className="py-1.5 text-center text-base leading-none text-brand-700/55">
@@ -86,12 +86,12 @@ export function QrAugmented() {
             </span>
 
             <div className="flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-neutral-950 text-lg font-extrabold text-white">
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-neutral-950 text-lg font-extrabold text-brand-500">
                 Q
               </div>
               <div>
                 <div className="text-base font-bold tracking-[-0.1px] text-neutral-950">Résolution SaaS</div>
-                <div className="text-[12.5px] text-neutral-600">Les règles de votre marque décident.</div>
+                <div className="text-[12.5px] text-neutral-600">Connexion au programme de fidélité</div>
               </div>
             </div>
           </Reveal>
