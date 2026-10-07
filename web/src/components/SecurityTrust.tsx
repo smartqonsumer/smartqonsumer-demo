@@ -6,7 +6,7 @@ import styles from './SecurityTrust.module.css';
 const ITEMS = [
   {
     title: 'Un espace pour chaque entreprise',
-    text: 'Architecture multi-tenant, séparation des données et des accès, administration par rôles Super Admin et Tenant.',
+    text: 'Architecture multi-tenant, séparation des données et des accès, administration par rôles super admin et tenant.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="12 3 3 8 12 13 21 8 12 3" />

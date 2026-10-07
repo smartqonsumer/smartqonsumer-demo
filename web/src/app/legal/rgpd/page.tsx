@@ -68,7 +68,7 @@ export default function RgpdPage() {
       <h2 id="acces">3. Des accès qui se maîtrisent</h2>
       <p>
         La connexion à l&apos;espace d&apos;administration pourra être protégée par une authentification à deux
-        facteurs (MFA) par code à usage unique. Chaque client gérera la liste des Utilisateurs autorisés à accéder à
+        facteurs (MFA) par code à usage unique. Chaque client gérera la liste des utilisateurs autorisés à accéder à
         son Compte et peut révoquer un accès à tout moment.
       </p>
 
