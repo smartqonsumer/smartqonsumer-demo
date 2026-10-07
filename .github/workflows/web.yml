@@ -2,9 +2,11 @@
 #
 # - On every push / pull request touching web/: quality checks, build, e2e
 #   tests and Lighthouse (performance, accessibility, SEO, weight budgets).
-# - Deployment is manual (Actions → "Web" → Run workflow): it re-runs every
-#   check on the chosen branch, then uploads web/out/ over FTP. `dry_run`
-#   (on by default) only lists what would be uploaded.
+# - Deployment is manual (Actions → "Web" → Run workflow): it re-runs the
+#   quality checks and the build on the chosen branch, then uploads web/out/
+#   over FTP. E2E and Lighthouse are opt-in there (`e2e`, `lighthouse`, off by
+#   default) since every push already runs them. `dry_run` (on by default)
+#   only lists what would be uploaded.
 #
 # Secrets to define on the `production` environment (Settings → Environments):
 #   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD, FTP_SERVER_DIR (e.g. "./www/")
@@ -25,6 +27,14 @@ on:
         description: Dry run (list the changes, upload nothing)
         type: boolean
         default: true
+      e2e:
+        description: Run the E2E tests before deploying
+        type: boolean
+        default: false
+      lighthouse:
+        description: Run Lighthouse before deploying
+        type: boolean
+        default: false
 
 concurrency:
   group: web-${{ github.ref }}
@@ -66,6 +76,7 @@ jobs:
   e2e:
     name: E2E (Playwright + axe)
     needs: quality
+    if: github.event_name != 'workflow_dispatch' || inputs.e2e
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -94,6 +105,7 @@ jobs:
   lighthouse:
     name: Lighthouse (perf · a11y · SEO · budgets)
     needs: quality
+    if: github.event_name != 'workflow_dispatch' || inputs.lighthouse
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -118,8 +130,13 @@ jobs:
 
   deploy:
     name: Deploy (FTP)
-    if: github.event_name == 'workflow_dispatch' && inputs.deploy
-    needs: [e2e, lighthouse]
+    # E2E and Lighthouse may be skipped (opt-in), but must not have failed.
+    if: >-
+      !cancelled() && github.event_name == 'workflow_dispatch' && inputs.deploy
+      && needs.quality.result == 'success'
+      && contains(fromJSON('["success", "skipped"]'), needs.e2e.result)
+      && contains(fromJSON('["success", "skipped"]'), needs.lighthouse.result)
+    needs: [quality, e2e, lighthouse]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: production
