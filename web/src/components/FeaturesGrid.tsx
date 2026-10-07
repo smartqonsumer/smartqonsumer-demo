@@ -15,7 +15,7 @@ const FEATURES = [
   },
   {
     title: 'Club Fidélité',
-    text: 'Points, paliers et récompenses activables directement par vos consommateurs, aux couleurs de votre marque.',
+    text: 'Points, paliers, tirages au sort et récompenses activables. Vous choisissez les contreparties à activer aux couleurs de votre marque.',
     href: '#club-fidelite',
   },
   {
