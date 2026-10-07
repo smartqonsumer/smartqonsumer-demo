@@ -1,0 +1,44 @@
+# Local development stack for the SmartQonsumer API.
+#   docker compose up -d db mailpit      # Postgres + local mail sandbox
+#   docker compose up -d api             # optional: run the API in Docker too
+# Host ports are deliberately off the defaults (5432/8000/8025) to avoid
+# clashing with other local stacks.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: smartq
+      POSTGRES_PASSWORD: smartq
+      POSTGRES_DB: smartqonsumer
+    ports:
+      - "127.0.0.1:5440:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./api/docker/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartq -d smartqonsumer"]
+      interval: 3s
+      retries: 20
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "127.0.0.1:8026:8025" # web UI: http://localhost:8026
+      - "127.0.0.1:1026:1025" # SMTP
+
+  api:
+    build: ./api
+    env_file: ./api/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg://smartq:smartq@db:5432/smartqonsumer
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+    ports:
+      - "127.0.0.1:8010:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: ["api"]
+
+volumes:
+  db-data: {}
