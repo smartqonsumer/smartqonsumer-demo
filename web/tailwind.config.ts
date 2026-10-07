@@ -21,9 +21,29 @@ const config: Config = {
         warning: { DEFAULT: color('warning'), bg: color('warning-bg') },
         error: { DEFAULT: color('error'), bg: color('error-bg') },
         info: { DEFAULT: color('info'), bg: color('info-bg') },
+        // Brand-themed palette of the loyalty club (set by <BrandScope>, see lib/brand).
+        club: Object.fromEntries(
+          [
+            'primary',
+            'primary-dark',
+            'primary-contrast',
+            'ink',
+            'text',
+            'muted',
+            'surface',
+            'background',
+            'accent',
+            'accent-text',
+            'accent-soft',
+            'gold',
+            'border',
+          ].map((name) => [name, `rgb(var(--club-${name}) / <alpha-value>)`]),
+        ),
       },
       fontFamily: {
         sans: 'var(--font-sans)',
+        'club-title': ['var(--font-club-title)', 'Arial Narrow', 'sans-serif'],
+        'club-text': ['var(--font-club-text)', 'Arial', 'sans-serif'],
       },
       borderRadius: {
         xs: 'var(--radius-xs)',
@@ -31,6 +51,9 @@ const config: Config = {
         md: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
         pill: 'var(--radius-pill)',
+        'club-sm': 'var(--club-radius-sm)',
+        'club-md': 'var(--club-radius-md)',
+        'club-lg': 'var(--club-radius-lg)',
       },
       boxShadow: {
         sm: 'var(--shadow-sm)',

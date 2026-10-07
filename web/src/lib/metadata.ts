@@ -40,3 +40,8 @@ export function pageMetadata({ title, description, path }: { title: string; desc
 export function legalPageMetadata(page: { title: string; description: string; path: string }): Metadata {
   return { ...pageMetadata(page), robots: { index: false, follow: true } };
 }
+
+/** Demo journeys and member area: private or personal pages, kept out of search engines. */
+export function privatePageMetadata(page: { title: string; description: string; path: string }): Metadata {
+  return { ...pageMetadata(page), robots: { index: false, follow: false } };
+}

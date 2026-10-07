@@ -1,0 +1,126 @@
+.dog {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.legFront,
+.legBack,
+.legFront2,
+.legBack2 {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+
+.running .legFront,
+.running .legBack2 {
+  animation: gallop 0.28s ease-in-out infinite alternate;
+}
+
+.running .legBack,
+.running .legFront2 {
+  animation: gallop 0.28s ease-in-out infinite alternate-reverse;
+}
+
+.tail {
+  transform-box: fill-box;
+  transform-origin: 100% 100%;
+  animation: wag 0.5s ease-in-out infinite alternate;
+}
+
+.head {
+  transform-box: fill-box;
+  transform-origin: 20% 80%;
+}
+
+.eating .head {
+  animation: munch 0.32s ease-in-out infinite alternate;
+}
+
+@keyframes gallop {
+  from {
+    transform: rotate(28deg);
+  }
+  to {
+    transform: rotate(-28deg);
+  }
+}
+
+@keyframes wag {
+  from {
+    transform: rotate(-12deg);
+  }
+  to {
+    transform: rotate(16deg);
+  }
+}
+
+@keyframes munch {
+  from {
+    transform: rotate(10deg) translateY(2px);
+  }
+  to {
+    transform: rotate(30deg) translateY(8px);
+  }
+}
+
+.bowl {
+  width: 100%;
+  height: auto;
+}
+
+.kibbles {
+  transition: opacity 1.4s ease-in;
+}
+
+.emptying .kibbles {
+  opacity: 0.15;
+}
+
+.track {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 22px, rgb(255 255 255 / 0.18) 22px 44px),
+    linear-gradient(180deg, #8fbf3a, #6e9e00);
+}
+
+.finish {
+  background: repeating-conic-gradient(#141414 0 25%, #fff 0 50%) 0 0 / 12px 12px;
+}
+
+.hurdle {
+  background: repeating-linear-gradient(180deg, #b0002f 0 6px, #fff 6px 12px);
+}
+
+.runner {
+  will-change: transform;
+}
+
+.confetti {
+  animation: pop 0.6s cubic-bezier(0.2, 1.6, 0.5, 1) both;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .running .legFront,
+  .running .legBack,
+  .running .legFront2,
+  .running .legBack2,
+  .tail,
+  .eating .head,
+  .confetti {
+    animation: none;
+  }
+  .kibbles {
+    transition: none;
+  }
+}

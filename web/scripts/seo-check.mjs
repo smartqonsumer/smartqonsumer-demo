@@ -15,6 +15,23 @@ const PAGES = [
   { url: '/legal/confidentialite/', file: 'legal/confidentialite/index.html', indexable: false },
   { url: '/legal/mentions-legales/', file: 'legal/mentions-legales/index.html', indexable: false },
   { url: '/legal/rgpd/', file: 'legal/rgpd/index.html', indexable: false },
+  // Demo journeys, auth and member area: private pages (noindex).
+  { url: '/qr/', file: 'qr/index.html', indexable: false },
+  { url: '/club-croquin/', file: 'club-croquin/index.html', indexable: false },
+  { url: '/club-croquin/reclamer/', file: 'club-croquin/reclamer/index.html', indexable: false },
+  { url: '/club-croquin-simple/', file: 'club-croquin-simple/index.html', indexable: false },
+  { url: '/verify-email/', file: 'verify-email/index.html', indexable: false },
+  { url: '/auth/connexion/', file: 'auth/connexion/index.html', indexable: false },
+  { url: '/auth/mot-de-passe-oublie/', file: 'auth/mot-de-passe-oublie/index.html', indexable: false },
+  { url: '/auth/reinitialiser/', file: 'auth/reinitialiser/index.html', indexable: false },
+  { url: '/club/', file: 'club/index.html', indexable: false },
+  { url: '/club/points/', file: 'club/points/index.html', indexable: false },
+  { url: '/club/gagner/', file: 'club/gagner/index.html', indexable: false },
+  { url: '/club/jeux/course/', file: 'club/jeux/course/index.html', indexable: false },
+  { url: '/club/jeux/roue/', file: 'club/jeux/roue/index.html', indexable: false },
+  { url: '/club/recompenses/', file: 'club/recompenses/index.html', indexable: false },
+  { url: '/club/compte/', file: 'club/compte/index.html', indexable: false },
+  { url: '/legal/reglement-club-croquin/', file: 'legal/reglement-club-croquin/index.html', indexable: false },
   { url: null, file: '404.html', indexable: false },
 ];
 
