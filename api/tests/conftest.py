@@ -68,3 +68,21 @@ def anon() -> str:
     import uuid
 
     return str(uuid.uuid4())
+
+
+def make_user(db: Session, email: str = "membre@example.com", *, active: bool = True):  # type: ignore[no-untyped-def]
+    from app.core.db import utcnow
+    from app.core.security import hash_password
+    from app.models import User, UserProfile
+
+    user = User(
+        email=email,
+        password_hash=hash_password("Motdepasse-solide-1"),
+        status="active" if active else "pending_email_verification",
+        email_verified_at=utcnow() if active else None,
+    )
+    db.add(user)
+    db.flush()
+    db.add(UserProfile(user_id=user.id, first_name="Nicolas", last_name="Demo"))
+    db.commit()
+    return user

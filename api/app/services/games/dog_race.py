@@ -22,7 +22,7 @@ def public_display(config: dict[str, Any]) -> dict[str, Any]:
 
 def validate_choice(config: dict[str, Any], choice: str | None) -> str:
     ids = [d["id"] for d in dogs(config)]
-    if choice not in ids:
+    if choice is None or choice not in ids:
         raise AppError("invalid_choice", "Choisissez votre chien pour lancer la course.")
     return choice
 
