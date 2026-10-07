@@ -8,7 +8,7 @@ const STEPS = [
   {
     num: '01',
     title: 'Le consommateur scanne',
-    text: "Il scanne le QR Code augmenté GS1 imprimé sur le produit. Grâce à GS1 Digital Link, ce code 2D contient le GTIN — l'identifiant unique du produit, identique à celui porté par son EAN-13 — et ouvre l'expérience digitale choisie par la marque.",
+    text: "Il scanne le QR Code augmenté GS1 imprimé sur le produit. L'expérience d'affiliation à votre programme de fidélité démarre.",
     visual: <QrScanVisual />,
   },
   {
