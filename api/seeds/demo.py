@@ -93,6 +93,8 @@ CAMPAIGNS: list[dict[str, Any]] = [
                 "confirmation_text": "Votre participation a bien été prise en compte.",
             },
             "consents": [PARTICIPATION_CONSENT, MARKETING_CONSENT],
+            # The winner lands in the club right after the form (email confirmed later).
+            "session_on_registration": True,
         },
         "games": [
             {

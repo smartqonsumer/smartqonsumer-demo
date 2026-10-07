@@ -22,6 +22,10 @@ class User(Base):
     status: Mapped[str] = mapped_column(String(40), default="pending_email_verification")
     email_verified_at: Mapped[datetime | None] = mapped_column(tz())
     last_login_at: Mapped[datetime | None] = mapped_column(tz())
+    # Campaign through which the account was created (registration points, journey).
+    registration_campaign_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("campaigns.id", ondelete="SET NULL")
+    )
     deleted_at: Mapped[datetime | None] = mapped_column(tz())
     created_at: Mapped[CreatedAt]
 
