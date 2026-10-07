@@ -1,19 +1,24 @@
-# Assigns REVIEW_ASSIGNEE to every Issue whose Status is "In review" in the
-# organization Project smartqonsumer #1.
+# Adds an assignee to every Issue of the organization Project smartqonsumer #1
+# according to its Status:
+#
+#   Status "In review"   → REVIEW_ASSIGNEE
+#   Status "In progress" → PROGRESS_ASSIGNEE
 #
 # A Status change in a Projects V2 board emits no event a repository workflow
 # can listen to, so the board is polled every 5 minutes (GitHub may delay or
 # skip scheduled runs under load; schedules only run from the default branch).
 #
-# Required configuration (Settings → Secrets and variables → Actions):
-#   - secret   PROJECT_TOKEN   : PAT that can read the org Project, read the
-#                                (SMARTQONSUMER_TOKEN is used as a fallback)
-#                                Issues and write their assignees
-#   - variable REVIEW_ASSIGNEE : GitHub login to add (without "@")
+# Configuration (Settings → Secrets and variables → Actions):
+#   - secret   PROJECT_TOKEN     : PAT that can read the org Project, read the
+#                                  Issues and write their assignees
+#                                  (SMARTQONSUMER_TOKEN is used as a fallback)
+#   - variable REVIEW_ASSIGNEE   : login added on "In review"   (without "@")
+#   - variable PROGRESS_ASSIGNEE : login added on "In progress" (without "@")
+# A status whose variable is empty is ignored; at least one must be set.
 #
 # Idempotent: existing assignees are kept, and nothing is sent when the
-# reviewer is already assigned.
-name: Assign reviewer to issues in review
+# person is already assigned.
+name: Assign issues by project status
 
 on:
   schedule:
@@ -24,13 +29,12 @@ on:
 permissions: {}
 
 concurrency:
-  group: assign-in-review
+  group: assign-by-status
   cancel-in-progress: false
 
 env:
   PROJECT_OWNER: smartqonsumer
   PROJECT_NUMBER: 1
-  TARGET_STATUS: In review
 
 jobs:
   assign:
@@ -41,28 +45,41 @@ jobs:
         env:
           PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.SMARTQONSUMER_TOKEN }}
           REVIEW_ASSIGNEE: ${{ vars.REVIEW_ASSIGNEE }}
+          PROGRESS_ASSIGNEE: ${{ vars.PROGRESS_ASSIGNEE }}
         run: |
           missing=0
           if [ -z "${PROJECT_TOKEN}" ]; then
             echo "::error title=Missing secret::Neither PROJECT_TOKEN nor SMARTQONSUMER_TOKEN is set (Settings → Secrets and variables → Actions → Secrets)."
             missing=1
           fi
-          if [ -z "${REVIEW_ASSIGNEE}" ]; then
-            echo "::error title=Missing variable::REVIEW_ASSIGNEE is not set (Settings → Secrets and variables → Actions → Variables)."
+          if [ -z "${REVIEW_ASSIGNEE}" ] && [ -z "${PROGRESS_ASSIGNEE}" ]; then
+            echo "::error title=Missing variable::Set REVIEW_ASSIGNEE and/or PROGRESS_ASSIGNEE (Settings → Secrets and variables → Actions → Variables)."
             missing=1
           fi
+          [ -z "${REVIEW_ASSIGNEE}" ] && echo "::warning::REVIEW_ASSIGNEE is not set - \"In review\" issues are ignored."
+          [ -z "${PROGRESS_ASSIGNEE}" ] && echo "::warning::PROGRESS_ASSIGNEE is not set - \"In progress\" issues are ignored."
           exit "${missing}"
 
-      - name: Assign reviewer to issues in review
+      - name: Assign issues by status
         env:
           GH_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.SMARTQONSUMER_TOKEN }}
           REVIEW_ASSIGNEE: ${{ vars.REVIEW_ASSIGNEE }}
+          PROGRESS_ASSIGNEE: ${{ vars.PROGRESS_ASSIGNEE }}
         run: |
           set -uo pipefail
 
-          # Tolerate a leading "@" or stray spaces in the variable.
-          reviewer="$(printf '%s' "${REVIEW_ASSIGNEE}" | tr -d '[:space:]')"
-          reviewer="${reviewer#@}"
+          # Tolerate a leading "@" or stray spaces in the variables.
+          clean() { local v; v="$(printf '%s' "$1" | tr -d '[:space:]')"; printf '%s' "${v#@}"; }
+          review_assignee="$(clean "${REVIEW_ASSIGNEE}")"
+          progress_assignee="$(clean "${PROGRESS_ASSIGNEE}")"
+
+          # Status → login to add (empty: status ignored).
+          assignee_for() {
+            case "$1" in
+              "In review") printf '%s' "${review_assignee}" ;;
+              "In progress") printf '%s' "${progress_assignee}" ;;
+            esac
+          }
 
           query='
             query($owner: String!, $number: Int!, $cursor: String) {
@@ -92,6 +109,7 @@ jobs:
 
           inspected=0
           in_review=0
+          in_progress=0
           assigned=0
           already=0
           errors=0
@@ -108,7 +126,7 @@ jobs:
               exit 1
             fi
             if [ "$(jq -r '.data.organization.projectV2 // empty | .title' <<<"${response}")" = "" ]; then
-              echo "::error title=Project not found::${PROJECT_OWNER} #${PROJECT_NUMBER} is not readable with PROJECT_TOKEN. Response: ${response}"
+              echo "::error title=Project not found::${PROJECT_OWNER} #${PROJECT_NUMBER} is not readable with the token. Response: ${response}"
               exit 1
             fi
 
@@ -134,8 +152,12 @@ jobs:
               number="$(jq -r '.number' <<<"${item}")"
               status="$(jq -r '.status' <<<"${item}")"
 
-              [ "${status}" != "${TARGET_STATUS}" ] && continue
-              in_review=$((in_review + 1))
+              case "${status}" in
+                "In review") in_review=$((in_review + 1)) ;;
+                "In progress") in_progress=$((in_progress + 1)) ;;
+              esac
+              user="$(assignee_for "${status}")"
+              [ -z "${user}" ] && continue
 
               current="$(jq -r '.assignees | if length == 0 then "(none)" else join(", ") end' <<<"${item}")"
               echo "Checking ${repo}#${number}"
@@ -143,17 +165,17 @@ jobs:
               echo "Current assignees: ${current}"
 
               # Logins are case-insensitive on GitHub.
-              if jq -e --arg r "${reviewer}" 'any(.assignees[]; ascii_downcase == ($r | ascii_downcase))' <<<"${item}" >/dev/null; then
-                echo "${reviewer} already assigned - skipping"
+              if jq -e --arg u "${user}" 'any(.assignees[]; ascii_downcase == ($u | ascii_downcase))' <<<"${item}" >/dev/null; then
+                echo "${user} already assigned - skipping"
                 already=$((already + 1))
                 echo
                 continue
               fi
 
-              echo "Adding reviewer: ${reviewer}"
+              echo "Adding assignee: ${user}"
               # This endpoint adds to the existing assignees (it never replaces them).
               # stdout (JSON) and stderr are kept apart so a warning never breaks the JSON check below.
-              if ! result="$(gh api --method POST "repos/${repo}/issues/${number}/assignees" -f "assignees[]=${reviewer}" 2>"${RUNNER_TEMP:-/tmp}/assign-error.log")"; then
+              if ! result="$(gh api --method POST "repos/${repo}/issues/${number}/assignees" -f "assignees[]=${user}" 2>"${RUNNER_TEMP:-/tmp}/assign-error.log")"; then
                 echo "::error title=Assignment failed::${repo}#${number}: $(cat "${RUNNER_TEMP:-/tmp}/assign-error.log") ${result}"
                 errors=$((errors + 1))
                 echo
@@ -162,11 +184,11 @@ jobs:
 
               # GitHub answers 201 but silently drops a login that cannot be
               # assigned (not a collaborator of the repo, typo...): check it.
-              if jq -e --arg r "${reviewer}" 'any(.assignees[].login; ascii_downcase == ($r | ascii_downcase))' <<<"${result}" >/dev/null 2>&1; then
-                echo "${reviewer} assigned to ${repo}#${number}"
+              if jq -e --arg u "${user}" 'any(.assignees[].login; ascii_downcase == ($u | ascii_downcase))' <<<"${result}" >/dev/null 2>&1; then
+                echo "${user} assigned to ${repo}#${number}"
                 assigned=$((assigned + 1))
               else
-                echo "::error title=Reviewer not assignable::${reviewer} was not added to ${repo}#${number}. The user must have access to ${repo} (collaborator or org member)."
+                echo "::error title=User not assignable::${user} was not added to ${repo}#${number}. The user must have access to ${repo} (collaborator or org member)."
                 errors=$((errors + 1))
               fi
               echo
@@ -180,7 +202,8 @@ jobs:
 
           summary="Project checked: ${PROJECT_OWNER} #${PROJECT_NUMBER}
           Issues inspected: ${inspected}
-          Issues in review: ${in_review}
+          Issues in review: ${in_review} (→ ${review_assignee:-ignored})
+          Issues in progress: ${in_progress} (→ ${progress_assignee:-ignored})
           Users assigned: ${assigned}
           Already assigned: ${already}
           Errors: ${errors}"
@@ -189,7 +212,7 @@ jobs:
           echo "----------------------------------------"
           echo "${summary}"
           {
-            echo '### Assign reviewer to issues in review'
+            echo '### Assign issues by project status'
             echo '```text'
             echo "${summary}"
             echo '```'
