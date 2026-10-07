@@ -29,7 +29,7 @@ const ITEMS = [
   },
   {
     title: 'Chaque récompense se suit',
-    text: 'Code promotionnel générique, code unique ou QR Code à usage unique : une récompense peut devenir un QR Code à usage unique, scanné en point de vente et vérifié en temps réel par SmartQonsumer avant validation.',
+    text: 'Une récompense peut devenir un QR Code à usage unique, scanné en point de vente et vérifié en temps réel par SmartQonsumer avant validation.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 1-1 1h-3" />
