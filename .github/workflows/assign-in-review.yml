@@ -1,0 +1,199 @@
+# Assigns REVIEW_ASSIGNEE to every Issue whose Status is "In review" in the
+# organization Project smartqonsumer #1.
+#
+# A Status change in a Projects V2 board emits no event a repository workflow
+# can listen to, so the board is polled every 5 minutes (GitHub may delay or
+# skip scheduled runs under load; schedules only run from the default branch).
+#
+# Required configuration (Settings → Secrets and variables → Actions):
+#   - secret   PROJECT_TOKEN   : PAT that can read the org Project, read the
+#                                (SMARTQONSUMER_TOKEN is used as a fallback)
+#                                Issues and write their assignees
+#   - variable REVIEW_ASSIGNEE : GitHub login to add (without "@")
+#
+# Idempotent: existing assignees are kept, and nothing is sent when the
+# reviewer is already assigned.
+name: Assign reviewer to issues in review
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+# GITHUB_TOKEN is not used: every API call goes through PROJECT_TOKEN.
+permissions: {}
+
+concurrency:
+  group: assign-in-review
+  cancel-in-progress: false
+
+env:
+  PROJECT_OWNER: smartqonsumer
+  PROJECT_NUMBER: 1
+  TARGET_STATUS: In review
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check configuration
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.SMARTQONSUMER_TOKEN }}
+          REVIEW_ASSIGNEE: ${{ vars.REVIEW_ASSIGNEE }}
+        run: |
+          missing=0
+          if [ -z "${PROJECT_TOKEN}" ]; then
+            echo "::error title=Missing secret::Neither PROJECT_TOKEN nor SMARTQONSUMER_TOKEN is set (Settings → Secrets and variables → Actions → Secrets)."
+            missing=1
+          fi
+          if [ -z "${REVIEW_ASSIGNEE}" ]; then
+            echo "::error title=Missing variable::REVIEW_ASSIGNEE is not set (Settings → Secrets and variables → Actions → Variables)."
+            missing=1
+          fi
+          exit "${missing}"
+
+      - name: Assign reviewer to issues in review
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.SMARTQONSUMER_TOKEN }}
+          REVIEW_ASSIGNEE: ${{ vars.REVIEW_ASSIGNEE }}
+        run: |
+          set -uo pipefail
+
+          # Tolerate a leading "@" or stray spaces in the variable.
+          reviewer="$(printf '%s' "${REVIEW_ASSIGNEE}" | tr -d '[:space:]')"
+          reviewer="${reviewer#@}"
+
+          query='
+            query($owner: String!, $number: Int!, $cursor: String) {
+              organization(login: $owner) {
+                projectV2(number: $number) {
+                  title
+                  items(first: 100, after: $cursor) {
+                    pageInfo { hasNextPage endCursor }
+                    nodes {
+                      type
+                      status: fieldValueByName(name: "Status") {
+                        ... on ProjectV2ItemFieldSingleSelectValue { name }
+                      }
+                      content {
+                        __typename
+                        ... on Issue {
+                          number
+                          repository { nameWithOwner }
+                          assignees(first: 100) { nodes { login } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }'
+
+          inspected=0
+          in_review=0
+          assigned=0
+          already=0
+          errors=0
+          cursor=""
+          page=0
+
+          while :; do
+            page=$((page + 1))
+            args=(-f query="${query}" -f owner="${PROJECT_OWNER}" -F number="${PROJECT_NUMBER}")
+            [ -n "${cursor}" ] && args+=(-f cursor="${cursor}")
+
+            if ! response="$(gh api graphql "${args[@]}" 2>&1)"; then
+              echo "::error title=Project query failed::Page ${page}: ${response}"
+              exit 1
+            fi
+            if [ "$(jq -r '.data.organization.projectV2 // empty | .title' <<<"${response}")" = "" ]; then
+              echo "::error title=Project not found::${PROJECT_OWNER} #${PROJECT_NUMBER} is not readable with PROJECT_TOKEN. Response: ${response}"
+              exit 1
+            fi
+
+            # One compact line per real Issue: repo, number, status, assignees.
+            # Draft issues, pull requests and items without repository or
+            # number are filtered out here.
+            items="$(jq -c '
+              .data.organization.projectV2.items.nodes[]
+              | select(.type == "ISSUE" and .content.__typename == "Issue")
+              | select(.content.repository.nameWithOwner != null and .content.number != null)
+              | {
+                  repo: .content.repository.nameWithOwner,
+                  number: .content.number,
+                  status: (.status.name // ""),
+                  assignees: [.content.assignees.nodes[].login]
+                }' <<<"${response}")"
+
+            while IFS= read -r item; do
+              [ -z "${item}" ] && continue
+              inspected=$((inspected + 1))
+
+              repo="$(jq -r '.repo' <<<"${item}")"
+              number="$(jq -r '.number' <<<"${item}")"
+              status="$(jq -r '.status' <<<"${item}")"
+
+              [ "${status}" != "${TARGET_STATUS}" ] && continue
+              in_review=$((in_review + 1))
+
+              current="$(jq -r '.assignees | if length == 0 then "(none)" else join(", ") end' <<<"${item}")"
+              echo "Checking ${repo}#${number}"
+              echo "Status: ${status}"
+              echo "Current assignees: ${current}"
+
+              # Logins are case-insensitive on GitHub.
+              if jq -e --arg r "${reviewer}" 'any(.assignees[]; ascii_downcase == ($r | ascii_downcase))' <<<"${item}" >/dev/null; then
+                echo "${reviewer} already assigned - skipping"
+                already=$((already + 1))
+                echo
+                continue
+              fi
+
+              echo "Adding reviewer: ${reviewer}"
+              # This endpoint adds to the existing assignees (it never replaces them).
+              # stdout (JSON) and stderr are kept apart so a warning never breaks the JSON check below.
+              if ! result="$(gh api --method POST "repos/${repo}/issues/${number}/assignees" -f "assignees[]=${reviewer}" 2>"${RUNNER_TEMP:-/tmp}/assign-error.log")"; then
+                echo "::error title=Assignment failed::${repo}#${number}: $(cat "${RUNNER_TEMP:-/tmp}/assign-error.log") ${result}"
+                errors=$((errors + 1))
+                echo
+                continue
+              fi
+
+              # GitHub answers 201 but silently drops a login that cannot be
+              # assigned (not a collaborator of the repo, typo...): check it.
+              if jq -e --arg r "${reviewer}" 'any(.assignees[].login; ascii_downcase == ($r | ascii_downcase))' <<<"${result}" >/dev/null 2>&1; then
+                echo "${reviewer} assigned to ${repo}#${number}"
+                assigned=$((assigned + 1))
+              else
+                echo "::error title=Reviewer not assignable::${reviewer} was not added to ${repo}#${number}. The user must have access to ${repo} (collaborator or org member)."
+                errors=$((errors + 1))
+              fi
+              echo
+            done <<<"${items}"
+
+            if [ "$(jq -r '.data.organization.projectV2.items.pageInfo.hasNextPage' <<<"${response}")" != "true" ]; then
+              break
+            fi
+            cursor="$(jq -r '.data.organization.projectV2.items.pageInfo.endCursor' <<<"${response}")"
+          done
+
+          summary="Project checked: ${PROJECT_OWNER} #${PROJECT_NUMBER}
+          Issues inspected: ${inspected}
+          Issues in review: ${in_review}
+          Users assigned: ${assigned}
+          Already assigned: ${already}
+          Errors: ${errors}"
+          summary="$(sed 's/^ *//' <<<"${summary}")"
+
+          echo "----------------------------------------"
+          echo "${summary}"
+          {
+            echo '### Assign reviewer to issues in review'
+            echo '```text'
+            echo "${summary}"
+            echo '```'
+          } >>"${GITHUB_STEP_SUMMARY}"
+
+          # Errors were logged per issue; fail the run so they get noticed.
+          [ "${errors}" -eq 0 ]
