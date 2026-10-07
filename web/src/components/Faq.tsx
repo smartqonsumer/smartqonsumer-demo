@@ -12,7 +12,7 @@ const FAQ_ITEMS = [
   {
     question: "Que se passe-t-il lorsqu'un client scanne ?",
     answer:
-      'Il arrive sur une landing page à votre image, peut découvrir un contenu, rejoindre votre programme de fidélité ou laisser ses coordonnées ; sa fiche client est mise à jour automatiquement.',
+      "Il arrive sur une landing page à votre image et peut découvrir un contenu. S'il rejoint votre programme de fidélité ou laisse ses coordonnées, sa fiche client est créée ou mise à jour automatiquement.",
   },
   {
     question: 'Est-ce que mes données restent ma propriété ?',
