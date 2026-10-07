@@ -55,6 +55,7 @@ def test_redeem_debits_points_and_returns_a_demo_code(client: TestClient, db: Se
     assert [m["code"] for m in mine] == [data["code"]]
     assert mine[0]["status"] == "assigned"
     assert db.scalar(select(PromoCode.status).where(PromoCode.code == data["code"])) == "assigned"
+    assert memory_provider.outbox[-1].subject.startswith("Croquin")
 
 
 def test_insufficient_balance_is_a_clear_refusal(client: TestClient) -> None:

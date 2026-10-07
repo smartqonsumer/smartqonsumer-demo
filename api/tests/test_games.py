@@ -175,3 +175,26 @@ def test_max_count_limit(client: TestClient, db: Session) -> None:
         for _ in range(3)
     ]
     assert codes == [200, 200, 409]
+
+
+def test_existing_member_claims_a_welcome_win_after_login(client: TestClient) -> None:
+    verified_member(client)
+    client.post("/api/v1/auth/logout")
+    token = str(uuid.uuid4())
+    race = play_welcome(client, token, scan(client, token)).json()
+    from tests.helpers import PASSWORD
+
+    client.post("/api/v1/auth/login", json={"email": "membre@example.com", "password": PASSWORD})
+    claimed = client.post(
+        f"/api/v1/games/sessions/{race['game_session_id']}/claim", headers={"X-Anon-Token": token}
+    )
+    assert claimed.status_code == 200, claimed.text
+    assert claimed.json()["reward_title"] == "Friandise offerte"
+    again = client.post(
+        f"/api/v1/games/sessions/{race['game_session_id']}/claim", headers={"X-Anon-Token": token}
+    )
+    assert again.status_code == 409
+    other_browser = client.post(
+        f"/api/v1/games/sessions/{race['game_session_id']}/claim", headers={"X-Anon-Token": str(uuid.uuid4())}
+    )
+    assert other_browser.status_code == 409

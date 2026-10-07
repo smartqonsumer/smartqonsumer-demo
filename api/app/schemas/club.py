@@ -81,6 +81,11 @@ class GamePlayResponse(ApiModel):
     message: str
 
 
+class ClaimResponse(ApiModel):
+    points_awarded: int
+    reward_title: str | None
+
+
 # --------------------------------------------------------------------------- rewards
 
 

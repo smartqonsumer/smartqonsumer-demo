@@ -22,28 +22,9 @@ GTIN_DOG_RACE = "09506000164908"
 GTIN_SIMPLE = "09506000164915"
 DEMO_CODES_PER_REWARD = 50
 
-# Visual identity inspired by a French "grain-free pet food" universe (black / deep red,
-# condensed uppercase titles, warm photos of dogs at the bowl). Fonts are free
-# equivalents of the condensed-title / humanist-text pairing.
-CROQUIN_THEME: dict[str, Any] = {
-    "colors": {
-        "primary": "#B0002F",
-        "primary_dark": "#8A0024",
-        "primary_contrast": "#FFFFFF",
-        "ink": "#141414",
-        "text": "#4A4848",
-        "muted": "#6E6B6B",
-        "surface": "#FFFFFF",
-        "background": "#F7F6F4",
-        "accent": "#6E9E00",
-        "accent_soft": "#EEF5DD",
-        "gold": "#F2B705",
-        "border": "#E4E1DD",
-    },
-    "typography": {"title": "Barlow Condensed", "text": "Source Sans 3", "title_transform": "uppercase"},
-    "radius": {"sm": "8px", "md": "14px", "lg": "24px", "pill": "999px"},
-    "assets": {"logo_text": "Croquin", "tagline": "Croquettes sans céréales · Made in France"},
-}
+# The visual theme lives in the frontend design system (web/src/lib/brand/themes/);
+# the brand row only names the preset to apply.
+CROQUIN_THEME: dict[str, Any] = {"preset": "croquin"}
 
 LEGAL_URLS = {
     "privacy": "/legal/confidentialite/",

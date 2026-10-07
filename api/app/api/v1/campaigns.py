@@ -54,6 +54,11 @@ def get_campaign(slug: str, db: DbSession) -> CampaignPublic:
     return campaign_public(db, campaign_service.get_campaign(db, slug))
 
 
+@router.get("/brands/{slug}", response_model=BrandPublic)
+def get_brand(slug: str, db: DbSession) -> BrandPublic:
+    return BrandPublic.model_validate(campaign_service.get_brand(db, slug))
+
+
 @router.get("/qr-codes", response_model=list[DemoQrCode])
 def list_demo_qr_codes(db: DbSession) -> list[DemoQrCode]:
     """QR codes shown on the /qr demo page. They point to the GS1 resolver, not to the

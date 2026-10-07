@@ -6,9 +6,10 @@ from typing import Annotated
 from fastapi import APIRouter, BackgroundTasks, Query
 
 from app.api.deps import AnonToken, CurrentUser, DbSession, IdempotencyKey, OptionalUser
-from app.core.errors import NotFound
+from app.core.errors import AppError, NotFound
 from app.models import Brand, Game, PromoCode, Reward, User
 from app.schemas.club import (
+    ClaimResponse,
     EarningAction,
     EarningActions,
     GamePlayRequest,
@@ -147,7 +148,8 @@ def play_game(
         choice=body.choice,
     )
     if claim is not None and claim.reward_title and user is not None and user.email:
-        background.add_task(EmailService().reward_confirmation, user.email, claim.reward_title)
+        brand = campaign_service.get_campaign(db, body.campaign_slug).brand
+        background.add_task(EmailService(brand.name).reward_confirmation, user.email, claim.reward_title)
     pending = session.won and session.claimed_at is None
     if session.won:
         message = (
@@ -167,6 +169,33 @@ def play_game(
         reward_title=claim.reward_title if claim else None,
         message=message,
     )
+
+
+@router.post("/games/sessions/{game_session_id}/claim", response_model=ClaimResponse)
+def claim_game_win(
+    game_session_id: uuid.UUID,
+    db: DbSession,
+    user: CurrentUser,
+    background: BackgroundTasks,
+    anon_token: AnonToken = None,
+) -> ClaimResponse:
+    """An existing member who won the welcome game logs in, then collects the gift."""
+    claim = game_service.claim_welcome_win(
+        db, game_session_id=game_session_id, user=user, anon_token=anon_token
+    )
+    if claim is None:
+        raise AppError(
+            "not_claimable", "Ce gain a déjà été attribué ou n'est plus disponible.", status_code=409
+        )
+    db.commit()
+    if claim.reward_title and user.email:
+        brand = db.get(Brand, game_service.session_brand_id(db, game_session_id))
+        background.add_task(
+            EmailService(brand.name if brand else "SmartQonsumer").reward_confirmation,
+            user.email,
+            claim.reward_title,
+        )
+    return ClaimResponse(points_awarded=claim.points, reward_title=claim.reward_title)
 
 
 # --------------------------------------------------------------------------- rewards
@@ -202,7 +231,12 @@ def redeem_reward(
     db.commit()
     reward, code = redemption_details(db, redemption.reward_id, redemption.promo_code_id)
     if user.email:
-        background.add_task(EmailService().reward_confirmation, user.email, reward.title)
+        brand = db.get(Brand, reward.brand_id)
+        background.add_task(
+            EmailService(brand.name if brand else "SmartQonsumer").reward_confirmation,
+            user.email,
+            reward.title,
+        )
     return RewardRedemptionResponse(
         redemption_id=redemption.id,
         reward_title=reward.title,

@@ -222,3 +222,11 @@ def member_games(db: Session, brand: Brand) -> list[tuple[Game, Campaign]]:
         .order_by(Game.sort_order)
     ).all()
     return [(g, c) for g, c in rows if campaign_service.is_running(c)]
+
+
+def session_brand_id(db: Session, game_session_id: uuid.UUID) -> uuid.UUID | None:
+    return db.scalar(
+        select(Campaign.brand_id)
+        .join(GameSession, GameSession.campaign_id == Campaign.id)
+        .where(GameSession.id == game_session_id)
+    )

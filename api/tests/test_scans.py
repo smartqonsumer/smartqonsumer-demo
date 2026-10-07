@@ -148,3 +148,9 @@ def test_public_campaign_never_exposes_the_win_probability(client: TestClient) -
     assert data["games"][0]["type"] == "dog_race"
     assert "win_probability" not in str(data)
     assert [c["required"] for c in data["consents"]] == [True, False]
+
+
+def test_brand_endpoint_exposes_theme_preset(client: TestClient) -> None:
+    data = client.get("/api/v1/brands/croquin").json()
+    assert data == {"slug": "croquin", "name": "Croquin", "logo_url": None, "theme": {"preset": "croquin"}}
+    assert client.get("/api/v1/brands/inconnue").status_code == 404

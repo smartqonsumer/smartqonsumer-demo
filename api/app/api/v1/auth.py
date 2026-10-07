@@ -3,7 +3,7 @@ from fastapi import APIRouter, BackgroundTasks, Request, Response
 from app.api.deps import AnonToken, DbSession, client_key
 from app.core.config import get_settings
 from app.core.rate_limit import limiter
-from app.models import User
+from app.models import Campaign, User
 from app.schemas.auth import (
     ForgotPasswordRequest,
     LoginRequest,
@@ -56,6 +56,15 @@ def clear_session_cookie(response: Response) -> None:
     response.delete_cookie(
         settings.session_cookie_name, domain=settings.session_cookie_domain or None, path="/"
     )
+
+
+def _registration_campaign(db: DbSession, user: User) -> Campaign | None:
+    return db.get(Campaign, user.registration_campaign_id) if user.registration_campaign_id else None
+
+
+def _mailer(campaign: Campaign | None) -> EmailService:
+    """Emails are signed with the brand the member signed up with."""
+    return EmailService(campaign.brand.name if campaign else "SmartQonsumer")
 
 
 def _sensitive(request: Request, action: str) -> None:
@@ -130,12 +139,13 @@ def resend_verification(
     if user is not None and user.email_verified_at is None and user.status != "deleted":
         token = auth_service.issue_token(db, user, "verify_email")
         db.commit()
+        campaign = _registration_campaign(db, user)
         background.add_task(
-            EmailService().verify_email,
+            _mailer(campaign).verify_email,
             user.email or "",
             user.profile.first_name if user.profile else None,
             token,
-            None,
+            campaign.slug if campaign else None,
         )
     return Message(message=GENERIC_EMAIL_SENT)
 
@@ -175,7 +185,7 @@ def forgot_password(
     if result is not None:
         user, token = result
         db.commit()
-        background.add_task(EmailService().reset_password, user.email or "", token)
+        background.add_task(_mailer(_registration_campaign(db, user)).reset_password, user.email or "", token)
     # Same answer whether the account exists or not (no user enumeration).
     return Message(message=GENERIC_EMAIL_SENT)
 
