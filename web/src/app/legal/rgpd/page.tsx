@@ -94,7 +94,7 @@ export default function RgpdPage() {
 
       <h2 id="droits">7. Exercer un droit RGPD</h2>
       <p>
-        Si vous êtes un Consommateur final scanné par un produit d&apos;une marque cliente, la meilleure façon
+        Si vous êtes un consommateur final scanné par un produit d&apos;une marque cliente, la meilleure façon
         d&apos;exercer vos droits (accès, rectification, effacement, portabilité) est de vous adresser directement à
         cette marque, responsable de vos données. SmartQonsumer transmettra et exécutera techniquement toute
         demande relayée par ses clients dans un délai raisonnable.
