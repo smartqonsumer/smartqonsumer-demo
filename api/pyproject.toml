@@ -44,7 +44,7 @@ known-first-party = ["app", "seeds"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S105", "S106"]
-"seeds/*" = ["S105", "S311"]
+"seeds/*" = ["S105", "S311", "E501"]
 
 [tool.mypy]
 python_version = "3.11"

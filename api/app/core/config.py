@@ -5,10 +5,10 @@ Brand / Campaign / Game rows in the database. Only infrastructure settings do.
 """
 
 from functools import lru_cache
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # Public URLs
     frontend_url: str = "http://localhost:3010"
     gs1_resolver_url: str = "http://localhost:8091"
-    cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:3010"])
+    cors_origins: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["http://localhost:3010"])
 
     # Sessions (opaque token in an HttpOnly cookie, hashed in DB)
     session_secret: str = "dev-only-change-me"  # noqa: S105 - overridden in every real environment

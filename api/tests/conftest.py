@@ -55,3 +55,16 @@ def db() -> Iterator[Session]:
 def client() -> Iterator[TestClient]:
     with TestClient(app, base_url="http://testserver") as test_client:
         yield test_client
+
+
+@pytest.fixture
+def seeded(db: Session):  # type: ignore[no-untyped-def]
+    from seeds.demo import seed
+
+    return seed(db)
+
+
+def anon() -> str:
+    import uuid
+
+    return str(uuid.uuid4())
