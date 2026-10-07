@@ -51,24 +51,24 @@ export default function RgpdPage() {
 
       <h2 id="roles">1. Qui fait quoi : responsable et sous-traitant</h2>
       <p>
-        Pour les données de ses Consommateurs finaux, chaque marque cliente de SmartQonsumer conservera la qualité
+        Pour les données de ses consommateurs finaux, chaque marque cliente de SmartQonsumer conservera la qualité
         de <strong>responsable de traitement</strong> : c&apos;est elle qui décide de la finalité de la collecte
-        (Club de Fidélité, campagne, landing page) et des données demandées. SmartQonsumer interviendra comme{' '}
+        (club de fidélité, campagne, landing page) et des données demandées. SmartQonsumer interviendra comme{' '}
         <strong>sous-traitant</strong>, dans le cadre d&apos;un contrat de traitement des données conforme à
         l&apos;article 28 du RGPD, annexé au contrat d&apos;abonnement.
       </p>
 
       <h2 id="architecture">2. Un espace pour chaque entreprise</h2>
       <p>
-        La plateforme est conçue sur une architecture multi-tenant : les données de chaque Client sont logiquement
-        séparées de celles des autres, avec une administration distincte par rôles (Super Admin de l&apos;espace
-        SmartQonsumer, Tenant pour chaque marque cliente). Aucune donnée n&apos;est mutualisée entre deux Clients.
+        La plateforme est conçue sur une architecture multi-tenant : les données de chaque client sont logiquement
+        séparées de celles des autres, avec une administration distincte par rôles (super admin de l&apos;espace
+        SmartQonsumer, tenant pour chaque marque cliente). Aucune donnée n&apos;est mutualisée entre deux clients.
       </p>
 
       <h2 id="acces">3. Des accès qui se maîtrisent</h2>
       <p>
         La connexion à l&apos;espace d&apos;administration pourra être protégée par une authentification à deux
-        facteurs (MFA) par code à usage unique. Chaque Client gérera la liste des Utilisateurs autorisés à accéder à
+        facteurs (MFA) par code à usage unique. Chaque client gérera la liste des Utilisateurs autorisés à accéder à
         son Compte et peut révoquer un accès à tout moment.
       </p>
 
@@ -80,7 +80,7 @@ export default function RgpdPage() {
 
       <h2 id="preferences">5. Des préférences qui comptent</h2>
       <p>
-        Le parcours consommateur (inscription au Club de Fidélité, réception de campagnes) intègre le recueil du
+        Le parcours consommateur (inscription au club de fidélité, réception de campagnes) intègre le recueil du
         consentement, la gestion des préférences de communication et un mécanisme de désinscription en un clic,
         présent sur chaque e-mail envoyé depuis la plateforme.
       </p>
@@ -89,7 +89,7 @@ export default function RgpdPage() {
       <p>
         Les données de la plateforme seront hébergées au sein de l&apos;Union européenne. SmartQonsumer fera appel à
         un nombre restreint de sous-traitants techniques (hébergement, envoi d&apos;e-mails transactionnels), chacun
-        lié par un contrat encadrant le traitement des données, et dont la liste sera communiquée à chaque Client.
+        lié par un contrat encadrant le traitement des données, et dont la liste sera communiquée à chaque client.
       </p>
 
       <h2 id="droits">7. Exercer un droit RGPD</h2>
@@ -97,7 +97,7 @@ export default function RgpdPage() {
         Si vous êtes un Consommateur final scanné par un produit d&apos;une marque cliente, la meilleure façon
         d&apos;exercer vos droits (accès, rectification, effacement, portabilité) est de vous adresser directement à
         cette marque, responsable de vos données. SmartQonsumer transmettra et exécutera techniquement toute
-        demande relayée par ses Clients dans un délai raisonnable.
+        demande relayée par ses clients dans un délai raisonnable.
       </p>
       <p>
         Si vous êtes visiteur du site smartqonsumer.com, vous pouvez exercer ces mêmes droits en écrivant à{' '}
@@ -108,7 +108,7 @@ export default function RgpdPage() {
       <h2 id="violation">8. Gestion des violations de données</h2>
       <p>
         En cas de violation de données susceptible d&apos;engendrer un risque pour les droits et libertés des
-        personnes concernées, SmartQonsumer s&apos;engage à en informer ses Clients concernés dans les meilleurs
+        personnes concernées, SmartQonsumer s&apos;engage à en informer ses clients concernés dans les meilleurs
         délais, afin de leur permettre de respecter leurs propres obligations de notification à la CNIL et, le cas
         échéant, aux personnes concernées.
       </p>
