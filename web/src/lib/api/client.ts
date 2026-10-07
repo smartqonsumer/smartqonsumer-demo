@@ -35,7 +35,8 @@ type Options = {
 };
 
 export async function api<T>(path: string, { method = 'GET', body, query, idempotencyKey, anon, signal }: Options = {}): Promise<T> {
-  const url = new URL(`${API_URL}${path}`);
+  // API_URL may be absolute (separate API host) or relative (same origin, e.g. behind a proxy).
+  const url = new URL(`${API_URL}${path}`, window.location.origin);
   for (const [key, value] of Object.entries(query ?? {})) {
     if (value !== undefined) url.searchParams.set(key, value);
   }

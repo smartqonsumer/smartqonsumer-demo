@@ -111,6 +111,25 @@ cd web && npm install && npx next dev -p 3010
 
 Puis : <http://localhost:3010/qr/> → « Ouvrir ce parcours dans le navigateur » (passe réellement par le resolver). Les emails de confirmation arrivent dans Mailpit. Ports volontairement décalés (5440, 8010, 8026, 3010, 8091) pour ne pas entrer en conflit avec d'autres projets locaux.
 
+### Tester depuis un smartphone (ngrok)
+
+Un seul tunnel suffit : `scripts/dev-proxy.mjs` sert tout sur une même origine (`/api/*` → API, `/01/*` → resolver, le reste → site), donc le cookie de session reste first-party.
+
+```bash
+ngrok http 8088                                   # note l'URL https://xxxx.ngrok-free.app
+U=https://xxxx.ngrok-free.app
+# API (les QR de /qr encodent GS1_RESOLVER_URL, les emails pointent vers FRONTEND_URL)
+cd api && FRONTEND_URL=$U GS1_RESOLVER_URL=$U CORS_ORIGINS=$U .venv/bin/uvicorn app.main:app --port 8010
+# Resolver (redirige vers le site public)
+cd php-resolver && GS1_RESOLVER_FQDN=${U#https://} SMARTQONSUMER_URL=$U php -S 127.0.0.1:8091 -t public public/router.php
+# Site, API appelée en relatif sur la même origine
+cd web && NEXT_PUBLIC_API_URL=/api/v1 npx next dev -p 3010
+# Proxy
+node scripts/dev-proxy.mjs
+```
+
+Puis ouvrir `$U/qr/` sur l'ordinateur et scanner les QR avec le téléphone. ngrok gratuit affiche une page d'avertissement à la première visite : « Visit Site ».
+
 ### Seed de démonstration (`api/seeds/demo.py`)
 
 Marque `croquin`, campagnes `croquin-dog-race` et `croquin-simple-loyalty`, GTIN de démo `09506000164908` / `09506000164915` (plage d'exemple GS1), jeux (course, roue), règles de points du profil, 4 récompenses et **50 codes factices par récompense** préfixés `DEMO-CROQ-…`. Le script met à jour la configuration en place (par slug / code) : le relancer ne duplique rien et ne touche ni aux comptes, ni aux scans, ni aux transactions.
