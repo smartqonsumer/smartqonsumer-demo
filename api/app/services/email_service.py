@@ -108,9 +108,9 @@ class EmailService:
             logger.exception("Email delivery failed (kind=%s)", kind)
 
     def verify_email(self, to: str, first_name: str | None, token: str, campaign_slug: str | None) -> None:
-        url = f"{self.settings.frontend_url}/verify-email/?token={token}"
-        if campaign_slug:
-            url += f"&campaign={campaign_slug}"
+        # Token in the URL fragment: never sent to the web server (no access-log or
+        # Referer leak); the static page reads it client-side.
+        url = f"{self.settings.frontend_url}/verify-email/#token={token}"
         hours = self.settings.email_verification_ttl_hours
         self._send(
             "verify_email",
@@ -137,7 +137,7 @@ class EmailService:
                 f"Ce lien est valable {minutes} minutes et ne peut être utilisé qu'une seule fois.",
             ],
             "Choisir un nouveau mot de passe",
-            f"{self.settings.frontend_url}/auth/reinitialiser/?token={token}",
+            f"{self.settings.frontend_url}/auth/reinitialiser/#token={token}",
         )
 
     def reward_confirmation(self, to: str, reward_title: str) -> None:

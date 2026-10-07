@@ -1,0 +1,38 @@
+# CI of the FastAPI backend in api/: lint, format, typecheck and tests against a real
+# PostgreSQL (unique constraints, row locks and concurrency are tested for real).
+name: API
+
+on:
+  push:
+    paths: ['api/**', '.github/workflows/api.yml']
+  pull_request:
+    paths: ['api/**', '.github/workflows/api.yml']
+
+defaults:
+  run:
+    working-directory: api
+
+jobs:
+  checks:
+    name: Ruff · mypy · pytest (PostgreSQL)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: smartq
+          POSTGRES_PASSWORD: smartq
+          POSTGRES_DB: smartqonsumer_test
+        ports: ['5440:5432']
+        options: >-
+          --health-cmd "pg_isready -U smartq" --health-interval 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql+psycopg://smartq:smartq@localhost:5440/smartqonsumer_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m venv .venv && .venv/bin/pip install -q -e ".[dev]"
+      - run: ./scripts/check.sh

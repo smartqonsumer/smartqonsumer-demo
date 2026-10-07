@@ -207,7 +207,7 @@ test('scenario B: simple club registration → check email → verified → whee
   await expect(page.getByRole('heading', { name: /Vérifiez votre boîte mail/ })).toBeVisible();
   await expectNoHorizontalScroll(page);
 
-  await page.goto('/verify-email/?token=un-jeton-de-test-suffisamment-long');
+  await page.goto('/verify-email/#token=un-jeton-de-test-suffisamment-long');
   await expect(page.getByRole('heading', { name: 'Votre adresse email est confirmée' })).toBeVisible();
   await expect(page.getByText(/maintenant actif/)).toBeVisible();
   await page.getByRole('link', { name: 'Accéder à mon espace' }).click();

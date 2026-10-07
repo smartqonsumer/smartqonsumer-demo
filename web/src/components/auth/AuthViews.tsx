@@ -10,6 +10,19 @@ import type { Message, UserPublic, VerifyEmailResponse } from '@/lib/api/types';
 import { getTheme } from '@/lib/brand/theme';
 import { safeNext, useSession } from '@/lib/auth/session';
 
+/** One-time tokens arrive in the URL fragment (#token=…), never sent to the server;
+ * ?token=… is still accepted. */
+function useLinkToken(): { token: string | null; ready: boolean } {
+  const query = useSearchParams().get('token');
+  const [state, setState] = useState<{ token: string | null; ready: boolean }>({ token: null, ready: false });
+  useEffect(() => {
+    const fromHash = new URLSearchParams(window.location.hash.slice(1)).get('token');
+    if (fromHash) window.history.replaceState(null, '', window.location.pathname);
+    setState({ token: fromHash ?? query, ready: true });
+  }, [query]);
+  return state;
+}
+
 const linkClass = 'font-semibold text-club-ink underline underline-offset-4';
 
 export function LoginView() {
@@ -134,7 +147,7 @@ export function ForgotPasswordView() {
 }
 
 export function ResetPasswordView() {
-  const token = useSearchParams().get('token');
+  const { token, ready } = useLinkToken();
   const [password, setPassword] = useState('');
   const [result, setResult] = useState<{ tone: 'success' | 'error'; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -159,7 +172,9 @@ export function ResetPasswordView() {
   return (
     <JourneyShell>
       <Heading>Nouveau mot de passe</Heading>
-      {!token ? (
+      {!ready ? (
+        <LoadingBlock label="Chargement…" />
+      ) : !token ? (
         <Alert>Ce lien est incomplet. Demandez un nouveau lien de réinitialisation.</Alert>
       ) : result?.tone === 'success' ? (
         <>
@@ -191,13 +206,13 @@ export function ResetPasswordView() {
 }
 
 export function VerifyEmailView() {
-  const token = useSearchParams().get('token');
+  const { token, ready } = useLinkToken();
   const session = useSession();
   const [state, setState] = useState<{ status: 'loading' } | { status: 'done'; data: VerifyEmailResponse } | { status: 'error'; message: string }>({ status: 'loading' });
   const started = useRef(false);
 
   useEffect(() => {
-    if (started.current) return;
+    if (!ready || started.current) return;
     started.current = true;
     if (!token) {
       setState({ status: 'error', message: 'Ce lien est incomplet.' });
@@ -209,7 +224,7 @@ export function VerifyEmailView() {
         void session.refresh();
       })
       .catch((e) => setState({ status: 'error', message: errorMessage(e) }));
-  }, [token, session]);
+  }, [ready, token, session]);
 
   return (
     <JourneyShell>

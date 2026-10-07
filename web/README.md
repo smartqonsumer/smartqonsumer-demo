@@ -12,6 +12,16 @@ Ne couvre volontairement que la home page publique et ses pages annexes (mention
 - **PostHog** (`posthog-js`) : pageviews + `capture_exceptions` (Error Tracking), gated par le consentement Axeptio.
 - **Axeptio** (CMP) : mêmes réglages que le site actuel (`clientId`, `cookiesVersion`).
 
+## Parcours de démonstration et club fidélité
+
+En plus de la home, le site embarque les pages de démonstration du moteur SmartQonsumer (toutes en `noindex`), alimentées par l'API `api/` (`NEXT_PUBLIC_API_URL`) — voir le [README racine](../README.md) :
+
+- `/qr/` — les deux QR codes GS1 de démonstration (ils encodent l'URL du resolver) ;
+- `/club-croquin/` (course de chiens) et `/club-croquin-simple/` (inscription simple) — parcours d'acquisition de la marque fictive Croquin ;
+- `/club/` — espace fidélité commun (solde, points, gagner, récompenses, compte), `/auth/…`, `/verify-email/`.
+
+Design system : composants communs (`src/components/ui`) sur les couleurs `club-*` de Tailwind, valorisées par le thème de marque (`src/lib/brand/themes/`) via des variables CSS. Jeux : `src/components/games/` (le résultat vient toujours de l'API).
+
 ## Développement
 
 ```bash
