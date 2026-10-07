@@ -14,7 +14,7 @@ const STEPS = [
   {
     num: '02',
     title: 'Il rejoint votre univers',
-    text: 'Landing personnalisée, récompense, contenu ou programme de fidélité — à votre image.',
+    text: "Votre programme de fidélité et votre page produit personnalisée. Vous identifiez immédiatement le produit acheté grâce au GTIN porté par le QR Code qui s'associe au profil du consommateur.",
     visual: <PhoneMockup />,
   },
   {
