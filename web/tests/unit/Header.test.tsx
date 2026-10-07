@@ -28,4 +28,14 @@ describe('Header', () => {
     fireEvent.click(toggle);
     expect(screen.getByRole('button', { name: 'Fermer le menu' })).toBeInTheDocument();
   });
+
+  it('closes the mobile menu on Escape and moves focus back to the toggle', () => {
+    render(<Header />);
+    fireEvent.click(screen.getByRole('button', { name: 'Ouvrir le menu' }));
+    expect(screen.getByRole('navigation', { name: 'Navigation mobile' })).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('navigation', { name: 'Navigation mobile' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Ouvrir le menu' })).toHaveFocus();
+  });
 });

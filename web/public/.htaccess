@@ -1,0 +1,17 @@
+# Apache (OVH shared hosting). Ignored by other web servers.
+
+# Unknown URLs get the static 404 page with a real 404 status.
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Permanent redirects from the legacy static site's URLs.
+  RewriteRule ^legal/(confidentialite|mentions-legales|rgpd)\.html$ /legal/$1/ [R=301,L]
+  # No terms of sale until the company exists: the old CGV page is gone for good
+  # (410), even though an FTP deploy leaves the legacy file on the server.
+  RewriteRule ^legal/cgv(\.html|/.*)?$ - [G,L]
+  # Only on the client's request, not on DirectoryIndex's internal sub-request (would loop).
+  RewriteCond %{THE_REQUEST} \s/index\.html[\s?]
+  RewriteRule ^index\.html$ / [R=301,L]
+</IfModule>

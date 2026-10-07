@@ -1,6 +1,7 @@
 import { Container } from '@/components/Container';
 import { IconRow } from '@/components/IconRow';
 import { Reveal } from '@/components/Reveal';
+import styles from './SecurityTrust.module.css';
 
 const ITEMS = [
   {
@@ -53,7 +54,7 @@ const ITEMS = [
 
 export function SecurityTrust() {
   return (
-    <section id="security" className="scroll-mt-20 bg-neutral-950 py-20 text-white sm:py-28">
+    <section id="security" className={`${styles.band} scroll-mt-20 py-20 text-white sm:py-28`}>
       <Container className="grid gap-12 lg:grid-cols-2 lg:items-start">
         <Reveal>
           <div className="grid h-[52px] w-[52px] place-items-center rounded-2xl bg-white/10 text-brand-300">

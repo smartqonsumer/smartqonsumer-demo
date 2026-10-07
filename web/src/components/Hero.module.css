@@ -1,0 +1,91 @@
+/* Hero entrance animations (ported from the legacy static site). */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes titleShine {
+  0% {
+    background-position: 180% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes dotsDrift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 180px 180px;
+  }
+}
+
+.in {
+  opacity: 0;
+  animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.titleShine {
+  animation:
+    fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both,
+    titleShine 5s linear infinite;
+  background-image: linear-gradient(
+    100deg,
+    #fff 15%,
+    rgb(var(--color-brand-300)) 32%,
+    rgb(var(--color-brand-400)) 40%,
+    #fff 52%,
+    rgb(var(--color-brand-300)) 66%,
+    #fff 84%
+  );
+  background-size: 280% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.modules {
+  position: absolute;
+  inset: 0 0 0 42%;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: radial-gradient(rgb(var(--color-brand-500)) 1px, transparent 1.5px);
+  background-size: 9px 9px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 22%);
+  mask-image: linear-gradient(to right, transparent, #000 22%);
+  animation: dotsDrift 40s linear infinite;
+}
+
+@media (max-width: 900px) {
+  .modules {
+    inset: 0;
+    opacity: 0.1;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000);
+    mask-image: linear-gradient(to bottom, transparent, #000);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .titleShine {
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+    color: #fff;
+  }
+  .modules {
+    animation: none;
+  }
+}

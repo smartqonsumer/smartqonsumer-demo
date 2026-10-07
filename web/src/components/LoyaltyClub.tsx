@@ -3,6 +3,7 @@ import { IconRow } from '@/components/IconRow';
 import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
 import { MemberPhoneMockup, TenantPanel } from '@/components/ClubFideliteVisuals';
+import { ProductBand } from '@/components/ProductBand';
 
 const ITEMS = [
   {
@@ -39,7 +40,7 @@ const ITEMS = [
 
 export function LoyaltyClub() {
   return (
-    <section id="club-fidelite" className="product-band product-band-club scroll-mt-20 py-[88px] max-md:py-16">
+    <ProductBand id="club-fidelite" variant="club" className="scroll-mt-20 py-[88px] max-md:py-16">
       <Container className="grid gap-14 lg:grid-cols-[0.95fr_1.3fr] lg:items-start">
         <div>
           <SectionHeading pill center={false} eyebrow="Le Club Fidélité" title="Donnez une bonne raison de revenir." />
@@ -73,6 +74,6 @@ export function LoyaltyClub() {
           <p className="mt-4 text-right text-[11px] text-neutral-500">Données fictives · illustration du parcours</p>
         </Reveal>
       </Container>
-    </section>
+    </ProductBand>
   );
 }

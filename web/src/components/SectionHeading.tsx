@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Reveal } from '@/components/Reveal';
+import styles from './SectionHeading.module.css';
 
 export function SectionHeading({
   eyebrow,
@@ -12,7 +13,7 @@ export function SectionHeading({
   title: ReactNode;
   description?: ReactNode;
   center?: boolean;
-  /** Badge-style eyebrow used inside `.product-band` sections (how/club/email/pilot) on the legacy site. */
+  /** Badge-style eyebrow used inside `ProductBand` sections (how/club/email/pilot) on the legacy site. */
   pill?: boolean;
 }) {
   return (
@@ -20,7 +21,7 @@ export function SectionHeading({
       <span
         className={
           pill
-            ? 'eyebrow-pill text-xs font-bold uppercase tracking-[0.1em] text-brand-800'
+            ? `${styles.pill} text-xs font-bold uppercase tracking-[0.1em] text-brand-800`
             : 'block text-xs font-semibold uppercase tracking-[0.1em] text-brand-800'
         }
       >

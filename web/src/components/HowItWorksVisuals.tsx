@@ -1,4 +1,5 @@
 /** Small illustrative mockups for each of the 4 "how it works" steps, ported from the legacy static site. */
+import styles from './HowItWorksVisuals.module.css';
 
 const SECTORS = [
   { title: 'Boissons artisanales', path: 'M9 2h6v3l2 3v12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V8l2-3V2z' },
@@ -26,7 +27,7 @@ export function QrScanVisual() {
           <i className="absolute right-0 top-0 h-4 w-4 rounded-tr-[5px] border-[2.5px] border-b-0 border-l-0 border-brand-600" />
           <i className="absolute bottom-0 left-0 h-4 w-4 rounded-bl-[5px] border-[2.5px] border-r-0 border-t-0 border-brand-600" />
           <i className="absolute bottom-0 right-0 h-4 w-4 rounded-br-[5px] border-[2.5px] border-l-0 border-t-0 border-brand-600" />
-          <span className="scan-line absolute left-1 right-1 top-1.5 h-0.5 bg-gradient-to-r from-transparent via-brand-600 to-transparent" />
+          <span className={`${styles.scanLine} absolute left-1 right-1 top-1.5 h-0.5 bg-gradient-to-r from-transparent via-brand-600 to-transparent`} />
         </div>
       </div>
       <div className="flex gap-2.5">

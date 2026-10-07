@@ -21,24 +21,9 @@ describe('SEO basics', () => {
 });
 
 describe('sitemap', () => {
-  it('includes the homepage and all four legal pages', () => {
-    const entries = sitemap();
-    const urls = entries.map((entry) => entry.url);
-
-    expect(urls).toContain(`${siteConfig.url}/`);
-    expect(urls).toContain(`${siteConfig.url}/legal/mentions-legales/`);
-    expect(urls).toContain(`${siteConfig.url}/legal/cgv/`);
-    expect(urls).toContain(`${siteConfig.url}/legal/confidentialite/`);
-    expect(urls).toContain(`${siteConfig.url}/legal/rgpd/`);
-  });
-
-  it('gives the homepage the highest priority', () => {
-    const entries = sitemap();
-    const home = entries.find((entry) => entry.url === `${siteConfig.url}/`);
-    const legal = entries.find((entry) => entry.url === `${siteConfig.url}/legal/rgpd/`);
-
-    expect(home?.priority).toBe(1);
-    expect(legal?.priority).toBeLessThan(1);
+  it('lists the homepage only: the legal pages are noindex and must stay out of it', () => {
+    const urls = sitemap().map((entry) => entry.url);
+    expect(urls).toEqual([`${siteConfig.url}/`]);
   });
 });
 

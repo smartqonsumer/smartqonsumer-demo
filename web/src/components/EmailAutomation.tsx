@@ -1,6 +1,7 @@
 import { Container } from '@/components/Container';
 import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
+import { ProductBand } from '@/components/ProductBand';
 
 const AUDIENCES = [
   { label: 'Toute la base de contacts', checked: false },
@@ -20,7 +21,7 @@ const AUTOMATION_RULES = [
 
 export function EmailAutomation() {
   return (
-    <section id="email-automation" className="product-band product-band-email scroll-mt-20 py-[88px] max-md:py-16">
+    <ProductBand id="email-automation" variant="email" className="scroll-mt-20 py-[88px] max-md:py-16">
       <Container>
         <SectionHeading
           pill
@@ -73,7 +74,7 @@ export function EmailAutomation() {
             </div>
             <h4 className="mt-4 text-base font-semibold text-neutral-950">Retrouvez ce qui vous a plu.</h4>
             <p className="mt-1 text-sm text-neutral-700">
-              Une nouvelle occasion de découvrir la gamme et de retrouver votre Club.
+              Une nouveauté en exclusivité pour nos clients fidèles.
             </p>
             <span className="mt-3 inline-block text-sm font-semibold text-brand-800">Découvrir le produit →</span>
           </div>
@@ -100,6 +101,6 @@ export function EmailAutomation() {
           </Reveal>
         </div>
       </Container>
-    </section>
+    </ProductBand>
   );
 }

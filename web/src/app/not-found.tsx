@@ -1,10 +1,20 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+
+// Next.js already emits `<meta name="robots" content="noindex">` on this page:
+// drop the layout's "index, follow" and its homepage canonical so they don't contradict it.
+export const metadata: Metadata = {
+  title: 'Page introuvable',
+  description: "La page demandée n'existe pas ou a été déplacée. Retrouvez la présentation de SmartQonsumer depuis l'accueil.",
+  robots: null,
+  alternates: { canonical: null },
+};
 
 export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-brand-50 p-6">
-      <main className="w-full max-w-[620px] rounded-lg border border-neutral-200 bg-white p-12 text-center shadow-lg">
+      <main id="main-content" className="w-full max-w-[620px] rounded-lg border border-neutral-200 bg-white p-12 text-center shadow-lg">
         <Image src="/assets/logo-smartqonsumer.png" alt="SmartQonsumer" width={150} height={20} className="mx-auto mb-8" />
         <div className="text-xs font-bold uppercase tracking-[0.12em] text-brand-800">Erreur 404</div>
         <h1 className="mt-3 text-4xl font-semibold leading-tight text-neutral-950">Cette page n&apos;existe pas.</h1>

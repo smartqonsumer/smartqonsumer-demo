@@ -1,0 +1,20 @@
+/* Pill-shaped eyebrow badge used inside product-band sections. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid rgb(var(--color-brand-700) / 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-sm);
+}
+
+.pill::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: rgb(var(--color-brand-600));
+  flex: none;
+}

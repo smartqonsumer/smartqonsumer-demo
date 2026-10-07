@@ -2,6 +2,7 @@ import { Container } from '@/components/Container';
 import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
 import { CrmCard, PhoneMockup, QrScanVisual, RepurchaseFlow } from '@/components/HowItWorksVisuals';
+import { ProductBand } from '@/components/ProductBand';
 
 const STEPS = [
   {
@@ -32,7 +33,7 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="how" className="product-band product-band-club scroll-mt-20 py-[88px] max-md:py-16">
+    <ProductBand id="how" variant="club" className="scroll-mt-20 py-[88px] max-md:py-16">
       <Container>
         <SectionHeading pill eyebrow="Le mécanisme" title="Chaque scan devient une opportunité." />
 
@@ -65,6 +66,6 @@ export function HowItWorks() {
           QR Code augmenté GS1 et transition 2027&nbsp;↗
         </a>
       </Container>
-    </section>
+    </ProductBand>
   );
 }

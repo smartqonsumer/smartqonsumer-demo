@@ -13,7 +13,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install --with-deps chromium",
-    "test:all": "npm run typecheck && npm run lint && npm run test && npm run test:e2e"
+    "test:all": "npm run typecheck && npm run lint && npm run test && npm run test:e2e",
+    "lighthouse": "lhci autorun",
+    "seo": "node scripts/seo-check.mjs"
   },
   "dependencies": {
     "next": "14.2.35",
@@ -23,10 +25,11 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.48.2",
+    "@tailwindcss/typography": "^0.5.15",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@tailwindcss/typography": "^0.5.15",
     "@testing-library/react": "^16.0.1",
     "@types/node": "^20.16.11",
     "@types/react": "^18.3.12",

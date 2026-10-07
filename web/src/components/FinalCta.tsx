@@ -1,10 +1,11 @@
 import { Container } from '@/components/Container';
 import { Reveal } from '@/components/Reveal';
 import { siteConfig } from '@/lib/site-config';
+import styles from './FinalCta.module.css';
 
 export function FinalCta() {
   return (
-    <section className="bg-brand-900 py-20 text-center text-white sm:py-28">
+    <section className={`${styles.band} py-20 text-center text-white sm:py-28`}>
       <Container className="flex flex-col items-center">
         <Reveal as="span" className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-medium">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-400" aria-hidden="true" />

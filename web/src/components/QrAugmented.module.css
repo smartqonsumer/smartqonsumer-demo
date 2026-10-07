@@ -1,0 +1,12 @@
+/* Faint dotted vignette behind the flow diagram. */
+.dots::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: radial-gradient(rgb(var(--color-brand-500)) 1px, transparent 1.5px);
+  background-size: 15px 15px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, transparent 45%, #000 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, transparent 45%, #000 100%);
+}

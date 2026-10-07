@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { trackNavClick } from '@/lib/analytics';
@@ -17,6 +17,7 @@ const NAV_ITEMS = [
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -24,6 +25,17 @@ export function Header() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setMenuOpen(false);
+      toggleRef.current?.focus();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [menuOpen]);
 
   return (
     <header
@@ -45,7 +57,7 @@ export function Header() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Navigation principale" className="hidden items-center gap-1 lg:flex">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
@@ -71,7 +83,9 @@ export function Header() {
             Nous contacter
           </a>
           <button
+            ref={toggleRef}
             type="button"
+            aria-controls="mobile-menu"
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
             aria-expanded={menuOpen}
@@ -87,8 +101,8 @@ export function Header() {
       </div>
 
       {menuOpen ? (
-        <div className="absolute inset-x-0 top-full border-t border-neutral-200 bg-white lg:hidden">
-          <nav className="flex flex-col gap-1 p-4">
+        <div id="mobile-menu" className="absolute inset-x-0 top-full border-t border-neutral-200 bg-white lg:hidden">
+          <nav aria-label="Navigation mobile" className="flex flex-col gap-1 p-4">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.href}

@@ -1,60 +1,45 @@
 import type { Config } from 'tailwindcss';
 
-// Colors, fonts, radii and shadows mirror the tokens defined in the legacy
-// static site's design-tokens.css, so the new app keeps the same brand look.
+// Colors, fonts, radii and shadows point at the CSS variables declared in
+// src/app/globals.css (mirrored from the legacy site's design-tokens.css), so a
+// token can be changed or overridden at runtime (theme, dark mode) in one place.
+
+/** `--color-<name>` holds RGB channels; `<alpha-value>` keeps `bg-x/50` working. */
+const color = (name: string) => `rgb(var(--color-${name}) / <alpha-value>)`;
+
+const palette = (name: string, steps: number[]) =>
+  Object.fromEntries(steps.map((step) => [step, color(`${name}-${step}`)]));
+
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#F2FBF5',
-          100: '#DDF4E4',
-          200: '#BAE8C8',
-          300: '#8FD8A7',
-          400: '#67C888',
-          500: '#51BD6F',
-          600: '#2FA55C',
-          700: '#1F8443',
-          800: '#176733',
-          900: '#0F4A25',
-        },
-        neutral: {
-          50: '#F6F7F8',
-          100: '#EFF1F2',
-          200: '#E3E6E8',
-          300: '#D2D6DA',
-          400: '#AFB6BB',
-          500: '#8C949B',
-          600: '#6B747C',
-          700: '#4E565D',
-          800: '#343B41',
-          900: '#1F2429',
-          950: '#12161A',
-        },
-        success: { DEFAULT: '#16794A', bg: '#E8F6EE' },
-        warning: { DEFAULT: '#8A5A00', bg: '#FBF1DC' },
-        error: { DEFAULT: '#B3261E', bg: '#FBEAE8' },
-        info: { DEFAULT: '#2A5FD0', bg: '#EAF0FD' },
+        brand: palette('brand', [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]),
+        neutral: palette('neutral', [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
+        success: { DEFAULT: color('success'), bg: color('success-bg') },
+        warning: { DEFAULT: color('warning'), bg: color('warning-bg') },
+        error: { DEFAULT: color('error'), bg: color('error-bg') },
+        info: { DEFAULT: color('info'), bg: color('info-bg') },
       },
       fontFamily: {
-        sans: ['"Instrument Sans"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        sans: 'var(--font-sans)',
       },
       borderRadius: {
-        xs: '4px',
-        sm: '6px',
-        md: '10px',
-        lg: '14px',
-        pill: '999px',
+        xs: 'var(--radius-xs)',
+        sm: 'var(--radius-sm)',
+        md: 'var(--radius-md)',
+        lg: 'var(--radius-lg)',
+        pill: 'var(--radius-pill)',
       },
       boxShadow: {
-        sm: '0 1px 2px rgba(18,22,26,.05)',
-        md: '0 1px 3px rgba(18,22,26,.06),0 1px 2px rgba(18,22,26,.04)',
-        lg: '0 6px 16px rgba(18,22,26,.08),0 1px 3px rgba(18,22,26,.05)',
-        xl: '0 16px 40px rgba(18,22,26,.12)',
+        sm: 'var(--shadow-sm)',
+        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-lg)',
+        xl: 'var(--shadow-xl)',
       },
       maxWidth: {
-        content: '1200px',
+        content: 'var(--max-content)',
       },
     },
   },

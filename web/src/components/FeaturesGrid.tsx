@@ -10,7 +10,7 @@ const FEATURES = [
   },
   {
     title: 'Produits & QR Codes',
-    text: 'Un QR Code par produit, conforme GS1 Digital Link, avec une destination que vous choisissez et changez à tout moment.',
+    text: 'Un QR Code par produit, conforme GS1 Digital Link, avec une URL de destination que vous choisissez et changez à tout moment.',
     href: '#qr-augmente',
   },
   {

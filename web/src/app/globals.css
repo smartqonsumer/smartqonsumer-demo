@@ -2,267 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design tokens: single source of truth, mirrored from the legacy site's
+   design-tokens.css. tailwind.config.ts maps its theme onto these variables. */
 @layer base {
+  :root {
+    /* Colors are stored as space-separated RGB channels (no rgb()) so Tailwind
+       can still apply opacity modifiers: `bg-brand-500/50`. Use them in CSS as
+       `rgb(var(--color-brand-500))` or `rgb(var(--color-brand-500) / 0.2)`. */
+
+    /* Brand green (sampled from the logo: 500 = #51BD6F) */
+    --color-brand-50: 242 251 245; /* #F2FBF5 */
+    --color-brand-100: 221 244 228; /* #DDF4E4 */
+    --color-brand-200: 186 232 200; /* #BAE8C8 */
+    --color-brand-300: 143 216 167; /* #8FD8A7 */
+    --color-brand-400: 103 200 136; /* #67C888 */
+    --color-brand-500: 81 189 111; /* #51BD6F */
+    --color-brand-600: 47 165 92; /* #2FA55C */
+    --color-brand-700: 31 132 67; /* #1F8443 */
+    --color-brand-800: 23 103 51; /* #176733 */
+    --color-brand-900: 15 74 37; /* #0F4A25 */
+
+    /* Neutrals */
+    --color-neutral-50: 246 247 248; /* #F6F7F8 */
+    --color-neutral-100: 239 241 242; /* #EFF1F2 */
+    --color-neutral-200: 227 230 232; /* #E3E6E8 */
+    --color-neutral-300: 210 214 218; /* #D2D6DA */
+    --color-neutral-400: 175 182 187; /* #AFB6BB */
+    --color-neutral-500: 140 148 155; /* #8C949B */
+    --color-neutral-600: 107 116 124; /* #6B747C */
+    --color-neutral-700: 78 86 93; /* #4E565D */
+    --color-neutral-800: 52 59 65; /* #343B41 */
+    --color-neutral-900: 31 36 41; /* #1F2429 */
+    --color-neutral-950: 18 22 26; /* #12161A */
+
+    /* Status */
+    --color-success: 22 121 74; /* #16794A */
+    --color-success-bg: 232 246 238; /* #E8F6EE */
+    --color-warning: 138 90 0; /* #8A5A00 */
+    --color-warning-bg: 251 241 220; /* #FBF1DC */
+    --color-error: 179 38 30; /* #B3261E */
+    --color-error-bg: 251 234 232; /* #FBEAE8 */
+    --color-info: 42 95 208; /* #2A5FD0 */
+    --color-info-bg: 234 240 253; /* #EAF0FD */
+
+    /* Typography */
+    /* --font-instrument-sans is set on <html> by next/font (self-hosted, hashed
+       family name), see src/app/layout.tsx. */
+    --font-sans: var(--font-instrument-sans), "Helvetica Neue", Arial, sans-serif;
+
+    /* Radius */
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-pill: 999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgb(var(--color-neutral-950) / 0.05);
+    --shadow-md: 0 1px 3px rgb(var(--color-neutral-950) / 0.06), 0 1px 2px rgb(var(--color-neutral-950) / 0.04);
+    --shadow-lg: 0 6px 16px rgb(var(--color-neutral-950) / 0.08), 0 1px 3px rgb(var(--color-neutral-950) / 0.05);
+    --shadow-xl: 0 16px 40px rgb(var(--color-neutral-950) / 0.12);
+
+    /* Layout */
+    --max-content: 1200px;
+  }
+
   html {
-    scroll-behavior: smooth;
+    /* Keeps anchors and keyboard-focused elements clear of the fixed header (WCAG 2.4.11). */
+    scroll-padding-top: 88px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* One visible, high-contrast focus indicator for every interactive element
+     (brand-700: >= 3:1 on both the white sections and the dark hero). */
+  :focus-visible,
+  /* Native <video> controls live in a shadow root: outline the player itself. */
+  video:focus-within {
+    outline: 2px solid rgb(var(--color-brand-700));
+    outline-offset: 2px;
+  }
+
+  /* The hero player sits in a rounded overflow-hidden frame: draw the ring inside. */
+  video:focus-within {
+    outline-offset: -2px;
   }
 
   body {
     @apply bg-white text-neutral-950 antialiased;
   }
-}
-
-/* ===== Hero entrance animations (ported from the legacy static site) ===== */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes heroTitleShine {
-  0% {
-    background-position: 180% 0;
-  }
-  100% {
-    background-position: -100% 0;
-  }
-}
-
-@keyframes heroDotsDrift {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 180px 180px;
-  }
-}
-
-.hero-in {
-  opacity: 0;
-  animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-
-.hero-title-shine {
-  animation:
-    fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both,
-    heroTitleShine 5s linear infinite;
-  background-image: linear-gradient(
-    100deg,
-    #fff 15%,
-    theme('colors.brand.300') 32%,
-    theme('colors.brand.400') 40%,
-    #fff 52%,
-    theme('colors.brand.300') 66%,
-    #fff 84%
-  );
-  background-size: 280% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.hero-modules {
-  position: absolute;
-  inset: 0 0 0 42%;
-  pointer-events: none;
-  opacity: 0.16;
-  background-image: radial-gradient(theme('colors.brand.500') 1px, transparent 1.5px);
-  background-size: 9px 9px;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 22%);
-  mask-image: linear-gradient(to right, transparent, #000 22%);
-  animation: heroDotsDrift 40s linear infinite;
-}
-
-@media (max-width: 900px) {
-  .hero-modules {
-    inset: 0;
-    opacity: 0.1;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000);
-    mask-image: linear-gradient(to bottom, transparent, #000);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-in {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-  }
-  .hero-title-shine {
-    background-image: none;
-    -webkit-text-fill-color: currentColor;
-    color: #fff;
-  }
-  .hero-modules {
-    animation: none;
-  }
-}
-
-/* ===== "product band" section backgrounds (ported from the legacy site) =====
-   Shared by How-it-works, Club Fidélité and Pilotage: a top gradient hairline,
-   a soft radial blob in the top-right corner, and (for -club/-pilot) a slow
-   animated flow on that hairline plus a subtle pulsing edge glow. */
-@keyframes clubBandFlow {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 240% 0;
-  }
-}
-
-@keyframes clubBandEdges {
-  0%,
-  100% {
-    border-color: rgba(31, 132, 67, 0.12);
-    box-shadow: inset 0 -1px rgba(81, 189, 111, 0.12);
-  }
-  50% {
-    border-color: rgba(47, 165, 92, 0.34);
-    box-shadow: inset 0 -2px rgba(81, 189, 111, 0.3);
-  }
-}
-
-.product-band {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border-top: 1px solid rgba(31, 132, 67, 0.14);
-  border-bottom: 1px solid rgba(31, 132, 67, 0.1);
-}
-
-.product-band::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    theme('colors.brand.900'),
-    theme('colors.brand.500'),
-    theme('colors.brand.300'),
-    theme('colors.brand.700')
-  );
-}
-
-.product-band::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  width: 380px;
-  height: 380px;
-  right: -190px;
-  top: -210px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(81, 189, 111, 0.11), transparent 68%);
-  pointer-events: none;
-}
-
-.product-band-club,
-.product-band-pilot {
-  animation: clubBandEdges 4.8s ease-in-out infinite;
-}
-
-.product-band-club {
-  background: linear-gradient(180deg, theme('colors.brand.50') 0%, #fafdfa 100%);
-}
-
-.product-band-pilot {
-  background: linear-gradient(180deg, #eff7f4 0%, theme('colors.neutral.50') 100%);
-}
-
-.product-band-club::before,
-.product-band-pilot::before {
-  background: linear-gradient(
-    90deg,
-    theme('colors.brand.900'),
-    theme('colors.brand.600'),
-    theme('colors.brand.300'),
-    theme('colors.brand.700'),
-    theme('colors.brand.900')
-  );
-  background-size: 240% 100%;
-  animation: clubBandFlow 6s linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-band-club,
-  .product-band-club::before,
-  .product-band-pilot,
-  .product-band-pilot::before {
-    animation: none;
-  }
-}
-
-.product-band-email {
-  background: #fff;
-}
-
-.product-band-email::before {
-  display: none;
-}
-
-/* Pill-shaped eyebrow badge used inside product-band sections. */
-.eyebrow-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 12px;
-  border: 1px solid rgba(31, 132, 67, 0.2);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: theme('boxShadow.sm');
-}
-
-.eyebrow-pill::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 2px;
-  background: theme('colors.brand.600');
-  flex: none;
-}
-
-/* ===== How-it-works step 1 visual: the QR scan-line sweep ===== */
-@keyframes scanmove {
-  0%,
-  100% {
-    top: 6px;
-  }
-  50% {
-    top: calc(100% - 10px);
-  }
-}
-
-.scan-line {
-  animation: scanmove 2.2s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scan-line {
-    animation: none;
-    top: 50%;
-  }
-}
-
-/* ===== QR-augmenté section: faint dotted vignette behind the flow diagram ===== */
-.qr-aug-dots::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.5;
-  background-image: radial-gradient(theme('colors.brand.500') 1px, transparent 1.5px);
-  background-size: 15px 15px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, transparent 45%, #000 100%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, transparent 45%, #000 100%);
 }

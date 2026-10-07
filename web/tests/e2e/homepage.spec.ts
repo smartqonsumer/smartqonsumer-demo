@@ -4,8 +4,8 @@ test.describe('Homepage', () => {
   test('shows the hero title, subtitle and video', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('sachez qui les achète');
-    await expect(page.locator('video source')).toHaveAttribute('src', /SmartQonsumeR-home-v1\.mp4/);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Comprenez et fidélisez vos consommateurs');
+    await expect(page.locator('video source')).toHaveAttribute('src', /SmartQonsumeR-home-v6\.mp4/);
   });
 
   test('has a title and meta description tuned for search results', async ({ page }) => {
@@ -26,7 +26,6 @@ test.describe('Homepage', () => {
   test('footer links to every legal page', async ({ page }) => {
     await page.goto('/');
     for (const [name, path] of [
-      ['CGV', '/legal/cgv/'],
       ['Confidentialité', '/legal/confidentialite/'],
       ['RGPD', '/legal/rgpd/'],
       ['Mentions légales', '/legal/mentions-legales/'],

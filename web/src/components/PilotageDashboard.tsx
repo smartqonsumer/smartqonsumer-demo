@@ -2,6 +2,7 @@ import { Container } from '@/components/Container';
 import { Counter } from '@/components/Counter';
 import { Reveal } from '@/components/Reveal';
 import { SectionHeading } from '@/components/SectionHeading';
+import { ProductBand } from '@/components/ProductBand';
 
 const KPIS = [
   { label: 'Contacts connus', value: 248, suffix: '', hint: 'dont 36 nouveaux' },
@@ -30,13 +31,13 @@ const STRIP = [
 
 export function PilotageDashboard() {
   return (
-    <section id="pilotage" className="product-band product-band-pilot scroll-mt-20 pb-[52px] pt-[88px] max-md:pb-10 max-md:pt-16">
+    <ProductBand id="pilotage" variant="pilot" className="scroll-mt-20 pb-[52px] pt-[88px] max-md:pb-10 max-md:pt-16">
       <Container>
         <SectionHeading
           pill
           eyebrow="Le pilotage, en continu"
           title="Voyez ce qui crée de l'intérêt. Décidez de la suite."
-          description="Reliez les scans, l'engagement du Club et les campagnes. Des indicateurs pour comprendre le parcours et préparer votre prochaine action."
+          description="Reliez les scans, l'engagement du consommateur et les campagnes. Des indicateurs sont proposés pour comprendre les personas et préparer votre prochaine action."
         />
 
         <div className="mt-14 grid gap-4 sm:grid-cols-3">
@@ -103,6 +104,6 @@ export function PilotageDashboard() {
           résultats clients.
         </p>
       </Container>
-    </section>
+    </ProductBand>
   );
 }

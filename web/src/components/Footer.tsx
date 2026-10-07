@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/Container';
+import { CookieSettingsButton } from '@/components/CookieSettingsButton';
 import { siteConfig } from '@/lib/site-config';
 
 const PRODUCT_LINKS = [
@@ -18,10 +20,9 @@ const RESOURCE_LINKS = [
 ] as const;
 
 const LEGAL_LINKS = [
-  { label: 'CGV', href: '/legal/cgv' },
-  { label: 'Confidentialité', href: '/legal/confidentialite' },
-  { label: 'RGPD', href: '/legal/rgpd' },
-  { label: 'Mentions légales', href: '/legal/mentions-legales' },
+  { label: 'Confidentialité', href: '/legal/confidentialite/' },
+  { label: 'RGPD', href: '/legal/rgpd/' },
+  { label: 'Mentions légales', href: '/legal/mentions-legales/' },
 ] as const;
 
 export function Footer() {
@@ -51,7 +52,11 @@ export function Footer() {
 
         <FooterColumn title="Produit" links={PRODUCT_LINKS} />
         <FooterColumn title="Ressources" links={RESOURCE_LINKS} />
-        <FooterColumn title="Légal" links={LEGAL_LINKS} />
+        <FooterColumn title="Légal" links={LEGAL_LINKS}>
+          <li>
+            <CookieSettingsButton label="Gérer les cookies" className="text-left text-sm text-neutral-700 hover:text-brand-800" />
+          </li>
+        </FooterColumn>
       </Container>
 
       <div className="mt-8 bg-brand-50 py-8">
@@ -89,13 +94,15 @@ export function Footer() {
 function FooterColumn({
   title,
   links,
+  children,
 }: {
   title: string;
   links: readonly { label: string; href: string }[];
+  children?: ReactNode;
 }) {
   return (
     <div>
-      <h4 className="text-sm font-semibold text-neutral-950">{title}</h4>
+      <h2 className="text-sm font-semibold text-neutral-950">{title}</h2>
       <ul className="mt-4 space-y-2.5">
         {links.map((link) => (
           <li key={link.href}>
@@ -110,6 +117,7 @@ function FooterColumn({
             )}
           </li>
         ))}
+        {children}
       </ul>
     </div>
   );

@@ -8,6 +8,23 @@ export const siteConfig = {
   linkedinUrl: 'https://www.linkedin.com/in/nicolas-wicke-09b771160/',
 } as const;
 
+/**
+ * Identity shown on the legal pages. SmartQonsumer is not incorporated yet: the
+ * publisher is the project's founder as an individual. Add the company details
+ * (legal name, SIREN/RCS, VAT number, address) here once it is registered.
+ */
+export const legalConfig = {
+  publisher: 'Nicolas Wicke',
+  email: 'nicolas.wicke@smartqonsumer.com',
+  updated: '5 octobre 2026',
+  host: {
+    name: 'OVH SAS',
+    address: '2 rue Kellermann, 59100 Roubaix, France',
+    phone: '1007',
+    url: 'https://www.ovhcloud.com',
+  },
+} as const;
+
 export const posthogConfig = {
   key: process.env.NEXT_PUBLIC_POSTHOG_KEY ?? 'phc_tWnMkKTFhskPmPxyTkjzuBmzmxT2tjLx8Hi8GC3WpfGp',
   host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com',

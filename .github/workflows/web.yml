@@ -1,0 +1,139 @@
+# CI/CD of the Next.js site in web/.
+#
+# - On every push / pull request touching web/: quality checks, build, e2e
+#   tests and Lighthouse (performance, accessibility, SEO, weight budgets).
+# - Deployment is manual (Actions → "Web" → Run workflow): it re-runs every
+#   check on the chosen branch, then uploads web/out/ over FTP. `dry_run`
+#   (on by default) only lists what would be uploaded.
+#
+# Secrets to define on the `production` environment (Settings → Environments):
+#   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD, FTP_SERVER_DIR (e.g. "./www/")
+name: Web
+
+on:
+  push:
+    paths: ['web/**', '.github/workflows/web.yml']
+  pull_request:
+    paths: ['web/**', '.github/workflows/web.yml']
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy web/out/ over FTP after the checks
+        type: boolean
+        default: true
+      dry_run:
+        description: Dry run (list the changes, upload nothing)
+        type: boolean
+        default: true
+
+concurrency:
+  group: web-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+
+defaults:
+  run:
+    working-directory: web
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  quality:
+    name: Typecheck · lint · unit tests · build · SEO
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run seo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-out
+          path: web/out/
+          # Keep out/.htaccess (404 page + legacy URL redirects on the Apache host).
+          include-hidden-files: true
+          retention-days: 7
+
+  e2e:
+    name: E2E (Playwright + axe)
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      E2E_PREBUILT: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-out
+          path: web/out/
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: web/playwright-report/
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse (perf · a11y · SEO · budgets)
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-out
+          path: web/out/
+      - run: npm run lighthouse
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: web/.lighthouseci/
+          retention-days: 14
+
+  deploy:
+    name: Deploy (FTP)
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy
+    needs: [e2e, lighthouse]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-out
+          path: out/
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./out/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          dry-run: ${{ inputs.dry_run }}

@@ -1,0 +1,24 @@
+/* Security section background (ported from the legacy site's .security-band):
+   deep green → near-black diagonal gradient with a dotted texture fading in
+   towards the right. */
+.band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgb(var(--color-brand-900)) 0%, #103923 58%, rgb(var(--color-neutral-950)) 100%);
+  border-top: 1px solid rgb(var(--color-brand-300) / 0.25);
+  border-bottom: 1px solid rgb(var(--color-brand-900));
+}
+
+.band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image: radial-gradient(rgb(var(--color-brand-300)) 1px, transparent 1.5px);
+  background-size: 12px 12px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 70%);
+  mask-image: linear-gradient(90deg, transparent, #000 70%);
+}

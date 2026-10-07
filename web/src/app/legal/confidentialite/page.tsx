@@ -1,46 +1,82 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { CookieSettingsButton } from '@/components/CookieSettingsButton';
 import { LegalLayout } from '@/components/LegalLayout';
 import { LegalCallout } from '@/components/LegalCallout';
+import { ScrollableTable } from '@/components/ScrollableTable';
+import { legalPageMetadata } from '@/lib/metadata';
+import { legalConfig } from '@/lib/site-config';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = legalPageMetadata({
   title: 'Politique de confidentialité',
-  description: "Politique de confidentialité du service de démonstration SmartQonsumer : données collectées, finalités, durées de conservation et vos droits.",
-  alternates: { canonical: '/legal/confidentialite/' },
-  robots: { index: false, follow: true },
-};
+  description:
+    'Politique de confidentialité de smartqonsumer.com : données collectées, finalités, cookies, durées de conservation, destinataires et vos droits.',
+  path: '/legal/confidentialite/',
+});
 
 const TOC = [
-  ['responsable', 'Qui est responsable de vos données'],
-  ['donnees', 'Données que nous collectons'],
-  ['finalites', 'Pourquoi nous les traitons'],
-  ['base', 'Base légale des traitements'],
+  ['responsable', 'Responsable du traitement'],
+  ['donnees', 'Données collectées et finalités'],
+  ['cookies', 'Cookies et mesure d’audience'],
   ['duree', 'Durée de conservation'],
-  ['destinataires', 'Qui a accès à ces données'],
-  ['cookies', 'Cookies et traceurs'],
-  ['transferts', "Transferts hors de l'Union européenne"],
-  ['securite', 'Sécurité'],
+  ['destinataires', 'Destinataires et sous-traitants'],
+  ['transferts', 'Transferts hors de l’Union européenne'],
   ['droits', 'Vos droits'],
   ['contact', 'Contact'],
 ] as const;
 
 const DATA_TABLE = [
-  ['Compte Client', "Nom de l'entreprise, identité et e-mail des Utilisateurs, préférences", "Renseignées à l'inscription"],
-  ['Facturation', 'Coordonnées de facturation, historique des paiements', 'Renseignées par le Client'],
-  ['Navigation', "Pages consultées, appareil, mesure d'audience", 'Collectées automatiquement'],
-  ['Consommateur final', "Scan d'un produit, inscription au Club, points de fidélité, préférences de communication", 'Collectées via le parcours produit de la marque'],
+  [
+    'Mesure d’audience et erreurs techniques',
+    'Pages consultées, type d’appareil et de navigateur, erreurs JavaScript rencontrées',
+    'Améliorer le site et corriger ses dysfonctionnements',
+    'Consentement',
+  ],
+  [
+    'Choix en matière de cookies',
+    'Vos préférences de consentement',
+    'Respecter et prouver vos choix',
+    'Obligation légale',
+  ],
+  [
+    'Prise de rendez-vous',
+    'Nom, e-mail, informations saisies lors de la réservation (via Calendly)',
+    'Organiser un échange ou une démonstration',
+    'Intérêt légitime',
+  ],
+  [
+    'Échanges par e-mail',
+    'Nom, adresse e-mail, contenu de vos messages',
+    'Répondre à vos demandes',
+    'Intérêt légitime',
+  ],
+  [
+    'Journaux techniques',
+    'Adresse IP, date et heure, page demandée',
+    'Sécurité et bon fonctionnement de l’hébergement',
+    'Intérêt légitime',
+  ],
+] as const;
+
+const PROCESSORS = [
+  ['OVH SAS', 'Hébergement du site', 'France'],
+  ['PostHog', 'Mesure d’audience et suivi des erreurs (après consentement)', 'Union européenne'],
+  ['Axeptio', 'Gestion du consentement aux cookies', 'France'],
+  ['Calendly', 'Prise de rendez-vous', 'États-Unis'],
 ] as const;
 
 export default function ConfidentialitePage() {
+  const { publisher, email } = legalConfig;
+
   return (
-    <LegalLayout eyebrow="Vie privée" title="Politique de confidentialité" updated="17 septembre 2026">
+    <LegalLayout eyebrow="Vie privée" title="Politique de confidentialité" updated={legalConfig.updated}>
       <LegalCallout>
-        SmartQonsumer est présenté ici à titre de démonstration produit. Ce texte illustre la structure et le contenu
-        type d&apos;une politique de confidentialité pour ce genre de service ; il ne constitue pas un engagement
-        contractuel réel.
+        Cette politique concerne le site smartqonsumer.com et ses visiteurs. La plateforme SmartQonsumer est en
+        cours de développement et n&apos;est pas encore commercialisée : les principes de protection des données
+        retenus pour elle sont présentés sur la page <Link href="/legal/rgpd/">Informations RGPD</Link>.
       </LegalCallout>
 
-      <nav className="not-prose my-8 rounded-md border border-neutral-200 p-5 text-sm">
+      <nav aria-label="Sommaire" className="not-prose my-8 rounded-md border border-neutral-200 p-5 text-sm">
         <p className="font-semibold text-neutral-950">Sommaire</p>
         <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-neutral-700">
           {TOC.map(([id, label]) => (
@@ -53,112 +89,111 @@ export default function ConfidentialitePage() {
         </ol>
       </nav>
 
-      <h2 id="responsable">1. Qui est responsable de vos données</h2>
-      <p>SmartQonsumer agit à des rôles distincts selon le type de donnée :</p>
-      <ul>
-        <li>
-          en tant que <strong>responsable de traitement</strong>, pour les données des visiteurs du site
-          smartqonsumer.com et de ses Clients (comptes, facturation, support) ;
-        </li>
-        <li>
-          en tant que <strong>sous-traitant</strong>, pour les données des Consommateurs finaux collectées pour le
-          compte de ses Clients (marques) via les QR Codes, le Club de Fidélité et les campagnes marketing — chaque
-          marque restant responsable de traitement vis-à-vis de ses propres consommateurs.
-        </li>
-      </ul>
+      <h2 id="responsable">1. Responsable du traitement</h2>
+      <p>
+        Les données personnelles collectées sur ce site sont traitées par {publisher}, fondateur du projet
+        SmartQonsumer, joignable à l&apos;adresse <a href={`mailto:${email}`}>{email}</a>. Aucune donnée n&apos;est
+        vendue ni louée à des tiers.
+      </p>
 
-      <h2 id="donnees">2. Données que nous collectons</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Catégorie</th>
-            <th>Exemples</th>
-            <th>Origine</th>
-          </tr>
-        </thead>
-        <tbody>
-          {DATA_TABLE.map(([category, examples, origin]) => (
-            <tr key={category}>
-              <td>{category}</td>
-              <td>{examples}</td>
-              <td>{origin}</td>
+      <h2 id="donnees">2. Données collectées et finalités</h2>
+      <ScrollableTable label="Données collectées et finalités">
+        <table>
+          <thead>
+            <tr>
+              <th>Traitement</th>
+              <th>Données</th>
+              <th>Finalité</th>
+              <th>Base légale</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {DATA_TABLE.map(([name, data, purpose, basis]) => (
+              <tr key={name}>
+                <td>{name}</td>
+                <td>{data}</td>
+                <td>{purpose}</td>
+                <td>{basis}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollableTable>
+      <p>
+        Le site ne propose ni compte utilisateur ni paiement, et ne collecte aucune donnée sensible. Les polices de
+        caractères et la vidéo de présentation sont hébergées sur le site lui-même : leur affichage ne transmet
+        aucune donnée à un tiers.
+      </p>
 
-      <h2 id="finalites">3. Pourquoi nous les traitons</h2>
+      <h2 id="cookies">3. Cookies et mesure d&apos;audience</h2>
+      <p>
+        Lors de votre première visite, un bandeau vous permet d&apos;accepter ou de refuser la mesure
+        d&apos;audience. Tant que vous ne l&apos;avez pas acceptée, aucun cookie de mesure n&apos;est déposé et
+        aucune donnée de navigation n&apos;est envoyée. Seul est conservé le cookie qui mémorise votre choix,
+        strictement nécessaire au respect de celui-ci.
+      </p>
+      <p>
+        Vous pouvez modifier ou retirer votre consentement à tout moment, aussi simplement que vous l&apos;avez
+        donné : <CookieSettingsButton />.
+      </p>
+
+      <h2 id="duree">4. Durée de conservation</h2>
       <ul>
-        <li>Fournir, sécuriser et améliorer le Service ;</li>
-        <li>Gérer la relation contractuelle et la facturation des Clients ;</li>
+        <li>Cookies de mesure d&apos;audience et choix de consentement : 13 mois au maximum ;</li>
         <li>
-          Permettre aux marques de faire fonctionner leur Club de Fidélité et leurs campagnes, pour le compte de
-          leurs Consommateurs ;
+          Prise de rendez-vous et échanges par e-mail : le temps de traiter votre demande, puis 3 ans au plus après
+          notre dernier échange ;
         </li>
-        <li>Répondre aux demandes de contact ou de démonstration ;</li>
-        <li>Établir des statistiques d&apos;usage agrégées et anonymisées.</li>
+        <li>Journaux techniques : durée limitée fixée par l&apos;hébergeur pour la sécurité du service.</li>
       </ul>
 
-      <h2 id="base">4. Base légale des traitements</h2>
+      <h2 id="destinataires">5. Destinataires et sous-traitants</h2>
       <p>
-        Selon les cas, nos traitements reposent sur l&apos;exécution du contrat qui nous lie au Client, sur le
-        consentement du Consommateur (inscription au Club, réception de campagnes), sur notre intérêt légitime
-        (sécurité, amélioration du Service) ou sur le respect d&apos;une obligation légale (facturation,
-        comptabilité).
+        Vos données ne sont accessibles qu&apos;à {publisher} et aux prestataires techniques suivants, dans la limite
+        de ce qui est nécessaire à leur mission :
+      </p>
+      <ScrollableTable label="Destinataires et sous-traitants">
+        <table>
+          <thead>
+            <tr>
+              <th>Prestataire</th>
+              <th>Rôle</th>
+              <th>Localisation des données</th>
+            </tr>
+          </thead>
+          <tbody>
+            {PROCESSORS.map(([name, role, location]) => (
+              <tr key={name}>
+                <td>{name}</td>
+                <td>{role}</td>
+                <td>{location}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollableTable>
+
+      <h2 id="transferts">6. Transferts hors de l&apos;Union européenne</h2>
+      <p>
+        Lorsque vous réservez un rendez-vous, les informations saisies sont traitées par Calendly, situé aux
+        États-Unis. Ce transfert est encadré par les garanties prévues par le RGPD (cadre de protection des données
+        UE–États-Unis ou clauses contractuelles types de la Commission européenne). Les autres données restent
+        hébergées dans l&apos;Union européenne.
       </p>
 
-      <h2 id="duree">5. Durée de conservation</h2>
+      <h2 id="droits">7. Vos droits</h2>
       <p>
-        Les données d&apos;un Compte Client sont conservées pendant la durée du contrat, puis pendant trente (30)
-        jours après sa résiliation pour permettre l&apos;export des données, avant suppression ou anonymisation. Les
-        données de facturation sont conservées conformément aux obligations comptables et fiscales en vigueur. Les
-        données des Consommateurs sont conservées selon la politique définie par chaque marque cliente, dans les
-        limites qu&apos;elle configure dans le Club de Fidélité.
+        Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d&apos;un droit d&apos;accès, de
+        rectification, d&apos;effacement, de limitation, d&apos;opposition et de portabilité sur vos données, ainsi
+        que du droit de retirer votre consentement et de définir des directives sur le sort de vos données après
+        votre décès. Une réponse vous est apportée dans un délai d&apos;un mois.
       </p>
 
-      <h2 id="destinataires">6. Qui a accès à ces données</h2>
+      <h2 id="contact">8. Contact</h2>
       <p>
-        Seuls les Utilisateurs habilités du Client concerné, les équipes internes de SmartQonsumer soumises à une
-        obligation de confidentialité, et nos sous-traitants techniques (hébergement, envoi d&apos;e-mails, paiement)
-        strictement nécessaires au fonctionnement du Service ont accès aux données, dans la limite de leurs besoins
-        respectifs. Aucune donnée n&apos;est vendue à des tiers.
-      </p>
-
-      <h2 id="cookies">7. Cookies et traceurs</h2>
-      <p>
-        Le site smartqonsumer.com utilise des cookies strictement nécessaires à son fonctionnement (préférences,
-        sécurité) ainsi que, sous réserve de votre consentement, des cookies de mesure d&apos;audience. Vous pouvez à
-        tout moment modifier vos préférences depuis les paramètres de votre navigateur.
-      </p>
-
-      <h2 id="transferts">8. Transferts hors de l&apos;Union européenne</h2>
-      <p>
-        Les données sont hébergées par défaut au sein de l&apos;Union européenne. Lorsqu&apos;un sous-traitant
-        technique est situé hors de l&apos;UE, un tel transfert n&apos;intervient que sur la base de garanties
-        appropriées (clauses contractuelles types de la Commission européenne, décision d&apos;adéquation).
-      </p>
-
-      <h2 id="securite">9. Sécurité</h2>
-      <p>
-        Nous mettons en œuvre des mesures techniques et organisationnelles adaptées : chiffrement des données en
-        transit, authentification à deux facteurs, séparation logique des données par Client, journalisation des
-        connexions et des accès. Le détail de ces mesures est présenté sur la page{' '}
-        <Link href="/legal/rgpd">RGPD</Link>.
-      </p>
-
-      <h2 id="droits">10. Vos droits</h2>
-      <p>
-        Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification, d&apos;effacement, de
-        limitation, d&apos;opposition et de portabilité sur vos données. Si vous êtes un Consommateur final
-        d&apos;une marque cliente, ce droit s&apos;exerce en priorité auprès de cette marque, qui reste responsable
-        du traitement de vos données ; SmartQonsumer relaie et exécute techniquement ces demandes.
-      </p>
-
-      <h2 id="contact">11. Contact</h2>
-      <p>
-        Pour toute question relative à cette politique ou pour exercer vos droits, vous pouvez nous contacter via le
-        formulaire disponible sur <Link href="/">smartqonsumer.com</Link>. Vous disposez également du droit
-        d&apos;introduire une réclamation auprès de la CNIL (
+        Pour toute question relative à cette politique ou pour exercer vos droits, écrivez à{' '}
+        <a href={`mailto:${email}`}>{email}</a>. Si vous estimez, après nous avoir contactés, que vos droits ne sont
+        pas respectés, vous pouvez adresser une réclamation à la CNIL (
         <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">
           www.cnil.fr
         </a>

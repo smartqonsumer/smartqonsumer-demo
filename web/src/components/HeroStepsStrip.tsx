@@ -3,8 +3,8 @@ import { Reveal } from '@/components/Reveal';
 
 const STEPS = [
   { num: '01', text: "Identifiez l'intérêt produit au moment du scan" },
-  { num: '02', text: 'Transformez un visiteur anonyme en membre consentant' },
-  { num: '03', text: 'Enrichissez automatiquement votre connaissance client' },
+  { num: '02', text: 'Transformez vos consommateurs anonymes en membres de votre club fidélité' },
+  { num: '03', text: 'Enrichissez les profils de votre club fidélité à chaque scan' },
   { num: '04', text: 'Activez des campagnes ciblées à partir des comportements réels' },
 ] as const;
 

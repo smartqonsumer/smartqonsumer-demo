@@ -2,7 +2,9 @@ import type { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/site-config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['/', '/legal/mentions-legales/', '/legal/cgv/', '/legal/confidentialite/', '/legal/rgpd/'];
+  // Only indexable pages: the legal pages are `noindex` (see legalPageMetadata),
+  // and listing them here would send search engines contradictory signals.
+  const routes = ['/'];
 
   return routes.map((route) => ({
     url: `${siteConfig.url}${route}`,

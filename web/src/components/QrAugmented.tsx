@@ -1,5 +1,6 @@
 import { Container } from '@/components/Container';
 import { Reveal } from '@/components/Reveal';
+import styles from './QrAugmented.module.css';
 
 const CARDS = [
   {
@@ -27,7 +28,7 @@ const CARDS = [
 
 export function QrAugmented() {
   return (
-    <section id="qr-augmente" className="qr-aug-dots relative scroll-mt-20 overflow-hidden bg-neutral-50 py-20 sm:py-28">
+    <section id="qr-augmente" className={`${styles.dots} relative scroll-mt-20 overflow-hidden bg-neutral-50 py-20 sm:py-28`}>
       <Container className="relative z-[1]">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>

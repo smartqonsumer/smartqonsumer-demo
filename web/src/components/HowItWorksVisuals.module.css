@@ -1,0 +1,21 @@
+/* Step 1 visual: the QR scan-line sweep. */
+@keyframes scanmove {
+  0%,
+  100% {
+    top: 6px;
+  }
+  50% {
+    top: calc(100% - 10px);
+  }
+}
+
+.scanLine {
+  animation: scanmove 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanLine {
+    animation: none;
+    top: 50%;
+  }
+}

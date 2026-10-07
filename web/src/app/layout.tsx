@@ -3,6 +3,7 @@ import { Instrument_Sans } from 'next/font/google';
 import Script from 'next/script';
 import { AxeptioScripts } from '@/components/AxeptioScripts';
 import { PostHogProvider } from '@/components/PostHogProvider';
+import { pageMetadata } from '@/lib/metadata';
 import { axeptioConfig, siteConfig } from '@/lib/site-config';
 import './globals.css';
 
@@ -15,9 +16,8 @@ const instrumentSans = Instrument_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
+  ...pageMetadata({ title: siteConfig.title, description: siteConfig.description, path: '/' }),
   title: { default: siteConfig.title, template: `%s | ${siteConfig.name}` },
-  description: siteConfig.description,
-  alternates: { canonical: '/' },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -26,28 +26,6 @@ export const metadata: Metadata = {
     apple: '/assets/q-mark.png',
   },
   manifest: '/site.webmanifest',
-  openGraph: {
-    title: siteConfig.title,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: 'fr_FR',
-    type: 'website',
-    images: [
-      {
-        url: '/assets/SmartQonsumeR-home-v1-cover.png',
-        width: 1400,
-        height: 787,
-        alt: "Présentation du parcours client SmartQonsumer, du scan produit à l'expérience digitale",
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
-    images: ['/assets/SmartQonsumeR-home-v1-cover.png'],
-  },
   robots: { index: true, follow: true },
 };
 
@@ -92,6 +70,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
       </head>
       <body className="font-sans">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-white focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-brand-800 focus:shadow-lg"
+        >
+          Aller au contenu principal
+        </a>
         <AxeptioScripts />
         <PostHogProvider>{children}</PostHogProvider>
       </body>
