@@ -77,10 +77,9 @@ function ContactVisual() {
 
 function ProductVisual() {
   return (
-    <div className="relative flex w-[132px] flex-col items-center">
-      <span aria-hidden="true" className="absolute left-1/2 top-5 h-28 w-28 -translate-x-1/2 rounded-full bg-brand-50" />
-      <Image src="/assets/feature-produit.webp" alt="" width={213} height={175} className="relative h-auto w-[132px]" />
-      <span className="relative -mt-3 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-neutral-100 bg-white px-2.5 py-1.5 text-[10px] font-medium text-neutral-800 shadow-[0_6px_16px_rgba(18,22,26,.08)]">
+    <div className="flex w-[150px] flex-col items-end">
+      <Image src="/assets/feature-produit-v2.webp" alt="" width={617} height={500} className="h-auto w-[150px]" />
+      <span className="relative -mt-2.5 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-neutral-100 bg-white px-2.5 py-1.5 text-[10px] font-medium text-neutral-800 shadow-[0_6px_16px_rgba(18,22,26,.08)]">
         <Icon size={12} className="text-brand-700">
           <path d="M10 13a5 5 0 0 0 7.07 0l1.93-1.93a5 5 0 0 0-7.07-7.07L10.5 5.46" />
           <path d="M14 11a5 5 0 0 0-7.07 0L4.93 12.93a5 5 0 0 0 7.07 7.07L13.46 18.5" />

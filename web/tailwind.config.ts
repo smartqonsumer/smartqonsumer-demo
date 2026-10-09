@@ -20,7 +20,6 @@ const config: Config = {
         scan: {
           green: { DEFAULT: color('scan-green'), ink: color('scan-green-ink') },
           navy: color('scan-navy'),
-          mint: color('scan-mint'),
         },
         success: { DEFAULT: color('success'), bg: color('success-bg') },
         warning: { DEFAULT: color('warning'), bg: color('warning-bg') },

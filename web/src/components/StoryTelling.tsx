@@ -81,7 +81,7 @@ const ROWS = [
             <span>Scénario automatisé</span>
             <span className="text-brand-800">● Actif</span>
           </div>
-          <div className="mt-2 font-medium text-neutral-900">Anniversaire du contact → Joyeux anniversaire 🎉</div>
+          <div className="mt-2 font-medium text-neutral-900">Anniversaire du contact → Joyeux anniversaire</div>
         </div>
       </div>
     ),

@@ -73,16 +73,16 @@ export function ClubScan() {
               ))}
             </div>
 
-            <div className="mt-8 flex items-center gap-4 rounded-2xl border border-scan-green/50 bg-scan-mint px-5 py-4">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true" className="shrink-0 text-scan-green">
+            <div className="mt-8 flex items-center gap-4 rounded-2xl bg-brand-700 px-5 py-4 shadow-[0_10px_24px_rgba(31,132,67,.22)]">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true" className="shrink-0 text-white">
                 <path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 1-1 1h-3" />
                 <rect x="8" y="8" width="3" height="3" />
                 <rect x="13" y="8" width="3" height="3" />
                 <rect x="8" y="13" width="3" height="3" />
                 <path d="M13 13h3v3h-3z" />
               </svg>
-              <span aria-hidden="true" className="h-8 w-px shrink-0 bg-scan-green/30" />
-              <p className="text-[15px] font-semibold leading-snug text-scan-green-ink">
+              <span aria-hidden="true" className="h-8 w-px shrink-0 bg-white/40" />
+              <p className="text-[15px] font-semibold leading-snug text-white">
                 Après le scan, vos consommateurs rejoignent <br className="hidden sm:inline" />
                 <span className="whitespace-nowrap">votre Club de Fidélité</span>
               </p>
@@ -104,10 +104,10 @@ export function ClubScan() {
 
           <Reveal delay={0.1}>
             <Image
-              src="/assets/club-fidelite-maison-alba-v2.webp"
+              src="/assets/club-fidelite-maison-alba-v3.webp"
               alt="Un étui de savon artisanal avec un QR Code « Rejoignez notre club », scanné par un smartphone qui ouvre l'espace Club Fidélité de la marque : solde de points, récompenses exclusives et événements spéciaux"
-              width={960}
-              height={780}
+              width={750}
+              height={608}
               className="mx-auto h-auto w-full max-w-[620px] mix-blend-multiply"
             />
           </Reveal>
