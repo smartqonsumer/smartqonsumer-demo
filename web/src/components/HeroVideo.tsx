@@ -149,7 +149,7 @@ export function HeroVideo() {
             {paused ? <path d="M8 5.5v13l11-6.5z" /> : <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />}
           </svg>
         </button>
-        <div className="flex h-10 min-w-0 flex-1 items-center gap-3 rounded-full bg-neutral-950/60 px-4 text-[11px] font-medium tabular-nums text-white backdrop-blur">
+        <div className={`${styles.seekBar} flex h-10 min-w-0 flex-1 items-center gap-3 rounded-full bg-neutral-950/60 px-4 text-[11px] font-medium tabular-nums text-white backdrop-blur`}>
           <span aria-hidden="true">{formatTime(currentTime)}</span>
           <input
             type="range"

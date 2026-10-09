@@ -1,3 +1,20 @@
+/* Seek bar pill: hidden until hovered (or focused from the keyboard) on devices
+   with a mouse; always shown on touch screens, which have no hover. */
+.seekBar {
+  transition: opacity 0.2s;
+}
+
+@media (hover: hover) {
+  .seekBar {
+    opacity: 0;
+  }
+
+  .seekBar:hover,
+  .seekBar:focus-within {
+    opacity: 1;
+  }
+}
+
 /* Green seek bar of the hero video: the filled part follows --progress. */
 .seek {
   flex: 1;
