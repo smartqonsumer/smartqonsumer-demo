@@ -17,6 +17,11 @@ const config: Config = {
       colors: {
         brand: palette('brand', [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]),
         neutral: palette('neutral', [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
+        scan: {
+          green: { DEFAULT: color('scan-green'), ink: color('scan-green-ink') },
+          navy: color('scan-navy'),
+          mint: color('scan-mint'),
+        },
         success: { DEFAULT: color('success'), bg: color('success-bg') },
         warning: { DEFAULT: color('warning'), bg: color('warning-bg') },
         error: { DEFAULT: color('error'), bg: color('error-bg') },

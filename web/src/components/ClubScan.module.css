@@ -1,4 +1,4 @@
-/* Faint dotted vignette behind the flow diagram. */
+/* Faint dotted vignette behind the section. */
 .dots::before {
   content: '';
   position: absolute;

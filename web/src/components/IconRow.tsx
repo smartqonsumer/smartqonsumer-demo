@@ -7,16 +7,18 @@ export function IconRow({
   text,
   titleClassName = 'text-neutral-950',
   textClassName = 'text-neutral-600',
+  iconClassName = 'h-[38px] w-[38px] rounded-[11px] bg-white text-brand-700 shadow-sm',
 }: {
   icon: ReactNode;
   title: string;
   text: string;
   titleClassName?: string;
   textClassName?: string;
+  iconClassName?: string;
 }) {
   return (
     <div className="flex gap-3.5">
-      <div className="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-[11px] bg-white text-brand-700 shadow-sm">
+      <div className={`grid shrink-0 place-items-center ${iconClassName}`}>
         {icon}
       </div>
       <div>

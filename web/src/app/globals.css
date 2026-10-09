@@ -35,6 +35,12 @@
     --color-neutral-900: 31 36 41; /* #1F2429 */
     --color-neutral-950: 18 22 26; /* #12161A */
 
+    /* Club Fidélité scan section (marketing mockup palette) */
+    --color-scan-green: 0 181 77; /* #00B54D — icons, borders */
+    --color-scan-green-ink: 0 128 58; /* #00803A — green text, AA on light backgrounds */
+    --color-scan-navy: 8 13 33; /* #080D21 */
+    --color-scan-mint: 234 245 239; /* #EAF5EF */
+
     /* Status */
     --color-success: 22 121 74; /* #16794A */
     --color-success-bg: 232 246 238; /* #E8F6EE */

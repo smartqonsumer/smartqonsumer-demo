@@ -2,10 +2,9 @@ import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { HeroStepsStrip } from '@/components/HeroStepsStrip';
 import { HowItWorks } from '@/components/HowItWorks';
-import { QrAugmented } from '@/components/QrAugmented';
+import { ClubScan } from '@/components/ClubScan';
 import { StoryTelling } from '@/components/StoryTelling';
 import { FeaturesGrid } from '@/components/FeaturesGrid';
-import { LoyaltyClub } from '@/components/LoyaltyClub';
 import { EmailAutomation } from '@/components/EmailAutomation';
 import { PilotageDashboard } from '@/components/PilotageDashboard';
 import { SecurityTrust } from '@/components/SecurityTrust';
@@ -21,10 +20,9 @@ export default function HomePage() {
         <Hero />
         <HeroStepsStrip />
         <HowItWorks />
-        <QrAugmented />
+        <ClubScan />
         <StoryTelling />
         <FeaturesGrid />
-        <LoyaltyClub />
         <EmailAutomation />
         <PilotageDashboard />
         <SecurityTrust />

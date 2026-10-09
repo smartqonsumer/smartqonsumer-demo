@@ -14,7 +14,7 @@ const PRODUCT_LINKS = [
 ] as const;
 
 const RESOURCE_LINKS = [
-  { label: 'QR Code augmenté & GS1', href: '#qr-augmente' },
+  { label: 'QR Code augmenté & GS1', href: '#club-fidelite' },
   { label: 'Sécurité & RGPD', href: '#security' },
   { label: 'FAQ', href: '#faq' },
 ] as const;
