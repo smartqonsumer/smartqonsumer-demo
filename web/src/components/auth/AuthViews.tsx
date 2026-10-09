@@ -32,6 +32,7 @@ export function LoginView() {
   const next = safeNext(params.get('next'));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [unverified, setUnverified] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -60,14 +61,35 @@ export function LoginView() {
   return (
     <JourneyShell>
       <Heading>Connexion</Heading>
-      <p className="text-lg">Accédez à votre espace {getTheme().copy.clubName}.</p>
-      <Card>
+      <p className="text-center text-lg">Accédez à votre espace {getTheme().copy.clubName}.</p>
+      <Card className="lg:p-8">
         <form onSubmit={submit} className="flex flex-col gap-4">
-          <TextField label="Email" type="email" name="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-          <TextField label="Mot de passe" type="password" name="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+          <TextField
+            label="Email"
+            icon="email"
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="Votre adresse email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            label="Mot de passe"
+            icon="lock"
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            autoComplete="current-password"
+            placeholder="Votre mot de passe"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            trailing={<PasswordToggle shown={showPassword} onToggle={() => setShowPassword((s) => !s)} />}
+          />
           {error && <Alert>{error}</Alert>}
           {unverified && <ResendLink email={email} />}
-          <Button type="submit" loading={loading}>
+          <Button type="submit" loading={loading} arrow>
             Se connecter
           </Button>
         </form>
@@ -84,6 +106,24 @@ export function LoginView() {
         </div>
       </Card>
     </JourneyShell>
+  );
+}
+
+function PasswordToggle({ shown, onToggle }: { shown: boolean; onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-pressed={shown}
+      className="grid h-11 w-11 place-items-center rounded-club-sm text-club-muted hover:text-club-ink focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-club-ink"
+    >
+      <span className="sr-only">{shown ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}</span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="h-5 w-5">
+        <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+        <circle cx="12" cy="12" r="3" />
+        {shown && <path d="m4 4 16 16" />}
+      </svg>
+    </button>
   );
 }
 

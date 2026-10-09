@@ -52,7 +52,7 @@ function GamePage({ type, title }: { type: MemberGame['type']; title: string }) 
               </ButtonLink>
             </>
           ) : (
-            <Card key={round}>
+            <Card key={round} className="w-full max-w-3xl">
               {type === 'dog_race' ? (
                 <DogRace display={game.display as DogRaceDisplay} play={(choice) => play(choice)} onComplete={onComplete} />
               ) : (
@@ -61,7 +61,7 @@ function GamePage({ type, title }: { type: MemberGame['type']; title: string }) 
             </Card>
           )}
           {result && (
-            <div className="flex flex-col gap-3">
+            <div className="flex w-full max-w-3xl flex-col gap-3">
               <Alert tone={result.won ? 'success' : 'info'}>{result.message}</Alert>
               <ButtonLink
                 href="/club/gagner/"

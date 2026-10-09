@@ -162,6 +162,7 @@ Toute évolution de schéma passe par Alembic (`api/alembic/versions/`) :
 | `SESSION_COOKIE_DOMAIN` | `.smartqonsumer.com` en production (API sur un sous-domaine) |
 | `EMAIL_PROVIDER`, `EMAIL_FROM`, `SMTP_*` | envoi des emails |
 | `APP_ENV` | `development` / `test` / `production` (cookies `Secure`, HSTS, `/docs` désactivé) |
+| `ALLOW_SCAN_BYPASS` | Démo : lien « Rejouer quand même (démo) » sur un QR Code déjà utilisé, qui crée une participation hors politique de scan. Vide = actif sauf en `production` |
 | `ANONYMOUS_DATA_RETENTION_DAYS` | durée de conservation des visiteurs anonymes |
 | `NEXT_PUBLIC_API_URL` | URL de l'API pour le site (figée au build) |
 | `NEXT_PUBLIC_BRAND_SLUG`, `NEXT_PUBLIC_CAMPAIGN_*` | marque du club et campagnes des deux parcours |

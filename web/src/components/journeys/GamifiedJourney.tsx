@@ -41,7 +41,7 @@ export function GamifiedJourney({ campaignSlug }: { campaignSlug: string }) {
       ) : scan.status === 'none' ? (
         <NoScan campaign={campaign.data} />
       ) : !scan.scan.eligible ? (
-        <NotEligible campaign={campaign.data} message={scan.scan.message} />
+        <NotEligible campaign={campaign.data} message={scan.scan.message} onBypass={scan.scan.bypass_available ? scan.bypass : undefined} />
       ) : (
         <Game campaign={campaign.data} scanId={scan.scan.scan_id} />
       )}
@@ -53,19 +53,28 @@ function NoScan({ campaign }: { campaign: CampaignPublic }) {
   return (
     <>
       <Heading>{campaign.texts.hero_title ?? campaign.name}</Heading>
-      <p className="text-lg">Pour participer, scannez le QR Code imprimé sur votre paquet de croquettes.</p>
-      <ButtonLink href="/qr/">Voir les QR codes de démonstration</ButtonLink>
+      <p className="text-center text-lg">Pour participer, scannez le QR Code imprimé sur votre paquet de croquettes.</p>
+      <ButtonLink href="/qr/" arrow>
+        Voir les QR codes de démonstration
+      </ButtonLink>
     </>
   );
 }
 
-function NotEligible({ campaign, message }: { campaign: CampaignPublic; message: string }) {
+function NotEligible({ campaign, message, onBypass }: { campaign: CampaignPublic; message: string; onBypass?: () => void }) {
   return (
     <>
       <Heading>{campaign.texts.hero_title ?? campaign.name}</Heading>
       <Alert tone="info">{message}</Alert>
-      <p className="text-lg">Retrouvez vos points, vos jeux et vos récompenses dans votre espace fidélité.</p>
-      <ButtonLink href="/club/">Accéder à mon club</ButtonLink>
+      <p className="text-center text-lg">Retrouvez vos points, vos jeux et vos récompenses dans votre espace fidélité.</p>
+      <ButtonLink href="/club/" arrow>
+        Accéder à mon club
+      </ButtonLink>
+      {onBypass && (
+        <button type="button" onClick={onBypass} className="self-center text-sm text-club-muted underline underline-offset-4 hover:text-club-ink">
+          Rejouer quand même (démo)
+        </button>
+      )}
     </>
   );
 }
@@ -141,7 +150,7 @@ function Game({ campaign, scanId }: { campaign: CampaignPublic; scanId: string }
         <>
           <div>
             <Heading>{texts.hero_title ?? campaign.name}</Heading>
-            <p className="mt-3 text-lg">{texts.hero_subtitle}</p>
+            <p className="mt-4 text-center text-lg">{texts.hero_subtitle}</p>
           </div>
           <Card>
             <DogRace display={game.display as DogRaceDisplay} play={play} onComplete={onRaceComplete} />
@@ -151,7 +160,7 @@ function Game({ campaign, scanId }: { campaign: CampaignPublic; scanId: string }
 
       {step.name === 'won' && (
         <>
-          <div className="rounded-club-lg bg-club-ink p-6 text-center text-white">
+          <div className="rounded-club-lg bg-club-primary p-6 text-center text-white">
             <Heading className="!text-white">{texts.win_title ?? 'Bravo ! 🎉'}</Heading>
             <p className="mt-3 text-lg text-white/90">{texts.win_text ?? 'Votre cadeau vous attend.'}</p>
           </div>
@@ -170,14 +179,16 @@ function Game({ campaign, scanId }: { campaign: CampaignPublic; scanId: string }
       {step.name === 'lost' && (
         <>
           <Heading>{texts.lose_title ?? 'Pas cette fois…'}</Heading>
-          <p className="text-lg">{texts.lose_text}</p>
-          <ButtonLink href="/club-croquin-simple/">Rejoindre le club</ButtonLink>
+          <p className="text-center text-lg">{texts.lose_text}</p>
+          <ButtonLink href="/club-croquin-simple/" arrow>
+            Rejoindre le club
+          </ButtonLink>
         </>
       )}
 
       {step.name === 'confirmed' && (
         <>
-          <div className="rounded-club-lg bg-club-accent-soft p-6 text-center">
+          <div className="rounded-club-lg border border-club-accent/40 bg-club-accent-soft p-6 text-center">
             <Heading>{texts.confirmation_title ?? "C'est enregistré !"}</Heading>
             <p className="mt-3 text-lg text-club-ink">{texts.confirmation_text}</p>
             {step.rewardTitle && (
@@ -193,7 +204,9 @@ function Game({ campaign, scanId }: { campaign: CampaignPublic; scanId: string }
             <p className="mt-4 text-sm text-club-muted">Un email de confirmation vous a été envoyé.</p>
           </div>
           {step.loggedIn ? <EarnPreview /> : null}
-          <ButtonLink href="/club/">Accéder à mon club</ButtonLink>
+          <ButtonLink href="/club/" arrow>
+            Accéder à mon club
+          </ButtonLink>
         </>
       )}
     </div>

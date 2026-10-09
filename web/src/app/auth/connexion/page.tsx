@@ -7,7 +7,7 @@ import { privatePageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = privatePageMetadata({
   title: 'Connexion au club',
-  description: 'Connectez-vous à votre espace fidélité Club Croquin.',
+  description: 'Connectez-vous à votre espace fidélité Club Maison de la Croquette.',
   path: '/auth/connexion/',
 });
 

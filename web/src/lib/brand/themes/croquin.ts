@@ -28,6 +28,8 @@ export const croquinTheme: BrandTheme = {
     border: '#E4E1DD',
   },
   radius: { sm: '8px', md: '14px', lg: '24px', pill: '999px' },
+  fonts: { title: 'barlowCondensed', text: 'sourceSans' },
+  typography: 'condensed',
   assets: {
     logoText: 'Croquin',
     tagline: 'Croquettes sans céréales · Made in France',

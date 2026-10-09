@@ -68,6 +68,7 @@ export function AccountPage() {
       <Heading>Mon compte</Heading>
       {feedback && <Alert tone={feedback.tone}>{feedback.text}</Alert>}
 
+      <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
       <Card as="section" className="flex flex-col gap-2">
         <h2 className="font-club-title text-2xl font-bold uppercase text-club-ink">Mes informations</h2>
         <p className="text-lg">
@@ -128,8 +129,10 @@ export function AccountPage() {
           </div>
         )}
       </Card>
+      </div>
 
       <Button
+        className="lg:max-w-xs"
         variant="secondary"
         onClick={async () => {
           await session.logout();

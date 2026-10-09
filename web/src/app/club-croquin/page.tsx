@@ -7,8 +7,8 @@ import { SessionProvider } from '@/lib/auth/session';
 import { privatePageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = privatePageMetadata({
-  title: 'La Grande Course Croquin',
-  description: 'Choisissez votre chien, gagnez la course et recevez votre cadeau du Club Croquin.',
+  title: 'La Grande Course',
+  description: 'Choisissez votre chien, gagnez la course et recevez votre cadeau du Club Maison de la Croquette.',
   path: '/club-croquin/',
 });
 

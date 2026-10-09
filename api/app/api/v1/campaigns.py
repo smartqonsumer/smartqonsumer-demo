@@ -100,6 +100,7 @@ def create_scan(
         source=body.source,
         idempotency_key=idempotency_key,
         user=user,
+        bypass=body.bypass,
     )
     return ScanResponse(
         scan_id=result.scan.id,
@@ -109,4 +110,5 @@ def create_scan(
         campaign_slug=result.campaign.slug,
         journey=result.campaign.journey,
         destination_path=result.campaign.destination_path,
+        bypass_available=result.scan.status == "already_used" and get_settings().scan_bypass_enabled,
     )

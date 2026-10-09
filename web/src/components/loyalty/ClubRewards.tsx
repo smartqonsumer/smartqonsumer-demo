@@ -35,7 +35,7 @@ export function RewardsPage() {
           </Card>
         )}
         {mine.state.status === 'ready' && (
-          <ul className="flex flex-col gap-3">
+          <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
             {mine.state.data.map((r) => (
               <li key={r.redemption_id}>
                 <RewardCode reward={r} />
@@ -52,7 +52,7 @@ export function RewardsPage() {
         {catalogue.state.status === 'loading' && <p role="status">Chargement du catalogue…</p>}
         {catalogue.state.status === 'error' && <Alert>{catalogue.state.message}</Alert>}
         {catalogue.state.status === 'ready' && (
-          <ul className="flex flex-col gap-3">
+          <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
             {catalogue.state.data.map((r) => (
               <li key={r.id}>
                 <CatalogueItem
@@ -99,13 +99,13 @@ function CatalogueItem({ reward, onRedeemed }: { reward: Reward; onRedeemed: () 
   }
 
   return (
-    <Card className="flex flex-col gap-3">
+    <Card className="flex h-full flex-col gap-3">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="font-club-title text-xl font-bold uppercase text-club-ink">{reward.title}</h3>
           {reward.description && <p className="text-base text-club-muted">{reward.description}</p>}
         </div>
-        <span className="shrink-0 rounded-full bg-club-ink px-3 py-1 font-club-title text-lg font-bold text-white">{reward.cost_points} pts</span>
+        <span className="shrink-0 rounded-full bg-club-primary px-3 py-1 font-club-title text-lg font-bold text-club-primary-contrast">{reward.cost_points} pts</span>
       </div>
       {done && (
         <Alert tone="success">
@@ -149,7 +149,7 @@ function RewardCode({ reward }: { reward: MyReward }) {
   }
 
   return (
-    <Card className="flex flex-col gap-3 border-2 !border-dashed !border-club-primary">
+    <Card className="flex h-full flex-col gap-3 border-2 !border-dashed !border-club-accent">
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-club-title text-xl font-bold uppercase text-club-ink">🎁 {reward.reward_title}</h3>
         <span className="rounded-full bg-club-accent-soft px-2 py-0.5 text-sm font-semibold text-club-ink">{STATUS_LABEL[reward.status]}</span>

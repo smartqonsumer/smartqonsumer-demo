@@ -14,6 +14,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.core.config import get_settings
 from app.core.db import utcnow
 from app.core.errors import AppError, NotFound
 from app.models import Campaign, Participation, Scan, User, Visitor
@@ -41,9 +42,21 @@ class ScanResult:
         return MESSAGES[self.scan.status]
 
 
+BYPASS_PREFIX = "bypass:"
+
+
 def eligibility_key(
-    campaign: Campaign, *, gtin: str, serial: str | None, player: str, scan_id: uuid.UUID
+    campaign: Campaign,
+    *,
+    gtin: str,
+    serial: str | None,
+    player: str,
+    scan_id: uuid.UUID,
+    bypass: bool = False,
 ) -> str:
+    if bypass:
+        # Demo replay: a participation of its own, outside the campaign's scan policy.
+        return f"{BYPASS_PREFIX}{scan_id}"
     policy = campaign.scan_policy
     if policy == "unlimited":
         return f"scan:{scan_id}"
@@ -67,7 +80,12 @@ def record_scan(
     source: str = "gs1_resolver",
     idempotency_key: str | None = None,
     user: User | None = None,
+    bypass: bool = False,
 ) -> ScanResult:
+    if bypass and not get_settings().scan_bypass_enabled:
+        raise AppError(
+            "scan_bypass_disabled", "Cette opération ne permet pas de rejouer un QR Code déjà utilisé.", 403
+        )
     gtin14 = campaign_service.normalize_gtin(gtin)
     if not campaign_service.gtin_check_digit_is_valid(gtin14):
         raise AppError("invalid_gtin", "Ce code produit n'est pas valide.")
@@ -115,7 +133,7 @@ def record_scan(
 
     participation = None
     if running:
-        participation = _claim_participation(db, campaign, scan, visitor, user, serial)
+        participation = _claim_participation(db, campaign, scan, visitor, user, serial, bypass)
         if participation is None:
             scan.status = "already_used"
 
@@ -129,17 +147,26 @@ def record_scan(
         gtin=gtin14,
         status=scan.status,
         source=source,
+        bypass=bypass,
     )
     db.commit()
     return ScanResult(scan=scan, campaign=campaign, participation=participation)
 
 
 def _claim_participation(
-    db: Session, campaign: Campaign, scan: Scan, visitor: Visitor, user: User | None, serial: str | None
+    db: Session,
+    campaign: Campaign,
+    scan: Scan,
+    visitor: Visitor,
+    user: User | None,
+    serial: str | None,
+    bypass: bool = False,
 ) -> Participation | None:
     owner_id = user.id if user else visitor.user_id
     player = f"user:{owner_id}" if owner_id else f"visitor:{visitor.id}"
-    key = eligibility_key(campaign, gtin=scan.gtin, serial=serial, player=player, scan_id=scan.id)
+    key = eligibility_key(
+        campaign, gtin=scan.gtin, serial=serial, player=player, scan_id=scan.id, bypass=bypass
+    )
     participation_id = db.execute(
         insert(Participation)
         .values(
@@ -159,6 +186,12 @@ def _claim_participation(
 def _result_for(db: Session, scan: Scan, campaign: Campaign) -> ScanResult:
     participation = db.scalar(select(Participation).where(Participation.scan_id == scan.id))
     return ScanResult(scan=scan, campaign=campaign, participation=participation)
+
+
+def is_bypass(db: Session, scan: Scan) -> bool:
+    """True for a demo replay of an already used QR Code (see eligibility_key)."""
+    key = db.scalar(select(Participation.eligibility_key).where(Participation.scan_id == scan.id))
+    return bool(key and key.startswith(BYPASS_PREFIX))
 
 
 def get_visitor_scan(db: Session, scan_id: uuid.UUID, visitor: Visitor) -> Scan:

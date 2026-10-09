@@ -4,7 +4,7 @@ import { privatePageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = privatePageMetadata({
   title: 'Roue de la chance',
-  description: 'Lancez la roue de la chance du Club Croquin et gagnez des points fidélité.',
+  description: 'Lancez la roue de la chance du Club Maison de la Croquette et gagnez des points fidélité.',
   path: '/club/jeux/roue/',
 });
 

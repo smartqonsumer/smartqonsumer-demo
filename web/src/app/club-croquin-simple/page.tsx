@@ -7,8 +7,8 @@ import { SessionProvider } from '@/lib/auth/session';
 import { privatePageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = privatePageMetadata({
-  title: 'Rejoignez le Club Croquin',
-  description: 'Créez votre compte fidélité Croquin et commencez à gagner des points.',
+  title: 'Rejoignez le Club Maison de la Croquette',
+  description: 'Créez votre compte fidélité Maison de la Croquette et commencez à gagner des points.',
   path: '/club-croquin-simple/',
 });
 

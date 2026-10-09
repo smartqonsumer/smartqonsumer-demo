@@ -54,6 +54,8 @@ export type ScanResponse = {
   campaign_slug: string;
   journey: string;
   destination_path: string;
+  /** Demo: the visitor may replay this already used QR Code (POST /scans with bypass). */
+  bypass_available: boolean;
 };
 
 export type UserPublic = {

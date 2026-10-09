@@ -152,5 +152,44 @@ def test_public_campaign_never_exposes_the_win_probability(client: TestClient) -
 
 def test_brand_endpoint_exposes_theme_preset(client: TestClient) -> None:
     data = client.get("/api/v1/brands/croquin").json()
-    assert data == {"slug": "croquin", "name": "Croquin", "logo_url": None, "theme": {"preset": "croquin"}}
+    assert data == {
+        "slug": "croquin",
+        "name": "Maison de la Croquette",
+        "logo_url": None,
+        "theme": {"preset": "maison-croquette"},
+    }
     assert client.get("/api/v1/brands/inconnue").status_code == 404
+
+
+def test_demo_bypass_replays_an_already_used_qr_code_and_its_welcome_game(client: TestClient) -> None:
+    token = anon()
+    first = post_scan(client, token)
+    again = post_scan(client, token)
+    assert again["eligible"] is False
+    assert again["bypass_available"] is True
+
+    replay = post_scan(client, token, bypass=True)
+    assert replay["eligible"] is True
+    assert replay["bypass_available"] is False
+
+    for scan in (first, replay):
+        res = client.post(
+            "/api/v1/games/dog-race/play",
+            json={"campaign_slug": "croquin-dog-race", "scan_id": scan["scan_id"], "choice": "filou"},
+            headers={"X-Anon-Token": token},
+        )
+        assert res.status_code == 200, res.text
+
+
+def test_demo_bypass_is_off_in_production(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.core.config import get_settings
+
+    monkeypatch.setattr(get_settings(), "app_env", "production")
+    token = anon()
+    post_scan(client, token)
+    assert post_scan(client, token)["bypass_available"] is False
+    res = client.post(
+        "/api/v1/scans", json={"gtin": GTIN_DOG_RACE, "bypass": True}, headers={"X-Anon-Token": token}
+    )
+    assert res.status_code == 403
+    assert res.json()["error"]["code"] == "scan_bypass_disabled"

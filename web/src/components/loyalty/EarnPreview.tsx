@@ -40,14 +40,14 @@ export function EarnPreview({ brand = DEFAULT_BRAND_SLUG }: { brand?: string }) 
         Continuez l&apos;aventure
       </h2>
       <p className="text-base">Gagnez encore plus de points et débloquez vos prochaines récompenses.</p>
-      <ul className="flex flex-col gap-3">
+      <ul className="flex flex-col gap-3 sm:grid sm:grid-cols-2 lg:flex">
         {teasers.map((t) => (
           <li key={t.key}>
             <Link
               href="/club/gagner/"
-              className={`flex min-h-[64px] items-center gap-4 rounded-club-md border border-club-border bg-club-surface p-4 shadow-sm ${focusRing}`}
+              className={`flex min-h-[64px] items-center gap-4 rounded-club-md border border-club-border bg-club-surface p-4 shadow-sm transition-shadow hover:border-club-accent/60 hover:shadow-lg ${focusRing}`}
             >
-              <span aria-hidden="true" className="text-3xl">
+              <span aria-hidden="true" className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-club-accent-soft text-2xl">
                 {t.icon}
               </span>
               <span className="flex-1 text-lg font-semibold text-club-ink">{t.label}</span>

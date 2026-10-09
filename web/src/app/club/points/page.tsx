@@ -4,7 +4,7 @@ import { privatePageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = privatePageMetadata({
   title: 'Mes points',
-  description: 'Votre solde et l’historique détaillé de vos points fidélité Club Croquin.',
+  description: 'Votre solde et l’historique détaillé de vos points fidélité Club Maison de la Croquette.',
   path: '/club/points/',
 });
 

@@ -62,6 +62,7 @@ class ScanCreate(RequestModel):
     serial: str | None = Field(default=None, pattern=r"^[A-Za-z0-9._-]{1,20}$")
     campaign_slug: str | None = Field(default=None, max_length=80)
     source: str = Field(default="gs1_resolver", pattern=r"^[a-z0-9_]{1,30}$")
+    bypass: bool = False  # demo: replay an already used QR Code (see Settings.allow_scan_bypass)
 
 
 class ScanResponse(ApiModel):
@@ -72,3 +73,4 @@ class ScanResponse(ApiModel):
     campaign_slug: str
     journey: str
     destination_path: str
+    bypass_available: bool = False

@@ -23,9 +23,17 @@ export function BalanceCard() {
   if (!summary) return <Skeleton label="Chargement de votre solde…" />;
   const next = summary.next_reward;
   return (
-    <Card className="!bg-club-ink text-white">
-      <p className="text-sm font-semibold uppercase tracking-widest text-white/80">Mon solde</p>
-      <p className="font-club-title text-6xl font-extrabold leading-none">
+    <Card className="relative overflow-hidden !border-club-primary-dark !bg-club-primary text-white lg:p-8">
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="pointer-events-none absolute -right-6 -top-6 h-40 w-40 rotate-12 fill-white/[0.06]">
+        <ellipse cx="12" cy="16" rx="4.6" ry="3.8" />
+        <circle cx="6" cy="10.5" r="2" />
+        <circle cx="9.6" cy="6.6" r="2" />
+        <circle cx="14.4" cy="6.6" r="2" />
+        <circle cx="18" cy="10.5" r="2" />
+      </svg>
+      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/80">Mon solde</p>
+      <span aria-hidden="true" className="mt-2 block h-0.5 w-10 rounded-full bg-club-accent" />
+      <p className="mt-3 font-club-title text-6xl font-extrabold leading-none lg:text-7xl">
         {summary.balance}
         <span className="ml-2 text-2xl">points</span>
       </p>
@@ -47,15 +55,22 @@ export function ClubHome() {
   const session = useSession();
   const user = session.status === 'authenticated' ? session.user : null;
   return (
-    <>
-      <Heading>Bonjour{user?.first_name ? ` ${user.first_name}` : ''} 👋</Heading>
-      {user && !user.email_verified && (
-        <Alert tone="info">Pensez à confirmer votre adresse email grâce au lien que nous vous avons envoyé.</Alert>
-      )}
-      <BalanceCard />
-      <ButtonLink href="/club/recompenses/">Voir les récompenses</ButtonLink>
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-start lg:gap-12">
+      <div className="flex flex-col gap-6">
+        <div>
+          <Heading>Bonjour{user?.first_name ? ` ${user.first_name}` : ''}</Heading>
+          <p className="mt-4 text-lg">Bienvenue dans votre espace fidélité : vos points, vos jeux et vos récompenses.</p>
+        </div>
+        {user && !user.email_verified && (
+          <Alert tone="info">Pensez à confirmer votre adresse email grâce au lien que nous vous avons envoyé.</Alert>
+        )}
+        <BalanceCard />
+        <ButtonLink href="/club/recompenses/" arrow>
+          Voir les récompenses
+        </ButtonLink>
+      </div>
       {user && <EarnPreview />}
-    </>
+    </div>
   );
 }
 
@@ -65,7 +80,10 @@ export function PointsPage() {
   return (
     <>
       <Heading>Mes points</Heading>
-      <BalanceCard />
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:items-start lg:gap-12">
+      <div className="lg:sticky lg:top-28">
+        <BalanceCard />
+      </div>
       <section aria-labelledby="history" className="flex flex-col gap-3">
         <h2 id="history" className="font-club-title text-2xl font-bold uppercase text-club-ink">
           Historique
@@ -96,6 +114,7 @@ export function PointsPage() {
           </ul>
         )}
       </section>
+      </div>
     </>
   );
 }
@@ -115,14 +134,14 @@ export function EarnPage() {
               Jouer
             </h2>
             {state.data.games.length === 0 && <p>Aucun jeu disponible pour le moment.</p>}
-            <ul className="grid gap-3 sm:grid-cols-2">
+            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
               {state.data.games.map((g) => (
                 <li key={g.slug}>
                   <Link
                     href={g.type === 'roulette' ? '/club/jeux/roue/' : '/club/jeux/course/'}
-                    className={`flex h-full flex-col gap-1 rounded-club-lg border border-club-border bg-club-surface p-5 shadow-sm ${focusRing}`}
+                    className={`flex h-full flex-col gap-1 rounded-club-lg border border-club-border bg-club-surface p-5 shadow-sm transition-shadow hover:border-club-accent/60 hover:shadow-lg ${focusRing}`}
                   >
-                    <span aria-hidden="true" className="text-4xl">
+                    <span aria-hidden="true" className="mb-2 grid h-14 w-14 place-items-center rounded-full bg-club-accent-soft text-3xl">
                       {g.type === 'roulette' ? '🎡' : '🐕'}
                     </span>
                     <span className="font-club-title text-2xl font-bold uppercase text-club-ink">{g.name}</span>
@@ -133,7 +152,7 @@ export function EarnPage() {
               ))}
             </ul>
           </section>
-          <section aria-labelledby="profile" className="flex flex-col gap-3">
+          <section aria-labelledby="profile" className="flex max-w-3xl flex-col gap-3">
             <h2 id="profile" className="font-club-title text-2xl font-bold uppercase text-club-ink">
               Compléter mon profil
             </h2>

@@ -1,4 +1,4 @@
-"""Reproducible demo data: brand "Croquin" (fictional pet-food brand), its two campaigns,
+"""Reproducible demo data: brand "Maison de la Croquette" (fictional pet-food brand, slug "croquin"), its two campaigns,
 two demo GTINs, earning rules, games, rewards and a stock of DEMO promo codes.
 
 Idempotent: re-running updates the configuration in place (matched by slug / code) and
@@ -24,7 +24,7 @@ DEMO_CODES_PER_REWARD = 50
 
 # The visual theme lives in the frontend design system (web/src/lib/brand/themes/);
 # the brand row only names the preset to apply.
-CROQUIN_THEME: dict[str, Any] = {"preset": "croquin"}
+CROQUIN_THEME: dict[str, Any] = {"preset": "maison-croquette"}
 
 LEGAL_URLS = {
     "privacy": "/legal/confidentialite/",
@@ -43,7 +43,7 @@ MARKETING_CONSENT = {
     "type": "marketing_brand",
     "required": False,
     "version": "2026-10-v1",
-    "label": "J'accepte de recevoir les actualités et offres de Croquin par email.",
+    "label": "J'accepte de recevoir les actualités et offres de Maison de la Croquette par email.",
 }
 
 DOGS = [
@@ -54,17 +54,17 @@ DOGS = [
 CAMPAIGNS: list[dict[str, Any]] = [
     {
         "slug": "croquin-dog-race",
-        "name": "La Grande Course Croquin",
+        "name": "La Grande Course",
         "journey": "gamified",
         "destination_path": "/club-croquin/",
         "scan_policy": "once_per_user",
         "registration_points": 100,
         "registration_points_on": "registration",
-        "gtin": (GTIN_DOG_RACE, "Croquin Adulte Poulet 2 kg (démo)"),
+        "gtin": (GTIN_DOG_RACE, "Maison de la Croquette Adulte Poulet 2 kg (démo)"),
         "welcome_reward": "friandise-offerte",
         "config": {
             "texts": {
-                "hero_title": "La Grande Course Croquin",
+                "hero_title": "La Grande Course",
                 "hero_subtitle": "Choisissez votre champion et tentez de remporter votre cadeau !",
                 "win_title": "Bravo ! 🎉",
                 "win_text": "Votre chien a remporté la course ! Votre cadeau vous attend.",
@@ -90,17 +90,17 @@ CAMPAIGNS: list[dict[str, Any]] = [
     },
     {
         "slug": "croquin-simple-loyalty",
-        "name": "Club Croquin",
+        "name": "Club Maison de la Croquette",
         "journey": "simple",
         "destination_path": "/club-croquin-simple/",
         "scan_policy": "once_per_user",
         "registration_points": 100,
         "registration_points_on": "email_verified",
-        "gtin": (GTIN_SIMPLE, "Croquin Senior Saumon 3 kg (démo)"),
+        "gtin": (GTIN_SIMPLE, "Maison de la Croquette Senior Saumon 3 kg (démo)"),
         "welcome_reward": None,
         "config": {
             "texts": {
-                "hero_title": "Rejoignez le Club Croquin",
+                "hero_title": "Rejoignez le Club",
                 "hero_subtitle": "Créez votre compte et commencez à gagner des points.",
                 "verify_title": "Vérifiez votre boîte mail 📬",
                 "verify_text": "Nous vous avons envoyé un lien pour confirmer votre adresse email.",
@@ -205,7 +205,7 @@ def seed(db: Session) -> Brand:
         db,
         Brand,
         {"slug": BRAND_SLUG},
-        {"name": "Croquin", "logo_url": None, "theme": CROQUIN_THEME, "config": {"legal_urls": LEGAL_URLS}},
+        {"name": "Maison de la Croquette", "logo_url": None, "theme": CROQUIN_THEME, "config": {"legal_urls": LEGAL_URLS}},
     )
 
     rewards: dict[str, Reward] = {}

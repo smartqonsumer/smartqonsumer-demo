@@ -49,6 +49,10 @@ class Settings(BaseSettings):
     # Analytics adapter: "db" stores business events in the events table
     analytics_provider: Literal["db", "none"] = "db"
 
+    # Demo: lets a visitor replay an already used QR Code ("Rejouer quand même").
+    # Unset → enabled everywhere except production; never enable it on a real operation.
+    allow_scan_bypass: bool | None = None
+
     @field_validator("cors_origins", mode="before")
     @classmethod
     def _split_origins(cls, value: object) -> object:
@@ -59,6 +63,10 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.app_env == "production"
+
+    @property
+    def scan_bypass_enabled(self) -> bool:
+        return self.allow_scan_bypass if self.allow_scan_bypass is not None else not self.is_production
 
     def check_production_safety(self) -> None:
         if self.is_production and (self.session_secret.startswith("dev-") or len(self.session_secret) < 32):

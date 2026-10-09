@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, errorMessage, newIdempotencyKey } from '@/lib/api/client';
 import type { CampaignPublic, ScanResponse } from '@/lib/api/types';
 
@@ -25,11 +25,13 @@ export type ScanState =
   | { status: 'done'; scan: ScanResponse }
   | { status: 'error'; message: string };
 
-function scanKey(gtin: string, serial: string | null): string {
+/** Idempotency-Key of the tab's scan; `fresh` starts a new scan (demo replay) and keeps
+ * it for the next reloads. */
+function scanKey(gtin: string, serial: string | null, fresh = false): string {
   const storageKey = `sq_scan_${gtin}_${serial ?? ''}`;
   try {
     const existing = window.sessionStorage.getItem(storageKey);
-    if (existing) return existing;
+    if (existing && !fresh) return existing;
     const key = newIdempotencyKey('scan');
     window.sessionStorage.setItem(storageKey, key);
     return key;
@@ -43,7 +45,7 @@ function scanKey(gtin: string, serial: string | null): string {
  * The Idempotency-Key is kept per tab: reloading the page replays the same verdict
  * instead of reporting a "double scan"; a new scan (new tab, other device) does not.
  */
-export function useScanFromUrl(campaignSlug: string): ScanState {
+export function useScanFromUrl(campaignSlug: string): ScanState & { bypass: () => void } {
   const params = useSearchParams();
   const gtin = params.get('gtin');
   const serial = params.get('ser');
@@ -51,22 +53,33 @@ export function useScanFromUrl(campaignSlug: string): ScanState {
   const [state, setState] = useState<ScanState>({ status: 'loading' });
   const started = useRef(false);
 
+  const send = useCallback(
+    (bypass: boolean) => {
+      if (!gtin) return;
+      api<ScanResponse>('/scans', {
+        method: 'POST',
+        anon: true,
+        idempotencyKey: scanKey(gtin, serial, bypass),
+        body: { gtin, serial: serial ?? undefined, campaign_slug: campaignSlug, source, bypass },
+      })
+        .then((scan) => setState({ status: 'done', scan }))
+        .catch((e) => setState({ status: 'error', message: errorMessage(e) }));
+    },
+    [gtin, serial, source, campaignSlug],
+  );
+
   useEffect(() => {
     if (started.current) return;
     started.current = true;
-    if (!gtin) {
-      setState({ status: 'none' });
-      return;
-    }
-    api<ScanResponse>('/scans', {
-      method: 'POST',
-      anon: true,
-      idempotencyKey: scanKey(gtin, serial),
-      body: { gtin, serial: serial ?? undefined, campaign_slug: campaignSlug, source },
-    })
-      .then((scan) => setState({ status: 'done', scan }))
-      .catch((e) => setState({ status: 'error', message: errorMessage(e) }));
-  }, [gtin, serial, source, campaignSlug]);
+    if (!gtin) setState({ status: 'none' });
+    else send(false);
+  }, [gtin, send]);
 
-  return state;
+  /** Demo: replays an already used QR Code as a new, eligible scan. */
+  const bypass = useCallback(() => {
+    setState({ status: 'loading' });
+    send(true);
+  }, [send]);
+
+  return { ...state, bypass };
 }

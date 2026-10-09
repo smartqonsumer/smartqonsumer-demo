@@ -5,8 +5,8 @@ import { legalPageMetadata } from '@/lib/metadata';
 import { legalConfig } from '@/lib/site-config';
 
 export const metadata: Metadata = legalPageMetadata({
-  title: 'Règlement du Club Croquin (démo)',
-  description: "Règlement de démonstration de l'opération et du programme de fidélité Club Croquin, marque fictive.",
+  title: 'Règlement du Club Maison de la Croquette (démo)',
+  description: "Règlement de démonstration de l'opération et du programme de fidélité Club Maison de la Croquette, marque fictive.",
   path: '/legal/reglement-club-croquin/',
 });
 
@@ -16,15 +16,15 @@ export const metadata: Metadata = legalPageMetadata({
  */
 export default function ReglementPage() {
   return (
-    <LegalLayout eyebrow="Démonstration" title="Règlement du Club Croquin" updated={legalConfig.updated}>
+    <LegalLayout eyebrow="Démonstration" title="Règlement du Club Maison de la Croquette" updated={legalConfig.updated}>
       <LegalCallout>
-        Croquin est une marque fictive créée pour démontrer la plateforme SmartQonsumer. Ce règlement est un modèle
+        Maison de la Croquette est une marque fictive créée pour démontrer la plateforme SmartQonsumer. Ce règlement est un modèle
         de démonstration : il n&apos;a pas de valeur contractuelle et devra être rédigé et validé juridiquement par
         chaque marque cliente avant toute opération réelle.
       </LegalCallout>
       <h2>1. Objet</h2>
       <p>
-        Le Club Croquin permet aux consommateurs ayant scanné le QR Code d&apos;un produit de créer un compte
+        Le Club Maison de la Croquette permet aux consommateurs ayant scanné le QR Code d&apos;un produit de créer un compte
         fidélité, de cumuler des points (inscription, profil, jeux) et de les échanger contre des codes promotionnels.
       </p>
       <h2>2. Participation</h2>

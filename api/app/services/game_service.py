@@ -113,6 +113,8 @@ def play(
         if scan.campaign_id != campaign.id or scan.status != "accepted":
             raise AppError("scan_not_eligible", "Ce QR Code a déjà été utilisé pour cette opération.", 409)
         player = f"visitor:{visitor.id}"
+        if scan_service.is_bypass(db, scan):
+            player = f"{player}:scan:{scan.id}"  # demo replay: one more welcome game
 
     key = limit_key(db, game, player)
     if not can_play(db, game, player):

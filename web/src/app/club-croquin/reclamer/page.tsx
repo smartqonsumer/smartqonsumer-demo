@@ -7,7 +7,7 @@ import { privatePageMetadata } from '@/lib/metadata';
 
 export const metadata: Metadata = privatePageMetadata({
   title: 'Votre cadeau',
-  description: 'Ajout du cadeau gagné à la Grande Course Croquin à votre compte fidélité.',
+  description: 'Ajout du cadeau gagné à la Grande Course Maison de la Croquette à votre compte fidélité.',
   path: '/club-croquin/reclamer/',
 });
 

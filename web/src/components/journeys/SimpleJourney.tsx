@@ -22,7 +22,7 @@ export function SimpleJourney({ campaignSlug }: { campaignSlug: string }) {
   const legal = campaign.status === 'ready' ? campaign.data.legal_urls : undefined;
 
   return (
-    <JourneyShell legalUrls={legal} hero={campaign.status === 'ready' && !registered ? <Hero campaign={campaign.data} /> : undefined}>
+    <JourneyShell legalUrls={legal}>
       {campaign.status === 'loading' && (
         <>
           <Heading>Club fidélité</Heading>
@@ -42,10 +42,13 @@ export function SimpleJourney({ campaignSlug }: { campaignSlug: string }) {
           <Card>
             <h2 className="font-club-title text-2xl font-bold uppercase text-club-ink">Vous êtes déjà membre 👋</h2>
             <p className="mb-4 mt-2 text-lg">Retrouvez vos points, vos jeux et vos récompenses.</p>
-            <ButtonLink href="/club/">Accéder à mon espace</ButtonLink>
+            <ButtonLink href="/club/" arrow>
+              Accéder à mon espace
+            </ButtonLink>
           </Card>
         ) : (
           <>
+            <Intro campaign={campaign.data} />
             <Benefits campaign={campaign.data} />
             <Card as="section">
               <h2 className="mb-4 font-club-title text-2xl font-bold uppercase text-club-ink">Créer mon compte</h2>
@@ -63,15 +66,13 @@ export function SimpleJourney({ campaignSlug }: { campaignSlug: string }) {
   );
 }
 
-function Hero({ campaign }: { campaign: CampaignPublic }) {
+function Intro({ campaign }: { campaign: CampaignPublic }) {
   return (
-    <section className="bg-club-ink text-white">
-      <div className="mx-auto flex max-w-xl flex-col gap-3 px-4 pb-8 pt-6">
-        <p className="font-club-title text-lg font-bold uppercase tracking-widest text-club-gold">{campaign.brand.name} · Club fidélité</p>
-        <Heading className="!text-white">{campaign.texts.hero_title ?? campaign.name}</Heading>
-        <p className="text-xl text-white/90">{campaign.texts.hero_subtitle}</p>
-      </div>
-    </section>
+    <div className="flex flex-col gap-4">
+      <p className="text-center text-sm font-semibold uppercase tracking-[0.2em] text-club-accent-text">{campaign.brand.name} · Club fidélité</p>
+      <Heading>{campaign.texts.hero_title ?? campaign.name}</Heading>
+      <p className="text-center text-lg">{campaign.texts.hero_subtitle}</p>
+    </div>
   );
 }
 
@@ -87,8 +88,8 @@ function Benefits({ campaign }: { campaign: CampaignPublic }) {
   return (
     <ul className="grid gap-3" aria-label="Les avantages du club">
       {items.map((item) => (
-        <li key={item.text} className="flex items-center gap-4 rounded-club-md bg-club-surface p-4 shadow-sm">
-          <span aria-hidden="true" className="text-3xl">
+        <li key={item.text} className="flex items-center gap-4 rounded-club-md border border-club-border bg-club-surface p-4 shadow-sm">
+          <span aria-hidden="true" className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-club-accent-soft text-2xl">
             {item.icon}
           </span>
           <span className="text-lg font-semibold text-club-ink">{item.text}</span>

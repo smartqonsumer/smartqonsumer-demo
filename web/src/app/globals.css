@@ -101,3 +101,42 @@
     @apply bg-white text-neutral-950 antialiased;
   }
 }
+
+/* Brand themes: title and CTA treatment chosen by BrandTheme.typography, set as
+   data-club-type on <BrandScope>. Higher specificity than the utility classes on
+   purpose: the title weight and spacing are a brand decision, not a component one. */
+[data-club-type='serif'] .font-club-title {
+  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  letter-spacing: 0.04em;
+  line-height: 1.08;
+}
+
+[data-club-type='serif'] .club-button {
+  font-family: var(--font-club-text);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+/* Short copper rule under page titles (centered on the journey pages). */
+.club-heading-rule {
+  display: none;
+}
+
+[data-club-type='serif'] .club-heading-rule {
+  display: block;
+  width: 3.5rem;
+  height: 2px;
+  margin-top: 0.85rem;
+  border-radius: 2px;
+  background: rgb(var(--club-accent));
+}
+
+[data-club-type='serif'] .club-journey .club-heading {
+  text-align: center;
+}
+
+[data-club-type='serif'] .club-journey .club-heading-rule {
+  margin-inline: auto;
+}

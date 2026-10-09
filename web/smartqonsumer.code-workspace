@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../smartqonsumer-poc-qr-scan-checker"
+		},
+		{
+			"path": "../../saas-crm-qr/gs1-resolver-poc"
+		}
+	],
+	"settings": {}
+}
