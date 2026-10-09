@@ -48,12 +48,11 @@ export function Header() {
       <div className="mx-auto flex h-full max-w-content items-center justify-between gap-6 px-6">
         <Link href="/" aria-label="SmartQonsumer — accueil" className="shrink-0">
           <Image
-            src="/assets/logo-smartqonsumer.png"
+            src={scrolled ? '/assets/logo-smartqonsumer.png' : '/assets/logo-smartqonsumer-light.png'}
             alt="SmartQonsumer"
             width={150}
             height={20}
             priority
-            className={scrolled ? '' : 'brightness-0 invert'}
           />
         </Link>
 

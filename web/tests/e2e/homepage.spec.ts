@@ -4,7 +4,7 @@ test.describe('Homepage', () => {
   test('shows the hero title, subtitle and video', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Comprenez et fidélisez vos consommateurs');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Vos produits se vendent partout.');
     await expect(page.locator('video source')).toHaveAttribute('src', /SmartQonsumeR-home-v6\.mp4/);
   });
 

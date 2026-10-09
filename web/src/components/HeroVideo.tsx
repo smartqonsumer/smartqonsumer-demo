@@ -1,9 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import styles from './HeroVideo.module.css';
 
 const BUTTON_CLASS =
   'grid h-10 w-10 place-items-center rounded-full bg-neutral-950/60 text-white backdrop-blur transition-colors hover:bg-neutral-950/80';
+
+/** 75 → "1:15". */
+function formatTime(seconds: number) {
+  const total = Math.max(0, Math.floor(seconds));
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+}
 
 /** iOS Safari only lets the <video> element itself go fullscreen (native player). */
 type IosVideo = HTMLVideoElement & { webkitEnterFullscreen?: () => void };
@@ -20,11 +27,18 @@ export function HeroVideo() {
   const [muted, setMuted] = useState(true);
   const [paused, setPaused] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   // React renders `muted` as a DOM property only after hydration; set it
-  // explicitly so autoplay is never blocked.
+  // explicitly so autoplay is never blocked. The metadata may already be
+  // loaded before hydration attaches the listeners.
   useEffect(() => {
-    if (videoRef.current) videoRef.current.muted = true;
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    if (video.duration) setDuration(video.duration);
+    setCurrentTime(video.currentTime);
   }, []);
 
   // Follows every way of leaving fullscreen too (Escape key, browser UI).
@@ -47,6 +61,13 @@ export function HeroVideo() {
     if (!video) return;
     if (video.paused) void video.play();
     else video.pause();
+  };
+
+  const seek = (time: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = time;
+    setCurrentTime(time);
   };
 
   const toggleFullscreen = () => {
@@ -79,6 +100,9 @@ export function HeroVideo() {
         onPlay={() => setPaused(false)}
         onPause={() => setPaused(true)}
         onVolumeChange={(event) => setMuted(event.currentTarget.muted)}
+        onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+        onDurationChange={(event) => setDuration(event.currentTarget.duration)}
+        onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
       >
         <source src="/assets/SmartQonsumeR-home-v6.mp4" type="video/mp4" />
       </video>
@@ -114,22 +138,41 @@ export function HeroVideo() {
         </button>
       </div>
 
-      <div className={`absolute flex gap-2 ${fullscreen ? 'bottom-6 right-6' : 'bottom-3 right-3'}`}>
+      <div className={`absolute flex items-center gap-2 ${fullscreen ? 'inset-x-6 bottom-6' : 'inset-x-3 bottom-3'}`}>
         <button
           type="button"
           onClick={togglePlay}
           aria-label={paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause'}
-          className={BUTTON_CLASS}
+          className={`${BUTTON_CLASS} shrink-0`}
         >
           <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden="true">
             {paused ? <path d="M8 5.5v13l11-6.5z" /> : <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />}
           </svg>
         </button>
+        <div className="flex h-10 min-w-0 flex-1 items-center gap-3 rounded-full bg-neutral-950/60 px-4 text-[11px] font-medium tabular-nums text-white backdrop-blur">
+          <span aria-hidden="true">{formatTime(currentTime)}</span>
+          <input
+            type="range"
+            min={0}
+            max={duration || 0}
+            step={1}
+            value={Math.min(currentTime, duration || 0)}
+            onChange={(event) => seek(Number(event.currentTarget.value))}
+            aria-label="Position de lecture"
+            aria-valuetext={`${formatTime(currentTime)} sur ${formatTime(duration)}`}
+            disabled={!duration}
+            className={styles.seek}
+            style={{ '--progress': `${duration ? (currentTime / duration) * 100 : 0}%` } as CSSProperties}
+          />
+          <span aria-hidden="true" className="text-white/70">
+            {formatTime(duration)}
+          </span>
+        </div>
         <button
           type="button"
           onClick={toggleFullscreen}
           aria-label={fullscreen ? 'Quitter le plein écran' : 'Plein écran'}
-          className={BUTTON_CLASS}
+          className={`${BUTTON_CLASS} shrink-0`}
         >
           <svg
             viewBox="0 0 24 24"

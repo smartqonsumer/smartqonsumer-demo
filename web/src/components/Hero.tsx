@@ -1,6 +1,5 @@
 import { Container } from '@/components/Container';
 import { HeroVideo } from '@/components/HeroVideo';
-import { siteConfig } from '@/lib/site-config';
 import styles from './Hero.module.css';
 
 const PROOF_POINTS = ['Connaissance client', 'Engagement client', 'Fidélisation'] as const;
@@ -9,55 +8,44 @@ export function Hero() {
   return (
     <section id="hero" className="relative scroll-mt-20 overflow-hidden bg-neutral-950 text-white">
       <div aria-hidden="true" className={styles.modules} />
-      <Container className="relative grid gap-10 pb-16 pt-[122px] sm:pb-20 sm:pt-[150px] lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-10 lg:pb-24">
-        <div>
-          <p className={`${styles.in} text-xs font-bold uppercase tracking-[0.1em] text-brand-400`} style={{ animationDelay: '.05s' }}>
-            CRM nouvelle génération pour la vente indirecte
-          </p>
-          <h1
-            className={`${styles.in} ${styles.titleShine} mt-3.5 text-4xl font-bold leading-[1.1] tracking-[-0.022em] sm:text-5xl`}
-            style={{ animationDelay: '.15s' }}
-          >
-            Vous vendez vos produits partout.
-            <br />
-            Comprenez et fidélisez vos consommateurs.
-          </h1>
-          <p
-            className={`${styles.in} mt-[18px] max-w-xl text-lg leading-relaxed text-neutral-300`}
-            style={{ animationDelay: '.28s' }}
-          >
-            SmartQonsumer vous permet de passer d&apos;une connaissance limitée de vos consommateurs à une relation
-            directe avec eux. Chaque interaction avec vos produits enrichit leur profil dans la plateforme et vous
-            permet ensuite de communiquer avec eux de manière ciblée et automatisée.
-          </p>
-          <div className={`${styles.in} mt-[26px] flex flex-wrap items-center gap-3`} style={{ animationDelay: '.4s' }}>
-            <a
-              href={siteConfig.calendlyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center rounded-sm bg-brand-700 px-[18px] text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-800"
-            >
-              Nous contacter
-            </a>
-          </div>
-          <ul
-            className={`${styles.in} mt-[26px] flex flex-wrap gap-5 text-xs text-neutral-400`}
-            style={{ animationDelay: '.5s' }}
-          >
-            {PROOF_POINTS.map((point) => (
-              <li key={point} className="flex items-center gap-1.5">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 shrink-0 text-brand-400">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-                {point}
-              </li>
-            ))}
-          </ul>
-        </div>
+      <Container className="relative flex flex-col items-center pb-14 pt-[104px] text-center sm:pt-[118px] lg:pb-16">
+        <p className={`${styles.in} text-[13px] font-medium uppercase tracking-[0.06em] text-brand-400`} style={{ animationDelay: '.05s' }}>
+          CRM nouvelle génération pour la vente indirecte
+        </p>
+        <h1
+          className={`${styles.in} mt-4 text-3xl font-semibold leading-[1.12] tracking-[-0.02em] [text-wrap:balance] sm:text-4xl xl:text-[42px]`}
+          style={{ animationDelay: '.15s' }}
+        >
+          Vos produits se vendent partout.
+        </h1>
+        <p
+          className={`${styles.in} mt-2 text-xl font-medium leading-snug tracking-[-0.01em] text-brand-300 [text-wrap:balance] sm:text-2xl xl:text-[28px]`}
+          style={{ animationDelay: '.25s' }}
+        >
+          <span className={styles.shimmer}>Comprenez et fidélisez vos consommateurs.</span>
+        </p>
 
-        <div className={`${styles.in} relative z-[1] flex flex-col gap-3`} style={{ animationDelay: '.55s' }}>
+        {/* Sized from the viewport height so the whole video shows above the fold. */}
+        <div
+          className={`${styles.in} relative z-[1] mt-8 w-full max-w-[min(100%,calc((100svh-340px)*16/9))] sm:mt-10`}
+          style={{ animationDelay: '.35s' }}
+        >
           <HeroVideo />
         </div>
+
+        <ul
+          className={`${styles.in} mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[13px] text-neutral-300`}
+          style={{ animationDelay: '.45s' }}
+        >
+          {PROOF_POINTS.map((point) => (
+            <li key={point} className="flex items-center gap-1.5">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 shrink-0 text-brand-400">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+              {point}
+            </li>
+          ))}
+        </ul>
       </Container>
     </section>
   );

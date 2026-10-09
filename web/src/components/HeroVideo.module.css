@@ -1,0 +1,76 @@
+/* Green seek bar of the hero video: the filled part follows --progress. */
+.seek {
+  flex: 1;
+  min-width: 0;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.seek:disabled {
+  cursor: default;
+}
+
+.seek::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    rgb(var(--color-brand-500)) var(--progress),
+    rgb(255 255 255 / 0.28) var(--progress)
+  );
+}
+
+.seek::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.28);
+}
+
+.seek::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(var(--color-brand-500));
+}
+
+.seek::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: rgb(var(--color-brand-500));
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
+  transition: transform 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.seek::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: rgb(var(--color-brand-500));
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
+  transition: transform 0.15s;
+}
+
+.seek:hover::-webkit-slider-thumb,
+.seek:active::-webkit-slider-thumb {
+  transform: scale(1.25);
+}
+
+.seek:hover::-moz-range-thumb,
+.seek:active::-moz-range-thumb {
+  transform: scale(1.25);
+}
+
+.seek:focus-visible {
+  outline: 2px solid rgb(var(--color-brand-400));
+  outline-offset: 4px;
+  border-radius: 999px;
+}
